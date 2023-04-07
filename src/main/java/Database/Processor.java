@@ -12,6 +12,7 @@ public abstract class Processor {
 
     public Processor() {
         this.database = new Database();
+        this.database.connect();
         this.connector = database.getConnection();
     }
     public Database getDatabase() {

@@ -7,6 +7,6 @@ module com.example.cinemamanagementsystem {
 
     requires java.sql;
 
-    opens com.example.cinemamanagementsystem to javafx.fxml;
-    exports com.example.cinemamanagementsystem;
+    opens com.example.GraphicalUserInterface to javafx.fxml;
+    exports com.example.GraphicalUserInterface;
 }

@@ -11,12 +11,31 @@ public class Database {
         this.databaseUsername = "4hb_admin";
         this.databasePassword = "sa123456";
         this.databaseDns = "jdbc:mysql://127.0.0.1:3306/";
+        this.connect();
     }
-
+    public void setDatabaseUsername(String databaseUsername) {
+        this.databaseUsername = databaseUsername;
+    }
+    public void setDatabasePassword(String databasePassword) {
+        this.databasePassword = databasePassword;
+    }
+    public void setDatabaseDns(String databaseDns) {
+        this.databaseDns = databaseDns;
+    }
+    public String getDatabaseUsername() {
+        return this.databaseUsername;
+    }
+    public String getDatabasePassword() {
+        return this.databasePassword;
+    }
+    public String getDatabaseDns() {
+        return this.databaseDns;
+    }
     public Database(String databaseUsername, String databasePassword, String databaseDns) {
         this.databaseUsername = databaseUsername;
         this.databasePassword = databasePassword;
         this.databaseDns = databaseDns;
+        this.connect();
     }
     public void connect() {
         try {

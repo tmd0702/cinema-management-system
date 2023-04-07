@@ -1,4 +1,4 @@
-package com.example.cinemamanagementsystem;
+package com.example.GraphicalUserInterface;
 
 import javafx.fxml.FXML;
 import javafx.scene.control.Label;

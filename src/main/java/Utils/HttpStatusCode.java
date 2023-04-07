@@ -1,4 +1,4 @@
-package StatusCode;
+package Utils;
 
 public enum HttpStatusCode {
 

@@ -1,6 +1,6 @@
 package Database;
 
-import StatusCode.HttpStatusCode;
+import Utils.HttpStatusCode;
 
 import java.sql.Connection;
 import java.sql.Statement;
@@ -12,7 +12,6 @@ public abstract class Processor {
 
     public Processor() {
         this.database = new Database();
-        this.database.connect();
         this.connector = database.getConnection();
     }
     public Database getDatabase() {
@@ -21,6 +20,7 @@ public abstract class Processor {
     public Connection getConnector() {
         return this.connector;
     }
+
     public HttpStatusCode add(String table, HashMap <String, String> columnValueMap) {
         ArrayList<ArrayList<String>> columnsValuesList = Utils.Utils.getKeysValuesFromMap(columnValueMap);
 

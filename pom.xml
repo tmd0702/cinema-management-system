@@ -70,7 +70,7 @@
                         <id>default-cli</id>
                         <configuration>
                             <mainClass>
-                                com.example.cinemamanagementsystem/com.example.cinemamanagementsystem.HelloApplication
+                                com.example.cinemamanagementsystem/com.example.GraphicalUserInterface.HelloApplication
                             </mainClass>
                             <launcher>app</launcher>
                             <jlinkZipName>app</jlinkZipName>

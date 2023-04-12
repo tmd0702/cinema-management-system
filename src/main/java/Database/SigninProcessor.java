@@ -2,13 +2,13 @@ package Database;
 
 import java.sql.ResultSet;
 import java.sql.Statement;
-import java.util.Map;
+import java.util.*;
 
 public class SigninProcessor extends AuthenticationProcessor {
     public SigninProcessor() {
 
     }
-    public void handleSigninAction(Map<String, String> signinInfo) {
+    public void handleSigninAction(HashMap<String, String> signinInfo) {
         String username = signinInfo.get("username");
         String password = signinInfo.get("password");
         String query = String.format("SELECT PASS FROM AUTHENTICATION A JOIN USERS U ON A.ID = U.ID WHERE U.USERNAME = %s", username);

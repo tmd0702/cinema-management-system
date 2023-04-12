@@ -1,6 +1,10 @@
-.label {
-    -fx-text-fill: "blue";
-}
-#addMovieBtn {
 
+#addMovieBtn {
+    -fx-fill: "blue";
+}
+#headerSection {
+    -fx-background-color: "black";
+}
+.rectangle {
+    -fx-fill: "red" !important;
 }

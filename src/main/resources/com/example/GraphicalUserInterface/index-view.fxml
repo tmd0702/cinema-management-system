@@ -1,7 +1,10 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
+<?import javafx.scene.control.Button?>
 <?import javafx.scene.control.Label?>
 <?import javafx.scene.control.ScrollPane?>
+<?import javafx.scene.control.TextField?>
+<?import javafx.scene.image.ImageView?>
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.layout.HBox?>
 <?import javafx.scene.layout.VBox?>
@@ -15,7 +18,8 @@
                <content>
                   <HBox fx:id="moviePreviewSection" prefHeight="300.0" prefWidth="900.0">
                      <children>
-                        <Rectangle fx:id="addMovieBtn" arcHeight="5.0" arcWidth="5.0" fill="DODGERBLUE" height="148.0" onMouseClicked="#onAddMovieBtnClick" stroke="BLACK" strokeType="INSIDE" width="103.0" />
+                        <Rectangle fx:id="movieElement" arcHeight="5.0" arcWidth="5.0" height="148.0" onMouseClicked="#onAddMovieBtnClick" onMouseEntered="#onMouseEnterMovieElement" onMouseExited="#onMouseExitMovieElement" stroke="BLACK" strokeType="INSIDE" width="103.0" />
+                        <Rectangle fx:id="addMovieBtn" arcHeight="5.0" arcWidth="5.0" height="148.0" onMouseClicked="#onAddMovieBtnClick" onMouseEntered="#onMouseEnterMovieElement" onMouseExited="#onMouseExitMovieElement" stroke="BLACK" strokeType="INSIDE" width="103.0" />
                         <Label fx:id="welcomeText" text="Label" />
                      </children>
                   </HBox>
@@ -23,22 +27,34 @@
             </ScrollPane>
             <VBox layoutX="392.0" layoutY="506.0" prefHeight="761.0" prefWidth="903.0" AnchorPane.bottomAnchor="271.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="506.0">
                <children>
-                  <HBox fx:id="currentPlayingList" prefHeight="61.0" prefWidth="903.0">
+                  <HBox fx:id="currentPlayingHeader" prefHeight="61.0" prefWidth="903.0">
                      <children>
                         <Label text="Currently playing" />
                         <Label text="see more" />
                      </children>
                   </HBox>
-                  <HBox fx:id="comingSoonList" prefHeight="304.0" prefWidth="903.0" />
-                  <HBox fx:id="currentPlayingList2" prefHeight="61.0" prefWidth="903.0">
+                  <HBox fx:id="currentlyPlayingList" prefHeight="304.0" prefWidth="903.0" />
+                  <HBox fx:id="comingSoonHeader" prefHeight="61.0" prefWidth="903.0">
                      <children>
                         <Label text="Coming soon" />
                         <Label text="see more" />
                      </children>
                   </HBox>
-                  <HBox fx:id="currentPlayingList1" prefHeight="304.0" prefWidth="903.0" />
+                  <HBox fx:id="comingSoonList" prefHeight="304.0" prefWidth="903.0" />
                </children>
             </VBox>
+            <HBox fx:id="headerSection" layoutX="33.0" layoutY="-36.0" prefHeight="56.0" prefWidth="900.0" AnchorPane.bottomAnchor="1482.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="10.0" AnchorPane.topAnchor="0.0">
+               <children>
+                  <ImageView fx:id="logoSection" fitHeight="56.0" fitWidth="56.0" pickOnBounds="true" preserveRatio="true" />
+                  <HBox fx:id="searchBar">
+                     <children>
+                        <TextField fx:id="inputField" prefHeight="25.0" prefWidth="359.0" />
+                        <Button fx:id="searchBtn" mnemonicParsing="false" text="Search" />
+                     </children>
+                  </HBox>
+                  <Button fx:id="signInBtn" mnemonicParsing="false" onMouseClicked="#onSignInBtnClick" text="Sign in" />
+               </children>
+            </HBox>
          </children>
       </AnchorPane>
    </content>

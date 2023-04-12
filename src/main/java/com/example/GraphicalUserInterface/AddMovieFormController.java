@@ -1,4 +1,4 @@
 package com.example.GraphicalUserInterface;
 
-public class loginForm {
+public class AddMovieFormController {
 }

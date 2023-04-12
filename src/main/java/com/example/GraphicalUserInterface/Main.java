@@ -3,7 +3,6 @@ import javafx.application.Application;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Scene;
 import javafx.stage.Stage;
-import javafx.scene.Parent;
 import javafx.stage.*;
 import java.io.IOException;
 
@@ -40,8 +39,8 @@ public class Main extends Application {
         Scene scene = new Scene(fxmlLoader.load(), 900, 600);
 //        scene.getStylesheets().add("C:\\Users\\mduc0\\Documents\\CODE\\Java\\4hb-project-master\\src\\main\\resources\\com\\example\\GraphicalUserInterface\\index-style.css");
 //        System.out.println(getClass().getResource("index-style.css").toExternalForm());
-        scene.getStylesheets().add(getClass().getResource("index-style.css").toExternalForm());
-        stage.setTitle("4HB");
+        scene.getStylesheets().add(getClass().getResource("assets/css/index-style.css").toExternalForm());
+        stage.setTitle("4HB Cinema Management");
         stage.setScene(scene);
 
 
@@ -54,14 +53,18 @@ public class Main extends Application {
         FXMLLoader fxmlLoader = new FXMLLoader(Main.class.getResource(fxml));
         stage.getScene().setRoot(fxmlLoader.load());
     }
-    public void popUp(String fxml) throws IOException {
+    public Popup popup(String fxml) throws IOException {
 
         Popup popup = new Popup();
         FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource(fxml));
 //        loader.setController(controller);
-        popup.getContent().add((Parent) fxmlLoader.load());
+        popup.getContent().add(fxmlLoader.load());
         if (!popup.isShowing())
             popup.show(stage);
+        return popup;
+    }
+    public void hide(Popup popup) {
+        popup.hide();
     }
 
     public static void main(String[] args) {

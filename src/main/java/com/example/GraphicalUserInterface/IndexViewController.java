@@ -35,7 +35,7 @@ public class IndexViewController {
 //        transition.play();
     }
     public void onSignInBtnClick() throws IOException {
-        this.main.popUp("login-form.fxml");
+        this.main.popup("login-form.fxml");
     }
     public void onMouseExitMovieElement() {
 //        ScaleTransition transition = new ScaleTransition();
@@ -46,6 +46,6 @@ public class IndexViewController {
 //        transition.play();
     }
     public void onSignUpBtnClick() throws IOException {
-        this.main.popUp("signup-form.fxml");
+        this.main.popup("signup-form.fxml");
     }
 }

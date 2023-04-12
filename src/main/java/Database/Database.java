@@ -3,6 +3,8 @@ package Database;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.SQLException;
+import java.sql.Statement;
+
 public class Database {
     private Connection con;
     private String databaseUsername, databasePassword, databaseDns;
@@ -43,6 +45,8 @@ public class Database {
             System.out.println("Driver Loaded Successfully");
             this.con = DriverManager.getConnection(this.databaseDns, this.databaseUsername, this.databasePassword); // not the actual password
             System.out.println("Successful Connection");
+            Statement st = this.con.createStatement();
+            st.execute("USE movie;");
         } catch (ClassNotFoundException cnfe) {
             System.err.println(cnfe);
         } catch (SQLException sqle) {

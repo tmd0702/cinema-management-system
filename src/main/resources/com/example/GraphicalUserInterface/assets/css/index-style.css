@@ -1,3 +1,9 @@
-.rectangle_4196 {
-    -fx-fill: yellow;
+#addMovieBtn {
+    -fx-fill: "blue";
 }
+#headerSection {
+    -fx-background-color: "black";
+}
+.rectangle {
+    -fx-fill: "red" !important;
+}``

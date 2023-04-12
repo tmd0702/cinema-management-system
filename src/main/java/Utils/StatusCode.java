@@ -1,6 +1,6 @@
 package Utils;
 
-public enum HttpStatusCode {
+public enum StatusCode {
 
     //1xx: Informational
     CONTINUE(100, "Continue"),
@@ -76,7 +76,7 @@ public enum HttpStatusCode {
     private final int value;
     private final String description;
 
-    HttpStatusCode(int value, String description) {
+    StatusCode(int value, String description) {
         this.value = value;
         this.description = description;
     }
@@ -94,8 +94,8 @@ public enum HttpStatusCode {
         return value + " " + description;
     }
 
-    public static HttpStatusCode getByValue(int value) {
-        for(HttpStatusCode status : values()) {
+    public static StatusCode getByValue(int value) {
+        for(StatusCode status : values()) {
             if(status.value == value) return status;
         }
         throw new IllegalArgumentException("Invalid status code: " + value);

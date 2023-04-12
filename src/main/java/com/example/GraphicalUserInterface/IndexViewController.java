@@ -1,21 +1,13 @@
 package com.example.GraphicalUserInterface;
-import javafx.animation.ScaleTransition;
 import javafx.fxml.FXML;
 import javafx.scene.layout.*;
-import javafx.application.Application;
-import javafx.fxml.FXMLLoader;
-import javafx.scene.Scene;
-import javafx.scene.paint.Color;
-import javafx.stage.Stage;
-import java.util.*;
-import javafx.geometry.*;
 import javafx.scene.control.*;
-import javafx.stage.Popup;
+
 import java.io.IOException;
 import javafx.scene.shape.*;
-import javafx.util.Duration;
 
 public class IndexViewController {
+    private Main main = new Main();
     @FXML
     private Label welcomeText;
     @FXML
@@ -43,9 +35,7 @@ public class IndexViewController {
 //        transition.play();
     }
     public void onSignInBtnClick() throws IOException {
-        IndexView indexView = new IndexView();
-        indexView.popUp("login-form.fxml");
-
+        this.main.popUp("login-form.fxml");
     }
     public void onMouseExitMovieElement() {
 //        ScaleTransition transition = new ScaleTransition();
@@ -54,5 +44,8 @@ public class IndexViewController {
 //        transition.setToX(1);
 //        transition.setToY(1);
 //        transition.play();
+    }
+    public void onSignUpBtnClick() throws IOException {
+        this.main.popUp("signup-form.fxml");
     }
 }

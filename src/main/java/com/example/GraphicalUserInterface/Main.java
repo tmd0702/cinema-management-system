@@ -1,22 +1,13 @@
 package com.example.GraphicalUserInterface;
-import javafx.fxml.FXML;
-import javafx.scene.layout.*;
 import javafx.application.Application;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Scene;
-import javafx.scene.paint.Color;
-import javafx.scene.transform.Scale;
 import javafx.stage.Stage;
-import java.util.*;
-import javafx.geometry.*;
 import javafx.scene.Parent;
-import javafx.scene.control.*;
 import javafx.stage.*;
 import java.io.IOException;
-import javafx.scene.shape.*;
-import javafx.animation.*;
-import javafx.util.*;
-public class IndexView extends Application {
+
+public class Main extends Application {
     private static Stage stage;
     @Override
     public void start(Stage primaryStage) throws IOException {
@@ -40,13 +31,13 @@ public class IndexView extends Application {
 //            movieList.add(movie);
 //            HBox.getChildren().add(movie);
 //        }
-        System.out.println(IndexView.class.getResource("index-view.fxml"));
-        FXMLLoader fxmlLoader = new FXMLLoader(IndexView.class.getResource("index-view.fxml"));
+        System.out.println(Main.class.getResource("index-view.fxml"));
+        FXMLLoader fxmlLoader = new FXMLLoader(Main.class.getResource("index-view.fxml"));
 
         // test
 //        Scene scene2 = new Scene(scrollPane);
 
-        Scene scene = new Scene(fxmlLoader.load(), 900, 460);
+        Scene scene = new Scene(fxmlLoader.load(), 900, 600);
 //        scene.getStylesheets().add("C:\\Users\\mduc0\\Documents\\CODE\\Java\\4hb-project-master\\src\\main\\resources\\com\\example\\GraphicalUserInterface\\index-style.css");
 //        System.out.println(getClass().getResource("index-style.css").toExternalForm());
         scene.getStylesheets().add(getClass().getResource("index-style.css").toExternalForm());
@@ -60,7 +51,7 @@ public class IndexView extends Application {
         stage.show();
     }
     public void changeScene(String fxml) throws IOException {
-        FXMLLoader fxmlLoader = new FXMLLoader(IndexView.class.getResource(fxml));
+        FXMLLoader fxmlLoader = new FXMLLoader(Main.class.getResource(fxml));
         stage.getScene().setRoot(fxmlLoader.load());
     }
     public void popUp(String fxml) throws IOException {

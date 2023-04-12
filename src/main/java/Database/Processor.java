@@ -1,6 +1,6 @@
 package Database;
 
-import Utils.HttpStatusCode;
+import Utils.StatusCode;
 
 import java.sql.Connection;
 import java.sql.Statement;
@@ -21,7 +21,7 @@ public abstract class Processor {
         return this.connector;
     }
 
-    public HttpStatusCode add(String table, HashMap <String, String> columnValueMap) {
+    public StatusCode add(String table, HashMap <String, String> columnValueMap) {
         ArrayList<ArrayList<String>> columnsValuesList = Utils.Utils.getKeysValuesFromMap(columnValueMap);
 
         ArrayList<String> columns = columnsValuesList.get(0);
@@ -36,13 +36,13 @@ public abstract class Processor {
             Statement st = getConnector().createStatement();
             st.executeQuery(query);
             st.close();
-            return HttpStatusCode.OK;
+            return StatusCode.OK;
         } catch (Exception e) {
             System.out.println(e);
-            return HttpStatusCode.BAD_REQUEST;
+            return StatusCode.BAD_REQUEST;
         }
     }
-    public HttpStatusCode update(String table, HashMap <String, String> columnValueMap, HashMap <String, String> conditionColumnValueMap) {
+    public StatusCode update(String table, HashMap <String, String> columnValueMap, HashMap <String, String> conditionColumnValueMap) {
         ArrayList<ArrayList<String>> columnsValuesList = Utils.Utils.getKeysValuesFromMap(columnValueMap);
 
         ArrayList<String> columns = columnsValuesList.get(0);
@@ -56,23 +56,23 @@ public abstract class Processor {
             Statement st = getConnector().createStatement();
             st.executeQuery(query);
             st.close();
-            return HttpStatusCode.OK;
+            return StatusCode.OK;
         } catch (Exception e) {
             System.out.println(e);
-            return HttpStatusCode.BAD_REQUEST;
+            return StatusCode.BAD_REQUEST;
         }
 
     }
-    public HttpStatusCode delete(String table, HashMap <String, String> conditionColumnValueMap) {
+    public StatusCode delete(String table, HashMap <String, String> conditionColumnValueMap) {
         String query = String.format("DELETE FROM %s WHERE %s", table);
         try {
             Statement st = getConnector().createStatement();
             st.executeQuery(query);
             st.close();
-            return HttpStatusCode.OK;
+            return StatusCode.OK;
         } catch (Exception e) {
             System.out.println(e);
-            return HttpStatusCode.BAD_REQUEST;
+            return StatusCode.BAD_REQUEST;
         }
     }
 }

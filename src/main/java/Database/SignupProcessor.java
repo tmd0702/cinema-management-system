@@ -1,5 +1,4 @@
 package Database;
-
 import Utils.Validator;
 
 import java.util.Map;

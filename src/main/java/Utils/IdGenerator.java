@@ -1,6 +1,8 @@
 package Utils;
 import Database.Database;
+import com.example.GraphicalUserInterface.Main;
 
+import java.net.URL;
 import java.sql.*;
 import java.util.*;
 import java.io.FileInputStream;
@@ -14,7 +16,7 @@ public class IdGenerator {
     private Connection con;
     public IdGenerator() throws Exception {
         this.config = new Properties();
-        String fileName = "C:\\Users\\mduc0\\Documents\\CODE\\Java\\4hb-project-master\\src\\main\\resources\\config\\development-duc.properties";
+        String fileName = Main.class.getResource("/config").getPath() + "development-duc.properties";
         InputStream is = new FileInputStream(fileName);
         this.config.load(is);
 

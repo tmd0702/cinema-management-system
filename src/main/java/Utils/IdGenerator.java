@@ -45,11 +45,11 @@ public class IdGenerator {
     public String generateId(String table) {
         String id = "";
         if (this.sequence.get(table) == -1) {
-            String query = String.format("SELECT COUNT(ID) FROM %s", table);
+            String query = String.format("SELECT COUNT(ID) AS total FROM %s", table);
             try {
                 Statement st = this.con.createStatement();
                 ResultSet rs = st.executeQuery(query);
-                this.sequence.put(table, rs.getInt("total"));
+                if (rs.next()) this.sequence.put(table, rs.getInt("total"));
                 st.close();
             } catch (Exception e) {
                 System.out.println(e);

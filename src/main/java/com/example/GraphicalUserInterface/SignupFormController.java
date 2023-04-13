@@ -1,4 +1,5 @@
 package com.example.GraphicalUserInterface;
+import Utils.StatusCode;
 import javafx.fxml.FXML;
 import javafx.scene.control.*;
 import Database.SignupProcessor;
@@ -27,7 +28,18 @@ public class SignupFormController {
         signUpInfo.put("username", usernameField.getText());
         signUpInfo.put("password", passwordField.getText());
         signUpInfo.put("gender", ((RadioButton)gender.getSelectedToggle()).getText().substring(0, 1));
-        this.signupProcessor.handleSignupAction(signUpInfo);
+        StatusCode signupStatus = this.signupProcessor.handleSignupAction(signUpInfo);
+        if (signupStatus == StatusCode.OK) {
+            Dialog<String> dialog = new Dialog<String>();
+            //Setting the title
+            dialog.setTitle("Dialog");
+            ButtonType type = new ButtonType("Ok", ButtonBar.ButtonData.OK_DONE);
+            dialog.setContentText("Sign up done!");
+            dialog.getDialogPane().getButtonTypes().add(type);
+            dialog.showAndWait();
+        } else {
+
+        }
     }
     public void onSignInBtnClick() {
 

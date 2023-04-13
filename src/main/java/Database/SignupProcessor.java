@@ -1,5 +1,6 @@
 package Database;
 import Utils.IdGenerator;
+import Utils.StatusCode;
 import Utils.Validator;
 
 import java.text.SimpleDateFormat;
@@ -25,7 +26,7 @@ public class SignupProcessor extends AuthenticationProcessor {
         }
 
     }
-    public void handleSignupAction(Map<String, String> signupInfo) {
+    public StatusCode handleSignupAction(Map<String, String> signupInfo) {
         try {
             if (!Validator.validateEmail(signupInfo.get("email"))) {
                 throw new InvalidEmailException(signupInfo.get("email") + " is invalid!");
@@ -44,6 +45,7 @@ public class SignupProcessor extends AuthenticationProcessor {
             st.execute(insertUserQuery);
             addAuthentication(id, signupInfo.get("password"));
             st.close();
+            return StatusCode.OK;
         } catch (InvalidEmailException e) {
             System.out.println(e);
         } catch (InvalidUsernameException e) {
@@ -53,5 +55,6 @@ public class SignupProcessor extends AuthenticationProcessor {
         } catch (Exception e) {
             System.out.println(e);
         }
+        return StatusCode.BAD_REQUEST;
     }
 }

@@ -17,14 +17,21 @@
                <content>
                   <HBox fx:id="moviePreviewSection" prefHeight="300.0" prefWidth="900.0">
                      <children>
-                        <Rectangle fx:id="addMovieBtn" arcHeight="5.0" arcWidth="5.0" height="148.0" onMouseClicked="#onAddMovieBtnClick" onMouseEntered="#onMouseEnterMovieElement" onMouseExited="#onMouseExitMovieElement" stroke="BLACK" strokeType="INSIDE" width="103.0" />
+                        <AnchorPane onMouseClicked="#onBookingBtnClick" prefHeight="300.0" prefWidth="652.0">
+                           <children>
+                              <Rectangle fx:id="addMovieBtn" arcHeight="5.0" arcWidth="5.0" height="148.0" layoutX="-5.0" onMouseClicked="#onAddMovieBtnClick" onMouseEntered="#onMouseEnterMovieElement" onMouseExited="#onMouseExitMovieElement" stroke="BLACK" strokeType="INSIDE" width="103.0" />
+                              <Rectangle fx:id="bookingBtn" arcHeight="5.0" arcWidth="5.0" fill="#eeeded" height="148.0" layoutX="98.0" onMouseClicked="#onAddMovieBtnClick" onMouseEntered="#onMouseEnterMovieElement" onMouseExited="#onMouseExitMovieElement" stroke="BLACK" strokeType="INSIDE" width="103.0" />
+                              <Button fx:id="BookingButton" layoutX="123.0" layoutY="114.0" mnemonicParsing="false" onMouseClicked="#onBookingBtnClick" style="-fx-background-color: AB0A10;" text="Booking" textFill="WHITE" />
+                           </children>
+                        </AnchorPane>
+                        <ImageView fitHeight="150.0" fitWidth="117.0" pickOnBounds="true" preserveRatio="true" />
                      </children>
                   </HBox>
                </content>
             </ScrollPane>
-            <AnchorPane layoutX="10.0" layoutY="10.0" prefHeight="56.0" prefWidth="903.0" style="-fx-background-color: #D9D9D9;" AnchorPane.bottomAnchor="1552.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+            <AnchorPane layoutX="-119.0" prefHeight="56.0" prefWidth="903.0" style="-fx-background-color: #D9D9D9;" AnchorPane.bottomAnchor="1552.0" AnchorPane.leftAnchor="-119.0" AnchorPane.rightAnchor="119.0" AnchorPane.topAnchor="0.0">
                <children>
-                  <ImageView fx:id="logoSection" fitHeight="56.0" fitWidth="56.0" pickOnBounds="true" preserveRatio="true" />
+                  <ImageView fx:id="logoSection" fitHeight="56.0" fitWidth="89.0" pickOnBounds="true" preserveRatio="true" />
                   <TextField fx:id="inputField" layoutX="263.0" layoutY="11.0" prefHeight="25.0" prefWidth="359.0" promptText="Search" />
                   <Button fx:id="signInBtn" layoutX="742.0" layoutY="11.0" mnemonicParsing="false" onMouseClicked="#onSignInBtnClick" prefHeight="25.0" prefWidth="60.0" style="-fx-background-color: #AB0A10; -fx-font-weight: bold;" text="Sign in" textFill="WHITE" />
                   <Button fx:id="signUpBtn" layoutX="811.0" layoutY="11.0" mnemonicParsing="false" onMouseClicked="#onSignUpBtnClick" prefHeight="25.0" prefWidth="60.0" style="-fx-background-color: #AB0A10; -fx-font-weight: bold;" text="Sign up" textFill="WHITE" />

@@ -14,7 +14,8 @@ public class IndexViewController {
     private HBox moviePreviewSection;
     @FXML
     private Rectangle addMovieBtn;
-
+    @FXML
+    private Rectangle bookingBtn;
     public IndexViewController() {
 
     }
@@ -47,5 +48,8 @@ public class IndexViewController {
     }
     public void onSignUpBtnClick() throws IOException {
         this.main.popup("signup-form.fxml");
+    }
+    public void onBookingBtnClick() throws  IOException{
+        this.main.popup("booking-form.fxml");
     }
 }

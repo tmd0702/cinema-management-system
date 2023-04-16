@@ -94,10 +94,9 @@ public class IndexViewController implements Initializable {
 
             moviePreviewSection.getChildren().add(movieView);
         }
-        System.out.println(moviePreviewSection.getChildren());
     }
     public IndexViewController() {
-        main = new Main();
+        main = Main.getInstance();
         movieManagementProcessor = new MovieManagementProcessor();
         movieManager = this.movieManagementProcessor.getMovies();
     }

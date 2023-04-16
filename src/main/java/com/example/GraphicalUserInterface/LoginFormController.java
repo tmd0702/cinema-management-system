@@ -1,5 +1,6 @@
 package com.example.GraphicalUserInterface;
 import Database.SigninProcessor;
+import UserManager.Subscriber;
 import javafx.fxml.FXML;
 import javafx.scene.control.PasswordField;
 import javafx.scene.control.TextField;
@@ -22,6 +23,7 @@ public class LoginFormController {
         System.out.println(signinStatus);
         if (signinStatus == StatusCode.OK) {
             System.out.println("Sign in success");
+            Main.getInstance().setSignedInUser(new Subscriber());
         } else {
             System.out.println("Sign in failed");
         }

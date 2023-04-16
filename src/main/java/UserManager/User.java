@@ -32,13 +32,7 @@ abstract public class User {
     public void setRole(int role) {
         this.role = role;
     }
-    public void signin() {
-
-    }
-    public void signup() {
-
-    }
-    public void signout() {
+    public void signOut() {
 
     }
 

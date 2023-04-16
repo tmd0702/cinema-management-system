@@ -1,6 +1,7 @@
 package com.example.GraphicalUserInterface;
 import Database.MovieManagementProcessor;
 import MovieManager.*;
+import UserManager.User;
 import javafx.application.Application;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
@@ -14,11 +15,24 @@ import java.io.IOException;
 import Database.MovieManagementProcessor.*;
 
 public class Main extends Application {
+    private static Main main;
     private static Stage stage;
+    private User signedInUser;
     private MovieManagementProcessor movieManagementProcessor;
     public Main() {
         super();
+        main = this;
+        System.out.println("main ok");
         this.movieManagementProcessor = new MovieManagementProcessor();
+    }
+    public void setSignedInUser(User user) {
+        this.signedInUser = user;
+    }
+    public static synchronized Main getInstance() {
+        if (main == null) {
+            main = new Main();
+        }
+        return main;
     }
     @Override
     public void start(Stage primaryStage) throws IOException {

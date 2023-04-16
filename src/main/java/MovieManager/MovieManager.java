@@ -13,7 +13,6 @@ public class MovieManager {
     public ArrayList<Movie> getCurrentlyPlayingMovieList() {
         ArrayList<Movie> currentlyPlayingMovieList = new ArrayList<Movie>();
         for (Movie movie : this.movieList) {
-            System.out.println(Utils.getDiffBetweenDates(movie.getProductDate(), new Date()));
             long diff = Utils.getDiffBetweenDates(movie.getProductDate(), new Date());
             if (diff < 7 && diff >= 0) {
                 currentlyPlayingMovieList.add(movie);

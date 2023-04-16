@@ -1,9 +1,11 @@
 package Utils;
 
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.HashMap;
-import java.util.Set;
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
+import java.time.LocalDate;
+import java.time.ZoneId;
+import java.time.temporal.ChronoUnit;
+import java.util.*;
 
 public class Utils {
     public static ArrayList<ArrayList<String>> getKeysValuesFromMap(HashMap<String, String> map) {
@@ -25,6 +27,13 @@ public class Utils {
         keysValuesList.add(listOfValues);
 
         return keysValuesList;
+    }
+    public static long getDiffBetweenDates(Date date1, Date date2) {
+        long diff;
+        LocalDate localDate1 = new Date(date1.getTime()).toInstant().atZone(ZoneId.systemDefault()).toLocalDate();
+        LocalDate localDate2 = new Date(date2.getTime()).toInstant().atZone(ZoneId.systemDefault()).toLocalDate();
+        diff = ChronoUnit.DAYS.between(localDate1, localDate2);
+        return diff;
     }
 
 }

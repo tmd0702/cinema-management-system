@@ -8,6 +8,7 @@
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.layout.HBox?>
 <?import javafx.scene.shape.Rectangle?>
+<?import javafx.scene.text.Font?>
 
 <ScrollPane xmlns="http://javafx.com/javafx/19" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.example.GraphicalUserInterface.IndexViewController">
    <content>
@@ -17,7 +18,7 @@
                <content>
                   <HBox fx:id="moviePreviewSection" prefHeight="300.0" prefWidth="900.0">
                      <children>
-                        <Rectangle fx:id="addMovieBtn" arcHeight="5.0" arcWidth="5.0" height="148.0" onMouseClicked="#onAddMovieBtnClick" onMouseEntered="#onMouseEnterMovieElement" onMouseExited="#onMouseExitMovieElement" stroke="BLACK" strokeType="INSIDE" width="103.0" />
+                        <Rectangle fx:id="addMovieBtn" arcHeight="5.0" arcWidth="5.0" height="148.0" onMouseClicked="#onAddMovieBtnClick" onMouseExited="#onMouseExitMovieElement" stroke="BLACK" strokeType="INSIDE" width="103.0" />
                      </children>
                   </HBox>
                </content>
@@ -30,20 +31,28 @@
                   <Button fx:id="signUpBtn" layoutX="811.0" layoutY="11.0" mnemonicParsing="false" onMouseClicked="#onSignUpBtnClick" prefHeight="25.0" prefWidth="60.0" style="-fx-background-color: #AB0A10; -fx-font-weight: bold;" text="Sign up" textFill="WHITE" />
                </children>
             </AnchorPane>
-            <HBox fx:id="currentPlayingHeader" layoutX="-34.0" layoutY="519.0" prefHeight="61.0" prefWidth="903.0">
-               <children>
-                  <Label text="Currently playing" />
-                  <Label text="see more" />
-               </children>
-            </HBox>
-            <HBox fx:id="currentlyPlayingList" layoutX="-34.0" layoutY="519.0" prefHeight="304.0" prefWidth="903.0" />
-            <HBox fx:id="comingSoonHeader" layoutX="-34.0" layoutY="519.0" prefHeight="61.0" prefWidth="903.0">
-               <children>
-                  <Label text="Coming soon" />
-                  <Label text="see more" />
-               </children>
-            </HBox>
-            <HBox fx:id="comingSoonList" layoutX="-34.0" layoutY="519.0" prefHeight="304.0" prefWidth="903.0" />
+            <HBox fx:id="comingSoonList" layoutX="59.0" layoutY="956.0" prefHeight="304.0" prefWidth="903.0" style="-fx-pref-height: 259; -fx-pref-width: 777; -fx-background-color: yellow;" />
+            <Label layoutX="57.0" layoutY="481.0" text="Currently playing">
+               <font>
+                  <Font name="System Bold" size="14.0" />
+               </font>
+            </Label>
+            <Label fx:id="seeMoreCPBtn" layoutX="781.0" layoutY="482.0" onMouseClicked="#onSeeMoreCPBtnClick" text="see more">
+               <font>
+                  <Font name="System Bold" size="12.0" />
+               </font>
+            </Label>
+            <Label layoutX="59.0" layoutY="899.0" text="Coming soon">
+               <font>
+                  <Font name="System Bold" size="14.0" />
+               </font>
+            </Label>
+            <Label fx:id="seeMoreCSBtn" layoutX="784.0" layoutY="900.0" onMouseClicked="#onSeeMoreCSBtnClick" text="see more">
+               <font>
+                  <Font name="System Bold" size="12.0" />
+               </font>
+            </Label>
+            <HBox fx:id="currentlyPlayingList" layoutX="57.0" layoutY="533.0" prefHeight="259.0" prefWidth="777.0" style="-fx-background-color: yellow;" />
          </children>
       </AnchorPane>
    </content>

@@ -15,7 +15,7 @@ public class MovieManagementProcessor extends Processor {
             Statement st = getConnector().createStatement();
             ResultSet rs = st.executeQuery(query);
             while (rs.next()) {
-                Movie movie = new Movie(rs.getString("ID"), rs.getString("TITLE"), rs.getString("CONTENT"), rs.getString("CATEGORY"), rs.getString("MOVIE_STATUS"), rs.getInt("DURATION"), rs.getInt("VIEW_COUNT"), rs.getDate("PRODUCT_DATE"));
+                Movie movie = new Movie(rs.getString("ID"), rs.getString("TITLE"), rs.getString("CONTENT"), rs.getString("CATEGORY"), rs.getString("MOVIE_STATUS"), rs.getInt("DURATION"), rs.getInt("VIEW_COUNT"), rs.getDate("PRODUCT_DATE"), "", "");
                 movieManager.addMovie(movie);
             }
             rs.close();

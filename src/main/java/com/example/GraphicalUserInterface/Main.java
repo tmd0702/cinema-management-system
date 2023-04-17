@@ -1,23 +1,23 @@
 package com.example.GraphicalUserInterface;
 import Database.MovieManagementProcessor;
-import MovieManager.*;
+import MovieManager.Movie;
 import UserManager.User;
 import javafx.application.Application;
-import javafx.fxml.FXML;
+import javafx.application.Preloader;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Scene;
-import javafx.scene.layout.HBox;
-import javafx.scene.shape.Rectangle;
 import javafx.stage.Stage;
 import javafx.stage.*;
 
+
 import java.io.IOException;
-import Database.MovieManagementProcessor.*;
+import java.util.ArrayList;
 
 public class Main extends Application {
     private static Main main;
     private static Stage stage;
     private User signedInUser;
+    private Movie movieOnDetail;
     private MovieManagementProcessor movieManagementProcessor;
     public Main() {
         super();
@@ -25,8 +25,14 @@ public class Main extends Application {
         System.out.println("main ok");
         this.movieManagementProcessor = new MovieManagementProcessor();
     }
+    public void setMovieOnDetail(Movie movie) {
+        movieOnDetail = movie;
+    }
     public void setSignedInUser(User user) {
         this.signedInUser = user;
+    }
+    public  Movie getMovieOnDetail() {
+        return movieOnDetail;
     }
     public static synchronized Main getInstance() {
         if (main == null) {

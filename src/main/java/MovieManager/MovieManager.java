@@ -33,6 +33,16 @@ public class MovieManager {
     public MovieManager(ArrayList<Movie> movieList) {
         this.movieList = movieList;
     }
+    public Movie getMovieById(String id) {
+        Movie movie = new Movie();
+        for (Movie m : this.movieList) {
+            if (m.getId() == id) {
+                movie = m;
+                break;
+            }
+        }
+        return movie;
+    }
     public void addMovie(Movie movie) {
         try {
             this.movieList.add(movie);

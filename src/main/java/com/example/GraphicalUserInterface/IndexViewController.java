@@ -1,35 +1,36 @@
 package com.example.GraphicalUserInterface;
 import Database.MovieManagementProcessor;
 import MovieManager.MovieManager;
-import javafx.animation.KeyFrame;
-import javafx.animation.KeyValue;
-import javafx.animation.ScaleTransition;
-import javafx.animation.Timeline;
 import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.geometry.Insets;
 import javafx.scene.Node;
-import javafx.scene.Scene;
+import javafx.scene.image.Image;
+import javafx.scene.image.ImageView;
 import javafx.scene.layout.*;
 import javafx.scene.control.*;
 import MovieManager.*;
 import java.io.IOException;
 import java.net.URL;
-import java.security.Key;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.ResourceBundle;
-
 import javafx.scene.shape.*;
-import javafx.event.EventHandler.*;
 import javafx.scene.input.MouseEvent;
-import javafx.util.Duration;
 
 public class IndexViewController implements Initializable {
     private MovieManagementProcessor movieManagementProcessor;
     private MovieManager movieManager;
     private Main main;
-
+    @FXML
+    private ImageView logoImageView;
+    @FXML
+    private Button signUpBtn;
+    @FXML
+    private ScrollPane moviePreviewSectionScrollPane;
+    @FXML
+    private Button signInBtn;
     @FXML
     private Rectangle addMovieBtn;
     @FXML
@@ -43,6 +44,20 @@ public class IndexViewController implements Initializable {
         moviePreviewSectionInit();
         currentlyPlayingListInit();
         comingSoonListInit();
+        logoImageViewInit();
+    }
+    public void logoImageViewInit() {
+        String imageSource = "https://docs.google.com/uc?id=1F2pXOLfvuynr9JcURTR5Syg7N1YdPJXK";
+        Image logo = new Image(imageSource);
+        if (logo.isError()) {
+            System.out.println("Error loading image from " + imageSource);
+        } else {
+            logoImageView.setImage(logo);
+        }
+    }
+    @FXML
+    public void logoImageViewOnClick() throws IOException {
+        main.changeScene("index-view.fxml");
     }
     public void movieListViewSectionInit(HBox listView, ArrayList<Movie> movieList) {
         double listSpacing = 10;
@@ -64,8 +79,17 @@ public class IndexViewController implements Initializable {
             movieInfoSection.getChildren().add(movieCategory);
 //            movieView.getChildren().add(movieInfoSection);
             movieView.setBottom(movieInfoSection);
-            System.out.println(movie.getProductDate());
-
+            movieView.setOnMouseClicked(new EventHandler<MouseEvent>()  {
+                @Override
+                public void handle(MouseEvent mouseEvent) {
+                    main.setMovieOnDetail(new Movie("MOV1000", "Toy Story", "Led by Woody, Andy's toys live happily in his room until Andy's birthday brings Buzz Lightyear onto the scene. Afraid of losing his place in Andy's heart, Woody plots against Buzz. But when circumstances separate Buzz and Woody from their owner, the duo eventually learns to put aside their differences.", "ASDS", "SAB", 100, 90, new Date(), "https://image.tmdb.org/t/p/original/7G9915LfUQ2lVfwMEEhDsn3kT4B.jpg", "https://image.tmdb.org/t/p/original/9FBwqcd9IRruEDUrTdcaafOMKUq.jpg"));
+                    try {
+                        main.changeScene("movie-detail-view.fxml");
+                    } catch (IOException e) {
+                        System.out.println(e);
+                    }
+                }
+            });
             listView.getChildren().add(movieView);
             counter += 1;
             if (counter > 4) break;
@@ -79,7 +103,7 @@ public class IndexViewController implements Initializable {
     }
     public void moviePreviewSectionInit() {
         moviePreviewSection.setSpacing(10);
-
+        moviePreviewSectionScrollPane.setHbarPolicy(ScrollPane.ScrollBarPolicy.NEVER);
         for (Movie movie : movieManager.getMovieList()) {
             // initialize booking button
             Button bookingBtn = new Button();
@@ -89,11 +113,18 @@ public class IndexViewController implements Initializable {
             movieView.setId(movie.getId());
             movieView.setHeight(addMovieBtn.getHeight());
             movieView.setWidth(addMovieBtn.getWidth());
-            movieView.setFill(addMovieBtn.getFill());
+            movieView.setStyle("-fx-background-color: black");//(addMovieBtn.getFill());
             changeStyleOnHover(movieView);
 
-            moviePreviewSection.getChildren().add(movieView);
+            moviePreviewSection.getChildren().add(0, movieView);
         }
+//        for (int i=0;i<10;++i) {
+//            Rectangle movieView = new Rectangle();
+//            movieView.setHeight(addMovieBtn.getHeight());
+//            movieView.setWidth(addMovieBtn.getWidth());
+//            movieView.setFill(addMovieBtn.getFill());
+//            moviePreviewSection.getChildren().add(movieView);
+//        }
     }
     public IndexViewController() {
         main = Main.getInstance();

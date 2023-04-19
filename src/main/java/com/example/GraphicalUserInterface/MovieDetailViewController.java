@@ -47,12 +47,13 @@ public class MovieDetailViewController implements Initializable {
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
         movieDetailSection.setSpacing(10);
+        System.out.println(movieOnDetail.getPosterPath());
         moviePosterSection.setImage(new Image(movieOnDetail.getPosterPath()));
         title.setText(movieOnDetail.getTitle());
-        releaseDate.setText(releaseDate.getText() + movieOnDetail.getProductDate().toString());
+        releaseDate.setText(releaseDate.getText() + movieOnDetail.getReleaseDate().toString());
         duration.setText(duration.getText() + Integer.toString(movieOnDetail.getDuration()));
         VBox.setMargin(separator, new Insets(20, 0, 20, 0));
         description.setWrapText(true);
-        description.setText(movieOnDetail.getContent());
+        description.setText(movieOnDetail.getOverview());
     }
 }

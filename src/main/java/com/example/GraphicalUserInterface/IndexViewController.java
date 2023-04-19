@@ -1,11 +1,13 @@
 package com.example.GraphicalUserInterface;
-import Database.MovieManagementProcessor;
 import MovieManager.MovieManager;
+import Utils.Utils;
 import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.geometry.Insets;
+import javafx.scene.Group;
 import javafx.scene.Node;
+import javafx.scene.effect.BlendMode;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.*;
@@ -14,13 +16,16 @@ import MovieManager.*;
 import java.io.IOException;
 import java.net.URL;
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.ResourceBundle;
+
+import javafx.scene.paint.Color;
+import javafx.scene.paint.CycleMethod;
+import javafx.scene.paint.LinearGradient;
+import javafx.scene.paint.Stop;
 import javafx.scene.shape.*;
 import javafx.scene.input.MouseEvent;
 
 public class IndexViewController implements Initializable {
-    private MovieManagementProcessor movieManagementProcessor;
     private MovieManager movieManager;
     private Main main;
     @FXML
@@ -31,6 +36,7 @@ public class IndexViewController implements Initializable {
     private ScrollPane moviePreviewSectionScrollPane;
     @FXML
     private Button signInBtn;
+    @FXML ImageView backdropImageSection;
     @FXML
     private Rectangle addMovieBtn;
     @FXML
@@ -44,6 +50,7 @@ public class IndexViewController implements Initializable {
         moviePreviewSectionInit();
         currentlyPlayingListInit();
         comingSoonListInit();
+        backDropImageSectionInit();
         logoImageViewInit();
     }
     public void logoImageViewInit() {
@@ -64,25 +71,37 @@ public class IndexViewController implements Initializable {
         int counter = 1;
         listView.setSpacing(listSpacing);
         for (Movie movie : movieList) {
-            BorderPane movieView = new BorderPane();
-            movieView.setPadding(new Insets(20, 20, 20, 20));
+            StackPane movieView = new StackPane();
+//            movieView.setPadding(new Insets(20, 20, 20, 20));
 //            movieView.setId(movie.getId() + "CurrentlyPlayingList");
             movieView.setPrefWidth((listView.getPrefWidth() - listSpacing * 3) / 4);
-            movieView.setStyle("-fx-background-color: green");
             VBox movieInfoSection = new VBox();
             Label movieTitle = new Label(movie.getTitle());
-            movieTitle.setStyle("-fx-font-weight: bold");
-            movieTitle.setStyle("-fx-font-size: 18px");
-            Label movieCategory = new Label(movie.getCategory());
-
+            movieTitle.setStyle("-fx-font-weight: bold;-fx-font-size: 14px;-fx-text-fill:white;");
+            Label movieReleaseDate = new Label(Utils.getDateStringWithFormat("dd MMMM", movie.getReleaseDate()));
+            movieReleaseDate.setStyle("-fx-font-size:11px;-fx-text-fill:white;");
             movieInfoSection.getChildren().add(movieTitle);
-            movieInfoSection.getChildren().add(movieCategory);
-//            movieView.getChildren().add(movieInfoSection);
-            movieView.setBottom(movieInfoSection);
+            movieInfoSection.getChildren().add(movieReleaseDate);
+            movieInfoSection.setPadding(new Insets(20, 20, 20, 20));
+            ImageView poster = new ImageView(new Image(movie.getPosterPath()));
+            poster.setFitWidth((listView.getPrefWidth() - listSpacing * 3) / 4);
+            poster.setFitHeight(listView.getPrefHeight());
+            poster.setBlendMode(BlendMode.MULTIPLY);
+//            poster.setOpacity(0.5);
+
+            Rectangle blend = new Rectangle(poster.getFitWidth(), poster.getFitHeight(), new LinearGradient(0, 0, 0, 1, true, CycleMethod.NO_CYCLE, new Stop[] {new Stop(0, Color.WHITE), new Stop(1, Color.BLACK)}));
+//            movieView.setCenter(poster);
+//            movieView.setBottom(movieInfoSection);
+            movieInfoSection.setTranslateY(listView.getPrefHeight() * 2/3);
+
+            movieView.getChildren().add(blend);
+            movieView.getChildren().add(poster);
+            movieView.getChildren().add(movieInfoSection);
             movieView.setOnMouseClicked(new EventHandler<MouseEvent>()  {
                 @Override
                 public void handle(MouseEvent mouseEvent) {
-                    main.setMovieOnDetail(new Movie("MOV1000", "Toy Story", "Led by Woody, Andy's toys live happily in his room until Andy's birthday brings Buzz Lightyear onto the scene. Afraid of losing his place in Andy's heart, Woody plots against Buzz. But when circumstances separate Buzz and Woody from their owner, the duo eventually learns to put aside their differences.", "ASDS", "SAB", 100, 90, new Date(), "https://image.tmdb.org/t/p/original/7G9915LfUQ2lVfwMEEhDsn3kT4B.jpg", "https://image.tmdb.org/t/p/original/9FBwqcd9IRruEDUrTdcaafOMKUq.jpg"));
+                    main.setMovieOnDetail(movie);
+                    //main.setMovieOnDetail(new Movie("MOV1000", "Toy Story", "Led by Woody, Andy's toys live happily in his room until Andy's birthday brings Buzz Lightyear onto the scene. Afraid of losing his place in Andy's heart, Woody plots against Buzz. But when circumstances separate Buzz and Woody from their owner, the duo eventually learns to put aside their differences.", "ASDS", 100, 90, new Date(), "https://image.tmdb.org/t/p/original/7G9915LfUQ2lVfwMEEhDsn3kT4B.jpg", "https://image.tmdb.org/t/p/original/9FBwqcd9IRruEDUrTdcaafOMKUq.jpg"));
                     try {
                         main.changeScene("movie-detail-view.fxml");
                     } catch (IOException e) {
@@ -95,45 +114,58 @@ public class IndexViewController implements Initializable {
             if (counter > 4) break;
         }
     }
+    public void backDropImageSectionInit() {
+        backdropImageSection.setFitWidth(903);
+//        backdropImageSection.setScaleX(1.3);
+
+    }
     public void currentlyPlayingListInit() {
-        movieListViewSectionInit(currentlyPlayingList, movieManager.getMovieList());
+        movieListViewSectionInit(currentlyPlayingList, movieManager.getCurrentlyPlayingMovieList());
     }
     public void comingSoonListInit() {
-        movieListViewSectionInit(comingSoonList, movieManager.getMovieList());
+        movieListViewSectionInit(comingSoonList, movieManager.getComingSoonMovieList());
     }
     public void moviePreviewSectionInit() {
-        moviePreviewSection.setSpacing(10);
+        moviePreviewSection.setSpacing(20);
         moviePreviewSectionScrollPane.setHbarPolicy(ScrollPane.ScrollBarPolicy.NEVER);
+        moviePreviewSectionScrollPane.setVbarPolicy(ScrollPane.ScrollBarPolicy.NEVER);
         for (Movie movie : movieManager.getMovieList()) {
             // initialize booking button
             Button bookingBtn = new Button();
             bookingBtn.setId(movie.getId() + "BookingBtn");
             // initialize movie view
-            Rectangle movieView = new Rectangle();
+            AnchorPane movieView = new AnchorPane();
             movieView.setId(movie.getId());
-            movieView.setHeight(addMovieBtn.getHeight());
-            movieView.setWidth(addMovieBtn.getWidth());
-            movieView.setStyle("-fx-background-color: black");//(addMovieBtn.getFill());
-            changeStyleOnHover(movieView);
+            movieView.setPrefHeight(addMovieBtn.getHeight());
+            movieView.setPrefWidth(addMovieBtn.getWidth());
+            ImageView poster = new ImageView(movie.getPosterImage());
+            poster.setFitHeight(addMovieBtn.getHeight());
+            poster.setFitWidth(addMovieBtn.getWidth());
+            movieView.setStyle("-fx-background-radius:30%;");
+            movieView.getChildren().add(poster);
+            movieView.getChildren().add(bookingBtn);
+            bookingBtn.setPrefWidth(50);
+            bookingBtn.setPrefHeight(20);
+            bookingBtn.setStyle("-fx-background-color: #AB0A10;-fx-text-fill: white;-fx-font-weight: bold;-fx-font-size:8px");
+            bookingBtn.setText("Book Now");
+            bookingBtn.setLayoutX(26);
+//            movieView.setAlignment(bookingBtn, Pos.BOTTOM_CENTER);
+            bookingBtn.setVisible(false);
+            bookingBtn.setLayoutY(135);
+            bookingBtn.setScaleY(bookingBtn.getScaleY() * 1.5);
+            movieView.setStyle("-fx-background-color: transparent");//(addMovieBtn.getFill());
+            changeStyleOnHover(movieView, poster, movie, bookingBtn);
 
             moviePreviewSection.getChildren().add(0, movieView);
         }
-//        for (int i=0;i<10;++i) {
-//            Rectangle movieView = new Rectangle();
-//            movieView.setHeight(addMovieBtn.getHeight());
-//            movieView.setWidth(addMovieBtn.getWidth());
-//            movieView.setFill(addMovieBtn.getFill());
-//            moviePreviewSection.getChildren().add(movieView);
-//        }
     }
     public IndexViewController() {
         main = Main.getInstance();
-        movieManagementProcessor = new MovieManagementProcessor();
-        movieManager = this.movieManagementProcessor.getMovies();
+        movieManager = main.getMovieManagementProcessor().getMovies();
     }
     @FXML
     public void onAddMovieBtnClick() {
-        addMovieBtn.setHeight(addMovieBtn.getHeight() * 1.5);
+        addMovieBtn.setHeight(addMovieBtn.getHeight() * 2.5);
         addMovieBtn.setWidth(addMovieBtn.getWidth() * 1.5);
         System.out.println(moviePreviewSection.getChildren());
     }
@@ -147,12 +179,16 @@ public class IndexViewController implements Initializable {
         System.out.println("ok");
         main.changeScene("index-view.fxml");
     }
-    public void changeStyleOnHover(Node node) {
+    public void changeStyleOnHover(Node node, ImageView poster, Movie movie, Button bookingBtn) {
         node.setOnMouseEntered(new EventHandler<MouseEvent>() {
             @Override
             public void handle(MouseEvent event) {
+                bookingBtn.setVisible(true);
+                backdropImageSection.setImage(movie.getBackdropImage());
                 node.setScaleX(node.getScaleX() * 1.5);
-                node.setScaleY(node.getScaleY() * 1.5);
+                poster.setScaleY(node.getScaleY() * 1.5);
+//                poster.setFitHeight(poster.getFitHeight() * 1.5);
+//                poster.setFitWidth(poster.getFitWidth() * 1.5);
 //                ScaleTransition transition = new ScaleTransition();
 //                transition.setDuration(Duration.seconds(0.1));
 //                transition.setNode(node);
@@ -174,10 +210,13 @@ public class IndexViewController implements Initializable {
         node.setOnMouseExited(new EventHandler<MouseEvent>() {
             @Override
             public void handle(MouseEvent event) {
+                bookingBtn.setVisible(false);
 //                node.setStyle("-fx-background-color: #0096C9");
                 HBox.setMargin(node, new Insets(0, 0, 0, 0));
                 node.setScaleX(node.getScaleX() * 2/3);
-                node.setScaleY(node.getScaleY() * 2/3);
+                poster.setScaleY(poster.getScaleY() * 2/3);
+//                poster.setFitHeight(poster.getFitHeight() * 2/3);
+//                poster.setFitWidth(poster.getFitWidth() * 2/3);
 //                ScaleTransition transition = new ScaleTransition();
 //                transition.setDuration(Duration.seconds(0.1));
 //                transition.setNode(node);

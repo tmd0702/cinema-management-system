@@ -28,6 +28,9 @@ public class Main extends Application {
     public void setMovieOnDetail(Movie movie) {
         movieOnDetail = movie;
     }
+    public MovieManagementProcessor getMovieManagementProcessor() {
+        return this.movieManagementProcessor;
+    }
     public void setSignedInUser(User user) {
         this.signedInUser = user;
     }
@@ -44,7 +47,7 @@ public class Main extends Application {
     public void start(Stage primaryStage) throws IOException {
         stage = primaryStage;
         FXMLLoader fxmlLoader = new FXMLLoader(Main.class.getResource("index-view.fxml"));
-        Scene scene = new Scene(fxmlLoader.load(), 900, 600);
+        Scene scene = new Scene(fxmlLoader.load(), 920, 600);
         scene.getStylesheets().add(getClass().getResource("assets/css/index-style.css").toExternalForm());
         stage.setTitle("4HB Cinema Management");
         stage.setScene(scene);

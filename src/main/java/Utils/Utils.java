@@ -35,5 +35,10 @@ public class Utils {
         diff = ChronoUnit.DAYS.between(localDate1, localDate2);
         return diff;
     }
+    public static String getDateStringWithFormat(String pattern, Date date) {
+        DateFormat df = new SimpleDateFormat(pattern);
+        String dateAsString = df.format(date);
+        return dateAsString;
+    }
 
 }

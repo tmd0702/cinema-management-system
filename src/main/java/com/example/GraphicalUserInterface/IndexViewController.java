@@ -125,6 +125,7 @@ public class IndexViewController implements Initializable {
     public void comingSoonListInit() {
         movieListViewSectionInit(comingSoonList, movieManager.getComingSoonMovieList());
     }
+
     public void moviePreviewSectionInit() {
         moviePreviewSection.setSpacing(20);
         moviePreviewSectionScrollPane.setHbarPolicy(ScrollPane.ScrollBarPolicy.NEVER);
@@ -133,6 +134,17 @@ public class IndexViewController implements Initializable {
             // initialize booking button
             Button bookingBtn = new Button();
             bookingBtn.setId(movie.getId() + "BookingBtn");
+            bookingBtn.setOnMouseClicked(new EventHandler<MouseEvent>() {
+                @Override
+                public void handle(MouseEvent event) {
+                    try {
+                        main.changeScene("booking-form.fxml");
+                    } catch (IOException e) {
+                        System.out.println(e);
+                    }
+
+                }
+            });
             // initialize movie view
             AnchorPane movieView = new AnchorPane();
             movieView.setId(movie.getId());
@@ -159,7 +171,7 @@ public class IndexViewController implements Initializable {
             moviePreviewSection.getChildren().add(0, movieView);
         }
     }
-    public IndexViewController() {
+    public IndexViewController() throws Exception {
         main = Main.getInstance();
         movieManager = main.getMovieManagementProcessor().getMovies();
     }

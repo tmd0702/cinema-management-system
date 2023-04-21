@@ -17,7 +17,7 @@ class Database:
             print("Connected")
         except:
             print('Error occurred')
-    def insert(self, table, cols, vals):
+    def insert_movies(self, vals):
         self.cursor.execute("USE MOVIE;")
 
         sql = "INSERT INTO MOVIES (ID, TITLE, OVERVIEW, RELEASE_DATE, LANGUAGE, DURATION, MOVIE_STATUS, VIEW_COUNT, POSTER_PATH, BACKDROP_PATH, REVENUE, TAGLINE, VOTE_COUNT, VOTE_AVERAGE) VALUES (%s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s);"
@@ -27,6 +27,10 @@ class Database:
             print(self.cursor.rowcount, "record inserted.")
         except:
             print("error, skip")
+
+    def insert_keywords(self, vals):
+        self.cursor.execute("")
+        
 
 def themoviedb_url_checker(urlsf):
     url = f"https://image.tmdb.org/t/p/original{urlsf}"
@@ -46,7 +50,7 @@ if __name__ == "__main__":
         if themoviedb_url_checker(row.backdrop_path) == True and themoviedb_url_checker(row.poster_path) == True:
             print(row.backdrop_path, row.poster_path)
             vals = (row.id, row.title, row.overview, row.release_date, row.original_language, row.runtime, row.status, 0, row.poster_path, row.backdrop_path, row.revenue, row.tagline, row.vote_count, row.vote_average)
-            db.insert(("MOVIES",), ("ID", "TITLE", "OVERVIEW", "RELEASE_DATE", "LANGUAGE", "DURATION", "MOVIE_STATUS", "VIEW_COUNT", "POSTER_PATH", "BACKDROP_PATH", "REVENUE", "TAGLINE", "VOTE_COUNT", "VOTE_AVERAGE"), vals)
+            db.insert_movies(vals)
 
         else:
             print(index, 'error')

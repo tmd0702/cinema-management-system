@@ -30,7 +30,7 @@ class Database:
 
     def insert_keywords(self, vals):
         self.cursor.execute("")
-        
+
 
 def themoviedb_url_checker(urlsf):
     url = f"https://image.tmdb.org/t/p/original{urlsf}"

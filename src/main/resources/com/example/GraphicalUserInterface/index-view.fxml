@@ -19,7 +19,7 @@
                <content>
                   <HBox fx:id="moviePreviewSection" prefHeight="241.0" prefWidth="890.0" style="-fx-background-color: transparent;">
                      <children>
-                        <Rectangle fx:id="addMovieBtn" arcHeight="5.0" arcWidth="5.0" height="148.0" onMouseClicked="#onAddMovieBtnClick" onMouseExited="#onMouseExitMovieElement" stroke="BLACK" strokeType="INSIDE" width="103.0" />
+                        <Rectangle fx:id="addMovieBtn" arcHeight="5.0" arcWidth="5.0" height="148.0" onMouseClicked="#onAddMovieBtnClick" stroke="BLACK" strokeType="INSIDE" width="103.0" />
                      </children>
                   </HBox>
                </content>

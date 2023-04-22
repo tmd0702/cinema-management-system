@@ -48,7 +48,7 @@ public class MovieDetailViewController implements Initializable {
     public void initialize(URL url, ResourceBundle resourceBundle) {
         movieDetailSection.setSpacing(10);
         System.out.println(movieOnDetail.getPosterPath());
-        moviePosterSection.setImage(new Image(movieOnDetail.getPosterPath()));
+        moviePosterSection.setImage(movieOnDetail.getPosterImage());
         title.setText(movieOnDetail.getTitle());
         releaseDate.setText(releaseDate.getText() + movieOnDetail.getReleaseDate().toString());
         duration.setText(duration.getText() + Integer.toString(movieOnDetail.getDuration()));

@@ -71,48 +71,54 @@ public class IndexViewController implements Initializable {
         int counter = 1;
         listView.setSpacing(listSpacing);
         for (Movie movie : movieList) {
-            StackPane movieView = new StackPane();
-//            movieView.setPadding(new Insets(20, 20, 20, 20));
-//            movieView.setId(movie.getId() + "CurrentlyPlayingList");
-            movieView.setPrefWidth((listView.getPrefWidth() - listSpacing * 3) / 4);
-            VBox movieInfoSection = new VBox();
-            Label movieTitle = new Label(movie.getTitle());
-            movieTitle.setStyle("-fx-font-weight: bold;-fx-font-size: 14px;-fx-text-fill:white;");
-            Label movieReleaseDate = new Label(Utils.getDateStringWithFormat("dd MMMM", movie.getReleaseDate()));
-            movieReleaseDate.setStyle("-fx-font-size:11px;-fx-text-fill:white;");
-            movieInfoSection.getChildren().add(movieTitle);
-            movieInfoSection.getChildren().add(movieReleaseDate);
-            movieInfoSection.setPadding(new Insets(20, 20, 20, 20));
-            ImageView poster = new ImageView(new Image(movie.getPosterPath()));
-            poster.setFitWidth((listView.getPrefWidth() - listSpacing * 3) / 4);
-            poster.setFitHeight(listView.getPrefHeight());
-            poster.setBlendMode(BlendMode.MULTIPLY);
-//            poster.setOpacity(0.5);
-
-            Rectangle blend = new Rectangle(poster.getFitWidth(), poster.getFitHeight(), new LinearGradient(0, 0, 0, 1, true, CycleMethod.NO_CYCLE, new Stop[] {new Stop(0, Color.WHITE), new Stop(1, Color.BLACK)}));
-//            movieView.setCenter(poster);
-//            movieView.setBottom(movieInfoSection);
-            movieInfoSection.setTranslateY(listView.getPrefHeight() * 2/3);
-
-            movieView.getChildren().add(blend);
-            movieView.getChildren().add(poster);
-            movieView.getChildren().add(movieInfoSection);
-            movieView.setOnMouseClicked(new EventHandler<MouseEvent>()  {
-                @Override
-                public void handle(MouseEvent mouseEvent) {
-                    main.setMovieOnDetail(movie);
-                    //main.setMovieOnDetail(new Movie("MOV1000", "Toy Story", "Led by Woody, Andy's toys live happily in his room until Andy's birthday brings Buzz Lightyear onto the scene. Afraid of losing his place in Andy's heart, Woody plots against Buzz. But when circumstances separate Buzz and Woody from their owner, the duo eventually learns to put aside their differences.", "ASDS", 100, 90, new Date(), "https://image.tmdb.org/t/p/original/7G9915LfUQ2lVfwMEEhDsn3kT4B.jpg", "https://image.tmdb.org/t/p/original/9FBwqcd9IRruEDUrTdcaafOMKUq.jpg"));
-                    try {
-                        main.changeScene("movie-detail-view.fxml");
-                    } catch (IOException e) {
-                        System.out.println(e);
-                    }
-                }
-            });
+            StackPane movieView = getMovieView(listView, listSpacing, movie);
             listView.getChildren().add(movieView);
             counter += 1;
             if (counter > 4) break;
         }
+    }
+    public static StackPane getMovieView(HBox listView, double listSpacing, Movie movie) {
+        StackPane movieView = new StackPane();
+//            movieView.setPadding(new Insets(20, 20, 20, 20));
+//            movieView.setId(movie.getId() + "CurrentlyPlayingList");
+        movieView.setPrefWidth((listView.getPrefWidth() - listSpacing * 3) / 4);
+        movieView.setPrefHeight(listView.getPrefHeight());
+        System.out.println(movieView.getPrefHeight() + " " + movieView.getPrefWidth());
+        VBox movieInfoSection = new VBox();
+        Label movieTitle = new Label(movie.getTitle());
+        movieTitle.setStyle("-fx-font-weight: bold;-fx-font-size: 14px;-fx-text-fill:white;");
+        Label movieReleaseDate = new Label(Utils.getDateStringWithFormat("dd MMMM", movie.getReleaseDate()));
+        movieReleaseDate.setStyle("-fx-font-size:11px;-fx-text-fill:white;");
+        movieInfoSection.getChildren().add(movieTitle);
+        movieInfoSection.getChildren().add(movieReleaseDate);
+        movieInfoSection.setPadding(new Insets(20, 20, 20, 20));
+        ImageView poster = new ImageView(movie.getPosterImage());
+        poster.setFitWidth((listView.getPrefWidth() - listSpacing * 3) / 4);
+        poster.setFitHeight(listView.getPrefHeight());
+        poster.setBlendMode(BlendMode.MULTIPLY);
+//            poster.setOpacity(0.5);
+
+        Rectangle blend = new Rectangle(poster.getFitWidth(), poster.getFitHeight(), new LinearGradient(0, 0, 0, 1, true, CycleMethod.NO_CYCLE, new Stop[] {new Stop(0, Color.WHITE), new Stop(1, Color.BLACK)}));
+//            movieView.setCenter(poster);
+//            movieView.setBottom(movieInfoSection);
+        movieInfoSection.setTranslateY(listView.getPrefHeight() * 2/3);
+
+        movieView.getChildren().add(blend);
+        movieView.getChildren().add(poster);
+        movieView.getChildren().add(movieInfoSection);
+        movieView.setOnMouseClicked(new EventHandler<MouseEvent>()  {
+            @Override
+            public void handle(MouseEvent mouseEvent) {
+                Main.getInstance().setMovieOnDetail(movie);
+                //main.setMovieOnDetail(new Movie("MOV1000", "Toy Story", "Led by Woody, Andy's toys live happily in his room until Andy's birthday brings Buzz Lightyear onto the scene. Afraid of losing his place in Andy's heart, Woody plots against Buzz. But when circumstances separate Buzz and Woody from their owner, the duo eventually learns to put aside their differences.", "ASDS", 100, 90, new Date(), "https://image.tmdb.org/t/p/original/7G9915LfUQ2lVfwMEEhDsn3kT4B.jpg", "https://image.tmdb.org/t/p/original/9FBwqcd9IRruEDUrTdcaafOMKUq.jpg"));
+                try {
+                    Main.getInstance().changeScene("movie-detail-view.fxml");
+                } catch (IOException e) {
+                    System.out.println(e);
+                }
+            }
+        });
+        return movieView;
     }
     public void backDropImageSectionInit() {
         backdropImageSection.setFitWidth(903);
@@ -173,7 +179,7 @@ public class IndexViewController implements Initializable {
     }
     public IndexViewController() throws Exception {
         main = Main.getInstance();
-        movieManager = main.getMovieManagementProcessor().getMovies();
+        movieManager = main.getMovieManagementProcessor().getMovieManager();
     }
     @FXML
     public void onAddMovieBtnClick() {
@@ -183,13 +189,13 @@ public class IndexViewController implements Initializable {
     }
     @FXML
     public void onSeeMoreCPBtnClick() throws IOException {
-        System.out.println("ok");
-        main.changeScene("index-view.fxml");
+        main.setNowShowingMoviesTabActive(true);
+        main.changeScene("movie-list-view.fxml");
     }
     @FXML
     public void onSeeMoreCSBtnClick() throws IOException {
-        System.out.println("ok");
-        main.changeScene("index-view.fxml");
+        main.setComingSoonMoviesTabActive(true);
+        main.changeScene("movie-list-view.fxml");
     }
     public void changeStyleOnHover(Node node, ImageView poster, Movie movie, Button bookingBtn) {
         node.setOnMouseEntered(new EventHandler<MouseEvent>() {
@@ -246,14 +252,7 @@ public class IndexViewController implements Initializable {
     public void onSignInBtnClick() throws IOException {
         this.main.popup("login-form.fxml");
     }
-    public void onMouseExitMovieElement() {
-//        ScaleTransition transition = new ScaleTransition();
-//        transition.setDuration(Duration.seconds(1));
-//        transition.setNode(addMovieBtn);
-//        transition.setToX(1);
-//        transition.setToY(1);
-//        transition.play();
-    }
+
     public void onSignUpBtnClick() throws IOException {
         this.main.popup("signup-form.fxml");
     }

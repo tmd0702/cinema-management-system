@@ -17,6 +17,7 @@ public class Main extends Application {
     private static Main main;
     private static Stage stage;
     private User signedInUser;
+    private boolean nowShowingMoviesTabActive, comingSoonMoviesTabActive;
     private Movie movieOnDetail;
     private MovieManagementProcessor movieManagementProcessor;
     public Main() {
@@ -24,6 +25,20 @@ public class Main extends Application {
         main = this;
         System.out.println("main ok");
         this.movieManagementProcessor = new MovieManagementProcessor();
+        nowShowingMoviesTabActive = false;
+        comingSoonMoviesTabActive = false;
+    }
+    public void setNowShowingMoviesTabActive(boolean isActive) {
+        this.nowShowingMoviesTabActive = isActive;
+    }
+    public void setComingSoonMoviesTabActive(boolean isActive) {
+        this.comingSoonMoviesTabActive = isActive;
+    }
+    public boolean getNowShowingMoviesTabActive() {
+        return this.nowShowingMoviesTabActive;
+    }
+    public boolean getComingSoonMoviesTabActive() {
+        return this.comingSoonMoviesTabActive;
     }
     public void setMovieOnDetail(Movie movie) {
         movieOnDetail = movie;

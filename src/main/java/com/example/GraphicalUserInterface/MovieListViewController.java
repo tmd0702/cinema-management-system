@@ -93,7 +93,6 @@ public class MovieListViewController implements Initializable {
             Movie movie = movieList.get(i);
 
             if (i % 4 == 0) {
-                System.out.println(i);
                 listView = new HBox();
                 listView.setPrefHeight(259);
                 listView.setPrefWidth(777);
@@ -120,7 +119,6 @@ public class MovieListViewController implements Initializable {
             Movie movie = movieList.get(i);
 
             if (i % 4 == 0) {
-                System.out.println(i);
                 listView = new HBox();
                 listView.setPrefHeight(259);
                 listView.setPrefWidth(777);

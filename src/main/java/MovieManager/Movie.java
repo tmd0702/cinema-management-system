@@ -3,6 +3,9 @@ package MovieManager;
 import javafx.scene.image.Image;
 
 import java.util.Date;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
+import java.util.concurrent.TimeUnit;
 
 public class Movie {
     private String id, title, overview, movieStatus, posterPath, backdropPath, tagline, language, basePath = "https://www.themoviedb.org/t/p/original";
@@ -33,9 +36,8 @@ public class Movie {
     public Movie(String id, String title, String overview, String movieStatus, int duration, int viewCount, Date releaseDate, String posterPath, String backdropPath) {
         this.id = id;
         this.backdropPath = backdropPath;
-        this.backdropImage = new Image(getBackdropPath());
+
         this.posterPath = posterPath;
-        this.posterImage = new Image(getPosterPath());
         System.out.println(this.getPosterPath() + " " + title);
         this.title = title;
         this.overview = overview;
@@ -50,6 +52,15 @@ public class Movie {
     public Image getBackdropImage() {
         return this.backdropImage;
     }
+
+    public void setBackdropImage(Image backdropImage) {
+        this.backdropImage = backdropImage;
+    }
+
+    public void setPosterImage(Image posterImage) {
+        this.posterImage = posterImage;
+    }
+
     public int getDuration() {
         return this.duration;
     }

@@ -19,7 +19,7 @@ public class MovieManager {
 //        }
 //        return currentlyPlayingMovieList;
         ArrayList<Movie> currentlyPlayingMovieList = new ArrayList<Movie>();
-        for (int i=0; i<15;++i) {
+        for (int i=0; i<Math.round(movieList.size() / 2);++i) {
             currentlyPlayingMovieList.add(movieList.get(i));
         }
         return currentlyPlayingMovieList;
@@ -34,7 +34,7 @@ public class MovieManager {
 //        }
 //        return comingSoonMovieList;
         ArrayList<Movie> comingSoonMovieList = new ArrayList<Movie>();
-        for (int i=15; i < 29; ++i) {
+        for (int i=Math.round(movieList.size() / 2); i < movieList.size(); ++i) {
             comingSoonMovieList.add(movieList.get(i));
         }
         return comingSoonMovieList;

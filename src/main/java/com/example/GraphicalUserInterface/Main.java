@@ -1,6 +1,8 @@
 package com.example.GraphicalUserInterface;
+import Config.Config;
 import Database.MovieManagementProcessor;
 import MovieManager.Movie;
+import SearchEngine.SearchEngine;
 import UserManager.User;
 import javafx.application.Application;
 import javafx.application.Preloader;
@@ -19,14 +21,32 @@ public class Main extends Application {
     private User signedInUser;
     private boolean nowShowingMoviesTabActive, comingSoonMoviesTabActive;
     private Movie movieOnDetail;
+    private String queryOnSearching;
+//    private Config config;
+    private SearchEngine searchEngine;
     private MovieManagementProcessor movieManagementProcessor;
     public Main() {
         super();
         main = this;
-        System.out.println("main ok");
         this.movieManagementProcessor = new MovieManagementProcessor();
+        this.movieManagementProcessor.getMovies();
+        this.queryOnSearching = "";
+//        this.config = new Config();
         nowShowingMoviesTabActive = false;
         comingSoonMoviesTabActive = false;
+        searchEngine = new SearchEngine();
+    }
+//    public Config getConfig() throws Exception {
+//        return new Config();
+//    }
+    public void setQueryOnSearching(String queryOnSearching) {
+        this.queryOnSearching = queryOnSearching;
+    }
+    public SearchEngine getSearchEngine() {
+        return this.searchEngine;
+    }
+    public String getQueryOnSearching() {
+        return this.queryOnSearching;
     }
     public void setNowShowingMoviesTabActive(boolean isActive) {
         this.nowShowingMoviesTabActive = isActive;
@@ -54,7 +74,11 @@ public class Main extends Application {
     }
     public static synchronized Main getInstance() {
         if (main == null) {
-            main = new Main();
+            try {
+                main = new Main();
+            } catch (Exception e) {
+                System.out.println(e);
+            }
         }
         return main;
     }

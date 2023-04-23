@@ -1,5 +1,6 @@
 package MovieManager;
 
+import com.example.GraphicalUserInterface.Main;
 import javafx.scene.image.Image;
 
 import java.util.Date;
@@ -55,10 +56,16 @@ public class Movie {
 
     public void setBackdropImage(Image backdropImage) {
         this.backdropImage = backdropImage;
+        if (getBackdropImage().getProgress() != 1 || getBackdropImage().isError()) {
+            this.backdropImage = Main.getInstance().getMovieManagementProcessor().getMovieManager().getImageNotFound();
+        }
     }
 
     public void setPosterImage(Image posterImage) {
         this.posterImage = posterImage;
+        if (getPosterImage().getProgress() != 1 || getPosterImage().isError()) {
+            this.posterImage = Main.getInstance().getMovieManagementProcessor().getMovieManager().getImageNotFound();
+        }
     }
 
     public int getDuration() {

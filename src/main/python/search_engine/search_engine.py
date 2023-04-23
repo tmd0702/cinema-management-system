@@ -17,6 +17,15 @@ db = Database()
 keywords_id_map = db.get_keywords_id_map()
 
 movies_data = db.get_movies_metadata_cleaned_df()
+embedding_dict = dict()
+def embedding_dict_init():
+    global embedding_dict
+    for id in movies_data.id.values:
+        movie_overview = movies_data.loc[movies_data.id == int(id), 'overview'].values[0]
+        overview_embedding = model.encode(movie_overview)
+        embedding_dict[int(id)] = overview_embedding
+
+embedding_dict_init()
 
 @app.route("/keyword_searching")
 def keyword_searching():
@@ -47,18 +56,19 @@ def keyword_searching():
     return scores
 @app.route("/semantic_searching")
 def semantic_searching():
+    global embedding_dict
+    print(embedding_dict)
     scores = {}
     input = request.args.get("input")
     input_embedding = model.encode(input)
 
     for id in movies_data.id.values:
-        movie_overview = movies_data.loc[movies_data.id == int(id), 'overview'].values[0]
-        overview_embedding = model.encode(movie_overview)
-
+        overview_embedding = embedding_dict.get(int(id))
         scores[int(id)] = np.float64(utils.cosine_similarity(input_embedding, overview_embedding))
     scores = {k: v for k, v in sorted(scores.items(), key=lambda item: item[1], reverse=True) if v > 0}
     print(scores)
     return json.dumps(scores)
+
 
 
 app.run(debug=False, port=8085)

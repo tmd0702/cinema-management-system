@@ -29,6 +29,8 @@ public class IndexViewController implements Initializable {
     private MovieManager movieManager;
     private Main main;
     @FXML
+    private TextField inputField;
+    @FXML
     private ImageView logoImageView;
     @FXML
     private Button signUpBtn;
@@ -52,6 +54,7 @@ public class IndexViewController implements Initializable {
         comingSoonListInit();
         backDropImageSectionInit();
         logoImageViewInit();
+
     }
     public void logoImageViewInit() {
         String imageSource = "https://docs.google.com/uc?id=1F2pXOLfvuynr9JcURTR5Syg7N1YdPJXK";
@@ -83,7 +86,6 @@ public class IndexViewController implements Initializable {
 //            movieView.setId(movie.getId() + "CurrentlyPlayingList");
         movieView.setPrefWidth((listView.getPrefWidth() - listSpacing * 3) / 4);
         movieView.setPrefHeight(listView.getPrefHeight());
-        System.out.println(movieView.getPrefHeight() + " " + movieView.getPrefWidth());
         VBox movieInfoSection = new VBox();
         Label movieTitle = new Label(movie.getTitle());
         movieTitle.setStyle("-fx-font-weight: bold;-fx-font-size: 14px;-fx-text-fill:white;");
@@ -132,7 +134,10 @@ public class IndexViewController implements Initializable {
         moviePreviewSection.setSpacing(20);
         moviePreviewSectionScrollPane.setHbarPolicy(ScrollPane.ScrollBarPolicy.NEVER);
         moviePreviewSectionScrollPane.setVbarPolicy(ScrollPane.ScrollBarPolicy.NEVER);
+        int counter = 0;
         for (Movie movie : movieManager.getMovieList()) {
+            counter += 1;
+            if (counter == 15) break;
             // initialize booking button
             Button bookingBtn = new Button();
             bookingBtn.setId(movie.getId() + "BookingBtn");
@@ -176,6 +181,11 @@ public class IndexViewController implements Initializable {
     public IndexViewController() throws Exception {
         main = Main.getInstance();
         movieManager = main.getMovieManagementProcessor().getMovieManager();
+    }
+    @FXML
+    public void onSearchFieldEnterKeyPress() throws IOException {
+        main.setQueryOnSearching(inputField.getText());
+        main.changeScene("search-results-view.fxml");
     }
     @FXML
     public void onAddMovieBtnClick() {

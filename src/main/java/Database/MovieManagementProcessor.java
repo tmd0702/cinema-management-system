@@ -14,13 +14,13 @@ public class MovieManagementProcessor extends Processor {
     public MovieManagementProcessor() {
         super();
         movieManager = new MovieManager();
-        getMovies();
+
     }
     public MovieManager getMovieManager() {
         return this.movieManager;
     }
     public void getMovies() {
-        String query = "SELECT * FROM MOVIES LIMIT 30";
+        String query = "SELECT * FROM MOVIES";// LIMIT 100";
         ArrayList<Movie> tmpList = new ArrayList<Movie>();
         try {
             Statement st = getConnector().createStatement();
@@ -44,13 +44,13 @@ public class MovieManagementProcessor extends Processor {
             } catch (InterruptedException e) {
                 System.out.println("Interrupted: " + e);
             }
-            System.out.println("Done");
             for (Movie movie : tmpList) {
-                if (movie.getPosterImage().getProgress() == 1 && !movie.getPosterImage().isError()) {
-                    this.movieManager.addMovie(movie);
-                } else {
-                    continue;
-                }
+                this.movieManager.addMovie(movie);
+//                if (movie.getPosterImage().getProgress() == 1 && !movie.getPosterImage().isError()) {
+//                    this.movieManager.addMovie(movie);
+//                } else {
+//                    continue;
+//                }
             }
             rs.close();
             st.close();

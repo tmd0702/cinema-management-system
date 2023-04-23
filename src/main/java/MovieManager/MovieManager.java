@@ -1,10 +1,17 @@
 package MovieManager;
 import java.util.*;
 import Utils.Utils;
+import javafx.scene.image.Image;
+
 public class MovieManager {
     private ArrayList<Movie> movieList;
+    private Image imageNotFound;
     public MovieManager() {
         this.movieList = new ArrayList<Movie>();
+        this.imageNotFound = new Image("https://westsiderc.org/wp-content/uploads/2019/08/Image-Not-Available.png");
+    }
+    public Image getImageNotFound() {
+        return this.imageNotFound;
     }
     public ArrayList<Movie> getMovieList() {
         return this.movieList;
@@ -45,7 +52,7 @@ public class MovieManager {
     public Movie getMovieById(String id) {
         Movie movie = new Movie();
         for (Movie m : this.movieList) {
-            if (m.getId() == id) {
+            if (m.getId().equals(id)) {
                 movie = m;
                 break;
             }

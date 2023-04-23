@@ -11,7 +11,7 @@
 
 <ScrollPane xmlns="http://javafx.com/javafx/19" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.example.GraphicalUserInterface.MovieListViewController">
    <content>
-      <AnchorPane prefHeight="400.0" prefWidth="600.0" style="-fx-pref-height: 1538; -fx-pref-width: 903;">
+      <AnchorPane prefHeight="400.0" prefWidth="600.0" style="-fx-pref-height: 1538; -fx-pref-width: 903; -fx-background-color: black;">
          <StackPane fx:id="tabContainer" layoutY="202.0" prefHeight="1406.0" prefWidth="903.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="202.0" />
           <AnchorPane layoutX="10.0" layoutY="10.0" prefHeight="56.0" prefWidth="891.0" style="-fx-background-color: #D9D9D9;" AnchorPane.bottomAnchor="1552.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
               <children>

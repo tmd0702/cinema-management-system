@@ -96,11 +96,7 @@ public class IndexViewController implements Initializable {
         poster.setFitWidth((listView.getPrefWidth() - listSpacing * 3) / 4);
         poster.setFitHeight(listView.getPrefHeight());
         poster.setBlendMode(BlendMode.MULTIPLY);
-//            poster.setOpacity(0.5);
-
-        Rectangle blend = new Rectangle(poster.getFitWidth(), poster.getFitHeight(), new LinearGradient(0, 0, 0, 1, true, CycleMethod.NO_CYCLE, new Stop[] {new Stop(0, Color.WHITE), new Stop(1, Color.BLACK)}));
-//            movieView.setCenter(poster);
-//            movieView.setBottom(movieInfoSection);
+        Rectangle blend = new Rectangle(poster.getFitWidth(), poster.getFitHeight(), new LinearGradient(0, 0, 0, 1, true, CycleMethod.NO_CYCLE, new Stop[] {new Stop(0, Color.WHITE), new Stop(1, Color.DARKGRAY)}));
         movieInfoSection.setTranslateY(listView.getPrefHeight() * 2/3);
 
         movieView.getChildren().add(blend);

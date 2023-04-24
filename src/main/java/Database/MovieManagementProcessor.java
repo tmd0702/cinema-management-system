@@ -27,7 +27,7 @@ public class MovieManagementProcessor extends Processor {
             ResultSet rs = st.executeQuery(query);
 
             while (rs.next()) {
-                Movie movie = new Movie(rs.getString("ID"), rs.getString("TITLE"), rs.getString("OVERVIEW"), rs.getString("MOVIE_STATUS"), rs.getInt("DURATION"), rs.getInt("VIEW_COUNT"), rs.getDate("RELEASE_DATE"), rs.getString("POSTER_PATH"), rs.getString("BACKDROP_PATH"));
+                Movie movie = new Movie(rs.getString("ID"), rs.getString("TITLE"), rs.getString("OVERVIEW"), rs.getString("MOVIE_STATUS"), rs.getInt("DURATION"), rs.getInt("VIEW_COUNT"), rs.getDate("RELEASE_DATE"), rs.getString("POSTER_PATH"), rs.getString("BACKDROP_PATH"), rs.getString("LANGUAGE"));
                 tmpList.add(movie);
             }
             ExecutorService service = Executors.newCachedThreadPool();
@@ -44,14 +44,26 @@ public class MovieManagementProcessor extends Processor {
             } catch (InterruptedException e) {
                 System.out.println("Interrupted: " + e);
             }
+            System.out.println("Start loading genres");
             for (Movie movie : tmpList) {
-                this.movieManager.addMovie(movie);
-//                if (movie.getPosterImage().getProgress() == 1 && !movie.getPosterImage().isError()) {
-//                    this.movieManager.addMovie(movie);
-//                } else {
-//                    continue;
-//                }
+                String getGenresSQL = String.format("SELECT G.NAME FROM GENRES G JOIN MOVIE_GENRES MG WHERE MG.MOVIE_ID = %s AND MG.GENRE_ID = G.ID", movie.getId());
+                ResultSet genres = st.executeQuery(getGenresSQL);
+                while (genres.next()) {
+//                    System.out.println(genres.getString("NAME"));
+                    movie.addGenre(genres.getString("NAME"));
+                }
+                System.out.println(movie.getTitle() + " load genres done");
+                genres.close();
             }
+            this.movieManager.setMovieList(tmpList);
+//            for (Movie movie : tmpList) {
+//                this.movieManager.addMovie(movie);
+////                if (movie.getPosterImage().getProgress() == 1 && !movie.getPosterImage().isError()) {
+////                    this.movieManager.addMovie(movie);
+////                } else {
+////                    continue;
+////                }
+//            }
             rs.close();
             st.close();
         } catch (Exception e) {

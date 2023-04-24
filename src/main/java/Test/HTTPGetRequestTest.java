@@ -31,8 +31,7 @@ public class HTTPGetRequestTest{
         String tmp = getKeywordsSearchingResults();
         JSONObject jo = new JSONObject(tmp);
         System.out.println(jo.toString());
-        HashMap<String, Object> scores = Utils.Utils.jsonToMap(jo);
-//        System.out.println(tmp);
+        HashMap<String, Double> scores = Utils.Utils.sortMapByValue(Utils.Utils.jsonToMap(jo));
     }
 
 }

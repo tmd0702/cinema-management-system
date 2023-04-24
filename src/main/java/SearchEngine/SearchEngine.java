@@ -15,7 +15,7 @@ public class SearchEngine {
         main = Main.getInstance();
 
     }
-    public HashMap<String, Object> getSearchResults(String input, String type) {
+    public HashMap<String, Double> getSearchResults(String input, String type) {
         input = input.replace(" ", "%20");
         String inputLine = "", scores = "";
         JSONObject jo = new JSONObject();
@@ -33,6 +33,6 @@ public class SearchEngine {
         } catch (Exception e) {
             System.out.println(e);
         }
-        return Utils.Utils.jsonToMap(jo);
+        return Utils.Utils.sortMapByValue(Utils.Utils.jsonToMap(jo));
     }
 }

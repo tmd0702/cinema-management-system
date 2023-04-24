@@ -4,6 +4,7 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.math.BigDecimal;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.time.LocalDate;
@@ -45,13 +46,27 @@ public class Utils {
         String dateAsString = df.format(date);
         return dateAsString;
     }
-    public static HashMap<String, Object> jsonToMap(JSONObject json) throws JSONException {
+    public static HashMap<String, Double> jsonToMap(JSONObject json) throws JSONException {
         HashMap<String, Object> retMap = new HashMap<String, Object>();
-
         if(json != JSONObject.NULL) {
             retMap = toMap(json);
         }
-        return retMap;
+        HashMap<String, Double> doubleRetMap = new HashMap<String, Double>();
+        for (String key : retMap.keySet()) {
+            doubleRetMap.put(key, ((BigDecimal)retMap.get(key)).doubleValue());
+        }
+        return doubleRetMap;
+    }
+    public static HashMap<String, Double> sortMapByValue(HashMap<String, Double> hm) {
+        HashMap<String, Double> result =
+                hm.entrySet()
+                        .stream()
+                        .sorted(Map.Entry.comparingByValue(Comparator.reverseOrder()))
+                        .collect(Collectors.toMap(e -> e.getKey(),
+                                e -> e.getValue(),
+                                (e1, e2) -> null, // or throw an exception
+                                () -> new LinkedHashMap<String, Double>()));
+        return result;
     }
 
     public static HashMap<String, Object> toMap(JSONObject object) throws JSONException {

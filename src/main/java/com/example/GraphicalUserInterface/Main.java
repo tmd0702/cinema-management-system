@@ -1,5 +1,6 @@
 package com.example.GraphicalUserInterface;
 import Config.Config;
+import Database.FiltererProcessor;
 import Database.MovieManagementProcessor;
 import MovieManager.Movie;
 import SearchEngine.SearchEngine;
@@ -14,6 +15,7 @@ import javafx.stage.*;
 
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.logging.Filter;
 
 public class Main extends Application {
     private static Main main;
@@ -22,6 +24,7 @@ public class Main extends Application {
     private boolean nowShowingMoviesTabActive, comingSoonMoviesTabActive;
     private Movie movieOnDetail;
     private String queryOnSearching;
+    private FiltererProcessor filtererProcessor;
 //    private Config config;
     private SearchEngine searchEngine;
     private MovieManagementProcessor movieManagementProcessor;
@@ -30,11 +33,15 @@ public class Main extends Application {
         main = this;
         this.movieManagementProcessor = new MovieManagementProcessor();
         this.movieManagementProcessor.getMovies();
+        this.filtererProcessor = new FiltererProcessor();
         this.queryOnSearching = "";
 //        this.config = new Config();
         nowShowingMoviesTabActive = false;
         comingSoonMoviesTabActive = false;
         searchEngine = new SearchEngine();
+    }
+    public FiltererProcessor getFiltererProcessor() {
+        return this.filtererProcessor;
     }
 //    public Config getConfig() throws Exception {
 //        return new Config();

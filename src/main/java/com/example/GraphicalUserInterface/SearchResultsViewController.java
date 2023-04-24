@@ -1,29 +1,35 @@
 package com.example.GraphicalUserInterface;
 
 import MovieManager.Movie;
-import javafx.event.EventHandler;
+import javafx.collections.FXCollections;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.geometry.Insets;
-import javafx.scene.control.Label;
-import javafx.scene.control.ScrollPane;
-import javafx.scene.control.TextField;
+import javafx.scene.control.*;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
-import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
-import javafx.scene.paint.Color;
-import javafx.scene.shape.Rectangle;
 
 import java.io.IOException;
-import java.math.BigDecimal;
 import java.net.URL;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.ResourceBundle;
 
 public class SearchResultsViewController implements Initializable {
     private Main main;
+    private ArrayList<HBox> movieContainerList;
+    private HashMap<String, Double> searchResults;
+    private String filterLanguage, filterGenre, filterSortMethod;
+    @FXML
+    private ChoiceBox sortingChoiceBox;
+    @FXML
+    private ChoiceBox genreChoiceBox;
+    @FXML
+    private Button filterSearchResultsBtn;
+    @FXML
+    private ChoiceBox languageChoiceBox;
     @FXML
     private TextField inputField;
     @FXML
@@ -37,7 +43,8 @@ public class SearchResultsViewController implements Initializable {
     public void initialize(URL url, ResourceBundle resourceBundle) {
         inputFieldInit();
         logoImageViewInit();
-        displaySearchResults();
+        searchResultsInit();
+        choiceBoxesInit();
     }
     public void logoImageViewInit() {
         String imageSource = "https://docs.google.com/uc?id=1F2pXOLfvuynr9JcURTR5Syg7N1YdPJXK";
@@ -51,8 +58,25 @@ public class SearchResultsViewController implements Initializable {
     public void inputFieldInit() {
         inputField.setText(main.getQueryOnSearching());
     }
+    public void choiceBoxesInit() {
+        genreChoiceBox.setItems(FXCollections.observableArrayList(main.getFiltererProcessor().getGenres()));
+        languageChoiceBox.setItems(FXCollections.observableArrayList(main.getFiltererProcessor().getLanguages()));
+        ArrayList<String> sortingMethods = new ArrayList<String>();
+        sortingMethods.add("Relevant");
+        sortingMethods.add("By view count");
+        sortingMethods.add("By rate");
+        sortingChoiceBox.setItems(FXCollections.observableArrayList(sortingMethods));
+        sortingChoiceBox.setValue("<Relevant>");
+        genreChoiceBox.setValue("All genres");
+        languageChoiceBox.setValue("All languages");
+    }
     public SearchResultsViewController() {
         main = Main.getInstance();
+        movieContainerList = new ArrayList<HBox>();
+        searchResults = new HashMap<String, Double>();
+        filterLanguage = "";
+        filterGenre = "";
+        filterSortMethod = "Relevant";
     }
     @FXML
     public void onSearchFieldEnterKeyPress() throws IOException {
@@ -64,6 +88,13 @@ public class SearchResultsViewController implements Initializable {
         main.changeScene("index-view.fxml");
     }
     @FXML
+    public void filterSearchResultsBtnOnClick() {
+        filterGenre = genreChoiceBox.getValue() == "All genres"? "" : (String)genreChoiceBox.getValue();
+        filterLanguage = languageChoiceBox.getValue() == "All languages"? "" : (String)languageChoiceBox.getValue();
+        filterSortMethod = (String)sortingChoiceBox.getValue();
+        displaySearchResults();
+    }
+    @FXML
     public void onSignInBtnClick() throws IOException {
         this.main.popup("login-form.fxml");
     }
@@ -72,11 +103,11 @@ public class SearchResultsViewController implements Initializable {
         this.main.popup("signup-form.fxml");
     }
     public void displaySearchResults() {
-        HashMap<String, Object> searchResults = main.getSearchEngine().getSearchResults(inputField.getText(), "semantic_searching");
-        resultsContainer.setSpacing(20);
+        resultsContainer.getChildren().clear();
         for (String key : searchResults.keySet()) {
-            if (((BigDecimal)searchResults.get(key)).compareTo(BigDecimal.valueOf(0.4)) > 0) {
-                Movie movie = main.getMovieManagementProcessor().getMovieManager().getMovieById(key);
+            Movie movie = main.getMovieManagementProcessor().getMovieManager().getMovieById(key);
+            System.out.println(filterGenre + movie.getGenres().toString().contains(filterGenre));
+            if (movie.getGenres().toString().contains(filterGenre) && movie.getLanguage().contains(filterLanguage)) {
                 HBox movieContainer = new HBox();
                 movieContainer.setPrefHeight(220);
                 movieContainer.setPrefWidth(resultsContainer.getPrefWidth());
@@ -108,10 +139,16 @@ public class SearchResultsViewController implements Initializable {
                 movieContentInfo.getChildren().add(overview);
                 movieContainer.getChildren().add(poster);
                 movieContainer.getChildren().add(movieContentInfo);
+                movieContainerList.add(movieContainer);
                 resultsContainer.getChildren().add(movieContainer);
-
             }
         }
+    }
+    public void searchResultsInit() {
+        searchResults = main.getSearchEngine().getSearchResults(inputField.getText(), "search_engine");//"semantic_searching");
+        System.out.println(searchResults);
+        resultsContainer.setSpacing(20);
+        displaySearchResults();
 //        resultsContainer.setPrefHeight(pageContainer.getPrefHeight());
     }
 }

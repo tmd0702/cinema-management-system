@@ -59,6 +59,9 @@ public class MovieManager {
         }
         return movie;
     }
+    public void setMovieList(ArrayList<Movie> movieList) {
+        this.movieList = movieList;
+    }
     public void addMovie(Movie movie) {
         try {
             this.movieList.add(movie);

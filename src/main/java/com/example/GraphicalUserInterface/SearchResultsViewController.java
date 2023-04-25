@@ -8,6 +8,7 @@ import javafx.geometry.Insets;
 import javafx.scene.control.*;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
+import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 
@@ -22,6 +23,10 @@ public class SearchResultsViewController implements Initializable {
     private ArrayList<HBox> movieContainerList;
     private HashMap<String, Double> searchResults;
     private String filterLanguage, filterGenre, filterSortMethod;
+    @FXML
+    private AnchorPane headerSection;
+    @FXML
+    private AnchorPane pageSubContainer;
     @FXML
     private ChoiceBox sortingChoiceBox;
     @FXML
@@ -63,10 +68,10 @@ public class SearchResultsViewController implements Initializable {
         languageChoiceBox.setItems(FXCollections.observableArrayList(main.getFiltererProcessor().getLanguages()));
         ArrayList<String> sortingMethods = new ArrayList<String>();
         sortingMethods.add("Relevant");
-        sortingMethods.add("By view count");
-        sortingMethods.add("By rate");
+//        sortingMethods.add("By view count");
+//        sortingMethods.add("By rate");
         sortingChoiceBox.setItems(FXCollections.observableArrayList(sortingMethods));
-        sortingChoiceBox.setValue("<Relevant>");
+        sortingChoiceBox.setValue("Relevant");
         genreChoiceBox.setValue("All genres");
         languageChoiceBox.setValue("All languages");
     }
@@ -106,7 +111,6 @@ public class SearchResultsViewController implements Initializable {
         resultsContainer.getChildren().clear();
         for (String key : searchResults.keySet()) {
             Movie movie = main.getMovieManagementProcessor().getMovieManager().getMovieById(key);
-            System.out.println(filterGenre + movie.getGenres().toString().contains(filterGenre));
             if (movie.getGenres().toString().contains(filterGenre) && movie.getLanguage().contains(filterLanguage)) {
                 HBox movieContainer = new HBox();
                 movieContainer.setPrefHeight(220);
@@ -143,6 +147,7 @@ public class SearchResultsViewController implements Initializable {
                 resultsContainer.getChildren().add(movieContainer);
             }
         }
+        headerSection.setPrefHeight(56);
     }
     public void searchResultsInit() {
         searchResults = main.getSearchEngine().getSearchResults(inputField.getText(), "search_engine");//"semantic_searching");

@@ -1,15 +1,20 @@
 package com.example.GraphicalUserInterface;
 import MovieManager.MovieManager;
 import Utils.Utils;
+import javafx.animation.*;
+import javafx.beans.property.DoubleProperty;
+import javafx.event.Event;
 import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.geometry.Insets;
+import javafx.geometry.Pos;
 import javafx.scene.Group;
 import javafx.scene.Node;
 import javafx.scene.effect.BlendMode;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
+import javafx.scene.input.MouseButton;
 import javafx.scene.layout.*;
 import javafx.scene.control.*;
 import MovieManager.*;
@@ -17,6 +22,8 @@ import java.io.IOException;
 import java.net.URL;
 import java.util.ArrayList;
 import java.util.ResourceBundle;
+import java.util.concurrent.CompletableFuture;
+import java.util.concurrent.TimeUnit;
 
 import javafx.scene.paint.Color;
 import javafx.scene.paint.CycleMethod;
@@ -24,12 +31,19 @@ import javafx.scene.paint.LinearGradient;
 import javafx.scene.paint.Stop;
 import javafx.scene.shape.*;
 import javafx.scene.input.MouseEvent;
+import javafx.util.Duration;
 
 public class IndexViewController implements Initializable {
     private MovieManager movieManager;
+    private ImageView currentFocusMovie;
+    private Button currentFocusMovieBookingBtn;
     private Main main;
     @FXML
     private TextField inputField;
+    @FXML
+    private Button scrollLeftBtn;
+    @FXML
+    private Button scrollRightBtn;
     @FXML
     private ImageView logoImageView;
     @FXML
@@ -39,8 +53,6 @@ public class IndexViewController implements Initializable {
     @FXML
     private Button signInBtn;
     @FXML ImageView backdropImageSection;
-    @FXML
-    private Rectangle addMovieBtn;
     @FXML
     private HBox currentlyPlayingList;
     @FXML
@@ -54,7 +66,53 @@ public class IndexViewController implements Initializable {
         comingSoonListInit();
         backDropImageSectionInit();
         logoImageViewInit();
-
+        scrollBtnInit();
+    }
+    public void scrollBtnInit() {
+//        scrollLeftBtn.setVisible(false);
+//        scrollRightBtn.setVisible(false);
+        scrollLeftBtn.setOpacity(0.2);
+        scrollRightBtn.setOpacity(0.2);
+        scrollBtnChangeStyleOnHover(scrollLeftBtn);
+        scrollBtnChangeStyleOnHover(scrollRightBtn);
+    }
+    public void scrollAnimation(DoubleProperty property, double seconds, double targetHvalue) {
+        Animation animation = new Timeline(
+                new KeyFrame(Duration.seconds(seconds),
+                        new KeyValue(property, targetHvalue)));
+        animation.play();
+    }
+    @FXML
+    public void scrollLeftBtnOnClick() {
+        scrollLeftBtn.setOpacity(0.5);
+        scrollAnimation(moviePreviewSectionScrollPane.hvalueProperty(), 0.5, moviePreviewSectionScrollPane.getHvalue() - 0.25);
+    }
+    @FXML
+    public void scrollRightBtnOnClick() {
+        scrollRightBtn.setOpacity(0.5);
+        scrollAnimation(moviePreviewSectionScrollPane.hvalueProperty(), 0.5, moviePreviewSectionScrollPane.getHvalue() + 0.25);
+    }
+    public void scrollBtnChangeStyleOnHover(Button btn) {
+        Animation fadeInAnimation = new Timeline(
+                new KeyFrame(Duration.seconds(0.3),
+                        new KeyValue(btn.opacityProperty(), 0.5)));
+        Animation fadeOutAnimation = new Timeline(
+                new KeyFrame(Duration.seconds(0.3),
+                        new KeyValue(btn.opacityProperty(), 0.2)));
+        btn.setOnMouseEntered(new EventHandler<MouseEvent>() {
+            @Override
+            public void handle(MouseEvent mouseEvent) {
+                fadeInAnimation.play();
+                btn.setOpacity(0.5);
+            }
+        });
+        btn.setOnMouseExited(new EventHandler<MouseEvent>() {
+            @Override
+            public void handle(MouseEvent mouseEvent) {
+                fadeOutAnimation.play();
+                btn.setOpacity(0.2);
+            }
+        });
     }
     public void logoImageViewInit() {
         String imageSource = "https://docs.google.com/uc?id=1F2pXOLfvuynr9JcURTR5Syg7N1YdPJXK";
@@ -131,11 +189,12 @@ public class IndexViewController implements Initializable {
     }
 
     public void moviePreviewSectionInit() {
-        moviePreviewSection.setSpacing(20);
+        moviePreviewSection.setSpacing(30);
         moviePreviewSectionScrollPane.setHbarPolicy(ScrollPane.ScrollBarPolicy.NEVER);
         moviePreviewSectionScrollPane.setVbarPolicy(ScrollPane.ScrollBarPolicy.NEVER);
         int counter = 0;
         for (Movie movie : movieManager.getMovieList()) {
+            if (movie.getPosterImage() == main.getMovieManagementProcessor().getMovieManager().getImageNotFound()) continue;
             counter += 1;
             if (counter == 15) break;
             // initialize booking button
@@ -155,28 +214,33 @@ public class IndexViewController implements Initializable {
             // initialize movie view
             AnchorPane movieView = new AnchorPane();
             movieView.setId(movie.getId());
-            movieView.setPrefHeight(addMovieBtn.getHeight());
-            movieView.setPrefWidth(addMovieBtn.getWidth());
+            movieView.setPrefWidth(103);
             ImageView poster = new ImageView(movie.getPosterImage());
-            poster.setFitHeight(addMovieBtn.getHeight());
-            poster.setFitWidth(addMovieBtn.getWidth());
+            poster.setFitHeight(148);
+            poster.setFitWidth(103);
+            poster.setLayoutY(poster.getFitHeight() - 15);
+            bookingBtn.setPrefWidth(50 * 1.8);
+            bookingBtn.setPrefHeight(20 * 1.8);
+            bookingBtn.setStyle("-fx-background-color: #AB0A10;-fx-text-fill: white;-fx-font-weight: bold;-fx-font-size:8px;");
+            bookingBtn.setText("Book Now");
+            bookingBtn.setOpacity(0);
+            bookingBtn.setVisible(false);
+            bookingBtn.setLayoutY(220);
+            bookingBtn.setDisable(true);
             movieView.setStyle("-fx-background-radius:30%;");
             movieView.getChildren().add(poster);
             movieView.getChildren().add(bookingBtn);
-            bookingBtn.setPrefWidth(50);
-            bookingBtn.setPrefHeight(20);
-            bookingBtn.setStyle("-fx-background-color: #AB0A10;-fx-text-fill: white;-fx-font-weight: bold;-fx-font-size:8px");
-            bookingBtn.setText("Book Now");
-            bookingBtn.setLayoutX(26);
-//            movieView.setAlignment(bookingBtn, Pos.BOTTOM_CENTER);
-            bookingBtn.setVisible(false);
-            bookingBtn.setLayoutY(135);
-            bookingBtn.setScaleY(bookingBtn.getScaleY() * 1.5);
-            movieView.setStyle("-fx-background-color: transparent");//(addMovieBtn.getFill());
-            changeStyleOnHover(movieView, poster, movie, bookingBtn);
 
-            moviePreviewSection.getChildren().add(0, movieView);
+            movieView.setStyle("-fx-background-color: transparent");//(addMovieBtn.getFill());
+            changeStyleOnHover(movieView, poster, movie, bookingBtn, counter);
+            moviePreviewSection.getChildren().add(movieView);
+            if (counter == 1) {
+                Event.fireEvent(poster, new MouseEvent(MouseEvent.MOUSE_CLICKED, 0,
+                        0, 0, 0, MouseButton.PRIMARY, 1, true, true, true, true,
+                        true, true, true, true, true, true, null));
+            }
         }
+
     }
     public IndexViewController() throws Exception {
         main = Main.getInstance();
@@ -188,12 +252,6 @@ public class IndexViewController implements Initializable {
         main.changeScene("search-results-view.fxml");
     }
     @FXML
-    public void onAddMovieBtnClick() {
-        addMovieBtn.setHeight(addMovieBtn.getHeight() * 2.5);
-        addMovieBtn.setWidth(addMovieBtn.getWidth() * 1.5);
-        System.out.println(moviePreviewSection.getChildren());
-    }
-    @FXML
     public void onSeeMoreCPBtnClick() throws IOException {
         main.setNowShowingMoviesTabActive(true);
         main.changeScene("movie-list-view.fxml");
@@ -203,57 +261,66 @@ public class IndexViewController implements Initializable {
         main.setComingSoonMoviesTabActive(true);
         main.changeScene("movie-list-view.fxml");
     }
-    public void changeStyleOnHover(Node node, ImageView poster, Movie movie, Button bookingBtn) {
-        node.setOnMouseEntered(new EventHandler<MouseEvent>() {
+    public void opacityAnimation(DoubleProperty property, double seconds, double targetOpacity) {
+        Animation animation = new Timeline(
+                new KeyFrame(Duration.seconds(seconds),
+                        new KeyValue(property, targetOpacity)));
+        animation.play();
+    }
+    public void posterLayoutYAnimation(DoubleProperty property, double seconds, double targetLayoutY) {
+        Animation animation = new Timeline(
+                new KeyFrame(Duration.seconds(seconds),
+                        new KeyValue(property, targetLayoutY)));
+        animation.play();
+    }
+    public void posterScaleAnimation(DoubleProperty property, double seconds, double targetSize) {
+        Animation animation = new Timeline(
+                new KeyFrame(Duration.seconds(seconds),
+                        new KeyValue(property, targetSize)));
+        animation.play();
+    }
+    public void changeStyleOnHover(Node node, ImageView poster, Movie movie, Button bookingBtn, int index) {
+        poster.setOnMouseClicked(new EventHandler<MouseEvent>() {
             @Override
             public void handle(MouseEvent event) {
+                if (currentFocusMovie instanceof ImageView) {
+                    currentFocusMovieBookingBtn.setVisible(false);
+                    currentFocusMovieBookingBtn.setLayoutX(0);
+                    currentFocusMovieBookingBtn.setOpacity(0);
+//                    opacityAnimation(currentFocusMovieBookingBtn.opacityProperty(), 0.1, 0);
+                    posterScaleAnimation(currentFocusMovie.fitHeightProperty(), 0.1, 148);
+                    posterScaleAnimation(currentFocusMovie.fitWidthProperty(), 0.1, 103);
+                    posterLayoutYAnimation(currentFocusMovie.layoutYProperty(), 0.1, 148 - 15);
+
+                }
+
                 bookingBtn.setVisible(true);
+                bookingBtn.setLayoutX(50);
+                opacityAnimation(bookingBtn.opacityProperty(), 0.1, 1);
                 backdropImageSection.setImage(movie.getBackdropImage());
-                node.setScaleX(node.getScaleX() * 1.5);
-                poster.setScaleY(node.getScaleY() * 1.5);
-//                poster.setFitHeight(poster.getFitHeight() * 1.5);
-//                poster.setFitWidth(poster.getFitWidth() * 1.5);
-//                ScaleTransition transition = new ScaleTransition();
-//                transition.setDuration(Duration.seconds(0.1));
-//                transition.setNode(node);
-//                transition.setToX(1.5);
-//                transition.setToY(1.5);
-//                transition.play();
-                HBox.setMargin(node, new Insets(25.5, 25.5, 0, 25.5));
-//                KeyValue startKeyValue = new KeyValue(node.translateXProperty(), 0);
-//                KeyValue endKeyValue = new KeyValue(node.translateXProperty(), 30);
-//                KeyFrame startKeyFrame = new KeyFrame(Duration.seconds(0), startKeyValue);
-//                KeyFrame endKeyFrame = new KeyFrame(Duration.seconds(1), endKeyValue);
-//                Timeline timeline = new Timeline(new KeyFrame(Duration.seconds(1), e -> {
-//                    HBox.setMargin(node, new Insets(30, 30, 0, 30));
-//                }));
-//                Timeline timeline = new Timeline(startKeyFrame, endKeyFrame);
-//                timeline.play();
-            }
-        });
-        node.setOnMouseExited(new EventHandler<MouseEvent>() {
-            @Override
-            public void handle(MouseEvent event) {
-                bookingBtn.setVisible(false);
-//                node.setStyle("-fx-background-color: #0096C9");
-                HBox.setMargin(node, new Insets(0, 0, 0, 0));
-                node.setScaleX(node.getScaleX() * 2/3);
-                poster.setScaleY(poster.getScaleY() * 2/3);
-//                poster.setFitHeight(poster.getFitHeight() * 2/3);
-//                poster.setFitWidth(poster.getFitWidth() * 2/3);
-//                ScaleTransition transition = new ScaleTransition();
-//                transition.setDuration(Duration.seconds(0.1));
-//                transition.setNode(node);
-//                transition.setToX(1);
-//                transition.setToY(1);
-//                transition.play();
-//                Timeline timeline = new Timeline(new KeyFrame(Duration.seconds(0.01), e -> {
-//                    HBox.setMargin(node, new Insets(0, 0, 0, 0));
-//                }));
-//                timeline.play();
+                posterLayoutYAnimation(poster.layoutYProperty(), 0.1, 15);
+                posterScaleAnimation(poster.fitHeightProperty(), 0.1, 148 * 1.8);
+                posterScaleAnimation(poster.fitWidthProperty(), 0.1, 103 * 1.8);
+                currentFocusMovie = poster;
+
+                currentFocusMovieBookingBtn = bookingBtn;
+                CompletableFuture.delayedExecutor(300, TimeUnit.MILLISECONDS).execute(() -> {
+                    double tmp = (((double)index - 1 - (7 - (double)index - 1) * 0.3)*1/13);
+                    scrollAnimation(moviePreviewSectionScrollPane.hvalueProperty(), 0.4, tmp);
+                });
 
             }
         });
+//        poster.setOnMouseExited(new EventHandler<MouseEvent>() {
+//            @Override
+//            public void handle(MouseEvent event) {
+//                bookingBtn.setVisible(false);
+//                posterScaleAnimation(poster.fitHeightProperty(), 0.1, 148);
+//                posterScaleAnimation(poster.fitWidthProperty(), 0.1, 103);
+//                posterLayoutYAnimation(poster.layoutYProperty(), 0.1, 148 - 15);
+//
+//            }
+//        });
     }
     public void onSignInBtnClick() throws IOException {
         this.main.popup("login-form.fxml");

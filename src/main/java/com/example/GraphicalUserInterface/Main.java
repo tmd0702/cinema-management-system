@@ -97,6 +97,7 @@ public class Main extends Application {
         scene.getStylesheets().add(getClass().getResource("assets/css/index-style.css").toExternalForm());
         stage.setTitle("4HB Cinema Management");
         stage.setScene(scene);
+        stage.setResizable(false);
         stage.show();
     }
     public void changeScene(String fxml) throws IOException {

@@ -12,7 +12,7 @@ import org.json.JSONObject;
 public class HTTPGetRequestTest{
     public static String getKeywordsSearchingResults() {
         String input = "an adventure of alive toys".replace(" ", "%20"), inputLine = "", scores = "";
-        String url = String.format("http://localhost:8085/semantic_searching?input=%s", input);
+        String url = String.format("http://103.42.57.126:8085/semantic_searching?input=%s", input);
         try {
             URL keywordsSearchingURL = new URL(url);
             URLConnection keywordsSearchingHTTP = keywordsSearchingURL.openConnection();

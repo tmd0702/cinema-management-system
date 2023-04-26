@@ -15,8 +15,8 @@ class Database:
                     " '", ' "').replace("'}", '"}').replace('\\', '/')
             except:
                 print(index, 'error!')
-        self.keywords_df.to_csv("D:/4hb-db/cleaned_keywords.csv", index=None)
-        print('ok')
+        # self.keywords_df.to_csv("D:/4hb-db/cleaned_keywords.csv", index=None)
+        # print('ok')
         self.id_list = self.keywords_df.id.values
         self.keyword_list = self.keywords_df.keywords.values
         self.keywords_id_map = dict()

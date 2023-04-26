@@ -454,15 +454,16 @@ public class BookingController {
             if (listPane.get(i).getChildren().contains(b))
             {
                 stackpane.getChildren().remove(listPane.get(i));
+                if(i-1 == 1){
+                    pane2.getChildren().addAll(ticketInfor);
+                }
                 break;
             }
 
         }
         if(!stackpane.getChildren().contains(listPane.get(i-1))) {
             stackpane.getChildren().addAll(listPane.get(i-1));
-            if(i-1 == 1){
-                pane2.getChildren().add(ticketInfor);
-            }
+
         }
 
     }
@@ -472,14 +473,14 @@ public class BookingController {
         for( i = 0; i < listPane.size(); i++) {
             if (listPane.get(i).getChildren().contains(b)) {
                 stackpane.getChildren().remove(listPane.get(i));
+                if (i + 1 == 2) {
+                    pane3.getChildren().addAll(ticketInfor);
+                }
                 break;
             }
         }
         if(!stackpane.getChildren().contains(listPane.get(i+1))) {
             stackpane.getChildren().addAll(listPane.get(i + 1));
-            if (i + 1 == 2) {
-                pane3.getChildren().add(ticketInfor);
-            }
         }
 
     }

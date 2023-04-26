@@ -50,7 +50,7 @@ public class MovieManager {
         this.movieList = movieList;
     }
     public Movie getMovieById(String id) {
-        Movie movie = new Movie();
+        Movie movie = null;
         for (Movie m : this.movieList) {
             if (m.getId().equals(id)) {
                 movie = m;

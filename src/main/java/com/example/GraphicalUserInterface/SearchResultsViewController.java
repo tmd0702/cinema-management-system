@@ -2,12 +2,14 @@ package com.example.GraphicalUserInterface;
 
 import MovieManager.Movie;
 import javafx.collections.FXCollections;
+import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.geometry.Insets;
 import javafx.scene.control.*;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
+import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
@@ -111,7 +113,7 @@ public class SearchResultsViewController implements Initializable {
         resultsContainer.getChildren().clear();
         for (String key : searchResults.keySet()) {
             Movie movie = main.getMovieManagementProcessor().getMovieManager().getMovieById(key);
-            if (movie.getGenres().toString().contains(filterGenre) && movie.getLanguage().contains(filterLanguage)) {
+            if (movie != null && movie.getGenres().toString().contains(filterGenre) && movie.getLanguage().contains(filterLanguage)) {
                 HBox movieContainer = new HBox();
                 movieContainer.setPrefHeight(220);
                 movieContainer.setPrefWidth(resultsContainer.getPrefWidth());
@@ -120,6 +122,7 @@ public class SearchResultsViewController implements Initializable {
                 poster.setPreserveRatio(true);
                 poster.setFitWidth(resultsContainer.getPrefWidth() / 3.2);
                 poster.setFitHeight(movieContainer.getPrefHeight());
+//                System.out.println(movie.getTitle() + " " + movie.getPosterPath());
                 if (movie.getPosterImage().getProgress() == 1 && !movie.getPosterImage().isError()) {
                     poster.setImage(movie.getPosterImage());
                 } else {
@@ -143,6 +146,18 @@ public class SearchResultsViewController implements Initializable {
                 movieContentInfo.getChildren().add(overview);
                 movieContainer.getChildren().add(poster);
                 movieContainer.getChildren().add(movieContentInfo);
+                poster.setOnMouseClicked(new EventHandler<MouseEvent>()  {
+                    @Override
+                    public void handle(MouseEvent mouseEvent) {
+                        Main.getInstance().setMovieOnDetail(movie);
+                        //main.setMovieOnDetail(new Movie("MOV1000", "Toy Story", "Led by Woody, Andy's toys live happily in his room until Andy's birthday brings Buzz Lightyear onto the scene. Afraid of losing his place in Andy's heart, Woody plots against Buzz. But when circumstances separate Buzz and Woody from their owner, the duo eventually learns to put aside their differences.", "ASDS", 100, 90, new Date(), "https://image.tmdb.org/t/p/original/7G9915LfUQ2lVfwMEEhDsn3kT4B.jpg", "https://image.tmdb.org/t/p/original/9FBwqcd9IRruEDUrTdcaafOMKUq.jpg"));
+                        try {
+                            Main.getInstance().changeScene("movie-detail-view.fxml");
+                        } catch (IOException e) {
+                            System.out.println(e);
+                        }
+                    }
+                });
                 movieContainerList.add(movieContainer);
                 resultsContainer.getChildren().add(movieContainer);
             }

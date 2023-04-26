@@ -6,9 +6,9 @@ import os
 import json
 class Database:
     def __init__(self):
-        self.movies_metadata_cleaned_df = pd.read_csv("D:/4hb-db/movies_metadata_cleaned.csv")
-        self.movies_data = pd.read_csv("D:/4hb-db/movies_metadata.csv")
-        self.keywords_df = pd.read_csv("D:/4hb-db/keywords.csv")
+        self.movies_metadata_cleaned_df = pd.read_csv("../../resources/4hb-data/movies_metadata_cleaned.csv")
+        # self.movies_data = pd.read_csv("../resources/4hb-data/movies_metadata.csv")
+        self.keywords_df = pd.read_csv("../../resources/4hb-data/keywords.csv")
         for index, row in self.keywords_df.iterrows():
             try:
                 self.keywords_df.loc[index, 'keywords'] = row.iloc[1].replace("{'", '{"').replace("':", '":').replace(
@@ -56,7 +56,7 @@ class Database:
 
     def get_keywords_id_map(self):
         return self.keywords_id_map
-    def get_movies_data(self):
-        return self.movies_data
+    # def get_movies_data(self):
+    #     return self.movies_data
     def get_movies_metadata_cleaned_df(self):
         return self.movies_metadata_cleaned_df

@@ -204,6 +204,7 @@ public class IndexViewController implements Initializable {
                 @Override
                 public void handle(MouseEvent event) {
                     try {
+                        main.setMovieOnBooking(movie);
                         main.changeScene("booking-form.fxml");
                     } catch (IOException e) {
                         System.out.println(e);
@@ -226,6 +227,7 @@ public class IndexViewController implements Initializable {
             bookingBtn.setOpacity(0);
             bookingBtn.setVisible(false);
             bookingBtn.setLayoutY(220);
+            //bookingBtn.setDisable(true);
             movieView.setStyle("-fx-background-radius:30%;");
             movieView.getChildren().add(poster);
             movieView.getChildren().add(bookingBtn);

@@ -20,6 +20,7 @@ public class SearchEngine {
         String inputLine = "", scores = "";
         JSONObject jo = new JSONObject();
         String url = String.format("http://103.42.57.126:8085/%s?input=%s", type, input);
+        System.out.println(url);
         try {
             URL keywordsSearchingURL = new URL(url);
             URLConnection keywordsSearchingHTTP = keywordsSearchingURL.openConnection();
@@ -28,6 +29,7 @@ public class SearchEngine {
 
             while ((inputLine = in.readLine()) != null)
                 scores = inputLine;
+            System.out.println("scores" + " " + scores);
             jo = new JSONObject(scores);
             in.close();
         } catch (Exception e) {

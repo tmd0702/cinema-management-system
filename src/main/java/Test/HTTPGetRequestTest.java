@@ -7,7 +7,6 @@ import java.net.URL;
 import Utils.Utils.*;
 import java.net.URLConnection;
 import java.util.HashMap;
-
 import org.json.JSONObject;
 public class HTTPGetRequestTest{
     public static String getKeywordsSearchingResults() {
@@ -29,9 +28,11 @@ public class HTTPGetRequestTest{
     }
     public static void main(String[] args) {
         String tmp = getKeywordsSearchingResults();
+        System.out.println(tmp);
         JSONObject jo = new JSONObject(tmp);
-        System.out.println(jo.toString());
-        HashMap<String, Double> scores = Utils.Utils.sortMapByValue(Utils.Utils.jsonToMap(jo));
+        System.out.println(jo);
+        //HashMap<String, Double> scores = Utils.Utils.sortMapByValue(Utils.Utils.jsonToMap(jo));
+        //System.out.println(scores);
     }
 
 }

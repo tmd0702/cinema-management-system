@@ -6,6 +6,7 @@ import MovieManager.Movie;
 import SearchEngine.SearchEngine;
 import UserManager.User;
 import javafx.application.Application;
+import javafx.scene.image.Image;
 import javafx.application.Preloader;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Scene;
@@ -23,6 +24,8 @@ public class Main extends Application {
     private User signedInUser;
     private boolean nowShowingMoviesTabActive, comingSoonMoviesTabActive;
     private Movie movieOnDetail;
+    private Movie movieOnBooking;
+
     private String queryOnSearching;
     private FiltererProcessor filtererProcessor;
 //    private Config config;
@@ -39,6 +42,12 @@ public class Main extends Application {
         nowShowingMoviesTabActive = false;
         comingSoonMoviesTabActive = false;
         searchEngine = new SearchEngine();
+    }
+    public void setMovieOnBooking(Movie movie){
+        movieOnBooking = movie;
+    }
+    public Movie getMovieOnBooking(){
+        return movieOnBooking;
     }
     public FiltererProcessor getFiltererProcessor() {
         return this.filtererProcessor;

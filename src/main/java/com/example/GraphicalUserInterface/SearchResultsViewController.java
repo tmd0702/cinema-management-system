@@ -166,7 +166,7 @@ public class SearchResultsViewController implements Initializable {
     }
     public void searchResultsInit() {
         searchResults = main.getSearchEngine().getSearchResults(inputField.getText(), "search_engine");//"semantic_searching");
-        System.out.println(searchResults);
+        System.out.println("results " + searchResults);
         resultsContainer.setSpacing(20);
         displaySearchResults();
 //        resultsContainer.setPrefHeight(pageContainer.getPrefHeight());

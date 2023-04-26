@@ -64,14 +64,13 @@ if __name__ == "__main__":
     metadata.drop("belongs_to_collection", axis=1, inplace=True)
     metadata = metadata.replace(np.nan, None)
     # # metadata = metadata.loc[metadata['release_date'] > '2010']
-    # for index, row in metadata.iterrows():
-    #     if themoviedb_url_checker(row.backdrop_path) == True and themoviedb_url_checker(row.poster_path) == True:
-    #         print(row.backdrop_path, row.poster_path)
-    #         vals = (row.id, row.title, row.overview, row.release_date, row.original_language, row.runtime, row.status, 0, row.poster_path, row.backdrop_path, row.revenue, row.tagline, row.vote_count, row.vote_average)
-    #         db.insert_movies(vals)
-    #
-    #     else:
-    #         print(index, 'error')
+    for index, row in metadata.iterrows():
+        if themoviedb_url_checker(row.backdrop_path) == True and themoviedb_url_checker(row.poster_path) == True:
+            print(row.backdrop_path, row.poster_path)
+            vals = (row.id, row.title, row.overview, row.release_date, row.original_language, row.runtime, row.status, 0, row.poster_path, row.backdrop_path, row.revenue, row.tagline, row.vote_count, row.vote_average)
+            db.insert_movies(vals)
+        else:
+            print(index, 'error')
 
     for index, row in metadata.iterrows():
         genres = json.loads(row['genres'].replace("'", '"'))

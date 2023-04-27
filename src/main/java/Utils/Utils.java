@@ -88,7 +88,10 @@ public class Utils {
         }
         return map;
     }
-
+    public String normalizeColumnName(String oriColumnName) {
+        String normColumnName = oriColumnName.replace("_", " ");
+        return normColumnName;
+    }
     public static List<Object> toList(JSONArray array) throws JSONException {
         List<Object> list = new ArrayList<Object>();
         for(int i = 0; i < array.length(); i++) {

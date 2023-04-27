@@ -2,8 +2,7 @@ package Database;
 
 import Utils.StatusCode;
 
-import java.sql.Connection;
-import java.sql.Statement;
+import java.sql.*;
 import java.util.ArrayList;
 import java.util.HashMap;
 public abstract class Processor {
@@ -74,5 +73,32 @@ public abstract class Processor {
             System.out.println(e);
             return StatusCode.BAD_REQUEST;
         }
+    }
+    public ArrayList<ArrayList<String>> select (String table) {
+        String query = String.format("SELECT * FROM %s", table);
+        ArrayList<ArrayList<String>> result = new ArrayList<ArrayList<String>>();
+
+        try {
+            Statement st = getConnector().createStatement();
+            ResultSet rs = st.executeQuery(query);
+            ResultSetMetaData rsmd = rs.getMetaData();
+            ArrayList<String> columnNames = new ArrayList<String>();
+            for (int i=1; i <= rsmd.getColumnCount(); ++i) {
+                System.out.println(rsmd.getColumnName(i));
+                columnNames.add(rsmd.getColumnName(i));
+            }
+            result.add(columnNames);
+            while (rs.next()) {
+                ArrayList<String> val = new ArrayList<String>();
+                for (String columnName : columnNames) {
+                    val.add(rs.getString(columnName));
+                }
+                result.add(val);
+            }
+            st.close();
+        } catch (Exception e) {
+            System.out.println(e);
+        }
+        return result;
     }
 }

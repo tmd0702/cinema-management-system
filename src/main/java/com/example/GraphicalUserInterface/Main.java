@@ -2,6 +2,7 @@ package com.example.GraphicalUserInterface;
 import Config.Config;
 import Database.FiltererProcessor;
 import Database.MovieManagementProcessor;
+
 import MovieManager.Movie;
 import SearchEngine.SearchEngine;
 import UserManager.User;

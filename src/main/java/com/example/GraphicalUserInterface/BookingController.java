@@ -20,7 +20,7 @@ import javafx.scene.paint.Color;
 import javafx.scene.shape.ObservableFaceArray;
 import javafx.scene.shape.TriangleMesh;
 import javafx.scene.text.Font;
-//import Database.BookingProcessor;
+import Database.BookingProcessor;
 import java.io.IOException;
 import java.net.URL;
 import java.sql.CallableStatement;
@@ -30,6 +30,8 @@ import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import javafx.animation.*;
 import java.text.SimpleDateFormat;
+
+import javafx.stage.Screen;
 import javafx.util.Duration;
 
 import java.time.format.DateTimeFormatter;
@@ -38,7 +40,6 @@ import java.util.*;
 
 public class BookingController {
     //page1
-
     @FXML
     private Button home;
     @FXML
@@ -109,6 +110,8 @@ public class BookingController {
     @FXML
     private  Label seatID;
     @FXML
+    private Label screenName;
+    @FXML
     private Label price;
     @FXML
     private Label combo;
@@ -147,8 +150,6 @@ public class BookingController {
     private Label numberOfCombo;
     @FXML
     private Label countdownLabel;
-    private final int COUNTDOWN_DURATION = 15* 60;
-    private long startTime;
 
     private ArrayList<Button> CaraButton = new ArrayList<Button>();
     private ArrayList<Button> CheeseButton = new ArrayList<Button>();
@@ -162,11 +163,13 @@ public class BookingController {
     private AnchorPane pane4;
     @FXML
     private ImageView image4;
+    private BookingProcessor bookingProcessor;
 
     @FXML
      public void initialize(){
         ConstructHomButton();
         ConstructPane();
+
         //page1
         ConstructDateButton();
         FormartDateButton();
@@ -176,11 +179,16 @@ public class BookingController {
         //page2
         ConstructSeatGrid();
         ConstructTicketInfor();
+        ConstructBookingProcessor();
         //page3
         ConstructItemsButton();
         ConstructItem();
         //page4
         setCountDown();
+    }
+    public void ConstructBookingProcessor(){
+
+        this.bookingProcessor = new BookingProcessor();
     }
     public void ConstructHomButton(){
         home.setOnMouseClicked(new EventHandler<MouseEvent>() {
@@ -351,7 +359,6 @@ public class BookingController {
              }
              seatID.setText(listseat);
              calculatePrice();
-
              calculateTotal();
      }
      public void calculatePrice(){
@@ -456,6 +463,7 @@ public class BookingController {
                 stackpane.getChildren().remove(listPane.get(i));
                 if(i-1 == 1){
                     pane2.getChildren().addAll(ticketInfor);
+                    setScreenTicketInfor();
                 }
                 break;
             }
@@ -467,6 +475,10 @@ public class BookingController {
         }
 
     }
+    public void setScreenTicketInfor(){
+        bookingProcessor.getScreen();
+        this.screenName.setText( bookingProcessor.getBookingInfor().getScreen());
+    }
     public  void handleswitchPageafter(ActionEvent event){
         Button b = (Button) event.getSource();
         int i;
@@ -475,6 +487,7 @@ public class BookingController {
                 stackpane.getChildren().remove(listPane.get(i));
                 if (i + 1 == 2) {
                     pane3.getChildren().addAll(ticketInfor);
+                    setScreenTicketInfor();
                 }
                 break;
             }
@@ -511,7 +524,6 @@ public class BookingController {
         );
         timeline.play();
     }
-
     public void onButtonClicked(){
 
     }

@@ -74,7 +74,7 @@
                         <ComboBox layoutX="-1.0" layoutY="-4.0" prefHeight="26.0" prefWidth="87.0" />
                         <TextField layoutX="108.0" layoutY="-4.0" prefHeight="26.0" prefWidth="280.0" />
                         <CheckBox layoutX="86.0" layoutY="45.0" mnemonicParsing="false" text="Remember Card information" textFill="WHITE" />
-                        <Button layoutX="144.0" layoutY="106.0" mnemonicParsing="false" onAction="#handleswitchPageafter" prefHeight="35.0" prefWidth="105.0" style="-fx-background-color: #8D090D;" text="Pucharse" textFill="WHITE">
+                        <Button layoutX="144.0" layoutY="106.0" mnemonicParsing="false" prefHeight="35.0" prefWidth="105.0" style="-fx-background-color: #8D090D;" text="Pucharse" textFill="WHITE">
                            <font>
                               <Font size="18.0" />
                            </font>
@@ -210,7 +210,7 @@
                   </Label>
                   <Label fx:id="nameCinema" layoutX="141.0" layoutY="126.0" text="Theater" textFill="#fcfcfc" />
                   <Label fx:id="showTime" layoutX="141.0" layoutY="152.0" text="time" textFill="#fcfcfc" />
-                  <Label layoutX="140.0" layoutY="177.0" text="ScreenID" textFill="#fcfcfc" />
+                  <Label fx:id="screenName" layoutX="140.0" layoutY="177.0" text="ScreenID" textFill="#fcfcfc" />
                   <Label fx:id="seatID" layoutX="139.0" layoutY="207.0" text="SeatsID" textFill="#fcfcfc" />
                   <Label fx:id="price" layoutX="141.0" layoutY="252.0" text="Price" textFill="#fcfcfc" />
                   <Label fx:id="combo" layoutX="139.0" layoutY="279.0" text="Comboi" textFill="#fcfcfc" />

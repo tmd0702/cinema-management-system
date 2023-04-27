@@ -11,4 +11,5 @@ module com.example.cinemamanagementsystem {
     requires org.json;
     opens com.example.GraphicalUserInterface to javafx.fxml;
     exports com.example.GraphicalUserInterface;
+
 }

@@ -17,7 +17,7 @@ import java.net.URL;
 import java.util.ArrayList;
 import java.util.ResourceBundle;
 
-public class MovieListViewController implements Initializable {
+public class   MovieListViewController implements Initializable {
     private Main main;
     private ArrayList<String> tabs;
     @FXML

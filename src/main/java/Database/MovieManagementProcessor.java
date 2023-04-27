@@ -20,7 +20,7 @@ public class MovieManagementProcessor extends Processor {
         return this.movieManager;
     }
     public void getMovies() {
-        String query = "SELECT * FROM MOVIES LIMIT 100";// LIMIT 100";
+        String query = "SELECT * FROM MOVIES LIMIT 30";// LIMIT 30";
         ArrayList<Movie> tmpList = new ArrayList<Movie>();
         try {
             Statement st = getConnector().createStatement();

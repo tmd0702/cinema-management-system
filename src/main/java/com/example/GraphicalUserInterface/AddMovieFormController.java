@@ -3,6 +3,7 @@ package com.example.GraphicalUserInterface;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
+import javafx.fxml.FXML;
 import javafx.scene.control.ComboBox;
 import javafx.scene.control.Label;
 
@@ -10,7 +11,9 @@ import java.net.URL;
 import java.util.ResourceBundle;
 
 public class AddMovieFormController {
+    @FXML
     private ComboBox<String> comboBox_mstatus;
+    @FXML
     private Label label_mstatus;
     ObservableList<String> list_mstatus = FXCollections.observableArrayList("Đã chiếu", "Đang chiếu", "Sắp chiếu");
 

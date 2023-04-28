@@ -1,24 +1,23 @@
 package com.example.GraphicalUserInterface;
 
-import Database.AccountProcessor;
+import Database.AccountManagementProcessor;
 import Database.Processor;
 import ImageManager.ImageManager;
 import javafx.application.Application;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Scene;
-import javafx.scene.image.Image;
 import javafx.stage.Stage;
 
 import java.io.IOException;
 
 public class ManagementMain extends Application {
     private static Stage stage;
-    private Processor accountProcessor;
+    private Processor accountManagementProcessor;
     private ImageManager imageManager;
     private static ManagementMain managementMain;
     public ManagementMain() {
         managementMain = this;
-        accountProcessor = new AccountProcessor();
+        accountManagementProcessor = new AccountManagementProcessor();
         imageManager = new ImageManager();
     }
     public static synchronized ManagementMain getInstance() {
@@ -34,8 +33,8 @@ public class ManagementMain extends Application {
     public ImageManager getImageManager() {
         return this.imageManager;
     }
-    public Processor getAccountProcessor() {
-        return this.accountProcessor;
+    public Processor getAccountManagementProcessor() {
+        return this.accountManagementProcessor;
     }
     @Override
     public void start(Stage primaryStage) throws IOException {

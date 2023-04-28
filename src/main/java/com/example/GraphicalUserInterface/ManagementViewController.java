@@ -1,5 +1,7 @@
 package com.example.GraphicalUserInterface;
 
+import javafx.beans.value.ChangeListener;
+import javafx.beans.value.ObservableValue;
 import javafx.event.Event;
 import javafx.event.EventHandler;
 import javafx.fxml.FXML;
@@ -11,10 +13,8 @@ import javafx.scene.image.ImageView;
 import javafx.scene.input.MouseButton;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.*;
-import javafx.scene.paint.Color;
 import javafx.scene.text.TextAlignment;
 import javafx.util.converter.NumberStringConverter;
-import org.controlsfx.control.spreadsheet.Grid;
 
 import java.net.URL;
 import java.util.ArrayList;
@@ -23,7 +23,8 @@ import java.util.ResourceBundle;
 public class ManagementViewController implements Initializable {
     private ArrayList<Button> tabPanels;
     private Label cellOnClick;
-    private int cellOnClickRowIndex, cellOnClickColumnIndex;
+    private int cellOnClickRowIndex, cellOnClickColumnIndex, rowPerPageNum, totalPageNum, totalRowNum, currentPage;
+
     @FXML
     private HBox menuBox;
     @FXML
@@ -76,6 +77,7 @@ public class ManagementViewController implements Initializable {
     private ScrollPane dataViewScrollPane;
     public ManagementViewController() {
         main = ManagementMain.getInstance();
+
         tabPanels = new ArrayList<Button>();
         tabPanels.add(homeTabPanel);
         tabPanels.add(movieTabPanel);
@@ -83,28 +85,69 @@ public class ManagementViewController implements Initializable {
         tabPanels.add(theaterTabPanel);
         tabPanels.add(revenueTabPanel);
         tabPanels.add(promotionTabPanel);
+
         insertBtn = new ImageView(main.getImageManager().getInsertIconImage());
         deleteBtn = new ImageView(main.getImageManager().getDeleteIconImage());
         refreshBtn = new ImageView(main.getImageManager().getRefreshIconImage());
         updateBtn = new ImageView(main.getImageManager().getUpdateIconImage());
+
+        totalRowNum = main.getAccountManagementProcessor().count();
+    }
+    public void setTotalPageNum(int totalPageNum) {
+        this.totalPageNum = totalPageNum;
+        totalPageNumLabel.setText("of " + totalPageNum);
     }
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
         managementTabPaneInit();
         logoImageViewInit();
+        pagingToolbarInit();
         accountManagementViewInit();
-
+        menuBoxInit();
     }
-    public void pagingToolbarInit(ArrayList<ArrayList<String>> data) {
-        int totalRowNum = data.size() - 1;
-        int rowPerPageNum = 11;
-        int totalPageNum = Math.ceilDiv(totalRowNum, rowPerPageNum);
+    public void pagingToolbarInit() {
+//        numRowPerPageInputField.setTextFormatter(new TextFormatter(new NumberStringConverter()));
 
-        numRowPerPageInputField.setTextFormatter(new TextFormatter(new NumberStringConverter()));
-        numRowPerPageInputField.setText("11");
-        totalPageNumLabel.setText("of " + totalPageNum);
-        pageInputField.setText("1");
-
+//        numRowPerPageInputField.textProperty().addListener((observable, oldValue, newValue) -> {
+//            System.out.println("textfield changed from " + oldValue + " to " + newValue);
+//        });
+        numRowPerPageInputField.focusedProperty().addListener(new ChangeListener<Boolean>()
+        {
+            @Override
+            public void changed(ObservableValue<? extends Boolean> arg0, Boolean oldPropertyValue, Boolean newPropertyValue)
+            {
+                try {
+                    if (newPropertyValue) {
+                        System.out.println("Textfield on focus");
+                    } else {
+                        setRowPerPageNum(Integer.parseInt(numRowPerPageInputField.getText()));
+                        reRenderPage();
+                    }
+                } catch (Exception e) {
+                    System.out.println(e);
+                }
+            }
+        });
+        pageInputField.focusedProperty().addListener(new ChangeListener<Boolean>()
+        {
+            @Override
+            public void changed(ObservableValue<? extends Boolean> arg0, Boolean oldPropertyValue, Boolean newPropertyValue)
+            {
+                try {
+                    if (newPropertyValue) {
+                        System.out.println("Textfield on focus");
+                    } else {
+                        setCurrentPage(Integer.parseInt(pageInputField.getText()));
+                        reRenderPage();
+                    }
+                } catch (Exception e) {
+                    System.out.println(e);
+                }
+            }
+        });
+        setRowPerPageNum(11);
+        setTotalPageNum(Math.ceilDiv(totalRowNum, rowPerPageNum));
+        setCurrentPage(1);
         pagingToolbarRefreshBtn.setImage(main.getImageManager().getRefreshIconImage());
     }
     public void menuBoxInit() {
@@ -179,8 +222,17 @@ public class ManagementViewController implements Initializable {
             }
         });
     }
-    public void accountManagementViewInit() {
-        ArrayList<ArrayList<String>> result = main.getAccountProcessor().select("USERS");
+    public void setCurrentPage(int currentPage) {
+        this.currentPage = currentPage;
+        pageInputField.setText(Integer.toString(currentPage));
+    }
+    public void setRowPerPageNum(int rowPerPageNum) {
+        this.rowPerPageNum = rowPerPageNum;
+        numRowPerPageInputField.setText(Integer.toString(rowPerPageNum));
+    }
+    public void reRenderPage() {
+        dataView.getChildren().clear();
+        ArrayList<ArrayList<String>> result = main.getAccountManagementProcessor().select((currentPage - 1) * rowPerPageNum, rowPerPageNum);
         ArrayList<String> columnNames = result.get(0);
 //        dataView.setVgap(10);
 //        dataView.setHgap(10);
@@ -208,8 +260,53 @@ public class ManagementViewController implements Initializable {
             }
         }
         dataViewScrollPane.setContent(dataView);
-        menuBoxInit();
-        pagingToolbarInit(result);
+    }
+    @FXML
+    public void onPageInputFieldEnterKeyPress() {
+        try {
+            setCurrentPage(Math.max(Math.min(Integer.parseInt(pageInputField.getText()), totalPageNum), 1));
+            reRenderPage();
+        } catch(Exception e) {
+            System.out.println(e);
+        }
+    }
+    @FXML
+    public void onNumRowPerPageInputFieldEnterKeyPress() {
+        try {
+            setRowPerPageNum(Integer.parseInt(numRowPerPageInputField.getText()));
+            setTotalPageNum(Math.ceilDiv(totalRowNum, rowPerPageNum));
+            setCurrentPage(Math.min(currentPage, totalPageNum));
+            reRenderPage();
+        } catch (Exception e) {
+            System.out.println(e);
+        }
+    }
+    @FXML
+    public void nextBtnOnClick() {
+        setCurrentPage(Math.min(currentPage + 1, totalPageNum));
+        pageInputField.setText(Integer.toString(currentPage));
+        reRenderPage();
+    }
+    @FXML
+    public void backBtnOnClick() {
+        setCurrentPage(Math.max(currentPage - 1, 1));
+        pageInputField.setText(Integer.toString(currentPage));
+        reRenderPage();
+    }
+    @FXML
+    public void backToHeadBtnOnClick() {
+        setCurrentPage(1);
+        pageInputField.setText(Integer.toString(currentPage));
+        reRenderPage();
+    }
+    @FXML
+    public void nextToTailBtnOnClick() {
+        setCurrentPage(totalPageNum);
+        pageInputField.setText(Integer.toString(currentPage));
+        reRenderPage();
+    }
+    public void accountManagementViewInit() {
+        reRenderPage();
     }
     public void managementTabPaneInit() {
         for (Button tabPanel : tabPanels) {

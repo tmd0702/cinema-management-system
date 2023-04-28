@@ -4,6 +4,7 @@ import Utils.StatusCode;
 import Utils.Validator;
 
 import java.text.SimpleDateFormat;
+import java.util.HashMap;
 import java.util.Map;
 import Exception.*;
 import java.sql.*;
@@ -26,7 +27,7 @@ public class SignupProcessor extends AuthenticationProcessor {
         }
 
     }
-    public StatusCode handleSignupAction(Map<String, String> signupInfo) {
+    public StatusCode handleSignupAction(HashMap<String, String> signupInfo) {
         try {
             if (!Validator.validateEmail(signupInfo.get("email"))) {
                 throw new InvalidEmailException(signupInfo.get("email") + " is invalid!");

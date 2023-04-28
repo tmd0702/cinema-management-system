@@ -13,6 +13,7 @@ public class MovieManagementProcessor extends Processor {
     private MovieManager movieManager;
     public MovieManagementProcessor() {
         super();
+        setDefaultDatabaseTable("MOVIES");
         movieManager = new MovieManager();
 
     }

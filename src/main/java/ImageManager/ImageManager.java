@@ -8,7 +8,6 @@ public class ImageManager {
     private Image logoImage, insertIconImage, deleteIconImage, updateIconImage, refreshIconImage;
     public ImageManager() {
         this.logoImage = new Image("https://docs.google.com/uc?id=1F2pXOLfvuynr9JcURTR5Syg7N1YdPJXK");
-        System.out.println(ManagementMain.class.getResource("assets/images/add-icon.png").getPath().substring(1));
         this.insertIconImage = new Image(ManagementMain.class.getResource("assets/images/add-icon.png").getPath().substring(1));
         this.updateIconImage = new Image(ManagementMain.class.getResource("assets/images/edit-square-icon.png").getPath().substring(1));
         this.deleteIconImage = new Image(ManagementMain.class.getResource("assets/images/delete-icon.png").getPath().substring(1));

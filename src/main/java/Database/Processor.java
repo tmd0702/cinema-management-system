@@ -1,5 +1,6 @@
 package Database;
 
+import Utils.ColumnType;
 import Utils.StatusCode;
 
 import java.sql.*;
@@ -82,11 +83,16 @@ public abstract class Processor {
             return StatusCode.BAD_REQUEST;
         }
     }
-    public ArrayList<ArrayList<String>> select (int from, int quantity) {
+    public ArrayList<ArrayList<String>> select (int from, int quantity, String queryCondition) {
         String query = String.format("SELECT * FROM %s", defaultDatabaseTable);
+        if (queryCondition.length() > 0) {
+            query = query + " WHERE " + queryCondition;
+        }
         if (quantity > -1) {
             query = query + String.format(" LIMIT %d, %d", from, quantity);
         }
+
+        System.out.println(query);
         ArrayList<ArrayList<String>> result = new ArrayList<ArrayList<String>>();
 
         try {
@@ -94,11 +100,13 @@ public abstract class Processor {
             ResultSet rs = st.executeQuery(query);
             ResultSetMetaData rsmd = rs.getMetaData();
             ArrayList<String> columnNames = new ArrayList<String>();
+            ArrayList<String> columnTypes = new ArrayList<String>();
             for (int i=1; i <= rsmd.getColumnCount(); ++i) {
-                System.out.println(rsmd.getColumnName(i));
                 columnNames.add(rsmd.getColumnName(i));
+                columnTypes.add(ColumnType.getByValue(rsmd.getColumnType(i)).getDescription());
             }
             result.add(columnNames);
+            result.add(columnTypes);
             while (rs.next()) {
                 ArrayList<String> val = new ArrayList<String>();
                 for (String columnName : columnNames) {
@@ -112,8 +120,11 @@ public abstract class Processor {
         }
         return result;
     }
-    public int count() {
+    public int count(String queryCondition) {
         String query = String.format("SELECT COUNT(*) FROM %s", defaultDatabaseTable);
+        if (queryCondition.length() > 0) {
+            query = query + " WHERE " + queryCondition;
+        }
         int count = 0;
         try {
             Statement st = getConnector().createStatement();

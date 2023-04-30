@@ -3,8 +3,9 @@ package Utils;
 import Database.AccountManagementProcessor;
 import javafx.scene.control.RadioButton;
 
+import java.sql.Date;
+import java.text.SimpleDateFormat;
 import java.time.format.DateTimeFormatter;
-import java.util.Date;
 import java.util.HashMap;
 
 public class AddFakeDatabase {
@@ -14,13 +15,13 @@ public class AddFakeDatabase {
         this.accountManagementProcessor = new AccountManagementProcessor();
         this.idGenerator = new IdGenerator();
     }
-    public void addFakeAccounts() {
+    public void addFakeAccounts() throws Exception {
         HashMap<String, String> account = new HashMap<String, String>();
         account.put("FIRST_NAME", "Duc");
         account.put("LAST_NAME", "Truong");
         account.put("EMAIL", "mduc017@gmail.com");
         account.put("PHONE", "0123456789");
-        account.put("DOB", "2000-02-07");
+        account.put("DOB", "2000-07-02");
         account.put("ADDRESS", "test");
         account.put("GENDER", "M");
         account.put("USER_ROLE", "admin");

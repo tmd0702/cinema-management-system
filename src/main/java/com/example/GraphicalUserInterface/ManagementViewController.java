@@ -24,12 +24,12 @@ import javafx.util.Duration;
 import java.net.URL;
 import java.util.ArrayList;
 import java.util.ResourceBundle;
-import java.util.concurrent.CompletableFuture;
-import java.util.concurrent.TimeUnit;
 
 public class ManagementViewController implements Initializable {
     private ArrayList<Button> tabPanels;
     private String queryCondition;
+    private ArrayList<String> queryConditionFormatStrings;
+    private ArrayList<String> queryConditionValues;
     private Label cellOnClick;
     private int cellOnClickRowIndex, cellOnClickColumnIndex, rowPerPageNum, totalPageNum, totalRowNum, currentPage;
     private boolean isSearchFieldActive;
@@ -85,6 +85,8 @@ public class ManagementViewController implements Initializable {
     private ScrollPane dataViewScrollPane;
     public ManagementViewController() {
         queryCondition = "";
+        queryConditionValues = new ArrayList<String>();
+        queryConditionFormatStrings = new ArrayList<String>();
         isSearchFieldActive = false;
         main = ManagementMain.getInstance();
 
@@ -254,6 +256,34 @@ public class ManagementViewController implements Initializable {
         this.rowPerPageNum = rowPerPageNum;
         numRowPerPageInputField.setText(Integer.toString(rowPerPageNum));
     }
+    public void prepareQueryConditions(ColumnType columnType) {
+        if (columnType == ColumnType.VARCHAR || columnType == ColumnType.DATE || columnType == ColumnType.TIMESTAMP) {
+            queryConditionFormatStrings.add("%s LIKE '%s'");
+        } else if (columnType == ColumnType.INTEGER || columnType == ColumnType.FLOAT || columnType == ColumnType.DOUBLE) {
+            queryConditionFormatStrings.add("%s = %s");
+        }
+        queryConditionValues.add("");
+    }
+    public void setConditionValue(int i, String newValue, ColumnType columnType) {
+           if (columnType == ColumnType.VARCHAR || columnType == ColumnType.DATE || columnType == ColumnType.TIMESTAMP) {
+               queryConditionValues.set(i, "%" + newValue + "%");
+           } else if (columnType == ColumnType.INTEGER || columnType == ColumnType.FLOAT || columnType == ColumnType.DOUBLE) {
+               queryConditionValues.set(i, newValue);
+           }
+    }
+    public String constructQueryCondition(ArrayList<String> columnNames) {
+        String queryCondition = "";
+        for (int i=0;i<queryConditionFormatStrings.size(); ++i) {
+            if (queryConditionValues.get(i).equals("")|| queryConditionValues.get(i).equals("%%")) continue;
+
+            if (queryCondition == "") {
+                queryCondition += String.format(queryConditionFormatStrings.get(i), columnNames.get(i), queryConditionValues.get(i));
+            } else {
+                queryCondition += " AND " + String.format(queryConditionFormatStrings.get(i), columnNames.get(i), queryConditionValues.get(i));
+            }
+        }
+        return queryCondition;
+    }
     public void renderTableOutline(ArrayList<ArrayList<String>> data) {
         ArrayList<String> columnNames = data.get(0);
         ArrayList<String> columnTypes = data.get(1);
@@ -305,8 +335,10 @@ public class ManagementViewController implements Initializable {
                         label.setPrefHeight(0);
                         dataView.add(label, j, i);
                     } else {
+                        int finalJ = j;
                         Node searchInputField;
                         ColumnType currentColumnType = ColumnType.getByDescription(columnTypes.get(j - 1));
+                        prepareQueryConditions(currentColumnType);
                         if (currentColumnType == ColumnType.VARCHAR || currentColumnType == ColumnType.INTEGER || currentColumnType == ColumnType.DOUBLE) {
                             searchInputField = new TextField();
                             ((TextField) searchInputField).setMinHeight(0);
@@ -314,20 +346,27 @@ public class ManagementViewController implements Initializable {
                             ((TextField) searchInputField).setPrefWidth(40);
                             ((TextField) searchInputField).textProperty().addListener((observable, oldValue, newValue) -> {
                                 System.out.println("textfield changed from " + oldValue + " to " + newValue + " " + columnNames.get(GridPane.getColumnIndex(searchInputField) - 1));
-                                queryCondition = String.format("%s LIKE '%s'", columnNames.get(GridPane.getColumnIndex(searchInputField) - 1), "%" + newValue + "%");
+//                                queryCondition = String.format("%s LIKE '%s'", columnNames.get(GridPane.getColumnIndex(searchInputField) - 1), "%" + newValue + "%");
+                                setConditionValue(finalJ - 1, newValue.toString(), currentColumnType);
+                                queryCondition = constructQueryCondition(columnNames);
                                 reRenderPage(false);
                             });
                         } else if (currentColumnType == ColumnType.DATE || currentColumnType == ColumnType.TIMESTAMP) {
                             searchInputField = new DatePicker();
                             ((DatePicker) searchInputField).setMinHeight(0);
                             ((DatePicker) searchInputField).setPrefHeight(0);
+                               
                             ((DatePicker) searchInputField).setPrefWidth(((Label)dataView.getChildren().get(j)).getPrefWidth());
                             ((DatePicker) searchInputField).valueProperty().addListener((observable, oldValue, newValue) -> {
                                 System.out.println("datepicker changed from " + oldValue + " to " + newValue + " " + columnNames.get(GridPane.getColumnIndex(searchInputField) - 1));
-                                queryCondition = String.format("%s = '%s'", columnNames.get(GridPane.getColumnIndex(searchInputField) - 1), newValue);
-                                if (newValue.toString() == "null") {
-                                    queryCondition = "";
+
+                                if (newValue == null) {
+                                    setConditionValue(finalJ - 1, "", currentColumnType);
+                                } else {
+                                    setConditionValue(finalJ - 1, newValue.toString(), currentColumnType);
                                 }
+
+                                queryCondition = constructQueryCondition(columnNames);     
                                 reRenderPage(false);
                             });
                         } else {

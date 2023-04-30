@@ -13,7 +13,7 @@ public class BookingProcessor extends Processor{
         return this.bookingInfor;
     }
     public void getScreen() {
-        String query = String.format("SELECT * FROM SCHEDULE WHERE MOVIE_ID = %s AND THEATER_ID = %s AND TIME = %s",bookingInfor.getIdMovie(), bookingInfor.getNameCinema(),bookingInfor.getTime());
+        String query = String.format("SELECT * FROM SCHEDULE WHERE MOVIE_ID = %s AND THEATER_ID = %s AND TIME = %s;",bookingInfor.getIdMovie(), bookingInfor.getNameCinema(),bookingInfor.getTime());
         try {
             Statement stmt = getConnector().createStatement();
             ResultSet rs = stmt.executeQuery(query);

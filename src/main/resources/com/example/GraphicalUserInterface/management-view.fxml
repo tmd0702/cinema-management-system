@@ -10,7 +10,7 @@
 <?import javafx.scene.layout.HBox?>
 <?import javafx.scene.layout.VBox?>
 
-<AnchorPane prefHeight="400.0" prefWidth="600.0" style="-fx-pref-height: 600; -fx-pref-width: 900;" xmlns="http://javafx.com/javafx/19" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.example.GraphicalUserInterface.ManagementViewController">
+<AnchorPane fx:id="managementPage" prefHeight="400.0" prefWidth="600.0" style="-fx-pref-height: 600; -fx-pref-width: 900;" xmlns="http://javafx.com/javafx/19" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.example.GraphicalUserInterface.ManagementViewController">
    <children>
       <VBox fx:id="accountManagementView" layoutX="110.0" prefHeight="600.0" prefWidth="790.0">
          <children>

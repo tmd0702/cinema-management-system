@@ -1,6 +1,7 @@
 package com.example.GraphicalUserInterface;
 
 import Utils.ColumnType;
+import Utils.StatusCode;
 import javafx.animation.KeyFrame;
 import javafx.animation.Timeline;
 import javafx.beans.value.ChangeListener;
@@ -9,6 +10,7 @@ import javafx.collections.ObservableList;
 import javafx.event.Event;
 import javafx.event.EventHandler;
 import javafx.fxml.FXML;
+import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
 import javafx.geometry.Insets;
 import javafx.scene.Node;
@@ -21,8 +23,13 @@ import javafx.scene.layout.*;
 import javafx.scene.text.TextAlignment;
 import javafx.util.Duration;
 
+import java.io.IOException;
 import java.net.URL;
+import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
+import java.util.Date;
+import java.util.Optional;
 import java.util.ResourceBundle;
 
 public class ManagementViewController implements Initializable {
@@ -33,10 +40,13 @@ public class ManagementViewController implements Initializable {
     private Label cellOnClick;
     private int cellOnClickRowIndex, cellOnClickColumnIndex, rowPerPageNum, totalPageNum, totalRowNum, currentPage;
     private boolean isSearchFieldActive;
+    private ArrayList<ArrayList<String>> data;
     @FXML
     private HBox menuBox;
     @FXML
     private VBox accountManagementView;
+    @FXML
+    private AnchorPane managementPage;
     @FXML
     private ImageView insertBtn;
     @FXML
@@ -165,12 +175,70 @@ public class ManagementViewController implements Initializable {
     public void menuBoxInit() {
         insertBtn.setFitHeight(20);
         insertBtn.setFitWidth(20);
+        insertBtn.setOnMouseClicked(new EventHandler<MouseEvent>() {
+            @Override
+            public void handle(MouseEvent mouseEvent) {
+                try {
+                    System.out.println("insert btn clicked");
+                    accountManagementView.setVisible(false);
+                    managementPage.getChildren().add(FXMLLoader.load(getClass().getResource("add-account-form.fxml")));
+//                    managementPage.getChildren().set(0, FXMLLoader.load(getClass().getResource("add-account-form.fxml")));
+                    System.out.println(main.getNodeById("#addAccountForm"));
+                } catch (IOException e) {
+                    System.out.println(e);
+                }
+            }
+        });
         updateBtn.setFitHeight(20);
         updateBtn.setFitWidth(20);
+
+        updateBtn.setOnMouseClicked(new EventHandler<MouseEvent>() {
+            @Override
+            public void handle(MouseEvent mouseEvent) {
+                if (cellOnClick != null) {
+                    try {
+                        System.out.println("update btn clicked");
+                        accountManagementView.setVisible(false);
+                        managementPage.getChildren().add(FXMLLoader.load(getClass().getResource("update-account-form.fxml")));
+                        int rowIndex = GridPane.getRowIndex(cellOnClick);
+                        ((TextField) main.getNodeById("#idField")).setText(getRecordIdByRowIndex());
+                        ((TextField) main.getNodeById("#usernameField")).setText(data.get(rowIndex).get(1));
+                        ((TextField) main.getNodeById("#firstNameField")).setText(data.get(rowIndex).get(2));
+                        ((TextField) main.getNodeById("#lastNameField")).setText(data.get(rowIndex).get(3));
+                        ((DatePicker) main.getNodeById("#dateOfBirthField")).setValue(LocalDate.parse(data.get(rowIndex).get(4).substring(0, 10), DateTimeFormatter.ofPattern("yyyy-MM-dd")));
+                        ((ComboBox) main.getNodeById("#genderField")).setValue(data.get(rowIndex).get(5));
+                        ((TextField) main.getNodeById("#addressField")).setText(data.get(rowIndex).get(6));
+                        ((TextField) main.getNodeById("#phoneField")).setText(data.get(rowIndex).get(7));
+                        ((TextField) main.getNodeById("#emailField")).setText(data.get(rowIndex).get(8));
+                    } catch (IOException e) {
+                        System.out.println(e);
+                    }
+                }
+            }
+        });
+
         deleteBtn.setFitHeight(20);
         deleteBtn.setFitWidth(20);
+
+        deleteBtn.setOnMouseClicked(new EventHandler<MouseEvent>() {
+            @Override
+            public void handle(MouseEvent mouseEvent) {
+                if (cellOnClick != null) {
+                    deleteConfirmationAlert("Are you sure to delete this record?");
+                }
+            }
+        });
+
         refreshBtn.setFitHeight(20);
         refreshBtn.setFitWidth(20);
+
+        refreshBtn.setOnMouseClicked(new EventHandler<MouseEvent>() {
+            @Override
+            public void handle(MouseEvent mouseEvent) {
+                reRenderPage(false);
+            }
+        });
+
         menuBox.getChildren().add(insertBtn);
         menuBox.getChildren().add(updateBtn);
         menuBox.getChildren().add(deleteBtn);
@@ -178,6 +246,40 @@ public class ManagementViewController implements Initializable {
         menuBox.setSpacing(20);
 
     }
+    public String getRecordIdByRowIndex() {
+        int onClickedCellRowIndex = GridPane.getRowIndex(cellOnClick);
+        String id = data.get(onClickedCellRowIndex).get(0);
+        return id;
+
+    }
+
+    public void handleUpdateRecordRequest() {
+        String recordId = getRecordIdByRowIndex();
+        String queryCondition = String.format("ID = '%s'", recordId);
+    }
+    public void handleDeleteRecordRequest() {
+        String recordId = getRecordIdByRowIndex();
+        String queryCondition = String.format("ID = '%s'", recordId);
+        StatusCode status = main.getAccountManagementProcessor().delete(queryCondition);
+        if (status == StatusCode.OK) {
+            System.out.println("delete success");
+            reRenderPage(false);
+        } else {
+            System.out.println("delete failed");
+        }
+    }
+    public void deleteConfirmationAlert(String contentText) {
+        Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
+//        alert.setTitle("Confirmation");
+        alert.setContentText(contentText);//"Are you sure to delete this record?");
+        Optional<ButtonType> result = alert.showAndWait();
+        if (result.get() == ButtonType.OK) {
+            handleDeleteRecordRequest();
+        } else {
+            System.out.println("cancel");
+        }
+    }
+
     public void logoImageViewInit() {
         String imageSource = "https://docs.google.com/uc?id=1F2pXOLfvuynr9JcURTR5Syg7N1YdPJXK";
         Image logo = new Image(imageSource);
@@ -186,6 +288,22 @@ public class ManagementViewController implements Initializable {
         } else {
             logoImageView.setImage(logo);
         }
+    }
+    @FXML
+    public void cancelInsertBtnOnClick() {
+//        DialogPane cancelConfirmation = new DialogPane();
+        System.out.println("cancel");
+//        try {
+//            System.out.println("insert btn clicked");
+//            accountManagementView.getChildren().clear();
+//            accountManagementView.getChildren().add(FXMLLoader.load(getClass().getResource("add-account-form.fxml")));
+//        } catch (IOException e) {
+//            System.out.println(e);
+//        }
+    }
+    @FXML
+    public void saveInsertBtnOnClick() {
+        System.out.println("save");
     }
     public void gridPaneChangeRowStyle(int colNum, int rowIndex, String style) {
         for (int i=0;i<colNum;++i) {
@@ -310,7 +428,7 @@ public class ManagementViewController implements Initializable {
                                     }
                                 }
 //                                getNodeByPosition(1, 1).requestFocus();
-                                Timeline timeline = new Timeline(new KeyFrame(Duration.seconds(0.3), ae -> {
+                                Timeline timeline = new Timeline(new KeyFrame(Duration.seconds(0.4), ae -> {
                                     getNodeByPosition(1, 1).requestFocus();
                                 }));
                                 timeline.play();
@@ -393,15 +511,15 @@ public class ManagementViewController implements Initializable {
         totalRowNum = main.getAccountManagementProcessor().count(queryCondition);
         setTotalPageNum(Math.max(1, Math.ceilDiv(totalRowNum, rowPerPageNum)));
         setCurrentPage(Math.min(currentPage, totalPageNum));
-        ArrayList<ArrayList<String>> result = main.getAccountManagementProcessor().select((currentPage - 1) * rowPerPageNum, rowPerPageNum, queryCondition);
-        ArrayList<String> columnNames = result.get(0);
-        if (isInit) renderTableOutline(result);
+        data = main.getAccountManagementProcessor().select((currentPage - 1) * rowPerPageNum, rowPerPageNum, queryCondition);
+        ArrayList<String> columnNames = data.get(0);
+        if (isInit) renderTableOutline(data);
 //        dataView.setVgap(10);
 //        dataView.setHgap(10);
-        for (int i=2;i<result.size(); ++i) {
+        for (int i=2;i<data.size(); ++i) {
             for (int j=0;j<=columnNames.size();++j) {
                 Label label = new Label();
-                if (j > 0) label.setText(result.get(i).get(j - 1));
+                if (j > 0) label.setText(data.get(i).get(j - 1));
                 label.setTextAlignment(TextAlignment.CENTER);
                 label.setMaxSize(Double.MAX_VALUE, Double.MAX_VALUE);
                 GridPane.setFillWidth(label, true);

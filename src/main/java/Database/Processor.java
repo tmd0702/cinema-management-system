@@ -50,7 +50,17 @@ public abstract class Processor {
             return StatusCode.BAD_REQUEST;
         }
     }
-    public StatusCode update(HashMap <String, String> columnValueMap, HashMap <String, String> conditionColumnValueMap) {
+    public String constructUpdateSQLSetStatement(ArrayList<String> columns, ArrayList<String> values) {
+        String setStatement = "";
+        for (int i = 0 ; i < columns.size(); ++i) {
+            setStatement += String.format("%s = '%s'", columns.get(i), values.get(i));
+            if (i < columns.size() - 1) {
+                setStatement += ", ";
+            }
+        }
+        return setStatement;
+    }
+    public StatusCode update(HashMap <String, String> columnValueMap, String queryCondition) {
         ArrayList<ArrayList<String>> columnsValuesList = Utils.Utils.getKeysValuesFromMap(columnValueMap);
 
         ArrayList<String> columns = columnsValuesList.get(0);
@@ -58,7 +68,7 @@ public abstract class Processor {
 
 
 
-        String query = String.format("UPDATE %s SET %s WHERE %s", defaultDatabaseTable);
+        String query = String.format("UPDATE %s SET %s WHERE %s", defaultDatabaseTable, constructUpdateSQLSetStatement(columns, values), queryCondition);
 
         try {
             Statement st = getConnector().createStatement();
@@ -71,8 +81,8 @@ public abstract class Processor {
         }
 
     }
-    public StatusCode delete(String defaultDatabaseTable, HashMap <String, String> conditionColumnValueMap) {
-        String query = String.format("DELETE FROM %s WHERE %s", defaultDatabaseTable);
+    public StatusCode delete(String queryCondition) {
+        String query = String.format("DELETE FROM %s WHERE %s", defaultDatabaseTable, queryCondition);
         try {
             Statement st = getConnector().createStatement();
             st.execute(query);

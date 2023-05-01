@@ -2,9 +2,11 @@ package com.example.GraphicalUserInterface;
 
 import Database.AccountManagementProcessor;
 import Database.Processor;
+import Database.SignupProcessor;
 import ImageManager.ImageManager;
 import javafx.application.Application;
 import javafx.fxml.FXMLLoader;
+import javafx.scene.Node;
 import javafx.scene.Scene;
 import javafx.stage.Stage;
 
@@ -13,12 +15,20 @@ import java.io.IOException;
 public class ManagementMain extends Application {
     private static Stage stage;
     private Processor accountManagementProcessor;
+    private SignupProcessor signupProcessor;
     private ImageManager imageManager;
     private static ManagementMain managementMain;
-    public ManagementMain() {
+    public ManagementMain() throws Exception {
         managementMain = this;
+        signupProcessor = new SignupProcessor();
         accountManagementProcessor = new AccountManagementProcessor();
         imageManager = new ImageManager();
+    }
+    public SignupProcessor getSignupProcessor() {
+        return this.signupProcessor;
+    }
+    public Node getNodeById(String id) {
+        return stage.getScene().lookup(id);
     }
     public static synchronized ManagementMain getInstance() {
         if (managementMain == null) {

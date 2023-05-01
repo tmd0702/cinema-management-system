@@ -1,37 +1,94 @@
 package com.example.GraphicalUserInterface;
 
+import Utils.StatusCode;
 import javafx.collections.FXCollections;
-import javafx.collections.ObservableList;
-import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
+
+import java.io.IOException;
 import java.net.URL;
+import java.time.format.DateTimeFormatter;
+import java.util.HashMap;
+import java.util.Optional;
 import java.util.ResourceBundle;
 
-import javafx.scene.control.ComboBox;
-import javafx.scene.control.Label;
-public class AddAccountController {
-    @FXML
-    private ComboBox<String> comboBox_gender;
-    @FXML
-    private Label label_gender;
-    @FXML
-    private ComboBox<String> comboBox_role;
-    @FXML
-    private Label label_role;
-    ObservableList<String> list_gender = FXCollections.observableArrayList("Female", "Male");
-    ObservableList<String> list_role = FXCollections.observableArrayList("admin", "client");
+import javafx.fxml.Initializable;
+import javafx.scene.control.*;
+import javafx.scene.layout.AnchorPane;
+import javafx.scene.layout.VBox;
 
+public class AddAccountController implements Initializable {
+    private ManagementMain main;
+    @FXML
+    private ComboBox genderField;
+    @FXML
+    private TextField firstNameField, lastNameField, emailField, usernameField, passwordField, phoneField, addressField;
+    @FXML
+    private DatePicker dateOfBirthField;
+    @FXML
+    private VBox addAccountForm;
 
-    public void init_gender(URL location, ResourceBundle resource){
-        comboBox_gender.setItems(list_gender);
+    public AddAccountController() throws Exception {
+        main = new ManagementMain();
     }
-    public void comboBoxChanged_gender(ActionEvent event){
-        label_gender.setText(comboBox_gender.getValue());
+
+    @Override
+    public void initialize(URL url, ResourceBundle resourceBundle) {
+        genderInputFieldInit();
     }
-    public void init_role(URL location, ResourceBundle resource){
-        comboBox_role.setItems(list_role);
+    public void genderInputFieldInit() {
+        String genders[] = {"M - Male", "F - Female"};
+        genderField.setItems(FXCollections.observableArrayList(genders));
     }
-    public void comboBoxChanged_role(ActionEvent event){
-        label_role.setText(comboBox_role.getValue());
+    @FXML
+    public void cancelInsertBtnOnClick() {
+//        DialogPane cancelConfirmation = new DialogPane();
+        System.out.println("cancel");
+        cancelInsertConfirmationAlert("Are you sure to ged rid of this record?");
+    }
+    public void cancelInsertConfirmationAlert(String contentText) {
+        Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
+        alert.setTitle("Confirmation");
+        alert.setContentText(contentText);
+        Optional<ButtonType> result = alert.showAndWait();
+        if (result.get() == ButtonType.OK) {
+            System.out.println("ok");
+            disableInsertForm();
+        } else {
+            System.out.println("cancel");
+        }
+    }
+    public void disableInsertForm() {
+        ((AnchorPane)addAccountForm.getParent()).getChildren().get(0).setVisible(true);
+        ((AnchorPane)addAccountForm.getParent()).getChildren().remove(2);
+    }
+    @FXML
+    public void saveInsertBtnOnClick() throws IOException {
+        System.out.println("save");
+        handleInsertRecordRequest();
+        disableInsertForm();
+    }
+    public void handleInsertRecordRequest() {
+        HashMap<String, String> signUpInfo = new HashMap<String, String>();
+        signUpInfo.put("firstName", firstNameField.getText());
+        signUpInfo.put("lastName", lastNameField.getText());
+        signUpInfo.put("email", emailField.getText());
+        signUpInfo.put("phone", phoneField.getText());
+        signUpInfo.put("dateOfBirth", DateTimeFormatter.ofPattern("dd-MM-yyyy").format(dateOfBirthField.getValue()));
+        signUpInfo.put("address", addressField.getText());
+        signUpInfo.put("username", usernameField.getText());
+        signUpInfo.put("password", passwordField.getText());
+        signUpInfo.put("gender", genderField.getValue().toString().substring(0, 1));
+        StatusCode signupStatus = main.getSignupProcessor().handleSignupAction(signUpInfo);
+        if (signupStatus == StatusCode.OK) {
+            Dialog<String> dialog = new Dialog<String>();
+            //Setting the title
+            dialog.setTitle("Success");
+            ButtonType type = new ButtonType("Ok", ButtonBar.ButtonData.OK_DONE);
+            dialog.setContentText("The record has been added successfully");
+            dialog.getDialogPane().getButtonTypes().add(type);
+            dialog.showAndWait();
+        } else {
+
+        }
     }
 }

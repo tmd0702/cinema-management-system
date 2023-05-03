@@ -49,13 +49,17 @@ public class ManagementMain extends Application {
     @Override
     public void start(Stage primaryStage) throws IOException {
         stage = primaryStage;
-        FXMLLoader fxmlLoader = new FXMLLoader(Main.class.getResource("management-view.fxml"));
+        FXMLLoader fxmlLoader = new FXMLLoader(Main.class.getResource("admin-login-form.fxml"));
         Scene scene = new Scene(fxmlLoader.load(), 920, 600);
 //        scene.getStylesheets().add(getClass().getResource("assets/css/index-style.css").toExternalForm());
         stage.setTitle("4HB Cinema Management System");
         stage.setScene(scene);
         stage.setResizable(false);
         stage.show();
+    }
+    public void changeScene(String fxml) throws IOException {
+        FXMLLoader fxmlLoader = new FXMLLoader(Main.class.getResource(fxml));
+        stage.getScene().setRoot(fxmlLoader.load());
     }
     public static void main(String[] args) {
         launch();

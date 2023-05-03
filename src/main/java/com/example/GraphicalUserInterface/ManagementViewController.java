@@ -60,6 +60,8 @@ public class ManagementViewController implements Initializable {
     @FXML
     private GridPane dataView = new GridPane();
     @FXML
+    private Button signoutBtn = new Button("Sign out");
+    @FXML
     private Button homeTabPanel = new Button("Home");
     @FXML
     private Button movieTabPanel = new Button("Movie");
@@ -243,6 +245,23 @@ public class ManagementViewController implements Initializable {
         menuBox.getChildren().add(updateBtn);
         menuBox.getChildren().add(deleteBtn);
         menuBox.getChildren().add(refreshBtn);
+
+        Region region = new Region();
+        HBox.setHgrow( region, Priority.ALWAYS);
+        menuBox.getChildren().add(region);
+        menuBox.getChildren().add(signoutBtn);
+//        signoutBtn.setText("Signout");
+        signoutBtn.setOnMouseClicked(new EventHandler<MouseEvent>() {
+            @Override
+            public void handle(MouseEvent mouseEvent)  {
+                try {
+                    main.changeScene("admin-login-form.fxml");
+                } catch (IOException e) {
+                    System.out.println(e);
+                }
+            }
+        });
+
         menuBox.setSpacing(20);
 
     }

@@ -1,9 +1,14 @@
 package Utils;
 
+import com.example.GraphicalUserInterface.ManagementMain;
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.io.File;
+import java.io.FileOutputStream;
+import java.io.InputStream;
+import java.io.OutputStream;
 import java.math.BigDecimal;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
@@ -106,5 +111,13 @@ public class Utils {
             list.add(value);
         }
         return list;
+    }
+
+    public static void writeProperties(Properties prop,String username, String password, String filePath) throws Exception{
+        System.out.println(filePath + "123");
+        FileOutputStream is = new FileOutputStream(filePath);
+        prop.setProperty("USERNAME", username);
+        prop.setProperty("PASSWORD", password);
+        prop.store(is,null);
     }
 }

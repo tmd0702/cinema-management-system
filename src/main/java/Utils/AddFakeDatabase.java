@@ -79,8 +79,8 @@ public class AddFakeDatabase {
     }
     public static void main(String[] args) throws Exception {
         AddFakeDatabase addFakeDatabase = new AddFakeDatabase();
-//        addFakeDatabase.addFakeAccounts();
-//        addFakeDatabase.addFakePromotions();
+        addFakeDatabase.addFakeAccounts();
+        addFakeDatabase.addFakePromotions();
         addFakeDatabase.addFakeTheaters();
     }
 }

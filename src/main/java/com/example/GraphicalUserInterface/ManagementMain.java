@@ -71,6 +71,9 @@ public class ManagementMain extends Application {
         FXMLLoader fxmlLoader = new FXMLLoader(Main.class.getResource(fxml));
         stage.getScene().setRoot(fxmlLoader.load());
     }
+    public static void ShowErrors(){
+
+    }
     public static void main(String[] args) {
         launch();
     }

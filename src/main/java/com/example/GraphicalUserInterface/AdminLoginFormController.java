@@ -58,7 +58,6 @@ public class AdminLoginFormController implements Initializable {
         signinInfo.put("username", this.usernameField.getText());
         signinInfo.put("password", this.passwordField.getText());
         StatusCode signinStatus =  signinProcessor.handleSigninAction(signinInfo);
-        System.out.println(signinStatus);
         if (signinStatus == StatusCode.OK) {
             System.out.println("Sign in success");
 

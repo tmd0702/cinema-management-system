@@ -1,0 +1,66 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.ComboBox?>
+<?import javafx.scene.control.DatePicker?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.TextField?>
+<?import javafx.scene.image.ImageView?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.VBox?>
+<?import javafx.scene.text.Font?>
+<?import javafx.scene.text.Text?>
+
+
+<VBox prefHeight="600.0" prefWidth="790.0" style="-fx-alignment: TOP_CENTER;" xmlns="http://javafx.com/javafx/19" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.example.GraphicalUserInterface.UpdateMovieFormController">
+   <children>
+      <AnchorPane prefHeight="500.0" prefWidth="580.0">
+         <children>
+            <Text layoutX="273.0" layoutY="89.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Update Movie">
+               <font>
+                  <Font size="40.0" />
+               </font>
+            </Text>
+            <TextField layoutX="199.0" layoutY="148.0" />
+            <TextField layoutX="199.0" layoutY="182.0" />
+            <Label layoutX="167.0" layoutY="152.0" prefWidth="23.0" text="Title" />
+            <Label layoutX="441.0" layoutY="118.0" text="Movie status" />
+            <Label layoutX="143.0" layoutY="291.0" text="Duration" />
+            <Label layoutX="140.0" layoutY="256.0" text="Language" />
+            <Label layoutX="122.0" layoutY="222.0" text="Release date" />
+            <Label layoutX="142.0" layoutY="186.0" text="Overview" />
+            <DatePicker layoutX="198.0" layoutY="218.0" />
+            <TextField layoutX="198.0" layoutY="252.0" />
+            <TextField layoutX="519.0" layoutY="182.0" />
+            <TextField layoutX="519.0" layoutY="148.0" />
+            <TextField layoutX="198.0" layoutY="287.0" />
+            <ComboBox layoutX="519.0" layoutY="114.0" prefWidth="150.0" />
+            <Label layoutX="455.0" layoutY="152.0" text="View count" />
+            <Label layoutX="468.0" layoutY="186.0" text="Revenue" />
+            <TextField layoutX="519.0" layoutY="218.0" />
+            <Label layoutX="475.0" layoutY="222.0" text="Tagline" />
+            <TextField layoutX="519.0" layoutY="252.0" />
+            <Label layoutX="455.0" layoutY="256.0" text="Vote count" />
+            <TextField layoutX="519.0" layoutY="287.0" />
+            <Label layoutX="440.0" layoutY="291.0" text="Vote average" />
+            <ImageView fitHeight="150.0" fitWidth="200.0" layoutX="468.0" layoutY="358.0" pickOnBounds="true" preserveRatio="true" />
+            <Label layoutX="529.0" layoutY="333.0" text="Backdrop path" />
+            <ImageView fitHeight="150.0" fitWidth="200.0" layoutX="140.0" layoutY="358.0" pickOnBounds="true" preserveRatio="true" />
+            <Label layoutX="210.0" layoutY="333.0" text="Poster path" />
+            <TextField layoutX="199.0" layoutY="114.0" />
+            <Label layoutX="178.0" layoutY="118.0" prefWidth="23.0" text="ID" />
+            <HBox prefHeight="46.0" prefWidth="200.0" spacing="10.0" style="-fx-alignment: CENTER_LEFT;">
+               <children>
+                  <Button fx:id="cancelInsertBtn" mnemonicParsing="false" onMouseClicked="#cancelInsertBtnOnClick" style="-fx-alignment: CENTER_TOP;" text="Cancel" />
+                  <Button fx:id="saveInsertBtn" mnemonicParsing="false" onMouseClicked="#saveInsertBtnOnClick" text="Save" />
+               </children>
+               <padding>
+                  <Insets left="10.0" right="10.0" />
+               </padding>
+            </HBox>
+         </children>
+      </AnchorPane>
+   </children>
+</VBox>

@@ -1,8 +1,6 @@
 package com.example.GraphicalUserInterface;
 
-import Database.AccountManagementProcessor;
-import Database.Processor;
-import Database.SignupProcessor;
+import Database.*;
 import ImageManager.ImageManager;
 import javafx.application.Application;
 import javafx.fxml.FXMLLoader;
@@ -14,15 +12,27 @@ import java.io.IOException;
 
 public class ManagementMain extends Application {
     private static Stage stage;
-    private Processor accountManagementProcessor;
+    private Processor theaterManagementProcessor, accountManagementProcessor, movieManagementProcessor, promotionManagementProcessor;
     private SignupProcessor signupProcessor;
     private ImageManager imageManager;
     private static ManagementMain managementMain;
     public ManagementMain() throws Exception {
         managementMain = this;
         signupProcessor = new SignupProcessor();
+        theaterManagementProcessor = new TheaterManagementProcessor();
+        promotionManagementProcessor = new PromotionManagementProcessor();
         accountManagementProcessor = new AccountManagementProcessor();
+        movieManagementProcessor = new MovieManagementProcessor();
         imageManager = new ImageManager();
+    }
+    public Processor getTheaterManagementProcessor() {
+        return this.theaterManagementProcessor;
+    }
+    public Processor getMovieManagementProcessor() {
+        return this.movieManagementProcessor;
+    }
+    public Processor getPromotionManagementProcessor() {
+        return this.promotionManagementProcessor;
     }
     public SignupProcessor getSignupProcessor() {
         return this.signupProcessor;

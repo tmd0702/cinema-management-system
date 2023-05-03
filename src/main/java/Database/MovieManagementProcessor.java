@@ -1,5 +1,6 @@
 package Database;
 import MovieManager.*;
+import Utils.ColumnType;
 import javafx.scene.image.Image;
 
 import java.sql.*;
@@ -19,6 +20,67 @@ public class MovieManagementProcessor extends Processor {
     }
     public MovieManager getMovieManager() {
         return this.movieManager;
+    }
+    public String getMovieGenres(String queryCondition) {
+        String movieGenres = "";
+        String query =String.format("SELECT NAME FROM GENRES G JOIN MOVIE_GENRES MG ON G.ID = MG.GENRE_ID WHERE %s", queryCondition);
+        try {
+            Statement st = getConnector().createStatement();
+            ResultSet rs = st.executeQuery(query);
+            while (rs.next()) {
+                if (movieGenres == "") {
+                    movieGenres += rs.getString("NAME");
+                } else {
+                    movieGenres += ", " + rs.getString("NAME");
+                }
+            }
+            st.close();
+        } catch (Exception e) {
+            System.out.println(e);
+        }
+        return movieGenres;
+    }
+    @Override
+    public ArrayList<ArrayList<String>> select (int from, int quantity, String queryCondition) {
+        String query = String.format("SELECT * FROM %s", getDefaultDatabaseTable());
+        if (queryCondition.length() > 0) {
+            query = query + " WHERE " + queryCondition;
+        }
+        if (quantity > -1) {
+            query = query + String.format(" LIMIT %d, %d", from, quantity);
+        }
+
+        ArrayList<ArrayList<String>> result = new ArrayList<ArrayList<String>>();
+
+        try {
+            Statement st = getConnector().createStatement();
+            ResultSet rs = st.executeQuery(query);
+            System.out.println("okkkkk");
+            System.out.println(rs);
+            ResultSetMetaData rsmd = rs.getMetaData();
+            ArrayList<String> columnNames = new ArrayList<String>();
+            ArrayList<String> columnTypes = new ArrayList<String>();
+            for (int i=1; i <= rsmd.getColumnCount(); ++i) {
+                columnNames.add(rsmd.getColumnName(i));
+                columnTypes.add(ColumnType.getByValue(rsmd.getColumnType(i)).getDescription());
+            }
+//            columnNames.add("GENRES");
+//            columnTypes.add("Varchar");
+            result.add(columnNames);
+            result.add(columnTypes);
+            while (rs.next()) {
+                ArrayList<String> val = new ArrayList<String>();
+                for (String columnName : columnNames) {
+                    val.add(rs.getString(columnName));
+                }
+//                val.add(getMovieGenres("MOVIE_ID = '" + val.get(0) + "';"));
+                result.add(val);
+            }
+            st.close();
+        } catch (Exception e) {
+            System.out.println(e);
+        }
+        return result;
     }
     public void getMovies() {
         String query = "SELECT * FROM MOVIES LIMIT 30";// LIMIT 30";

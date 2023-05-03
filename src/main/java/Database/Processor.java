@@ -10,7 +10,6 @@ public abstract class Processor {
     private Database database;
     private Connection connector;
     private String defaultDatabaseTable;
-
     public Processor() {
         this.database = new Database();
         this.connector = database.getConnection();

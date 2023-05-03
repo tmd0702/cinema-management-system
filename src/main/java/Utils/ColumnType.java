@@ -45,13 +45,15 @@ public enum ColumnType {
         for(ColumnType columnType : values()) {
             if(columnType.description == description) return columnType;
         }
-        throw new IllegalArgumentException("Invalid column type: " + description);
+        return ColumnType.VARCHAR;
+//        throw new IllegalArgumentException("Invalid column type: " + description);
     }
     public static ColumnType getByValue(int value) {
         for(ColumnType columnType : values()) {
             if(columnType.value == value) return columnType;
         }
-        throw new IllegalArgumentException("Invalid column type: " + value);
+        return ColumnType.VARCHAR;
+//        throw new IllegalArgumentException("Invalid column type: " + value);
     }
 }
 

@@ -1,5 +1,7 @@
 package com.example.GraphicalUserInterface;
 
+import Database.AccountManagementProcessor;
+import Database.Processor;
 import Utils.ColumnType;
 import Utils.StatusCode;
 import javafx.animation.KeyFrame;
@@ -34,6 +36,7 @@ import java.util.ResourceBundle;
 
 public class ManagementViewController implements Initializable {
     private ArrayList<Button> tabPanels;
+    private Processor activeProcessor;
     private String queryCondition;
     private ArrayList<String> queryConditionFormatStrings;
     private ArrayList<String> queryConditionValues;
@@ -126,8 +129,11 @@ public class ManagementViewController implements Initializable {
         managementTabPaneInit();
         logoImageViewInit();
         pagingToolbarInit();
-        accountManagementViewInit();
+//        accountManagementViewInit();
         menuBoxInit();
+        Event.fireEvent(accountTabPanel, new MouseEvent(MouseEvent.MOUSE_CLICKED, 0,
+                0, 0, 0, MouseButton.PRIMARY, 1, true, true, true, true,
+                true, true, true, true, true, true, null));
     }
     public void pagingToolbarInit() {
 //        numRowPerPageInputField.setTextFormatter(new TextFormatter(new NumberStringConverter()));
@@ -520,19 +526,24 @@ public class ManagementViewController implements Initializable {
         }
     }
     public void reRenderPage(boolean isInit) {
-        for (int i=dataView.getChildren().size()-1 ;i >= 0; --i) {
-            if (GridPane.getRowIndex(dataView.getChildren().get(i)) > 1) {
-                dataView.getChildren().remove(i);
-            }
-        }
-
         cellOnClick = null;
-        totalRowNum = main.getAccountManagementProcessor().count(queryCondition);
+        totalRowNum = activeProcessor.count(queryCondition);
         setTotalPageNum(Math.max(1, Math.ceilDiv(totalRowNum, rowPerPageNum)));
         setCurrentPage(Math.min(currentPage, totalPageNum));
-        data = main.getAccountManagementProcessor().select((currentPage - 1) * rowPerPageNum, rowPerPageNum, queryCondition);
+        data = activeProcessor.select((currentPage - 1) * rowPerPageNum, rowPerPageNum, queryCondition);
+        System.out.println(data);
         ArrayList<String> columnNames = data.get(0);
-        if (isInit) renderTableOutline(data);
+        if (isInit) {
+            setCurrentPage(1);
+            dataView.getChildren().clear();
+            renderTableOutline(data);
+        } else {
+            for (int i=dataView.getChildren().size()-1 ;i >= 0; --i) {
+                if (GridPane.getRowIndex(dataView.getChildren().get(i)) > 1) {
+                    dataView.getChildren().remove(i);
+                }
+            }
+        }
 //        dataView.setVgap(10);
 //        dataView.setHgap(10);
         for (int i=2;i<data.size(); ++i) {
@@ -623,9 +634,7 @@ public class ManagementViewController implements Initializable {
 
             tabPane.getChildren().add(tabPanel);
         }
-        Event.fireEvent(accountTabPanel, new MouseEvent(MouseEvent.MOUSE_CLICKED, 0,
-                0, 0, 0, MouseButton.PRIMARY, 1, true, true, true, true,
-                true, true, true, true, true, true, null));
+
     }
     public void tabPanelMouseEventListener(Button tabPanel) {
         tabPanel.setOnMouseEntered(new EventHandler<MouseEvent>() {
@@ -648,6 +657,22 @@ public class ManagementViewController implements Initializable {
                 }
                 tabPanel.setStyle("-fx-pref-width: 110; -fx-pref-height: 48; -fx-font-weight: bold; -fx-text-fill: white; -fx-background-color: #A10000;");
                 tabPanelOnClick = tabPanel;
+                if (tabPanelOnClick == accountTabPanel) {
+                    activeProcessor = main.getAccountManagementProcessor();
+                    reRenderPage(true);
+                } else if (tabPanelOnClick == movieTabPanel) {
+                    activeProcessor = main.getMovieManagementProcessor();
+                    reRenderPage(true);
+                } else if (tabPanelOnClick == promotionTabPanel) {
+                    activeProcessor = main.getPromotionManagementProcessor();
+                    reRenderPage(true);
+                } else if (tabPanelOnClick == theaterTabPanel) {
+                    activeProcessor = main.getTheaterManagementProcessor();
+                    reRenderPage(true);
+                } else {
+                    activeProcessor = main.getMovieManagementProcessor();
+                    reRenderPage(true);
+                }
             }
         });
     }

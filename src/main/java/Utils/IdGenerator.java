@@ -58,7 +58,7 @@ public class IdGenerator {
             }
         }
         this.sequence.put(table, this.sequence.get(table) + 1);
-        id = generateIdFormat(table) + "_" + String.format("%05d", this.sequence.get(table));
+        id = generateIdFormat(table) + "_" + String.format("%05d", this.sequence.get(table) + 1000);
         System.out.println(id);
         return id;
     }

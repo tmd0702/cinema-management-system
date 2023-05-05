@@ -41,10 +41,13 @@ public class MovieManagementProcessor extends Processor {
         return movieGenres;
     }
     @Override
-    public ArrayList<ArrayList<String>> select (int from, int quantity, String queryCondition) {
+    public ArrayList<ArrayList<String>> select (int from, int quantity, String queryCondition, String sortQuery) {
         String query = String.format("SELECT * FROM %s", getDefaultDatabaseTable());
         if (queryCondition.length() > 0) {
             query = query + " WHERE " + queryCondition;
+        }
+        if (sortQuery.length() > 0) {
+            query = query + " ORDER BY " + sortQuery;
         }
         if (quantity > -1) {
             query = query + String.format(" LIMIT %d, %d", from, quantity);

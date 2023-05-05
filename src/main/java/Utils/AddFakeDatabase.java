@@ -50,6 +50,7 @@ public class AddFakeDatabase {
         promotion.put("END_DATE", "2023-05-15");
         promotion.put("PROMOTION_DESCRIPTION", "mai dzo mai dzo, khuyen mai giam 20%");
         promotion.put("DISCOUNT", "0.2");
+
         for (int i=0;i<200;++i) {
             promotion.put("ID", idGenerator.generateId(promotionManagementProcessor.getDefaultDatabaseTable()));
             promotion.put("PROMOTION_NAME", "Khuyen mai dot " + i);

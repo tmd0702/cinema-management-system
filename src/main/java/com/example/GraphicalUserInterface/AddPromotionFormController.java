@@ -3,6 +3,10 @@ package com.example.GraphicalUserInterface;
 import Utils.StatusCode;
 import javafx.collections.FXCollections;
 import javafx.fxml.FXML;
+import javafx.fxml.Initializable;
+import javafx.scene.control.*;
+import javafx.scene.layout.AnchorPane;
+import javafx.scene.layout.VBox;
 
 import java.io.IOException;
 import java.net.URL;
@@ -11,33 +15,21 @@ import java.util.HashMap;
 import java.util.Optional;
 import java.util.ResourceBundle;
 
-import javafx.fxml.Initializable;
-import javafx.scene.control.*;
-import javafx.scene.layout.AnchorPane;
-import javafx.scene.layout.VBox;
-
-public class AddAccountController implements Initializable {
+public class AddPromotionFormController implements Initializable {
     private ManagementMain main;
     @FXML
-    private ComboBox genderField;
+    private TextField nameField, descriptionField, discountField;
     @FXML
-    private TextField firstNameField, lastNameField, emailField, usernameField, passwordField, phoneField, addressField;
+    private DatePicker startDateField, endDateField;
     @FXML
-    private DatePicker dateOfBirthField;
-    @FXML
-    private VBox addAccountForm;
+    private VBox addPromotionForm;
 
-    public AddAccountController() throws Exception {
+    public AddPromotionFormController() throws Exception {
         main = new ManagementMain();
     }
 
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
-        genderInputFieldInit();
-    }
-    public void genderInputFieldInit() {
-        String genders[] = {"M - Male", "F - Female"};
-        genderField.setItems(FXCollections.observableArrayList(genders));
     }
     @FXML
     public void cancelInsertBtnOnClick() {
@@ -58,8 +50,8 @@ public class AddAccountController implements Initializable {
         }
     }
     public void disableInsertForm() {
-        ((AnchorPane)addAccountForm.getParent()).getChildren().get(0).setVisible(true);
-        ((AnchorPane)addAccountForm.getParent()).getChildren().remove(2);
+        ((AnchorPane)addPromotionForm.getParent()).getChildren().get(0).setVisible(true);
+        ((AnchorPane)addPromotionForm.getParent()).getChildren().remove(2);
     }
     @FXML
     public void saveInsertBtnOnClick() throws IOException {
@@ -68,18 +60,15 @@ public class AddAccountController implements Initializable {
         disableInsertForm();
     }
     public void handleInsertRecordRequest() {
-        HashMap<String, String> signUpInfo = new HashMap<String, String>();
-        signUpInfo.put("firstName", firstNameField.getText());
-        signUpInfo.put("lastName", lastNameField.getText());
-        signUpInfo.put("email", emailField.getText());
-        signUpInfo.put("phone", phoneField.getText());
-        signUpInfo.put("dateOfBirth", DateTimeFormatter.ofPattern("dd-MM-yyyy").format(dateOfBirthField.getValue()));
-        signUpInfo.put("address", addressField.getText());
-        signUpInfo.put("username", usernameField.getText());
-        signUpInfo.put("password", passwordField.getText());
-        signUpInfo.put("gender", genderField.getValue().toString().substring(0, 1));
-        StatusCode signupStatus = main.getSignupProcessor().handleSignupAction(signUpInfo);
-        if (signupStatus == StatusCode.OK) {
+        HashMap<String, String> promotionInfo = new HashMap<String, String>();
+        promotionInfo.put("ID", main.getIdGenerator().generateId("PROMOTIONS"));
+        promotionInfo.put("NAME", nameField.getText());
+        promotionInfo.put("START_DATE", DateTimeFormatter.ofPattern("yyyy-MM-dd").format(startDateField.getValue()));
+        promotionInfo.put("END_DATE", DateTimeFormatter.ofPattern("yyyy-MM-dd").format(endDateField.getValue()));
+        promotionInfo.put("DISCOUNT", discountField.getText());
+
+        StatusCode status = main.getPromotionManagementProcessor().add(promotionInfo);
+        if (status == StatusCode.OK) {
             Dialog<String> dialog = new Dialog<String>();
             //Setting the title
             dialog.setTitle("Success");
@@ -88,7 +77,13 @@ public class AddAccountController implements Initializable {
             dialog.getDialogPane().getButtonTypes().add(type);
             dialog.showAndWait();
         } else {
-
+            Dialog<String> dialog = new Dialog<String>();
+            //Setting the title
+            dialog.setTitle("Failed");
+            ButtonType type = new ButtonType("Ok", ButtonBar.ButtonData.OK_DONE);
+            dialog.setContentText("The record has errors");
+            dialog.getDialogPane().getButtonTypes().add(type);
+            dialog.showAndWait();
         }
     }
 }

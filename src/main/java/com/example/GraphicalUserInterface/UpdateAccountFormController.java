@@ -14,7 +14,7 @@ import java.time.format.DateTimeFormatter;
 import java.util.HashMap;
 import java.util.ResourceBundle;
 
-public class UpdateAccountController implements Initializable {
+public class UpdateAccountFormController implements Initializable {
     private ManagementMain main;
     @FXML
     private ComboBox genderField;
@@ -23,7 +23,7 @@ public class UpdateAccountController implements Initializable {
     @FXML
     private TextField idField, firstNameField, lastNameField, emailField, usernameField, phoneField, addressField;
     @FXML
-    private DatePicker dateOfBirthField;
+    private DatePicker dobField;
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
         genderInputFieldInit();
@@ -36,7 +36,7 @@ public class UpdateAccountController implements Initializable {
     public void idFieldInit() {
         idField.setDisable(true);
     }
-    public UpdateAccountController() {
+    public UpdateAccountFormController() {
         main = ManagementMain.getInstance();
     }
     public void disableUpdateForm() {
@@ -61,7 +61,7 @@ public class UpdateAccountController implements Initializable {
         signUpInfo.put("LAST_NAME", lastNameField.getText());
         signUpInfo.put("EMAIL", emailField.getText());
         signUpInfo.put("PHONE", phoneField.getText());
-        signUpInfo.put("DOB", DateTimeFormatter.ofPattern("yyyy-MM-dd").format(dateOfBirthField.getValue()));
+        signUpInfo.put("DOB", DateTimeFormatter.ofPattern("yyyy-MM-dd").format(dobField.getValue()));
         signUpInfo.put("ADDRESS", addressField.getText());
         signUpInfo.put("USERNAME", usernameField.getText());
         signUpInfo.put("GENDER", genderField.getValue().toString().substring(0, 1));
@@ -75,7 +75,13 @@ public class UpdateAccountController implements Initializable {
             dialog.getDialogPane().getButtonTypes().add(type);
             dialog.showAndWait();
         } else {
-
+            Dialog<String> dialog = new Dialog<String>();
+            //Setting the title
+            dialog.setTitle("Failed");
+            ButtonType type = new ButtonType("Ok", ButtonBar.ButtonData.OK_DONE);
+            dialog.setContentText("The record has errors");
+            dialog.getDialogPane().getButtonTypes().add(type);
+            dialog.showAndWait();
         }
     }
 }

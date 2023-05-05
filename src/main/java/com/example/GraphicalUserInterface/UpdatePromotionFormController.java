@@ -13,16 +13,14 @@ import java.time.format.DateTimeFormatter;
 import java.util.HashMap;
 import java.util.ResourceBundle;
 
-public class UpdateMovieFormController implements Initializable {
+public class UpdatePromotionFormController implements Initializable {
     private ManagementMain main;
     @FXML
-    private ComboBox movieStatusField;
+    private TextField idField, nameField, descriptionField, discountField;
     @FXML
-    private TextField idField, titleField, overviewField, languageField, durationField, posterPathField, viewCountField, revenueField, taglineField, voteCountField, voteAverageField, backdropPathField;
+    private DatePicker startDateField, endDateField;
     @FXML
-    private DatePicker releaseDateField;
-    @FXML
-    private VBox updateMovieForm;
+    private VBox updatePromotionForm;
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
         idFieldInit();
@@ -30,12 +28,12 @@ public class UpdateMovieFormController implements Initializable {
     public void idFieldInit() {
         idField.setDisable(true);
     }
-    public UpdateMovieFormController() {
+    public UpdatePromotionFormController() {
         main = ManagementMain.getInstance();
     }
     public void disableUpdateForm() {
-        ((AnchorPane)updateMovieForm.getParent()).getChildren().get(0).setVisible(true);
-        ((AnchorPane)updateMovieForm.getParent()).getChildren().remove(2);
+        ((AnchorPane)updatePromotionForm.getParent()).getChildren().get(0).setVisible(true);
+        ((AnchorPane)updatePromotionForm.getParent()).getChildren().remove(2);
     }
     @FXML
     public void saveUpdateBtnOnClick() throws IOException {
@@ -50,22 +48,12 @@ public class UpdateMovieFormController implements Initializable {
         disableUpdateForm();
     }
     public void handleUpdateRecordRequest() {
-        HashMap<String, String> movieInfo = new HashMap<String, String>();
-        movieInfo.put("ID", main.getIdGenerator().generateId("MOVIES"));
-        movieInfo.put("TITLE", titleField.getText());
-        movieInfo.put("OVERVIEW", overviewField.getText());
-        movieInfo.put("LANGUAGE", languageField.getText());
-        movieInfo.put("DURATION", durationField.getText());
-        movieInfo.put("RELEASE_DATE", DateTimeFormatter.ofPattern("yyyy-MM-dd").format(releaseDateField.getValue()));
-        movieInfo.put("POSTER_PATH", posterPathField.getText());
-        movieInfo.put("BACKDROP_PATH", backdropPathField.getText());
-        movieInfo.put("VIEW_COUNT", viewCountField.getText());
-        movieInfo.put("REVENUE", revenueField.getText());
-        movieInfo.put("TAGLINE", taglineField.getText());
-        movieInfo.put("VOTE_COUNT", voteCountField.getText());
-        movieInfo.put("VOTE_AVERAGE", voteAverageField.getText());
-        movieInfo.put("MOVIE_STATUS", movieStatusField.getValue().toString());
-        StatusCode status = main.getMovieManagementProcessor().update(movieInfo, String.format("ID = '%s'", idField.getText()));
+        HashMap<String, String> promotionInfo = new HashMap<String, String>();
+        promotionInfo.put("NAME", nameField.getText());
+        promotionInfo.put("START_DATE", DateTimeFormatter.ofPattern("yyyy-MM-dd").format(startDateField.getValue()));
+        promotionInfo.put("END_DATE", DateTimeFormatter.ofPattern("yyyy-MM-dd").format(endDateField.getValue()));
+        promotionInfo.put("DISCOUNT", discountField.getText());
+        StatusCode status = main.getPromotionManagementProcessor().update(promotionInfo, String.format("ID = '%s'", idField.getText()));
         if (status == StatusCode.OK) {
             Dialog<String> dialog = new Dialog<String>();
             //Setting the title

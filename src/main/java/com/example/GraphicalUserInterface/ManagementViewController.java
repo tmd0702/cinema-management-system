@@ -14,7 +14,11 @@ import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
+import javafx.geometry.BoundingBox;
+import javafx.geometry.Bounds;
 import javafx.geometry.Insets;
+import javafx.geometry.Point2D;
+import javafx.scene.Group;
 import javafx.scene.Node;
 import javafx.scene.control.*;
 import javafx.scene.image.Image;
@@ -22,6 +26,7 @@ import javafx.scene.image.ImageView;
 import javafx.scene.input.MouseButton;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.*;
+import javafx.scene.shape.Rectangle;
 import javafx.scene.text.TextAlignment;
 import javafx.util.Duration;
 
@@ -37,9 +42,11 @@ import java.util.ResourceBundle;
 public class ManagementViewController implements Initializable {
     private ArrayList<Button> tabPanels;
     private Processor activeProcessor;
-    private String queryCondition;
+    private VBox currentActiveSortList;
+    private String queryCondition, sortQuery;
     private ArrayList<String> queryConditionFormatStrings;
     private ArrayList<String> queryConditionValues;
+    private Node currentActiveDataViewHeader, currentActiveSortButton;
     private Label cellOnClick;
     private int cellOnClickRowIndex, cellOnClickColumnIndex, rowPerPageNum, totalPageNum, totalRowNum, currentPage;
     private boolean isSearchFieldActive;
@@ -60,6 +67,8 @@ public class ManagementViewController implements Initializable {
     private ImageView refreshBtn;
     private ManagementMain main;
     private Button tabPanelOnClick;
+    @FXML
+    private AnchorPane dataViewContainer = new AnchorPane();
     @FXML
     private GridPane dataView = new GridPane();
     @FXML
@@ -99,6 +108,7 @@ public class ManagementViewController implements Initializable {
     @FXML
     private ScrollPane dataViewScrollPane;
     public ManagementViewController() {
+        sortQuery = "";
         queryCondition = "";
         queryConditionValues = new ArrayList<String>();
         queryConditionFormatStrings = new ArrayList<String>();
@@ -180,6 +190,34 @@ public class ManagementViewController implements Initializable {
         setCurrentPage(1);
         pagingToolbarRefreshBtn.setImage(main.getImageManager().getRefreshIconImage());
     }
+    public void changeSceneToInsertView() throws IOException {
+        accountManagementView.setVisible(false);
+        if (tabPanelOnClick == accountTabPanel) {
+            managementPage.getChildren().add(FXMLLoader.load(getClass().getResource("add-account-form.fxml")));
+        } else if (tabPanelOnClick == movieTabPanel) {
+            managementPage.getChildren().add(FXMLLoader.load(getClass().getResource("add-movie-form.fxml")));
+        } else if (tabPanelOnClick == promotionTabPanel) {
+            managementPage.getChildren().add(FXMLLoader.load(getClass().getResource("add-promotion-form.fxml")));
+        } else if (tabPanelOnClick == theaterTabPanel) {
+            managementPage.getChildren().add(FXMLLoader.load(getClass().getResource("add-cinema-form.fxml")));
+        } else {
+            managementPage.getChildren().add(FXMLLoader.load(getClass().getResource("add-account-form.fxml")));
+        }
+    }
+    public void changeSceneToUpdateView() throws IOException {
+        accountManagementView.setVisible(false);
+        if (tabPanelOnClick == accountTabPanel) {
+            managementPage.getChildren().add(FXMLLoader.load(getClass().getResource("update-account-form.fxml")));
+        } else if (tabPanelOnClick == movieTabPanel) {
+            managementPage.getChildren().add(FXMLLoader.load(getClass().getResource("update-movie-form.fxml")));
+        } else if (tabPanelOnClick == promotionTabPanel) {
+            managementPage.getChildren().add(FXMLLoader.load(getClass().getResource("update-promotion-form.fxml")));
+        } else if (tabPanelOnClick == theaterTabPanel) {
+            managementPage.getChildren().add(FXMLLoader.load(getClass().getResource("update-cinema-form.fxml")));
+        } else {
+            managementPage.getChildren().add(FXMLLoader.load(getClass().getResource("update-account-form.fxml")));
+        }
+    }
     public void menuBoxInit() {
         insertBtn.setFitHeight(20);
         insertBtn.setFitWidth(20);
@@ -188,10 +226,7 @@ public class ManagementViewController implements Initializable {
             public void handle(MouseEvent mouseEvent) {
                 try {
                     System.out.println("insert btn clicked");
-                    accountManagementView.setVisible(false);
-                    managementPage.getChildren().add(FXMLLoader.load(getClass().getResource("add-account-form.fxml")));
-//                    managementPage.getChildren().set(0, FXMLLoader.load(getClass().getResource("add-account-form.fxml")));
-                    System.out.println(main.getNodeById("#addAccountForm"));
+                    changeSceneToInsertView();
                 } catch (IOException e) {
                     System.out.println(e);
                 }
@@ -206,18 +241,19 @@ public class ManagementViewController implements Initializable {
                 if (cellOnClick != null) {
                     try {
                         System.out.println("update btn clicked");
-                        accountManagementView.setVisible(false);
-                        managementPage.getChildren().add(FXMLLoader.load(getClass().getResource("update-account-form.fxml")));
+                        changeSceneToUpdateView();
                         int rowIndex = GridPane.getRowIndex(cellOnClick);
-                        ((TextField) main.getNodeById("#idField")).setText(getRecordIdByRowIndex());
-                        ((TextField) main.getNodeById("#usernameField")).setText(data.get(rowIndex).get(1));
-                        ((TextField) main.getNodeById("#firstNameField")).setText(data.get(rowIndex).get(2));
-                        ((TextField) main.getNodeById("#lastNameField")).setText(data.get(rowIndex).get(3));
-                        ((DatePicker) main.getNodeById("#dateOfBirthField")).setValue(LocalDate.parse(data.get(rowIndex).get(4).substring(0, 10), DateTimeFormatter.ofPattern("yyyy-MM-dd")));
-                        ((ComboBox) main.getNodeById("#genderField")).setValue(data.get(rowIndex).get(5));
-                        ((TextField) main.getNodeById("#addressField")).setText(data.get(rowIndex).get(6));
-                        ((TextField) main.getNodeById("#phoneField")).setText(data.get(rowIndex).get(7));
-                        ((TextField) main.getNodeById("#emailField")).setText(data.get(rowIndex).get(8));
+                        for (int i=0;i < data.get(0).size(); ++i) {
+                            String columnName = data.get(0).get(i);
+                            Node node = main.getNodeById("#" + Utils.Utils.toCamelCase(columnName) + "Field");
+                            if (node instanceof TextField) {
+                                ((TextField) node).setText(data.get(rowIndex).get(i));
+                            } else if (node instanceof DatePicker) {
+                                ((DatePicker) node).setValue(LocalDate.parse(data.get(rowIndex).get(i).substring(0, 10), DateTimeFormatter.ofPattern("yyyy-MM-dd")));
+                            } else if (node instanceof ComboBox) {
+                                ((ComboBox) node).setValue(data.get(rowIndex).get(i));
+                            }
+                        }
                     } catch (IOException e) {
                         System.out.println(e);
                     }
@@ -253,7 +289,7 @@ public class ManagementViewController implements Initializable {
         menuBox.getChildren().add(refreshBtn);
 
         Region region = new Region();
-        HBox.setHgrow( region, Priority.ALWAYS);
+        HBox.setHgrow(region, Priority.ALWAYS);
         menuBox.getChildren().add(region);
         menuBox.getChildren().add(signoutBtn);
 //        signoutBtn.setText("Signout");
@@ -285,7 +321,7 @@ public class ManagementViewController implements Initializable {
     public void handleDeleteRecordRequest() {
         String recordId = getRecordIdByRowIndex();
         String queryCondition = String.format("ID = '%s'", recordId);
-        StatusCode status = main.getAccountManagementProcessor().delete(queryCondition);
+        StatusCode status = activeProcessor.delete(queryCondition);
         if (status == StatusCode.OK) {
             System.out.println("delete success");
             reRenderPage(false);
@@ -414,6 +450,10 @@ public class ManagementViewController implements Initializable {
                queryConditionValues.set(i, newValue);
            }
     }
+    public String constructSortQuery(String sortColumn, String sortType) {
+        String sortQuery = sortColumn == ""? "" : String.format("%s %s", sortColumn, sortType);
+        return sortQuery;
+    }
     public String constructQueryCondition(ArrayList<String> columnNames) {
         String queryCondition = "";
         for (int i=0;i<queryConditionFormatStrings.size(); ++i) {
@@ -427,18 +467,168 @@ public class ManagementViewController implements Initializable {
         }
         return queryCondition;
     }
+    public void sortPanelMouseEventListener(Node sortPanel, String currentSortColumn, String currentSortType) {
+        sortPanel.setOnMouseClicked(new EventHandler<MouseEvent>() {
+            @Override
+            public void handle(MouseEvent mouseEvent) {
+                dataViewContainer.getChildren().remove(sortPanel.getParent());
+                sortQuery = constructSortQuery(currentSortColumn, currentSortType);
+                reRenderPage(false);
+            }
+        });
+        sortPanel.setOnMouseEntered(new EventHandler<MouseEvent>() {
+            @Override
+            public void handle(MouseEvent mouseEvent) {
+                sortPanel.setStyle("-fx-background-color: #cccccc");
+            }
+        });
+        sortPanel.setOnMouseExited(new EventHandler<MouseEvent>() {
+            @Override
+            public void handle(MouseEvent mouseEvent) {
+                sortPanel.setStyle("-fx-background-color: white");
+            }
+        });
+    }
+    public boolean inHierarchy(Node node, Node potentialHierarchyElement) {
+        if (potentialHierarchyElement == null) {
+            return true;
+        }
+        while (node != null) {
+            if (node == potentialHierarchyElement) {
+                return true;
+            }
+            node = node.getParent();
+        }
+        return false;
+    }
+
+    public void offFocusSortList(Node node) {
+        main.getScene().addEventFilter(MouseEvent.MOUSE_CLICKED, evt -> {
+            if (!inHierarchy(evt.getPickResult().getIntersectedNode(), node)) {
+                dataViewContainer.getChildren().remove(node);
+            }
+        });
+    }
+    public void constructSortList(Region sortButton) {
+        sortButton.setOnMouseClicked(new EventHandler<MouseEvent>() {
+            int columnIndex = GridPane.getColumnIndex(sortButton.getParent());
+            int rowIndex = GridPane.getRowIndex(sortButton.getParent());
+            @Override
+            public void handle(MouseEvent mouseEvent) {
+
+                if (currentActiveSortList != null) {
+                    dataViewContainer.getChildren().remove(currentActiveSortList);
+                }
+
+                Label sortDescLabel = new Label("Descending");
+                Label sortAscLabel = new Label("Ascending");
+
+                HBox sortDescPanel = new HBox(sortDescLabel);
+                sortDescPanel.setPadding(new Insets(10, 10, 10, 10));
+                HBox sortAscPanel = new HBox(sortAscLabel);
+                sortAscPanel.setPadding(new Insets(10, 10, 10, 10));
+                VBox sortList = new VBox(sortAscPanel, sortDescPanel);
+                sortList.setStyle("-fx-background-color: white;-fx-effect: dropshadow(gaussian, rgba(0, 0, 0, 0.3), 10, 0.5, 0.0, 0.0);");
+                Bounds cellBounds = dataView.getCellBounds(columnIndex, rowIndex);
+                System.out.println(cellBounds);
+                if (columnIndex == data.get(0).size()) {
+                    sortList.setLayoutX(cellBounds.getMaxX() - 150);
+                } else {
+                    sortList.setLayoutX(cellBounds.getMaxX() - sortButton.getWidth());
+                }
+
+                sortList.setLayoutY(cellBounds.getMaxY());
+                sortList.setPrefWidth(150);
+                sortPanelMouseEventListener(sortDescPanel, data.get(0).get(columnIndex - 1), "DESC");
+                sortPanelMouseEventListener(sortAscPanel, data.get(0).get(columnIndex - 1), "ASC");
+                currentActiveSortList = sortList;
+                Timeline sortListTimeline = new Timeline(new KeyFrame(Duration.seconds(0.2), ae -> {
+                    dataViewContainer.getChildren().add(sortList);
+                }));
+                sortListTimeline.play();
+                offFocusSortList(sortList);
+
+
+            }
+        });
+    }
+    public void sortButtonMouseEventListener(Node node) {
+        node.setOnMouseExited(new EventHandler<MouseEvent>() {
+            @Override
+            public void handle(MouseEvent mouseEvent) {
+                if (currentActiveSortButton != node) {
+                    node.setStyle("-fx-border-style: none none none solid;-fx-fill: transparent; -fx-border-color: transparent; -fx-border-width: 2;");
+                }
+            }
+        });
+        node.setOnMouseEntered(new EventHandler<MouseEvent>() {
+            @Override
+            public void handle(MouseEvent mouseEvent) {
+                if (currentActiveSortButton != node) {
+                    node.setStyle("-fx-border-style: none none none solid; -fx-border-color: #cccccc; -fx-border-width: 0 0 0 2;");
+                }
+            }
+        });
+    }
+    public boolean sortButtonOnClickedDetect(Node node, double x, double y) {
+        System.out.print(x + " " + y + " ");
+        Bounds dataViewHeaderBounds = dataView.getCellBounds(GridPane.getColumnIndex(node), GridPane.getRowIndex(node));
+        System.out.println(dataViewHeaderBounds);
+        if (x >= dataViewHeaderBounds.getMinX() + 110 && x <= dataViewHeaderBounds.getMaxX() + 110 && y <= dataViewHeaderBounds.getMaxY() + 46 && y >= dataViewHeaderBounds.getMinY() + 46) {
+            return true;
+        }
+        return false;
+    }
+    public void dataViewHeaderNodeMouseEventListener(Node node) {
+        node.setOnMouseEntered(new EventHandler<MouseEvent>() {
+            @Override
+            public void handle(MouseEvent mouseEvent) {
+                node.setStyle("-fx-border-style: solid none solid solid;-fx-border-color: #cccccc;-fx-background-color: #e7e9f3;");
+            }
+        });
+        node.setOnMouseExited(new EventHandler<MouseEvent>() {
+            @Override
+            public void handle(MouseEvent mouseEvent) {
+                if (node != currentActiveDataViewHeader) {
+                    node.setStyle("-fx-border-style: solid none solid solid;-fx-border-color: #cccccc;-fx-background-color: white;");
+                }
+            }
+        });
+        node.setOnMouseClicked(new EventHandler<MouseEvent>() {
+            @Override
+            public void handle(MouseEvent mouseEvent) {
+                Node currentFocusedSortButton = ((HBox) node).getChildren().get(1);
+                if (sortButtonOnClickedDetect(node, mouseEvent.getSceneX(), mouseEvent.getSceneY())) {
+                    if (currentActiveSortButton != null && currentFocusedSortButton != currentActiveSortButton) {
+                        currentActiveSortButton.setStyle("-fx-border-style: none none none solid; -fx-background-color: transparent; -fx-border-color: #cccccc; -fx-border-width: 0 0 0 2;");
+                    }
+                    currentFocusedSortButton.setStyle("-fx-border-style: none none none solid; -fx-background-color: rgba(0, 0, 255, 0.1); -fx-border-color: #cccccc; -fx-border-width: 0 0 0 2;");
+                    currentActiveSortButton = currentFocusedSortButton;
+                }
+                System.out.println("header on click");
+                if (currentActiveDataViewHeader != null && currentActiveDataViewHeader != node) {
+                    currentActiveDataViewHeader.setStyle("-fx-border-style: solid none solid solid;-fx-border-color: #cccccc;-fx-background-color: white;");
+                }
+                currentActiveDataViewHeader = node;
+            }
+        });
+    }
     public void renderTableOutline(ArrayList<ArrayList<String>> data) {
         ArrayList<String> columnNames = data.get(0);
         ArrayList<String> columnTypes = data.get(1);
         for (int i = 0; i <= 1; ++i) {
             for (int j = 0; j <= columnNames.size(); ++j) {
                 if (i == 0) {
+                    HBox headerGroup = new HBox();
+                    headerGroup.setMaxWidth(Double.MAX_VALUE);
+                    headerGroup.setMaxHeight(Double.MAX_VALUE);
                     Label label = new Label();
                     if (j > 0) {
                         label.setText(columnNames.get(j - 1));
+                        dataViewHeaderNodeMouseEventListener(headerGroup);
                     } else {
                         label.setPrefWidth(40);
-                        label.setStyle("-fx-border-style: solid none solid solid;-fx-border-color: black;");
+                        label.setStyle("-fx-border-style: solid none solid solid;-fx-border-color: transparent;");
                         label.setOnMouseClicked(new EventHandler<MouseEvent>() {
                             @Override
                             public void handle(MouseEvent mouseEvent) {
@@ -465,12 +655,28 @@ public class ManagementViewController implements Initializable {
                     }
                     label.setTextAlignment(TextAlignment.CENTER);
                     label.setMaxSize(Double.MAX_VALUE, Double.MAX_VALUE);
-                    GridPane.setFillWidth(label, true);
-                    GridPane.setFillHeight(label, true);
+                    GridPane.setFillWidth(headerGroup, true);
+                    GridPane.setFillHeight(headerGroup, true);
                     label.setPadding(new Insets(10, 10, 10, 10));
-                    label.setStyle("-fx-border-style: solid none solid solid;-fx-border-color: black;");
-                    dataView.add(label, j, i);
+                    headerGroup.setStyle("-fx-border-style: solid none solid solid;-fx-border-color: #cccccc;-fx-background-color: white;");
+                    headerGroup.getChildren().add(label);
+                    if (j > 0) {
+                        Region sortButton = new Region();
+                        sortButton.setPrefWidth(20);
+                        sortButton.setPrefHeight(40);
+                        sortButton.setStyle("-fx-border-style: none none none solid;-fx-fill: transparent; -fx-border-color: transparent; -fx-border-width: 2;");
+                        sortButtonMouseEventListener(sortButton);
+//                        constructSortList(sortButton);
 
+                        headerGroup.getChildren().add(sortButton);
+                        main.getScene().addEventFilter(MouseEvent.MOUSE_CLICKED, evt -> {
+                            if (!inHierarchy(evt.getPickResult().getIntersectedNode(), sortButton)) {
+                                sortButton.setStyle("-fx-border-style: none none none solid;-fx-fill: transparent; -fx-border-color: transparent; -fx-border-width: 2;");
+                            }
+                        });
+                    }
+                    headerGroup.setHgrow(label, Priority.ALWAYS);
+                    dataView.add(headerGroup, j, i);
                 } else {
                     if (j == 0) {
                         Label label = new Label();
@@ -498,8 +704,8 @@ public class ManagementViewController implements Initializable {
                             searchInputField = new DatePicker();
                             ((DatePicker) searchInputField).setMinHeight(0);
                             ((DatePicker) searchInputField).setPrefHeight(0);
-                               
-                            ((DatePicker) searchInputField).setPrefWidth(((Label)dataView.getChildren().get(j)).getPrefWidth());
+
+                            ((DatePicker) searchInputField).setPrefWidth(((HBox)dataView.getChildren().get(j)).getPrefWidth());
                             ((DatePicker) searchInputField).valueProperty().addListener((observable, oldValue, newValue) -> {
                                 System.out.println("datepicker changed from " + oldValue + " to " + newValue + " " + columnNames.get(GridPane.getColumnIndex(searchInputField) - 1));
 
@@ -509,7 +715,7 @@ public class ManagementViewController implements Initializable {
                                     setConditionValue(finalJ - 1, newValue.toString(), currentColumnType);
                                 }
 
-                                queryCondition = constructQueryCondition(columnNames);     
+                                queryCondition = constructQueryCondition(columnNames);
                                 reRenderPage(false);
                             });
                         } else {
@@ -525,18 +731,33 @@ public class ManagementViewController implements Initializable {
             }
         }
     }
+    public void sortListInit() {
+        for (Node node : dataView.getChildren()) {
+            int rowIndex = GridPane.getRowIndex(node), columnIndex = GridPane.getColumnIndex(node);
+            if (rowIndex == 0) {
+                if (node instanceof HBox && columnIndex > 0) {
+                    constructSortList((Region)((HBox) node).getChildren().get(1));
+                }
+            } else if (GridPane.getRowIndex(node) > 0) {
+                break;
+            }
+        }
+    }
     public void reRenderPage(boolean isInit) {
         cellOnClick = null;
         totalRowNum = activeProcessor.count(queryCondition);
         setTotalPageNum(Math.max(1, Math.ceilDiv(totalRowNum, rowPerPageNum)));
         setCurrentPage(Math.min(currentPage, totalPageNum));
-        data = activeProcessor.select((currentPage - 1) * rowPerPageNum, rowPerPageNum, queryCondition);
-        System.out.println(data);
+        if (isInit) sortQuery = "";
+        data = activeProcessor.select((currentPage - 1) * rowPerPageNum, rowPerPageNum, queryCondition, sortQuery);
         ArrayList<String> columnNames = data.get(0);
         if (isInit) {
             setCurrentPage(1);
             dataView.getChildren().clear();
             renderTableOutline(data);
+            dataViewContainer.getChildren().remove(dataView);
+            dataViewContainer.getChildren().add(dataView);
+            dataViewScrollPane.setContent(dataViewContainer);
         } else {
             for (int i=dataView.getChildren().size()-1 ;i >= 0; --i) {
                 if (GridPane.getRowIndex(dataView.getChildren().get(i)) > 1) {
@@ -549,9 +770,10 @@ public class ManagementViewController implements Initializable {
         for (int i=2;i<data.size(); ++i) {
             for (int j=0;j<=columnNames.size();++j) {
                 Label label = new Label();
-                if (j > 0) label.setText(data.get(i).get(j - 1));
                 label.setTextAlignment(TextAlignment.CENTER);
                 label.setMaxSize(Double.MAX_VALUE, Double.MAX_VALUE);
+                if (j > 0) label.setText(data.get(i).get(j - 1));
+
                 GridPane.setFillWidth(label, true);
                 GridPane.setFillHeight(label, true);
                 label.setPadding(new Insets(10, 10, 10, 10));
@@ -559,6 +781,7 @@ public class ManagementViewController implements Initializable {
 
                 dataView.add(label, j, i);
                 label.setWrapText(true);
+
                 if (i % 2 == 0) {
                     label.setStyle(label.getStyle() + "-fx-background-color: #fafafa;"); //#e7e9f3
                 }
@@ -568,16 +791,15 @@ public class ManagementViewController implements Initializable {
                 cellMouseEventListener(label, i, j, columnNames.size() + 1);
             }
         }
-        dataViewScrollPane.setContent(dataView);
+
+        sortListInit();
     }
     public void insertRows(int count) {
         for (Node child : dataView.getChildren()) {
             Integer rowIndex = GridPane.getRowIndex(child);
-            System.out.print(rowIndex);
             if (rowIndex > 0) {
                 GridPane.setRowIndex(child, rowIndex == null ? count : count + rowIndex);
             }
-            System.out.println(GridPane.getRowIndex(child));
         }
     }
     @FXML

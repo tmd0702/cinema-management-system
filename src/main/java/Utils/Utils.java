@@ -93,9 +93,19 @@ public class Utils {
         }
         return map;
     }
-    public String normalizeColumnName(String oriColumnName) {
-        String normColumnName = oriColumnName.replace("_", " ");
-        return normColumnName;
+    public static String toCamelCase(String text) {
+        String[] words = text.split("[\\W_]+");
+        String result = "";
+        for (int i = 0; i < words.length; i++) {
+            String word = words[i];
+            if (i == 0) {
+                word = word.isEmpty() ? word : word.toLowerCase();
+            } else {
+                word = word.isEmpty() ? word : Character.toUpperCase(word.charAt(0)) + word.substring(1).toLowerCase();
+            }
+            result += word;
+        }
+        return result;
     }
     public static List<Object> toList(JSONArray array) throws JSONException {
         List<Object> list = new ArrayList<Object>();

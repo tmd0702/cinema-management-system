@@ -600,7 +600,7 @@ public class ManagementViewController implements Initializable {
                 Node currentFocusedSortButton = ((HBox) node).getChildren().get(1);
                 if (sortButtonOnClickedDetect(node, mouseEvent.getSceneX(), mouseEvent.getSceneY())) {
                     if (currentActiveSortButton != null && currentFocusedSortButton != currentActiveSortButton) {
-                        currentActiveSortButton.setStyle("-fx-border-style: none none none solid; -fx-background-color: transparent; -fx-border-color: #cccccc; -fx-border-width: 0 0 0 2;");
+                        currentActiveSortButton.setStyle("-fx-border-style: none none none solid; -fx-background-color: transparent; -fx-border-color: transparent; -fx-border-width: 0 0 0 2;");
                     }
                     currentFocusedSortButton.setStyle("-fx-border-style: none none none solid; -fx-background-color: rgba(0, 0, 255, 0.1); -fx-border-color: #cccccc; -fx-border-width: 0 0 0 2;");
                     currentActiveSortButton = currentFocusedSortButton;

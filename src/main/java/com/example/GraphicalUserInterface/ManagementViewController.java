@@ -505,6 +505,7 @@ public class ManagementViewController implements Initializable {
     public void offFocusSortList(Node node) {
         main.getScene().addEventFilter(MouseEvent.MOUSE_CLICKED, evt -> {
             if (!inHierarchy(evt.getPickResult().getIntersectedNode(), node)) {
+                currentActiveDataViewHeader = null;
                 dataViewContainer.getChildren().remove(node);
             }
         });
@@ -564,17 +565,14 @@ public class ManagementViewController implements Initializable {
         node.setOnMouseEntered(new EventHandler<MouseEvent>() {
             @Override
             public void handle(MouseEvent mouseEvent) {
-                if (currentActiveSortButton != node) {
-                    node.setStyle("-fx-border-style: none none none solid; -fx-border-color: #cccccc; -fx-border-width: 0 0 0 2;");
-                }
+                node.setStyle("-fx-border-style: none none none solid; -fx-border-color: #cccccc; -fx-border-width: 0 0 0 2;");
             }
         });
     }
     public boolean sortButtonOnClickedDetect(Node node, double x, double y) {
-        System.out.print(x + " " + y + " ");
         Bounds dataViewHeaderBounds = dataView.getCellBounds(GridPane.getColumnIndex(node), GridPane.getRowIndex(node));
         System.out.println(dataViewHeaderBounds);
-        if (x >= dataViewHeaderBounds.getMinX() + 110 && x <= dataViewHeaderBounds.getMaxX() + 110 && y <= dataViewHeaderBounds.getMaxY() + 46 && y >= dataViewHeaderBounds.getMinY() + 46) {
+        if (x >= dataViewHeaderBounds.getMaxX() - 20 + 110 && x <= dataViewHeaderBounds.getMaxX() + 110 && y <= dataViewHeaderBounds.getMaxY() + 46 && y >= dataViewHeaderBounds.getMinY() + 46) {
             return true;
         }
         return false;
@@ -671,6 +669,7 @@ public class ManagementViewController implements Initializable {
                         headerGroup.getChildren().add(sortButton);
                         main.getScene().addEventFilter(MouseEvent.MOUSE_CLICKED, evt -> {
                             if (!inHierarchy(evt.getPickResult().getIntersectedNode(), sortButton)) {
+                                currentActiveSortButton = null;
                                 sortButton.setStyle("-fx-border-style: none none none solid;-fx-fill: transparent; -fx-border-color: transparent; -fx-border-width: 2;");
                             }
                         });

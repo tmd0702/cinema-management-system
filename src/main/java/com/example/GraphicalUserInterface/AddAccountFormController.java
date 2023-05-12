@@ -29,7 +29,7 @@ public class AddAccountFormController implements Initializable {
     private VBox addAccountForm;
 
     public AddAccountFormController() throws Exception {
-        main = new ManagementMain();
+        main = ManagementMain.getInstance();
     }
 
     @Override

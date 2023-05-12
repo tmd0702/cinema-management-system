@@ -29,7 +29,7 @@ public class AddMovieFormController implements Initializable {
     private VBox addMovieForm;
 
     public AddMovieFormController() throws Exception {
-        main = new ManagementMain();
+        main = ManagementMain.getInstance();
     }
 
     @Override

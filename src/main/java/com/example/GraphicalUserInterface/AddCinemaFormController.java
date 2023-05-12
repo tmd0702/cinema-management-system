@@ -24,7 +24,7 @@ public class AddCinemaFormController implements Initializable {
     private VBox addCinemaForm;
 
     public AddCinemaFormController() throws Exception {
-        main = new ManagementMain();
+        main = ManagementMain.getInstance();
     }
 
     @Override

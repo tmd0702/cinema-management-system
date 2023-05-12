@@ -24,7 +24,7 @@ public class AddScreenRoomFormController implements Initializable {
     @FXML
     private VBox addScreenRoomForm;
     public AddScreenRoomFormController() throws Exception {
-        main = new ManagementMain();
+        main = ManagementMain.getInstance();
     }
 
     @Override

@@ -25,7 +25,7 @@ public class AddItemFormController implements Initializable {
     @FXML
     private VBox addItemForm;
     public AddItemFormController() throws Exception {
-        main = new ManagementMain();
+        main = ManagementMain.getInstance();
     }
 
     @Override
@@ -68,6 +68,7 @@ public class AddItemFormController implements Initializable {
         itemInfo.put("NAME", nameField.getText());
         itemInfo.put("CATEGORY", categoryField.getValue().toString());
         itemInfo.put("PRICE", priceField.getText());
+        itemInfo.put("ID", main.getIdGenerator().generateId(main.getItemManagementProcessor().getDefaultDatabaseTable()));
         Response response = main.getItemManagementProcessor().add(itemInfo);
         StatusCode signupStatus = response.getStatusCode();
         if (signupStatus == StatusCode.OK) {

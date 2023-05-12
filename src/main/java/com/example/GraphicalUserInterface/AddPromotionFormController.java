@@ -26,7 +26,7 @@ public class AddPromotionFormController implements Initializable {
     private VBox addPromotionForm;
 
     public AddPromotionFormController() throws Exception {
-        main = new ManagementMain();
+        main = ManagementMain.getInstance();
     }
 
     @Override

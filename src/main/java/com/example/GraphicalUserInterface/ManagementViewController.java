@@ -524,7 +524,10 @@ public class ManagementViewController implements Initializable {
     public void offFocusSortList(Node node) {
         main.getScene().addEventFilter(MouseEvent.MOUSE_CLICKED, evt -> {
             if (!inHierarchy(evt.getPickResult().getIntersectedNode(), node)) {
-                currentActiveDataViewHeader = null;
+                if (currentActiveDataViewHeader != null) {
+                    currentActiveDataViewHeader.setStyle("-fx-border-style: solid none solid solid;-fx-border-color: #cccccc;-fx-background-color: white;");
+                    currentActiveDataViewHeader = null;
+                }
                 dataViewContainer.getChildren().remove(node);
             }
         });
@@ -615,16 +618,15 @@ public class ManagementViewController implements Initializable {
             @Override
             public void handle(MouseEvent mouseEvent) {
                 Node currentFocusedSortButton = ((HBox) node).getChildren().get(1);
+                if (currentActiveDataViewHeader != null && currentActiveDataViewHeader != node) {
+                    currentActiveDataViewHeader.setStyle("-fx-border-style: solid none solid solid;-fx-border-color: #cccccc;-fx-background-color: white;");
+                }
                 if (sortButtonOnClickedDetect(node, mouseEvent.getSceneX(), mouseEvent.getSceneY())) {
                     if (currentActiveSortButton != null && currentFocusedSortButton != currentActiveSortButton) {
                         currentActiveSortButton.setStyle("-fx-border-style: none none none solid; -fx-background-color: transparent; -fx-border-color: transparent; -fx-border-width: 0 0 0 2;");
                     }
                     currentFocusedSortButton.setStyle("-fx-border-style: none none none solid; -fx-background-color: rgba(0, 0, 255, 0.1); -fx-border-color: #cccccc; -fx-border-width: 0 0 0 2;");
                     currentActiveSortButton = currentFocusedSortButton;
-                }
-                System.out.println("header on click");
-                if (currentActiveDataViewHeader != null && currentActiveDataViewHeader != node) {
-                    currentActiveDataViewHeader.setStyle("-fx-border-style: solid none solid solid;-fx-border-color: #cccccc;-fx-background-color: white;");
                 }
                 currentActiveDataViewHeader = node;
             }

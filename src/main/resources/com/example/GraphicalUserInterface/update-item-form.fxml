@@ -15,8 +15,8 @@
    <children>
       <HBox prefHeight="46.0" prefWidth="200.0" spacing="10.0" style="-fx-alignment: CENTER_LEFT;">
          <children>
-            <Button fx:id="cancelInsertBtn" mnemonicParsing="false" onMouseClicked="#cancelInsertBtnOnClick" text="Cancel" />
-            <Button fx:id="saveInsertBtn" mnemonicParsing="false" onMouseClicked="#saveInsertBtnOnClick" text="Save" />
+            <Button fx:id="cancelInsertBtn" mnemonicParsing="false" onMouseClicked="#cancelUpdateBtnOnClick" text="Cancel" />
+            <Button fx:id="saveInsertBtn" mnemonicParsing="false" onMouseClicked="#saveUpdateBtnOnClick" text="Save" />
          </children>
          <padding>
             <Insets left="10.0" right="10.0" />

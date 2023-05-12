@@ -30,7 +30,7 @@ public abstract class Processor {
     public String getDefaultDatabaseTable() {
         return this.defaultDatabaseTable;
     }
-    public StatusCode add(HashMap <String, String> columnValueMap) {
+    public Response add(HashMap <String, String> columnValueMap) {
         ArrayList<ArrayList<String>> columnsValuesList = Utils.Utils.getKeysValuesFromMap(columnValueMap);
 
         ArrayList<String> columns = columnsValuesList.get(0);
@@ -45,10 +45,10 @@ public abstract class Processor {
             Statement st = getConnector().createStatement();
             st.execute(query);
             st.close();
-            return StatusCode.OK;
+            return new Response("OK", StatusCode.OK);
         } catch (Exception e) {
             System.out.println(e);
-            return StatusCode.BAD_REQUEST;
+            return new Response(e.getMessage(), StatusCode.BAD_REQUEST);
         }
     }
     public String constructUpdateSQLSetStatement(ArrayList<String> columns, ArrayList<String> values) {
@@ -109,6 +109,7 @@ public abstract class Processor {
         ArrayList<ArrayList<String>> result = new ArrayList<ArrayList<String>>();
 
         try {
+            System.out.println(query);
             Statement st = getConnector().createStatement();
             ResultSet rs = st.executeQuery(query);
             ResultSetMetaData rsmd = rs.getMetaData();

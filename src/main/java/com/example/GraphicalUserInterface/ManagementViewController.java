@@ -77,6 +77,10 @@ public class ManagementViewController implements Initializable {
     @FXML
     private Button homeTabPanel = new Button("Home");
     @FXML
+    private Button itemTabPanel = new Button("Item");
+    @FXML
+    private Button screenRoomTabPanel = new Button("Screen Room");
+    @FXML
     private Button movieTabPanel = new Button("Movie");
     @FXML
     private Button accountTabPanel = new Button("Account");
@@ -124,6 +128,8 @@ public class ManagementViewController implements Initializable {
         tabPanels.add(theaterTabPanel);
         tabPanels.add(revenueTabPanel);
         tabPanels.add(promotionTabPanel);
+        tabPanels.add(itemTabPanel);
+        tabPanels.add(screenRoomTabPanel);
 
         insertBtn = new ImageView(main.getImageManager().getInsertIconImage());
         deleteBtn = new ImageView(main.getImageManager().getDeleteIconImage());
@@ -201,6 +207,10 @@ public class ManagementViewController implements Initializable {
             managementPage.getChildren().add(FXMLLoader.load(getClass().getResource("add-promotion-form.fxml")));
         } else if (tabPanelOnClick == theaterTabPanel) {
             managementPage.getChildren().add(FXMLLoader.load(getClass().getResource("add-cinema-form.fxml")));
+        } else if (tabPanelOnClick == itemTabPanel) {
+            managementPage.getChildren().add(FXMLLoader.load(getClass().getResource("add-item-form.fxml")));
+        } else if (tabPanelOnClick == screenRoomTabPanel) {
+            managementPage.getChildren().add(FXMLLoader.load(getClass().getResource("add-screen-room-form.fxml")));
         } else {
             managementPage.getChildren().add(FXMLLoader.load(getClass().getResource("add-account-form.fxml")));
         }
@@ -215,6 +225,10 @@ public class ManagementViewController implements Initializable {
             managementPage.getChildren().add(FXMLLoader.load(getClass().getResource("update-promotion-form.fxml")));
         } else if (tabPanelOnClick == theaterTabPanel) {
             managementPage.getChildren().add(FXMLLoader.load(getClass().getResource("update-cinema-form.fxml")));
+        } else if (tabPanelOnClick == itemTabPanel) {
+            managementPage.getChildren().add(FXMLLoader.load(getClass().getResource("update-item-form.fxml")));
+        } else if (tabPanelOnClick == screenRoomTabPanel) {
+            managementPage.getChildren().add(FXMLLoader.load(getClass().getResource("update-screen-room-form.fxml")));
         } else {
             managementPage.getChildren().add(FXMLLoader.load(getClass().getResource("update-account-form.fxml")));
         }
@@ -894,6 +908,12 @@ public class ManagementViewController implements Initializable {
                     reRenderPage(true);
                 } else if (tabPanelOnClick == theaterTabPanel) {
                     activeProcessor = main.getTheaterManagementProcessor();
+                    reRenderPage(true);
+                } else if (tabPanelOnClick == itemTabPanel) {
+                    activeProcessor = main.getItemManagementProcessor();
+                    reRenderPage(true);
+                } else if (tabPanelOnClick == screenRoomTabPanel) {
+                    activeProcessor = main.getScreenRoomManagementProcessor();
                     reRenderPage(true);
                 } else {
                     activeProcessor = main.getMovieManagementProcessor();

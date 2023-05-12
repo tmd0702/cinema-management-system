@@ -81,7 +81,7 @@ public class UpdateMovieFormController implements Initializable {
             //Setting the title
             dialog.setTitle("Failed");
             ButtonType type = new ButtonType("Ok", ButtonBar.ButtonData.OK_DONE);
-            dialog.setContentText("The record has errors");
+            dialog.setContentText(response.getMessage());
             dialog.getDialogPane().getButtonTypes().add(type);
             dialog.showAndWait();
         }

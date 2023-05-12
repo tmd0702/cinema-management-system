@@ -34,8 +34,8 @@ public class AddFakeDatabase {
         for (int i=0;i<200;++i) {
             account.put("ID", idGenerator.generateId(accountManagementProcessor.getDefaultDatabaseTable()));
             account.put("USERNAME", "admin" + (i + 1));
-            StatusCode status = accountManagementProcessor.add(account);
-            if (status == StatusCode.OK) {
+            Response response = accountManagementProcessor.add(account);
+            if (response.getStatusCode() == StatusCode.OK) {
                 System.out.println("insert 1 row success");
             } else {
                 System.out.println(i + " failed");
@@ -54,8 +54,8 @@ public class AddFakeDatabase {
         for (int i=0;i<200;++i) {
             promotion.put("ID", idGenerator.generateId(promotionManagementProcessor.getDefaultDatabaseTable()));
             promotion.put("PROMOTION_NAME", "Khuyen mai dot " + i);
-            StatusCode status = promotionManagementProcessor.add(promotion);
-            if (status == StatusCode.OK) {
+            Response response = promotionManagementProcessor.add(promotion);
+            if (response.getStatusCode() == StatusCode.OK) {
                 System.out.println("insert 1 row success");
             } else {
                 System.out.println(i + " failed");
@@ -70,8 +70,8 @@ public class AddFakeDatabase {
         theater.put("CINE_AREA", "TPHCM");
         for (int i=0;i<200;++i) {
             theater.put("ID", idGenerator.generateId(theaterManagementProcessor.getDefaultDatabaseTable()));
-            StatusCode status = theaterManagementProcessor.add(theater);
-            if (status == StatusCode.OK) {
+            Response response = theaterManagementProcessor.add(theater);
+            if (response.getStatusCode() == StatusCode.OK) {
                 System.out.println("insert 1 row success");
             } else {
                 System.out.println(i + " failed");

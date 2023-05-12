@@ -11,7 +11,7 @@
 <?import javafx.scene.text.Font?>
 <?import javafx.scene.text.Text?>
 
-<VBox fx:id="addCinemaForm" layoutX="110.0" prefHeight="600.0" prefWidth="790.0" xmlns="http://javafx.com/javafx/19" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.example.GraphicalUserInterface.UpdateScreenRoomFormController">
+<VBox fx:id="updateScreenRoomForm" layoutX="110.0" prefHeight="600.0" prefWidth="790.0" xmlns="http://javafx.com/javafx/19" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.example.GraphicalUserInterface.UpdateScreenRoomFormController">
    <children>
       <HBox prefHeight="46.0" prefWidth="200.0" spacing="10.0" style="-fx-alignment: CENTER_LEFT;">
          <children>
@@ -30,11 +30,11 @@
                </font>
             </Text>
             <TextField fx:id="nameField" layoutX="178.0" layoutY="138.0" />
-            <TextField fx:id="addressField" layoutX="178.0" layoutY="172.0" />
+            <TextField fx:id="capacityField" layoutX="178.0" layoutY="172.0" />
             <Label layoutX="136.0" layoutY="142.0" prefHeight="17.0" prefWidth="33.0" text="Name" />
             <Label layoutX="92.0" layoutY="210.0" text="Cinema Name" />
             <Label layoutX="121.0" layoutY="176.0" text="Capacity" />
-            <ComboBox layoutX="178.0" layoutY="206.0" prefWidth="150.0" />
+            <ComboBox fx:id="cinemaNameField" layoutX="178.0" layoutY="206.0" prefWidth="150.0" />
             <TextField fx:id="idField" layoutX="178.0" layoutY="104.0" />
             <Label layoutX="153.0" layoutY="108.0" prefHeight="17.0" prefWidth="16.0" text="ID" />
          </children>

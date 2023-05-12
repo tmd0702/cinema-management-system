@@ -42,7 +42,6 @@ public class AddAccountFormController implements Initializable {
     }
     @FXML
     public void cancelInsertBtnOnClick() {
-//        DialogPane cancelConfirmation = new DialogPane();
         System.out.println("cancel");
         cancelInsertConfirmationAlert("Are you sure to ged rid of this record?");
     }

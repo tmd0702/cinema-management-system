@@ -15,7 +15,7 @@ import java.io.IOException;
 public class ManagementMain extends Application {
     private static Stage stage;
     private Scene scene;
-    private Processor cinemaManagementProcessor, theaterManagementProcessor, movieManagementProcessor, promotionManagementProcessor;
+    private Processor cinemaManagementProcessor, theaterManagementProcessor, movieManagementProcessor, promotionManagementProcessor, itemManagementProcessor, screenRoomManagementProcessor;
     private AccountManagementProcessor accountManagementProcessor;
     private IdGenerator idGenerator;
     private ImageManager imageManager;
@@ -23,6 +23,8 @@ public class ManagementMain extends Application {
     public ManagementMain() throws Exception {
         managementMain = this;
         idGenerator = new IdGenerator();
+        screenRoomManagementProcessor = new ScreenRoomManagementProcessor();
+        itemManagementProcessor = new ItemManagementProcessor();
         cinemaManagementProcessor = new CinemaManagementProcessor();
         theaterManagementProcessor = new TheaterManagementProcessor();
         promotionManagementProcessor = new PromotionManagementProcessor();
@@ -30,8 +32,14 @@ public class ManagementMain extends Application {
         movieManagementProcessor = new MovieManagementProcessor();
         imageManager = new ImageManager();
     }
+    public Processor getItemManagementProcessor() {
+        return this.itemManagementProcessor;
+    }
     public IdGenerator getIdGenerator() {
         return this.idGenerator;
+    }
+    public Processor getScreenRoomManagementProcessor() {
+        return this.screenRoomManagementProcessor;
     }
     public Processor getTheaterManagementProcessor() {
         return this.theaterManagementProcessor;

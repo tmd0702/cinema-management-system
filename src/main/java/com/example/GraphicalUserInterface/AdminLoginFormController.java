@@ -1,21 +1,16 @@
 package com.example.GraphicalUserInterface;
 
-import Database.SigninProcessor;
-import UserManager.Subscriber;
 import Utils.StatusCode;
 import Utils.Utils;
-import javafx.application.Application;
+import Utils.Response;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
-import javafx.scene.control.CheckBox;
-import javafx.scene.control.PasswordField;
-import javafx.scene.control.TextField;
+import javafx.scene.control.*;
 
-import java.io.FileInputStream;
-import java.io.IOException;
 import java.io.InputStream;
 import java.net.URL;
 import java.util.HashMap;
+import java.util.Optional;
 import java.util.Properties;
 import java.util.ResourceBundle;
 
@@ -24,7 +19,6 @@ public class AdminLoginFormController implements Initializable {
 
     private ManagementMain managementMain;
     private String filePath;
-    private SigninProcessor signinProcessor;
     @FXML
     private CheckBox rememberAccountCheckBox;
     @FXML
@@ -32,7 +26,6 @@ public class AdminLoginFormController implements Initializable {
     @FXML
     private PasswordField passwordField;
     public AdminLoginFormController() throws Exception {
-        this.signinProcessor = new SigninProcessor();
         this.managementMain = ManagementMain.getInstance();
         this.prop = new Properties();
         InputStream is = ManagementMain.class.getResourceAsStream("/cache/account-cache.properties");
@@ -57,7 +50,8 @@ public class AdminLoginFormController implements Initializable {
         HashMap<String, String> signinInfo = new HashMap<String, String>();
         signinInfo.put("username", this.usernameField.getText());
         signinInfo.put("password", this.passwordField.getText());
-        StatusCode signinStatus =  signinProcessor.handleSigninAction(signinInfo);
+        Response response = ManagementMain.getInstance().getAccountManagementProcessor().handleSigninAction(signinInfo);
+        StatusCode signinStatus = response.getStatusCode();
         if (signinStatus == StatusCode.OK) {
             System.out.println("Sign in success");
 
@@ -69,7 +63,15 @@ public class AdminLoginFormController implements Initializable {
             }
             this.managementMain.changeScene("management-view.fxml");
         } else {
-            System.out.println("Sign in failed");
+            Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
+            alert.setTitle("Failed");
+            alert.setContentText(response.getMessage());
+            Optional<ButtonType> result = alert.showAndWait();
+            if (result.get() == ButtonType.OK) {
+
+            } else {
+
+            }
         }
     }
 }

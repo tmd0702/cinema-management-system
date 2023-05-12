@@ -1,13 +1,12 @@
 package com.example.GraphicalUserInterface;
+import Utils.Response;
 import Utils.StatusCode;
 import javafx.fxml.FXML;
 import javafx.scene.control.*;
-import Database.SignupProcessor;
 
 import java.time.format.DateTimeFormatter;
 import java.util.*;
 public class SignupFormController {
-    private SignupProcessor signupProcessor;
     @FXML
     ToggleGroup gender;
     @FXML
@@ -15,7 +14,6 @@ public class SignupFormController {
     @FXML
     private DatePicker dateOfBirthField;
     public SignupFormController() throws Exception {
-        this.signupProcessor = new SignupProcessor();
     }
     public void onSubmitSignUpBtn() {
         HashMap<String, String> signUpInfo = new HashMap<String, String>();
@@ -28,7 +26,8 @@ public class SignupFormController {
         signUpInfo.put("username", usernameField.getText());
         signUpInfo.put("password", passwordField.getText());
         signUpInfo.put("gender", ((RadioButton)gender.getSelectedToggle()).getText().substring(0, 1));
-        StatusCode signupStatus = this.signupProcessor.handleSignupAction(signUpInfo);
+        Response response = ManagementMain.getInstance().getAccountManagementProcessor().handleSignupAction(signUpInfo);
+        StatusCode signupStatus = response.getStatusCode();
         if (signupStatus == StatusCode.OK) {
             Dialog<String> dialog = new Dialog<String>();
             //Setting the title
@@ -38,7 +37,13 @@ public class SignupFormController {
             dialog.getDialogPane().getButtonTypes().add(type);
             dialog.showAndWait();
         } else {
-
+            Dialog<String> dialog = new Dialog<String>();
+            //Setting the title
+            dialog.setTitle("Dialog");
+            ButtonType type = new ButtonType("Ok", ButtonBar.ButtonData.OK_DONE);
+            dialog.setContentText(response.getMessage());
+            dialog.getDialogPane().getButtonTypes().add(type);
+            dialog.showAndWait();
         }
     }
     public void onSignInBtnClick() {

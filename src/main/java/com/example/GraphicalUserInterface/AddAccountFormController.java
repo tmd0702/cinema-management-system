@@ -1,5 +1,6 @@
 package com.example.GraphicalUserInterface;
 
+import Utils.Response;
 import Utils.StatusCode;
 import javafx.collections.FXCollections;
 import javafx.fxml.FXML;
@@ -78,7 +79,8 @@ public class AddAccountFormController implements Initializable {
         signUpInfo.put("username", usernameField.getText());
         signUpInfo.put("password", passwordField.getText());
         signUpInfo.put("gender", genderField.getValue().toString().substring(0, 1));
-        StatusCode signupStatus = main.getSignupProcessor().handleSignupAction(signUpInfo);
+        Response response = main.getAccountManagementProcessor().handleSignupAction(signUpInfo);
+        StatusCode signupStatus = response.getStatusCode();
         if (signupStatus == StatusCode.OK) {
             Dialog<String> dialog = new Dialog<String>();
             //Setting the title

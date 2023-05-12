@@ -15,15 +15,14 @@ import java.io.IOException;
 public class ManagementMain extends Application {
     private static Stage stage;
     private Scene scene;
-    private Processor cinemaManagementProcessor, theaterManagementProcessor, accountManagementProcessor, movieManagementProcessor, promotionManagementProcessor;
+    private Processor cinemaManagementProcessor, theaterManagementProcessor, movieManagementProcessor, promotionManagementProcessor;
+    private AccountManagementProcessor accountManagementProcessor;
     private IdGenerator idGenerator;
-    private SignupProcessor signupProcessor;
     private ImageManager imageManager;
     private static ManagementMain managementMain;
     public ManagementMain() throws Exception {
         managementMain = this;
         idGenerator = new IdGenerator();
-        signupProcessor = new SignupProcessor();
         cinemaManagementProcessor = new CinemaManagementProcessor();
         theaterManagementProcessor = new TheaterManagementProcessor();
         promotionManagementProcessor = new PromotionManagementProcessor();
@@ -46,9 +45,6 @@ public class ManagementMain extends Application {
     public Processor getPromotionManagementProcessor() {
         return this.promotionManagementProcessor;
     }
-    public SignupProcessor getSignupProcessor() {
-        return this.signupProcessor;
-    }
     public Node getNodeById(String id) {
         return stage.getScene().lookup(id);
     }
@@ -65,7 +61,7 @@ public class ManagementMain extends Application {
     public ImageManager getImageManager() {
         return this.imageManager;
     }
-    public Processor getAccountManagementProcessor() {
+    public AccountManagementProcessor getAccountManagementProcessor() {
         return this.accountManagementProcessor;
     }
     public Scene getScene() {

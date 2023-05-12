@@ -587,7 +587,9 @@ public class ManagementViewController implements Initializable {
         node.setOnMouseEntered(new EventHandler<MouseEvent>() {
             @Override
             public void handle(MouseEvent mouseEvent) {
-                node.setStyle("-fx-border-style: none none none solid; -fx-border-color: #cccccc; -fx-border-width: 0 0 0 2;");
+                if (currentActiveSortButton != node) {
+                    node.setStyle("-fx-border-style: none none none solid; -fx-border-color: #cccccc; -fx-border-width: 0 0 0 2;");
+                }
             }
         });
     }

@@ -753,7 +753,7 @@ public class ManagementViewController implements Initializable {
         setTotalPageNum(Math.max(1, Math.ceilDiv(totalRowNum, rowPerPageNum)));
         setCurrentPage(Math.min(currentPage, totalPageNum));
         if (isInit) sortQuery = "";
-        data = activeProcessor.select((currentPage - 1) * rowPerPageNum, rowPerPageNum, queryCondition, sortQuery);
+        data = activeProcessor.select((currentPage - 1) * rowPerPageNum, rowPerPageNum, queryCondition, sortQuery).getData();
         ArrayList<String> columnNames = data.get(0);
         if (isInit) {
             setCurrentPage(1);

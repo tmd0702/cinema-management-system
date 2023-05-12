@@ -1,5 +1,6 @@
 package com.example.GraphicalUserInterface;
 
+import Utils.Response;
 import Utils.StatusCode;
 import javafx.collections.FXCollections;
 import javafx.fxml.FXML;
@@ -54,7 +55,8 @@ public class UpdateCinemaFormController implements Initializable {
         cinemaInfo.put("ADDRESS", addressField.getText());
         cinemaInfo.put("NAME", nameField.getText());
         cinemaInfo.put("CINE_AREA", cineAreaField.getText());
-        StatusCode status = main.getCinemaManagementProcessor().update(cinemaInfo, String.format("ID = '%s'", idField.getText()));
+        Response response = main.getCinemaManagementProcessor().update(cinemaInfo, String.format("ID = '%s'", idField.getText()));
+        StatusCode status = response.getStatusCode();
         if (status == StatusCode.OK) {
             Dialog<String> dialog = new Dialog<String>();
             //Setting the title
@@ -68,7 +70,7 @@ public class UpdateCinemaFormController implements Initializable {
             //Setting the title
             dialog.setTitle("Failed");
             ButtonType type = new ButtonType("Ok", ButtonBar.ButtonData.OK_DONE);
-            dialog.setContentText("The record has errors");
+            dialog.setContentText(response.getMessage());
             dialog.getDialogPane().getButtonTypes().add(type);
             dialog.showAndWait();
         }

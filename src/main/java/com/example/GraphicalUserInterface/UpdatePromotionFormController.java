@@ -1,5 +1,6 @@
 package com.example.GraphicalUserInterface;
 
+import Utils.Response;
 import Utils.StatusCode;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
@@ -53,7 +54,8 @@ public class UpdatePromotionFormController implements Initializable {
         promotionInfo.put("START_DATE", DateTimeFormatter.ofPattern("yyyy-MM-dd").format(startDateField.getValue()));
         promotionInfo.put("END_DATE", DateTimeFormatter.ofPattern("yyyy-MM-dd").format(endDateField.getValue()));
         promotionInfo.put("DISCOUNT", discountField.getText());
-        StatusCode status = main.getPromotionManagementProcessor().update(promotionInfo, String.format("ID = '%s'", idField.getText()));
+        Response response = main.getPromotionManagementProcessor().update(promotionInfo, String.format("ID = '%s'", idField.getText()));
+        StatusCode status = response.getStatusCode();
         if (status == StatusCode.OK) {
             Dialog<String> dialog = new Dialog<String>();
             //Setting the title
@@ -67,7 +69,7 @@ public class UpdatePromotionFormController implements Initializable {
             //Setting the title
             dialog.setTitle("Failed");
             ButtonType type = new ButtonType("Ok", ButtonBar.ButtonData.OK_DONE);
-            dialog.setContentText("The record has errors");
+            dialog.setContentText(response.getMessage());
             dialog.getDialogPane().getButtonTypes().add(type);
             dialog.showAndWait();
         }

@@ -1,5 +1,6 @@
 package com.example.GraphicalUserInterface;
 
+import Utils.Response;
 import Utils.StatusCode;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
@@ -65,7 +66,8 @@ public class UpdateMovieFormController implements Initializable {
         movieInfo.put("VOTE_COUNT", voteCountField.getText());
         movieInfo.put("VOTE_AVERAGE", voteAverageField.getText());
         movieInfo.put("MOVIE_STATUS", movieStatusField.getValue().toString());
-        StatusCode status = main.getMovieManagementProcessor().update(movieInfo, String.format("ID = '%s'", idField.getText()));
+        Response response = main.getMovieManagementProcessor().update(movieInfo, String.format("ID = '%s'", idField.getText()));
+        StatusCode status = response.getStatusCode();
         if (status == StatusCode.OK) {
             Dialog<String> dialog = new Dialog<String>();
             //Setting the title

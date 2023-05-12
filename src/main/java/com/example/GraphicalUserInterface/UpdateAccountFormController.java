@@ -1,5 +1,6 @@
 package com.example.GraphicalUserInterface;
 
+import Utils.Response;
 import Utils.StatusCode;
 import javafx.collections.FXCollections;
 import javafx.fxml.FXML;
@@ -65,7 +66,8 @@ public class UpdateAccountFormController implements Initializable {
         signUpInfo.put("ADDRESS", addressField.getText());
         signUpInfo.put("USERNAME", usernameField.getText());
         signUpInfo.put("GENDER", genderField.getValue().toString().substring(0, 1));
-        StatusCode signupStatus = main.getAccountManagementProcessor().update(signUpInfo, String.format("ID = '%s'", idField.getText()));
+        Response response = main.getAccountManagementProcessor().update(signUpInfo, String.format("ID = '%s'", idField.getText()));
+        StatusCode signupStatus = response.getStatusCode();
         if (signupStatus == StatusCode.OK) {
             Dialog<String> dialog = new Dialog<String>();
             //Setting the title
@@ -79,7 +81,7 @@ public class UpdateAccountFormController implements Initializable {
             //Setting the title
             dialog.setTitle("Failed");
             ButtonType type = new ButtonType("Ok", ButtonBar.ButtonData.OK_DONE);
-            dialog.setContentText("The record has errors");
+            dialog.setContentText(response.getMessage());
             dialog.getDialogPane().getButtonTypes().add(type);
             dialog.showAndWait();
         }

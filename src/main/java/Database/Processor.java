@@ -1,8 +1,10 @@
 package Database;
 
 import Utils.ColumnType;
+import Utils.Response;
 import Utils.StatusCode;
 
+import java.net.ResponseCache;
 import java.sql.*;
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -59,7 +61,7 @@ public abstract class Processor {
         }
         return setStatement;
     }
-    public StatusCode update(HashMap <String, String> columnValueMap, String queryCondition) {
+    public Response update(HashMap <String, String> columnValueMap, String queryCondition) {
         ArrayList<ArrayList<String>> columnsValuesList = Utils.Utils.getKeysValuesFromMap(columnValueMap);
 
         ArrayList<String> columns = columnsValuesList.get(0);
@@ -73,26 +75,26 @@ public abstract class Processor {
             Statement st = getConnector().createStatement();
             st.execute(query);
             st.close();
-            return StatusCode.OK;
+            return new Response("OK", StatusCode.OK);
         } catch (Exception e) {
             System.out.println(e);
-            return StatusCode.BAD_REQUEST;
+            return new Response(e.getMessage(), StatusCode.BAD_REQUEST);
         }
 
     }
-    public StatusCode delete(String queryCondition) {
+    public Response delete(String queryCondition) {
         String query = String.format("DELETE FROM %s WHERE %s", defaultDatabaseTable, queryCondition);
         try {
             Statement st = getConnector().createStatement();
             st.execute(query);
             st.close();
-            return StatusCode.OK;
+            return new Response("OK", StatusCode.OK);
         } catch (Exception e) {
             System.out.println(e);
-            return StatusCode.BAD_REQUEST;
+            return new Response(e.getMessage(), StatusCode.BAD_REQUEST);
         }
     }
-    public ArrayList<ArrayList<String>> select (int from, int quantity, String queryCondition, String sortQuery) {
+    public Response select (int from, int quantity, String queryCondition, String sortQuery) {
         String query = String.format("SELECT * FROM %s", defaultDatabaseTable);
         if (queryCondition.length() > 0) {
             query = query + " WHERE " + queryCondition;
@@ -104,7 +106,6 @@ public abstract class Processor {
             query = query + String.format(" LIMIT %d, %d", from, quantity);
         }
 
-        System.out.println(query);
         ArrayList<ArrayList<String>> result = new ArrayList<ArrayList<String>>();
 
         try {
@@ -129,8 +130,9 @@ public abstract class Processor {
             st.close();
         } catch (Exception e) {
             System.out.println(e);
+            return new Response(e.getMessage(), StatusCode.BAD_REQUEST);
         }
-        return result;
+        return new Response("OK", StatusCode.OK, result);
     }
     public int count(String queryCondition) {
         String query = String.format("SELECT COUNT(*) FROM %s", defaultDatabaseTable);

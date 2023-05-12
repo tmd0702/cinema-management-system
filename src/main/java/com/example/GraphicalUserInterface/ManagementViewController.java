@@ -3,6 +3,7 @@ package com.example.GraphicalUserInterface;
 import Database.AccountManagementProcessor;
 import Database.Processor;
 import Utils.ColumnType;
+import Utils.Response;
 import Utils.StatusCode;
 import javafx.animation.KeyFrame;
 import javafx.animation.Timeline;
@@ -321,12 +322,16 @@ public class ManagementViewController implements Initializable {
     public void handleDeleteRecordRequest() {
         String recordId = getRecordIdByRowIndex();
         String queryCondition = String.format("ID = '%s'", recordId);
-        StatusCode status = activeProcessor.delete(queryCondition);
+        Response response = activeProcessor.delete(queryCondition);
+        StatusCode status = response.getStatusCode();
         if (status == StatusCode.OK) {
             System.out.println("delete success");
             reRenderPage(false);
         } else {
-            System.out.println("delete failed");
+            Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
+//        alert.setTitle("Confirmation");
+            alert.setContentText(response.getMessage());//"Are you sure to delete this record?");
+            Optional<ButtonType> result = alert.showAndWait();
         }
     }
     public void deleteConfirmationAlert(String contentText) {

@@ -1,24 +1,24 @@
 package Utils;
 
-import Database.AccountManagementProcessor;
-import Database.Processor;
-import Database.PromotionManagementProcessor;
-import Database.TheaterManagementProcessor;
+import Database.*;
 import javafx.scene.control.RadioButton;
 
 import java.text.SimpleDateFormat;
 import java.time.format.DateTimeFormatter;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
 
 public class AddFakeDatabase {
-    Processor accountManagementProcessor, promotionManagementProcessor, theaterManagementProcessor;
-
+    Processor accountManagementProcessor, promotionManagementProcessor, theaterManagementProcessor, screenRoomManagementProcessor;
+    Processor seatManagementProcessor;
     IdGenerator idGenerator;
     public AddFakeDatabase() throws Exception {
         theaterManagementProcessor = new TheaterManagementProcessor();
         this.promotionManagementProcessor = new PromotionManagementProcessor();
         this.accountManagementProcessor = new AccountManagementProcessor();
+        this.screenRoomManagementProcessor = new ScreenRoomManagementProcessor();
+        this.seatManagementProcessor = new SeatManagementProcessor();
         this.idGenerator = new IdGenerator();
     }
     public void addFakeAccounts() throws Exception {
@@ -67,7 +67,7 @@ public class AddFakeDatabase {
         theater.put("NAME", "4HB THU DUC");
         theater.put("ADDRESS", "test");
         theater.put("CINE_AREA", "TPHCM");
-        for (int i=0;i<200;++i) {
+        for (int i=0;i<50;++i) {
             theater.put("ID", idGenerator.generateId(theaterManagementProcessor.getDefaultDatabaseTable()));
             StatusCode status = theaterManagementProcessor.add(theater);
             if (status == StatusCode.OK) {
@@ -77,11 +77,60 @@ public class AddFakeDatabase {
             }
         }
     }
+
+    public void addFakeScreenRooms() throws Exception{
+        HashMap<String, String> room = new HashMap<String, String>();
+        room.put("CAPACITY", "80");
+        for (int i=0;i<50;++i) {
+            for(int j = 1; j <= 6; j++) {
+                room.put("ID", idGenerator.generateId(screenRoomManagementProcessor.getDefaultDatabaseTable()));
+                room.put("NAME", "ROOM_" + j);
+                room.put("CINEMA_ID", "CIN_" + String.format("%05d", (i + 1)));
+                StatusCode status = screenRoomManagementProcessor.add(room);
+                if (status == StatusCode.OK) {
+                    System.out.println("insert 1 row success" + room.get("CINEMA_ID"));
+                } else {
+                    System.out.println(i + " failed");
+                }
+            }
+        }
+    }
+    public void addFakeSeats() throws Exception {
+        HashMap<String, String> seat = new HashMap<String, String>();
+        seat.put("CATEGORY", "NORMAL");
+        seat.put("SEAT_STATUS", "AVAILABLE");
+        for (int i = 0; i < 50; ++i) {
+            for (int j = 1; j <= 6; j++) {
+                for (int k = 0; k < 7; k++) {
+                    for (int h = 0; h < 12; h++) {
+                        if (k == 0 && (h == 0 || h == 1 || h == 10 || h == 11) || k == 1 && (h == 0 || h == 11))
+                            continue;
+                        int t = h;
+                        if(k == 0)
+                            t = h - 1;
+                        seat.put("ID", idGenerator.generateId(seatManagementProcessor.getDefaultDatabaseTable()));
+                        seat.put("NAME", String.valueOf((char)('A' + k)) + t);
+                        seat.put("SCREEN_ROOM_ID", "SR_" + String.format("%05d", (j)));
+
+                        StatusCode status = seatManagementProcessor.add(seat);
+                        if (status == StatusCode.OK) {
+                            System.out.println("insert 1 row success" + seat.get("CINEMA_ID"));
+                        } else {
+                            System.out.println(i + " failed");
+                        }
+                    }
+                }
+            }
+        }
+    }
     public static void main(String[] args) throws Exception {
         AddFakeDatabase addFakeDatabase = new AddFakeDatabase();
         addFakeDatabase.addFakeAccounts();
         addFakeDatabase.addFakePromotions();
         addFakeDatabase.addFakeTheaters();
+        addFakeDatabase.addFakeScreenRooms();
+        addFakeDatabase.addFakeSeats();
+
     }
 }
 

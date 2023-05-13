@@ -100,10 +100,12 @@ public class AddFakeDatabase {
         HashMap<String, String> seat = new HashMap<String, String>();
         seat.put("CATEGORY", "NORMAL");
         seat.put("SEAT_STATUS", "AVAILABLE");
-        for (int i = 0; i < 50; ++i) {
-            for (int j = 1; j <= 6; j++) {
-                for (int k = 0; k < 7; k++) {
-                    for (int h = 0; h < 12; h++) {
+        int sr_id = 1000;
+        for (int i = 0; i < 50; ++i) { // i: cinema counter
+            for (int j = 1; j <= 6; j++) { // j: screen room counter per cinema
+                sr_id += 1;
+                for (int k = 0; k < 7; k++) { // k : rows number of seat per screen room
+                    for (int h = 0; h < 12; h++) { // h: columns number of seat per screen room
                         if (k == 0 && (h == 0 || h == 1 || h == 10 || h == 11) || k == 1 && (h == 0 || h == 11))
                             continue;
                         int t = h;
@@ -111,7 +113,8 @@ public class AddFakeDatabase {
                             t = h - 1;
                         seat.put("ID", idGenerator.generateId(seatManagementProcessor.getDefaultDatabaseTable()));
                         seat.put("NAME", String.valueOf((char)('A' + k)) + t);
-                        seat.put("SCREEN_ROOM_ID", "SR_" + String.format("%05d", (j)));
+                        seat.put("SCREEN_ROOM_ID", "SR_" + String.format("%05d", (sr_id)));
+
 
                         Response response = seatManagementProcessor.add(seat);
                         if (response.getStatusCode() == StatusCode.OK) {
@@ -126,10 +129,10 @@ public class AddFakeDatabase {
     }
     public static void main(String[] args) throws Exception {
         AddFakeDatabase addFakeDatabase = new AddFakeDatabase();
-        addFakeDatabase.addFakeAccounts();
-        addFakeDatabase.addFakePromotions();
-        addFakeDatabase.addFakeTheaters();
-        addFakeDatabase.addFakeScreenRooms();
+//        addFakeDatabase.addFakeAccounts();
+//        addFakeDatabase.addFakePromotions();
+//        addFakeDatabase.addFakeTheaters();
+//        addFakeDatabase.addFakeScreenRooms();
         addFakeDatabase.addFakeSeats();
 
     }

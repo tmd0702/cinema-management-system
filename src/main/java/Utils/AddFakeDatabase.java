@@ -87,8 +87,8 @@ public class AddFakeDatabase {
                 room.put("ID", idGenerator.generateId(screenRoomManagementProcessor.getDefaultDatabaseTable()));
                 room.put("NAME", "ROOM_" + j);
                 room.put("CINEMA_ID", "CIN_" + String.format("%05d", (i + 1)));
-                StatusCode status = screenRoomManagementProcessor.add(room);
-                if (status == StatusCode.OK) {
+                Response response = screenRoomManagementProcessor.add(room);
+                if (response.getStatusCode() == StatusCode.OK) {
                     System.out.println("insert 1 row success" + room.get("CINEMA_ID"));
                 } else {
                     System.out.println(i + " failed");
@@ -113,8 +113,8 @@ public class AddFakeDatabase {
                         seat.put("NAME", String.valueOf((char)('A' + k)) + t);
                         seat.put("SCREEN_ROOM_ID", "SR_" + String.format("%05d", (j)));
 
-                        StatusCode status = seatManagementProcessor.add(seat);
-                        if (status == StatusCode.OK) {
+                        Response response = seatManagementProcessor.add(seat);
+                        if (response.getStatusCode() == StatusCode.OK) {
                             System.out.println("insert 1 row success" + seat.get("CINEMA_ID"));
                         } else {
                             System.out.println(i + " failed");

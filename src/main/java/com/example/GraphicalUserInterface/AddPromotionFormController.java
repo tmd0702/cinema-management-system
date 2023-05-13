@@ -16,14 +16,16 @@ import java.util.HashMap;
 import java.util.Optional;
 import java.util.ResourceBundle;
 
-public class AddCinemaFormController implements Initializable {
+public class AddPromotionFormController implements Initializable {
     private ManagementMain main;
     @FXML
-    private TextField nameField, cineAreaField, addressField;
+    private TextField nameField, descriptionField, discountField;
     @FXML
-    private VBox addCinemaForm;
+    private DatePicker startDateField, endDateField;
+    @FXML
+    private VBox addPromotionForm;
 
-    public AddCinemaFormController() throws Exception {
+    public AddPromotionFormController() throws Exception {
         main = ManagementMain.getInstance();
     }
 
@@ -32,6 +34,8 @@ public class AddCinemaFormController implements Initializable {
     }
     @FXML
     public void cancelInsertBtnOnClick() {
+//        DialogPane cancelConfirmation = new DialogPane();
+        System.out.println("cancel");
         cancelInsertConfirmationAlert("Are you sure to ged rid of this record?");
     }
     public void cancelInsertConfirmationAlert(String contentText) {
@@ -47,8 +51,8 @@ public class AddCinemaFormController implements Initializable {
         }
     }
     public void disableInsertForm() {
-        ((AnchorPane)addCinemaForm.getParent()).getChildren().get(0).setVisible(true);
-        ((AnchorPane)addCinemaForm.getParent()).getChildren().remove(2);
+        ((AnchorPane)addPromotionForm.getParent()).getChildren().get(0).setVisible(true);
+        ((AnchorPane)addPromotionForm.getParent()).getChildren().remove(2);
     }
     @FXML
     public void saveInsertBtnOnClick() throws IOException {
@@ -57,14 +61,16 @@ public class AddCinemaFormController implements Initializable {
         disableInsertForm();
     }
     public void handleInsertRecordRequest() {
-        HashMap<String, String> cinemaInfo = new HashMap<String, String>();
-        cinemaInfo.put("ID", main.getIdGenerator().generateId("CINEMAS"));
-        cinemaInfo.put("NAME", nameField.getText());
-        cinemaInfo.put("ADDRESS", addressField.getText());
-        cinemaInfo.put("CINE_AREA", cineAreaField.getText());
+        HashMap<String, String> promotionInfo = new HashMap<String, String>();
+        promotionInfo.put("ID", main.getIdGenerator().generateId("PROMOTIONS"));
+        promotionInfo.put("NAME", nameField.getText());
+        promotionInfo.put("START_DATE", DateTimeFormatter.ofPattern("yyyy-MM-dd").format(startDateField.getValue()));
+        promotionInfo.put("END_DATE", DateTimeFormatter.ofPattern("yyyy-MM-dd").format(endDateField.getValue()));
+        promotionInfo.put("DISCOUNT", discountField.getText());
 
-        Response response = main.getCinemaManagementProcessor().add(cinemaInfo);
+        Response response = main.getPromotionManagementProcessor().add(promotionInfo);
         StatusCode status = response.getStatusCode();
+
         if (status == StatusCode.OK) {
             Dialog<String> dialog = new Dialog<String>();
             //Setting the title

@@ -1,5 +1,6 @@
 package com.example.GraphicalUserInterface;
 
+import Utils.Response;
 import Utils.StatusCode;
 import javafx.collections.FXCollections;
 import javafx.fxml.FXML;
@@ -16,19 +17,19 @@ import javafx.scene.control.*;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.VBox;
 
-public class AddAccountController implements Initializable {
+public class AddAccountFormController implements Initializable {
     private ManagementMain main;
     @FXML
     private ComboBox genderField;
     @FXML
     private TextField firstNameField, lastNameField, emailField, usernameField, passwordField, phoneField, addressField;
     @FXML
-    private DatePicker dateOfBirthField;
+    private DatePicker dobField;
     @FXML
     private VBox addAccountForm;
 
-    public AddAccountController() throws Exception {
-        main = new ManagementMain();
+    public AddAccountFormController() throws Exception {
+        main = ManagementMain.getInstance();
     }
 
     @Override
@@ -41,7 +42,6 @@ public class AddAccountController implements Initializable {
     }
     @FXML
     public void cancelInsertBtnOnClick() {
-//        DialogPane cancelConfirmation = new DialogPane();
         System.out.println("cancel");
         cancelInsertConfirmationAlert("Are you sure to ged rid of this record?");
     }
@@ -73,12 +73,13 @@ public class AddAccountController implements Initializable {
         signUpInfo.put("lastName", lastNameField.getText());
         signUpInfo.put("email", emailField.getText());
         signUpInfo.put("phone", phoneField.getText());
-        signUpInfo.put("dateOfBirth", DateTimeFormatter.ofPattern("dd-MM-yyyy").format(dateOfBirthField.getValue()));
+        signUpInfo.put("dateOfBirth", DateTimeFormatter.ofPattern("dd-MM-yyyy").format(dobField.getValue()));
         signUpInfo.put("address", addressField.getText());
         signUpInfo.put("username", usernameField.getText());
         signUpInfo.put("password", passwordField.getText());
         signUpInfo.put("gender", genderField.getValue().toString().substring(0, 1));
-        StatusCode signupStatus = main.getSignupProcessor().handleSignupAction(signUpInfo);
+        Response response = main.getAccountManagementProcessor().handleSignupAction(signUpInfo);
+        StatusCode signupStatus = response.getStatusCode();
         if (signupStatus == StatusCode.OK) {
             Dialog<String> dialog = new Dialog<String>();
             //Setting the title

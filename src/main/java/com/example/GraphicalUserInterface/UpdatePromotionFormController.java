@@ -2,13 +2,9 @@ package com.example.GraphicalUserInterface;
 
 import Utils.Response;
 import Utils.StatusCode;
-import javafx.collections.FXCollections;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
-import javafx.scene.control.ButtonBar;
-import javafx.scene.control.ButtonType;
-import javafx.scene.control.Dialog;
-import javafx.scene.control.TextField;
+import javafx.scene.control.*;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.VBox;
 
@@ -18,12 +14,14 @@ import java.time.format.DateTimeFormatter;
 import java.util.HashMap;
 import java.util.ResourceBundle;
 
-public class UpdateCinemaFormController implements Initializable {
+public class UpdatePromotionFormController implements Initializable {
     private ManagementMain main;
     @FXML
-    private TextField nameField, cineAreaField, addressField, idField;
+    private TextField idField, nameField, descriptionField, discountField;
     @FXML
-    private VBox updateCinemaForm;
+    private DatePicker startDateField, endDateField;
+    @FXML
+    private VBox updatePromotionForm;
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
         idFieldInit();
@@ -31,12 +29,12 @@ public class UpdateCinemaFormController implements Initializable {
     public void idFieldInit() {
         idField.setDisable(true);
     }
-    public UpdateCinemaFormController() {
+    public UpdatePromotionFormController() {
         main = ManagementMain.getInstance();
     }
     public void disableUpdateForm() {
-        ((AnchorPane)updateCinemaForm.getParent()).getChildren().get(0).setVisible(true);
-        ((AnchorPane)updateCinemaForm.getParent()).getChildren().remove(2);
+        ((AnchorPane)updatePromotionForm.getParent()).getChildren().get(0).setVisible(true);
+        ((AnchorPane)updatePromotionForm.getParent()).getChildren().remove(2);
     }
     @FXML
     public void saveUpdateBtnOnClick() throws IOException {
@@ -51,11 +49,13 @@ public class UpdateCinemaFormController implements Initializable {
         disableUpdateForm();
     }
     public void handleUpdateRecordRequest() {
-        HashMap<String, String> cinemaInfo = new HashMap<String, String>();
-        cinemaInfo.put("ADDRESS", addressField.getText());
-        cinemaInfo.put("NAME", nameField.getText());
-        cinemaInfo.put("CINE_AREA", cineAreaField.getText());
-        Response response = main.getCinemaManagementProcessor().update(cinemaInfo, String.format("ID = '%s'", idField.getText()));
+        HashMap<String, String> promotionInfo = new HashMap<String, String>();
+        promotionInfo.put("NAME", nameField.getText());
+        promotionInfo.put("START_DATE", DateTimeFormatter.ofPattern("yyyy-MM-dd").format(startDateField.getValue()));
+        promotionInfo.put("END_DATE", DateTimeFormatter.ofPattern("yyyy-MM-dd").format(endDateField.getValue()));
+        promotionInfo.put("DISCOUNT", discountField.getText());
+
+        Response response = main.getPromotionManagementProcessor().update(promotionInfo, String.format("ID = '%s'", idField.getText()));
         StatusCode status = response.getStatusCode();
         if (status == StatusCode.OK) {
             Dialog<String> dialog = new Dialog<String>();

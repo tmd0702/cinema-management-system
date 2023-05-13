@@ -11,27 +11,33 @@ import javafx.scene.layout.VBox;
 
 import java.io.IOException;
 import java.net.URL;
-import java.time.format.DateTimeFormatter;
 import java.util.HashMap;
 import java.util.Optional;
 import java.util.ResourceBundle;
 
-public class AddCinemaFormController implements Initializable {
+public class AddScreenRoomFormController implements Initializable {
     private ManagementMain main;
     @FXML
-    private TextField nameField, cineAreaField, addressField;
+    private ComboBox cinemaNameField;
     @FXML
-    private VBox addCinemaForm;
-
-    public AddCinemaFormController() throws Exception {
+    private TextField nameField, capacityField;
+    @FXML
+    private VBox addScreenRoomForm;
+    public AddScreenRoomFormController() throws Exception {
         main = ManagementMain.getInstance();
     }
 
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
+        categoryFieldInit();
+    }
+    public void categoryFieldInit() {
+        String movieStatus[] = {"Popcorn", "Drink"};
+        cinemaNameField.setItems(FXCollections.observableArrayList(movieStatus));
     }
     @FXML
     public void cancelInsertBtnOnClick() {
+        System.out.println("cancel");
         cancelInsertConfirmationAlert("Are you sure to ged rid of this record?");
     }
     public void cancelInsertConfirmationAlert(String contentText) {
@@ -47,8 +53,8 @@ public class AddCinemaFormController implements Initializable {
         }
     }
     public void disableInsertForm() {
-        ((AnchorPane)addCinemaForm.getParent()).getChildren().get(0).setVisible(true);
-        ((AnchorPane)addCinemaForm.getParent()).getChildren().remove(2);
+        ((AnchorPane)addScreenRoomForm.getParent()).getChildren().get(0).setVisible(true);
+        ((AnchorPane)addScreenRoomForm.getParent()).getChildren().remove(2);
     }
     @FXML
     public void saveInsertBtnOnClick() throws IOException {
@@ -57,15 +63,13 @@ public class AddCinemaFormController implements Initializable {
         disableInsertForm();
     }
     public void handleInsertRecordRequest() {
-        HashMap<String, String> cinemaInfo = new HashMap<String, String>();
-        cinemaInfo.put("ID", main.getIdGenerator().generateId("CINEMAS"));
-        cinemaInfo.put("NAME", nameField.getText());
-        cinemaInfo.put("ADDRESS", addressField.getText());
-        cinemaInfo.put("CINE_AREA", cineAreaField.getText());
-
-        Response response = main.getCinemaManagementProcessor().add(cinemaInfo);
-        StatusCode status = response.getStatusCode();
-        if (status == StatusCode.OK) {
+        HashMap<String, String> screenRoomInfo = new HashMap<String, String>();
+        screenRoomInfo.put("NAME", nameField.getText());
+        screenRoomInfo.put("CINEMA_ID", cinemaNameField.getValue().toString());
+        screenRoomInfo.put("CAPACITY", capacityField.getText());
+        Response response = main.getScreenRoomManagementProcessor().add(screenRoomInfo);
+        StatusCode signupStatus = response.getStatusCode();
+        if (signupStatus == StatusCode.OK) {
             Dialog<String> dialog = new Dialog<String>();
             //Setting the title
             dialog.setTitle("Success");

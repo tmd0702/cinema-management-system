@@ -2,28 +2,29 @@ package com.example.GraphicalUserInterface;
 
 import Utils.Response;
 import Utils.StatusCode;
-import javafx.collections.FXCollections;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
-import javafx.scene.control.ButtonBar;
-import javafx.scene.control.ButtonType;
-import javafx.scene.control.Dialog;
-import javafx.scene.control.TextField;
+import javafx.scene.control.*;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.VBox;
 
 import java.io.IOException;
 import java.net.URL;
-import java.time.format.DateTimeFormatter;
 import java.util.HashMap;
 import java.util.ResourceBundle;
 
-public class UpdateCinemaFormController implements Initializable {
+public class UpdateScreenRoomFormController implements Initializable {
     private ManagementMain main;
     @FXML
-    private TextField nameField, cineAreaField, addressField, idField;
+    private TextField idField, nameField, capacityField;
     @FXML
-    private VBox updateCinemaForm;
+    private ComboBox cinemaNameField;
+    @FXML
+    private VBox updateScreenRoomForm;
+    public UpdateScreenRoomFormController() {
+        main = ManagementMain.getInstance();
+    }
+
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
         idFieldInit();
@@ -31,12 +32,9 @@ public class UpdateCinemaFormController implements Initializable {
     public void idFieldInit() {
         idField.setDisable(true);
     }
-    public UpdateCinemaFormController() {
-        main = ManagementMain.getInstance();
-    }
     public void disableUpdateForm() {
-        ((AnchorPane)updateCinemaForm.getParent()).getChildren().get(0).setVisible(true);
-        ((AnchorPane)updateCinemaForm.getParent()).getChildren().remove(2);
+        ((AnchorPane)updateScreenRoomForm.getParent()).getChildren().get(0).setVisible(true);
+        ((AnchorPane)updateScreenRoomForm.getParent()).getChildren().remove(2);
     }
     @FXML
     public void saveUpdateBtnOnClick() throws IOException {
@@ -51,11 +49,12 @@ public class UpdateCinemaFormController implements Initializable {
         disableUpdateForm();
     }
     public void handleUpdateRecordRequest() {
-        HashMap<String, String> cinemaInfo = new HashMap<String, String>();
-        cinemaInfo.put("ADDRESS", addressField.getText());
-        cinemaInfo.put("NAME", nameField.getText());
-        cinemaInfo.put("CINE_AREA", cineAreaField.getText());
-        Response response = main.getCinemaManagementProcessor().update(cinemaInfo, String.format("ID = '%s'", idField.getText()));
+        HashMap<String, String> screenRoomInfo = new HashMap<String, String>();
+        screenRoomInfo.put("NAME", nameField.getText());
+        screenRoomInfo.put("CAPACITY", capacityField.getText());
+        screenRoomInfo.put("CINEMA_ID", cinemaNameField.getValue().toString());
+
+        Response response = main.getScreenRoomManagementProcessor().update(screenRoomInfo, String.format("ID = '%s'", idField.getText()));
         StatusCode status = response.getStatusCode();
         if (status == StatusCode.OK) {
             Dialog<String> dialog = new Dialog<String>();

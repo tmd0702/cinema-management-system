@@ -1,6 +1,8 @@
 package Database;
 import MovieManager.*;
 import Utils.ColumnType;
+import Utils.Response;
+import Utils.StatusCode;
 import javafx.scene.image.Image;
 
 import java.sql.*;
@@ -41,10 +43,13 @@ public class MovieManagementProcessor extends Processor {
         return movieGenres;
     }
     @Override
-    public ArrayList<ArrayList<String>> select (int from, int quantity, String queryCondition) {
+    public Response select (int from, int quantity, String queryCondition, String sortQuery) {
         String query = String.format("SELECT * FROM %s", getDefaultDatabaseTable());
         if (queryCondition.length() > 0) {
             query = query + " WHERE " + queryCondition;
+        }
+        if (sortQuery.length() > 0) {
+            query = query + " ORDER BY " + sortQuery;
         }
         if (quantity > -1) {
             query = query + String.format(" LIMIT %d, %d", from, quantity);
@@ -77,10 +82,12 @@ public class MovieManagementProcessor extends Processor {
                 result.add(val);
             }
             st.close();
+            return new Response("OK", StatusCode.OK, result);
+
         } catch (Exception e) {
             System.out.println(e);
+            return new Response(e.getMessage(), StatusCode.BAD_REQUEST);
         }
-        return result;
     }
     public void getMovies() {
         String query = "SELECT * FROM MOVIES LIMIT 30";// LIMIT 30";

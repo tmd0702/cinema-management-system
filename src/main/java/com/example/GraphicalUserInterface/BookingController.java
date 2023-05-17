@@ -1,40 +1,22 @@
 package com.example.GraphicalUserInterface;
-import Utils.StatusCode;
-import Utils.Validator;
-import javafx.collections.ObservableList;
-import javafx.css.Size;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.fxml.FXML;
-import javafx.fxml.Initializable;
-import javafx.scene.Node;
 import javafx.scene.control.*;
-import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.AnchorPane;
-import javafx.scene.layout.Background;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.StackPane;
-import javafx.scene.paint.Color;
-import javafx.scene.shape.ObservableFaceArray;
-import javafx.scene.shape.TriangleMesh;
 import javafx.scene.text.Font;
 import Database.BookingProcessor;
 import java.io.IOException;
-import java.net.URL;
-import java.sql.CallableStatement;
-import java.sql.Time;
-import java.text.Normalizer;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import javafx.animation.*;
-import java.text.SimpleDateFormat;
 
-import javafx.stage.Screen;
 import javafx.util.Duration;
 
-import java.time.format.DateTimeFormatter;
 import java.util.*;
 
 
@@ -55,39 +37,11 @@ public class BookingController {
     private ArrayList<Button> TimeButton = new ArrayList<Button>();
     private ArrayList<Boolean> isTimeActive = new ArrayList<Boolean>();
     @FXML
-    private Button DateBtn1;
+    private Button DateBtn1, DateBtn2, DateBtn3, DateBtn4, DateBtn5, DateBtn6, DateBtn7;
     @FXML
-    private Button DateBtn2;
+    private Button Cinema1, Cinema2, Cinema3, Cinema4;
     @FXML
-    private Button DateBtn3;
-    @FXML
-    private Button DateBtn4;
-    @FXML
-    private Button DateBtn5;
-    @FXML
-    private Button DateBtn6;
-    @FXML
-    private Button DateBtn7;
-    @FXML
-    private Button Cinema1;
-    @FXML
-    private Button Cinema2;
-    @FXML
-    private Button Cinema3;
-    @FXML
-    private Button Cinema4;
-    @FXML
-    private Button Time1;
-    @FXML
-    private Button Time2;
-    @FXML
-    private Button Time3;
-    @FXML
-    private Button Time4;
-    @FXML
-    private Button Time5;
-    @FXML
-    private Button Time6;
+    private Button Time1, Time2, Time3, Time4, Time5, Time6;
     private LocalDateTime now = LocalDateTime.now();
     // page2
     @FXML
@@ -100,23 +54,7 @@ public class BookingController {
     private GridPane SeatGrid = new GridPane();
     private ArrayList<String> SeatId = new ArrayList<String>();
     @FXML
-    private Label nameMovieBooking;
-    @FXML
-    private Label nameCinema;
-    @FXML
-    private Label showTime;
-    @FXML
-    private Label showDate;
-    @FXML
-    private  Label seatID;
-    @FXML
-    private Label screenName;
-    @FXML
-    private Label price;
-    @FXML
-    private Label combo;
-    @FXML
-    private Label total;
+    private Label nameMovieBooking, nameCinema, showTime, showDate, seatID, screenName, price, combo, total;
     @FXML
     private AnchorPane ticketInfor;
     // page3
@@ -125,31 +63,9 @@ public class BookingController {
     @FXML
     private ImageView image3;
     @FXML
-    private Button caraPlus;
+    private Button caraPlus, caraSub, cheesePlus, cheeseSub, cokePlus, cokeSub, comboPlus, comboSub;
     @FXML
-    private Button caraSub;
-    @FXML
-    private Button cheesePlus;
-    @FXML
-    private Button cheeseSub;
-    @FXML
-    private Button cokePlus;
-    @FXML
-    private Button cokeSub;
-    @FXML
-    private Button comboPlus;
-    @FXML
-    private Button comboSub;
-    @FXML
-    private Label numberOfCara;
-    @FXML
-    private Label numberOfCheese;
-    @FXML
-    private Label numberOfCoke;
-    @FXML
-    private Label numberOfCombo;
-    @FXML
-    private Label countdownLabel;
+    private Label numberOfCara, numberOfCheese, numberOfCoke, numberOfCombo, countdownLabel;
 
     private ArrayList<Button> CaraButton = new ArrayList<Button>();
     private ArrayList<Button> CheeseButton = new ArrayList<Button>();
@@ -179,16 +95,16 @@ public class BookingController {
         //page2
         ConstructSeatGrid();
         ConstructTicketInfor();
-        ConstructBookingProcessor();
+        //ConstructBookingProcessor();
         //page3
         ConstructItemsButton();
         ConstructItem();
         //page4
         setCountDown();
     }
-    public void ConstructBookingProcessor(){
+    public BookingController(){
 
-        this.bookingProcessor = new BookingProcessor();
+     this.bookingProcessor = Main.getInstance().getBookingProcessor();
     }
     public void ConstructHomButton(){
         home.setOnMouseClicked(new EventHandler<MouseEvent>() {
@@ -231,8 +147,10 @@ public class BookingController {
     }
 
      public void ConstructTicketInfor() {
+
          nameMovieBooking.setText(Main.getInstance().getMovieOnBooking().getTitle());
          nameCinema.setText("");
+         setScreenTicketInfor();
          showTime.setText("");
          showDate.setText("");
          price.setText("0");
@@ -257,7 +175,7 @@ public class BookingController {
         CinemaButton.add(Cinema2);
         CinemaButton.add(Cinema3);
         CinemaButton.add(Cinema4);
-         ConstructActiveList(CinemaButton, isCinemaActive);
+        ConstructActiveList(CinemaButton, isCinemaActive);
      }
      public void ConstructTimeButton(){
         TimeButton.add(Time1);
@@ -266,45 +184,76 @@ public class BookingController {
         TimeButton.add(Time4);
         TimeButton.add(Time5);
         TimeButton.add(Time6);
-         ConstructActiveList(TimeButton, isTimeActive);
+        ConstructActiveList(TimeButton, isTimeActive);
      }
      public void ConstructSeatGrid(){
+         bookingProcessor.getSeat();
+         System.out.println(bookingProcessor.getBookingInfor().getSeats());
+         int column = 0;
+         int row = 0;
+         int k = 1;
+         ArrayList<String> SeatList = bookingProcessor.getBookingInfor().getSeats();
+         String seat = SeatList.get(SeatList.size()-1);
+         getColumnRowOfRoom(SeatList, row, column);
         SeatGrid.setHgap(10);
         SeatGrid.setVgap(10);
-         int k = 1;
-         for(int i = 0; i < 7; i++){
-             ArrayList<Boolean> isActive = new ArrayList<Boolean>();
-             for(int j = 0; j < 12; j++) {
-                 if (i == 0 && (j == 0 || j == 1 || j == 10 || j == 11) || i == 1 && (j == 0 || j == 11))
-                     continue;
-                Button button = new Button("A4");
-                button.setPrefSize(25,32);
-                button.setStyle("-fx-background-color: #A4A4A4");
-                button.setFont(Font.font(9));
-                 SeatGrid.add(button, j, i);
-//                if(i == 1 && j == 2){
-//                    button.setDisable(true);
-//                    button.setStyle("-fx-background-color: #393939");
-//                    continue;
+        for(String s : SeatList){
+            int rowIndex = s.charAt(0) - 'A';
+            int columnIndex = Integer.parseInt(s.substring(1));
+            Button button = new Button(s);
+            button.setPrefSize(25,32);
+            button.setStyle("-fx-background-color: #A4A4A4");
+            button.setFont(Font.font(7.5));
+            button.setWrapText(true);
+            SeatGrid.add(button, columnIndex, rowIndex);
+            button.setOnAction(event->{
+                if(button.getStyle() == "-fx-background-color: #A4A4A4") {
+                    button.setStyle("-fx-background-color: #8D090D");
+                    SeatId.add(button.getText());
+                    displaySeatInfor();
+                }
+                else {
+                    button.setStyle("-fx-background-color: #A4A4A4");
+                    SeatId.remove(button.getText());
+                    displaySeatInfor();
+                }
+
+            });
+        }
+//         for(int i = 0; i < 7; i++){
+//             ArrayList<Boolean> isActive = new ArrayList<Boolean>();
+//             for(int j = 0; j < 12; j++) {
+//                 if (i == 0 && (j == 0 || j == 1 || j == 10 || j == 11) || i == 1 && (j == 0 || j == 11))
+//                     continue;
 //
-//                }
-                button.setOnAction(event->{
-                    if(button.getStyle() == "-fx-background-color: #A4A4A4") {
-                        button.setStyle("-fx-background-color: #8D090D");
-                        SeatId.add(button.getText());
-                        displaySeatInfor();
-                    }
-                    else {
-                        button.setStyle("-fx-background-color: #A4A4A4");
-                        SeatId.remove(button.getText());
-                        displaySeatInfor();
-                    }
+////                if(i == 1 && j == 2){
+////                    button.setDisable(true);
+////                    button.setStyle("-fx-background-color: #393939");
+////                    continue;
+////
+////                }
+//
+//             }
+//             k += 11;
+//
+//         }
 
-                });
+     }
+     public void getColumnRowOfRoom(ArrayList<String> list, int r, int c){
+         char maxChar = 'A';
+         int maxNum = 1;
+
+         for (String s : list) {
+             char t = s.charAt(0);
+             int num = Integer.parseInt(s.substring(1));
+
+             if (t >= maxChar && num > maxNum) {
+                 maxChar = t;
+                 maxNum = num;
              }
-             k += 11;
-
          }
+         r = maxChar;
+         c = maxNum;
 
      }
      public void handleComboButton(ActionEvent event){
@@ -454,7 +403,7 @@ public class BookingController {
             }
     }
 
-    public void handleswitchtoPagebefore(ActionEvent event){
+    public void handleSwitchToPageBefore(ActionEvent event){
         Button b = (Button) event.getSource();
         int i;
         for( i = 0; i < listPane.size(); i++) {
@@ -463,7 +412,7 @@ public class BookingController {
                 stackpane.getChildren().remove(listPane.get(i));
                 if(i-1 == 1){
                     pane2.getChildren().addAll(ticketInfor);
-                    setScreenTicketInfor();
+                    //setScreenTicketInfor();
                 }
                 break;
             }
@@ -478,8 +427,11 @@ public class BookingController {
     public void setScreenTicketInfor(){
         bookingProcessor.getScreen();
         this.screenName.setText( bookingProcessor.getBookingInfor().getScreen());
+
+
+
     }
-    public  void handleswitchPageafter(ActionEvent event){
+    public  void handleSwitchPageAfter(ActionEvent event){
         Button b = (Button) event.getSource();
         int i;
         for( i = 0; i < listPane.size(); i++) {
@@ -487,7 +439,7 @@ public class BookingController {
                 stackpane.getChildren().remove(listPane.get(i));
                 if (i + 1 == 2) {
                     pane3.getChildren().addAll(ticketInfor);
-                    setScreenTicketInfor();
+                    //setScreenTicketInfor();
                 }
                 break;
             }

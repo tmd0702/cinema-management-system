@@ -1,5 +1,6 @@
 package com.example.GraphicalUserInterface;
 import Config.Config;
+import Database.BookingProcessor;
 import Database.FiltererProcessor;
 import Database.MovieManagementProcessor;
 
@@ -28,14 +29,16 @@ public class Main extends Application {
     private Movie movieOnBooking;
 
     private String queryOnSearching;
+    private BookingProcessor bookingProcessor;
     private FiltererProcessor filtererProcessor;
 //    private Config config;
     private SearchEngine searchEngine;
     private MovieManagementProcessor movieManagementProcessor;
-    public Main() {
+    public Main() throws Exception {
         super();
         main = this;
         this.movieManagementProcessor = new MovieManagementProcessor();
+        this.bookingProcessor = new BookingProcessor();
         this.movieManagementProcessor.getMovies();
         this.filtererProcessor = new FiltererProcessor();
         this.queryOnSearching = "";
@@ -50,6 +53,7 @@ public class Main extends Application {
     public Movie getMovieOnBooking(){
         return movieOnBooking;
     }
+    public BookingProcessor getBookingProcessor(){return this.bookingProcessor;}
     public FiltererProcessor getFiltererProcessor() {
         return this.filtererProcessor;
     }
@@ -102,7 +106,8 @@ public class Main extends Application {
     @Override
     public void start(Stage primaryStage) throws IOException {
         stage = primaryStage;
-        FXMLLoader fxmlLoader = new FXMLLoader(Main.class.getResource("index-view.fxml"));
+        setMovieOnBooking(new Movie());
+        FXMLLoader fxmlLoader = new FXMLLoader(Main.class.getResource("booking-form.fxml"));
         Scene scene = new Scene(fxmlLoader.load(), 920, 600);
         scene.getStylesheets().add(getClass().getResource("assets/css/index-style.css").toExternalForm());
         stage.setTitle("4HB Cinema Management");
@@ -126,6 +131,8 @@ public class Main extends Application {
         popup.hide();
     }
     public static void main(String[] args) {
+
         launch();
+
     }
 }

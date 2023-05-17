@@ -1,25 +1,38 @@
 package Utils;
 
 import Database.*;
+import MovieManager.Movie;
+import com.example.GraphicalUserInterface.Main;
 import javafx.scene.control.RadioButton;
-
+import javafx.scene.image.Image;
+import java.text.DateFormat;
 import java.text.SimpleDateFormat;
+import java.time.LocalDateTime;
+import java.time.LocalTime;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
-
+import java.time.LocalTime;
+import MovieManager.MovieManager;
+import com.example.GraphicalUserInterface.Main;
 public class AddFakeDatabase {
     Processor accountManagementProcessor, promotionManagementProcessor, theaterManagementProcessor, screenRoomManagementProcessor;
-    Processor seatManagementProcessor;
+    Processor seatManagementProcessor, showTimeManagementProcessor, scheduleManagementProcessor;
     IdGenerator idGenerator;
+    static MovieManagementProcessor movieManagementProcessor;
+    Main main;
     public AddFakeDatabase() throws Exception {
         theaterManagementProcessor = new TheaterManagementProcessor();
         this.promotionManagementProcessor = new PromotionManagementProcessor();
         this.accountManagementProcessor = new AccountManagementProcessor();
         this.screenRoomManagementProcessor = new ScreenRoomManagementProcessor();
         this.seatManagementProcessor = new SeatManagementProcessor();
+        this.showTimeManagementProcessor = new ShowTimeManagementProcessor();
+        this.scheduleManagementProcessor = new ScheduleManagementProcessor();
+        this.movieManagementProcessor = new MovieManagementProcessor();
         this.idGenerator = new IdGenerator();
+        this.main = new Main();
     }
     public void addFakeAccounts() throws Exception {
         HashMap<String, String> account = new HashMap<String, String>();
@@ -100,17 +113,15 @@ public class AddFakeDatabase {
         HashMap<String, String> seat = new HashMap<String, String>();
         seat.put("CATEGORY", "NORMAL");
         seat.put("SEAT_STATUS", "AVAILABLE");
-        int sr_id = 1000;
+        int sr_id = 0;
         for (int i = 0; i < 50; ++i) { // i: cinema counter
             for (int j = 1; j <= 6; j++) { // j: screen room counter per cinema
                 sr_id += 1;
                 for (int k = 0; k < 7; k++) { // k : rows number of seat per screen room
+
                     for (int h = 0; h < 12; h++) { // h: columns number of seat per screen room
-                        if (k == 0 && (h == 0 || h == 1 || h == 10 || h == 11) || k == 1 && (h == 0 || h == 11))
-                            continue;
-                        int t = h;
-                        if(k == 0)
-                            t = h - 1;
+
+                        int t = h + 1;
                         seat.put("ID", idGenerator.generateId(seatManagementProcessor.getDefaultDatabaseTable()));
                         seat.put("NAME", String.valueOf((char)('A' + k)) + t);
                         seat.put("SCREEN_ROOM_ID", "SR_" + String.format("%05d", (sr_id)));
@@ -127,13 +138,50 @@ public class AddFakeDatabase {
             }
         }
     }
+
+
+    public void addFakeShowTimes() throws Exception{
+        HashMap<String, String> time = new HashMap<String, String>();
+        DateTimeFormatter dateTimeFormatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
+        int sr_id = 0;
+        int sch_id = 0;
+        for (int i=0;i<50;++i) {
+            for(int j = 1; j <= 6; j++) {
+                sr_id += 1;
+                LocalDateTime now = LocalDateTime.now();
+                for(int d = 0; d < 7; d++) {
+                    LocalTime localTime = LocalTime.of(12,40);
+                    for (int t = 0; t < 15; t++) {
+                        sch_id += 1;
+                        time.put("ID", idGenerator.generateId(showTimeManagementProcessor.getDefaultDatabaseTable()));
+                        time.put("START_TIME", localTime.toString());
+                        System.out.println(localTime.toString());
+                        time.put("SHOW_DATE", now.format(dateTimeFormatter));
+                        System.out.println(now.format(dateTimeFormatter));
+                        time.put("ROOM_ID", "SR_" + String.format("%05d", (sr_id)));
+                        time.put("SCHEDULE_ID", "SCH_" + String.format("%05d",sch_id ));
+                        Response response = showTimeManagementProcessor.add(time);
+                        if (response.getStatusCode() == StatusCode.OK) {
+                            System.out.println("insert 1 row success");
+                        } else {
+                            System.out.println(i + " failed");
+                        }
+                       localTime =  localTime.plusMinutes(40);
+                    }
+                    now = now.plusDays(1);
+                }
+            }
+        }
+    }
+
     public static void main(String[] args) throws Exception {
         AddFakeDatabase addFakeDatabase = new AddFakeDatabase();
-//        addFakeDatabase.addFakeAccounts();
+        //addFakeDatabase.addFakeAccounts();
 //        addFakeDatabase.addFakePromotions();
 //        addFakeDatabase.addFakeTheaters();
 //        addFakeDatabase.addFakeScreenRooms();
-        addFakeDatabase.addFakeSeats();
+        //addFakeDatabase.addFakeSeats();
+        //addFakeDatabase.addFakeShowTimes();
 
     }
 }

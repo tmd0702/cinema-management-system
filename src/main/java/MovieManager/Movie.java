@@ -101,4 +101,6 @@ public class Movie {
     public String getOverview() {
         return this.overview;
     }
+    public void setMovieStatus(String status){this.movieStatus = status;}
+    public String getMovieStatus(){return this.movieStatus;}
 }

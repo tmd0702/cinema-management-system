@@ -8,10 +8,10 @@ public class ImageManager {
     private Image logoImage, insertIconImage, deleteIconImage, updateIconImage, refreshIconImage;
     public ImageManager() {
         this.logoImage = new Image("https://docs.google.com/uc?id=1F2pXOLfvuynr9JcURTR5Syg7N1YdPJXK");
-        this.insertIconImage = new Image(ManagementMain.class.getResource("assets/images/add-icon.png").getPath().substring(1));
-        this.updateIconImage = new Image(ManagementMain.class.getResource("assets/images/edit-square-icon.png").getPath().substring(1));
-        this.deleteIconImage = new Image(ManagementMain.class.getResource("assets/images/delete-icon.png").getPath().substring(1));
-        this.refreshIconImage = new Image(ManagementMain.class.getResource("assets/images/redo-circle-icon.png").getPath().substring(1));
+        this.insertIconImage = new Image("file:" + ManagementMain.class.getResource("assets/images/add-icon.png").getPath().substring(1));
+        this.updateIconImage = new Image("file:" + ManagementMain.class.getResource("assets/images/edit-square-icon.png").getPath().substring(1));
+        this.deleteIconImage = new Image("file:" + ManagementMain.class.getResource("assets/images/delete-icon.png").getPath().substring(1));
+        this.refreshIconImage = new Image("file:" + ManagementMain.class.getResource("assets/images/redo-circle-icon.png").getPath().substring(1));
     }
     public Image getLogoImage() {
         return this.logoImage;

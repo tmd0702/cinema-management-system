@@ -5,4 +5,5 @@ public class ScreenRoomManagementProcessor extends Processor {
         super();
         setDefaultDatabaseTable("SCREEN_ROOMS");
     }
+
 }

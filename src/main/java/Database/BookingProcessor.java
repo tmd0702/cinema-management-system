@@ -1,5 +1,6 @@
 package Database;
 import java.sql.*;
+import java.util.ArrayList;
 
 import com.example.GraphicalUserInterface.BookingController;
 import BookingManager.BookingInfor;
@@ -13,21 +14,35 @@ public class BookingProcessor extends Processor{
         return this.bookingInfor;
     }
     public void getScreen() {
-        String query = String.format("SELECT * FROM SCHEDULE WHERE MOVIE_ID = %s AND THEATER_ID = %s AND TIME = %s;",bookingInfor.getIdMovie(), bookingInfor.getNameCinema(),bookingInfor.getTime());
+        String query = String.format("SELECT * FROM SCREEN_ROOMS");
         try {
             Statement stmt = getConnector().createStatement();
             ResultSet rs = stmt.executeQuery(query);
 
             while (rs.next()) {
-                String sCreen = rs.getString("SR_NAME");
+                String sCreen = rs.getString("NAME");
                 bookingInfor.setScreen(sCreen);
-
 
             }
         } catch (SQLException sqle) {
             System.out.println(sqle);
-
         }
 
+    }
+    public void getSeat(){
+        ArrayList<String> seatlist = new ArrayList<String>();
+        String query = String.format("SELECT * FROM SEATS S JOIN SCREEN_ROOMS SR ON S.SCREEN_ROOM_ID = SR.ID WHERE SCREEN_ROOM_ID = \"SR_00001\"  AND CINEMA_ID = \"CIN_00001\" ;");
+        try {
+            Statement stmt = getConnector().createStatement();
+            ResultSet rs = stmt.executeQuery(query);
+
+            while (rs.next()) {
+                String seatName = rs.getString("NAME");
+                seatlist.add(seatName);
+                bookingInfor.setSeats(seatlist);
+            }
+        } catch (SQLException sqle) {
+            System.out.println(sqle);
+        }
     }
 }

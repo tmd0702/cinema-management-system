@@ -125,7 +125,7 @@ public class Utils {
 
     public static void writeProperties(Properties prop,String username, String password, String filePath) throws Exception{
         System.out.println(filePath + "123");
-        FileOutputStream is = new FileOutputStream(filePath);
+        FileOutputStream is = new FileOutputStream("/" + filePath);
         prop.setProperty("USERNAME", username);
         prop.setProperty("PASSWORD", password);
         prop.store(is,null);

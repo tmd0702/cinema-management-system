@@ -30,9 +30,7 @@ public class AddFakeDatabase {
         this.seatManagementProcessor = new SeatManagementProcessor();
         this.showTimeManagementProcessor = new ShowTimeManagementProcessor();
         this.scheduleManagementProcessor = new ScheduleManagementProcessor();
-        this.movieManagementProcessor = new MovieManagementProcessor();
         this.idGenerator = new IdGenerator();
-        this.main = new Main();
     }
     public void addFakeAccounts() throws Exception {
         HashMap<String, String> account = new HashMap<String, String>();
@@ -176,12 +174,12 @@ public class AddFakeDatabase {
 
     public static void main(String[] args) throws Exception {
         AddFakeDatabase addFakeDatabase = new AddFakeDatabase();
-        //addFakeDatabase.addFakeAccounts();
-//        addFakeDatabase.addFakePromotions();
-//        addFakeDatabase.addFakeTheaters();
-//        addFakeDatabase.addFakeScreenRooms();
-        //addFakeDatabase.addFakeSeats();
-        //addFakeDatabase.addFakeShowTimes();
+        addFakeDatabase.addFakeAccounts();
+        addFakeDatabase.addFakePromotions();
+        addFakeDatabase.addFakeTheaters();
+        addFakeDatabase.addFakeScreenRooms();
+        addFakeDatabase.addFakeSeats();
+        addFakeDatabase.addFakeShowTimes();
 
     }
 }

@@ -218,7 +218,7 @@ BEGIN
     FROM USERS
     WHERE user_id = ID;
     
-    UPDATE USERS SET SCORE = score + total_amount / 100000 WHERE ID = user_id;
+    UPDATE USERS SET SCORE = (score + total_amount) / 100000 WHERE ID = user_id;
 END; //
 DELIMITER ;
 

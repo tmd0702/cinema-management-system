@@ -107,7 +107,7 @@ public class Main extends Application {
     public void start(Stage primaryStage) throws IOException {
         stage = primaryStage;
         setMovieOnBooking(new Movie());
-        FXMLLoader fxmlLoader = new FXMLLoader(Main.class.getResource("booking-form.fxml"));
+        FXMLLoader fxmlLoader = new FXMLLoader(Main.class.getResource("index-view.fxml"));
         Scene scene = new Scene(fxmlLoader.load(), 920, 600);
         scene.getStylesheets().add(getClass().getResource("assets/css/index-style.css").toExternalForm());
         stage.setTitle("4HB Cinema Management");

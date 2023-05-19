@@ -12,7 +12,7 @@
 <?import javafx.scene.text.Font?>
 <?import javafx.scene.text.Text?>
 
-<VBox fx:id="addShowtimeForm" layoutX="110.0" prefHeight="600.0" prefWidth="790.0" xmlns="http://javafx.com/javafx/19" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.example.GraphicalUserInterface.AddShowtimeFormController">
+<VBox fx:id="addShowTimeForm" layoutX="110.0" prefHeight="600.0" prefWidth="790.0" xmlns="http://javafx.com/javafx/19" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.example.GraphicalUserInterface.AddShowTimeFormController">
    <children>
       <HBox prefHeight="46.0" prefWidth="200.0" spacing="10.0" style="-fx-alignment: CENTER_LEFT;">
          <children>
@@ -30,14 +30,14 @@
                   <Font size="40.0" />
                </font>
             </Text>
-            <TextField fx:id="starttimeField" layoutX="178.0" layoutY="104.0" />
+            <TextField fx:id="startTimeField" layoutX="178.0" layoutY="104.0" />
             <Label layoutX="117.0" layoutY="108.0" prefHeight="17.0" prefWidth="52.0" text="Start time" />
-            <Label layoutX="104.0" layoutY="176.0" text="Room name" />
+            <Label layoutX="73.0" layoutY="176.0" text="Sreen room name" />
             <Label layoutX="115.0" layoutY="142.0" text="Show date" />
-            <ComboBox fx:id="roomnameField" layoutX="178.0" layoutY="172.0" prefWidth="150.0" />
-            <Label layoutX="88.0" layoutY="210.0" text="Schedule name" />
-            <ComboBox fx:id="scheduleField" layoutX="178.0" layoutY="206.0" prefWidth="150.0" />
-            <DatePicker fx:id="showdateField" layoutX="178.0" layoutY="138.0" />
+            <ComboBox fx:id="screenRoomNameField" layoutX="178.0" layoutY="172.0" prefWidth="150.0" />
+            <Label layoutX="88.0" layoutY="210.0" text="Cinema name" />
+            <ComboBox fx:id="cinemaNameField" layoutX="178.0" layoutY="206.0" prefWidth="150.0" />
+            <DatePicker fx:id="showDateField" layoutX="178.0" layoutY="138.0" prefHeight="25.0" prefWidth="149.0" />
          </children>
       </AnchorPane>
    </children>

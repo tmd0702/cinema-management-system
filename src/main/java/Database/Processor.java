@@ -69,7 +69,7 @@ public abstract class Processor {
 
 
         String query = String.format("UPDATE %s SET %s WHERE %s", defaultDatabaseTable, constructUpdateSQLSetStatement(columns, values), queryCondition);
-
+        System.out.println(query);
         try {
             Statement st = getConnector().createStatement();
             st.execute(query);
@@ -83,6 +83,7 @@ public abstract class Processor {
     }
     public Response delete(String queryCondition) {
         String query = String.format("DELETE FROM %s WHERE %s", defaultDatabaseTable, queryCondition);
+        System.out.println(query);
         try {
             Statement st = getConnector().createStatement();
             st.execute(query);
@@ -93,8 +94,8 @@ public abstract class Processor {
             return new Response(e.getMessage(), StatusCode.BAD_REQUEST);
         }
     }
-    public Response select (int from, int quantity, String queryCondition, String sortQuery) {
-        String query = String.format("SELECT * FROM %s", defaultDatabaseTable);
+    public Response select (String values, int from, int quantity, String queryCondition, String sortQuery, String table) {
+        String query = String.format("SELECT %s FROM %s", values, table);
         if (queryCondition.length() > 0) {
             query = query + " WHERE " + queryCondition;
         }
@@ -115,7 +116,7 @@ public abstract class Processor {
             ArrayList<String> columnNames = new ArrayList<String>();
             ArrayList<String> columnTypes = new ArrayList<String>();
             for (int i=1; i <= rsmd.getColumnCount(); ++i) {
-                columnNames.add(rsmd.getColumnName(i));
+                columnNames.add(rsmd.getColumnLabel(i));
                 columnTypes.add(ColumnType.getByValue(rsmd.getColumnType(i)).getDescription());
             }
             result.add(columnNames);
@@ -134,6 +135,7 @@ public abstract class Processor {
         }
         return new Response("OK", StatusCode.OK, result);
     }
+    public abstract Response getData(int from, int quantity, String queryCondition, String sortQuery);
     public int count(String queryCondition) {
         String query = String.format("SELECT COUNT(*) FROM %s", defaultDatabaseTable);
         if (queryCondition.length() > 0) {
@@ -153,5 +155,11 @@ public abstract class Processor {
         }
         return count;
     }
+    public ArrayList<String> normColumnNames(ArrayList<String> columnNames, String tableName) {
+        for (int i=0;i<columnNames.size();++i) {
+            columnNames.set(i, tableName.substring(0, tableName.length()) + "_" + columnNames.get(i));
 
+        }
+        return columnNames;
+    }
 }

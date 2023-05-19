@@ -49,8 +49,8 @@ public class MovieManagementProcessor extends Processor {
         return movieGenres;
     }
     @Override
-    public Response select (int from, int quantity, String queryCondition, String sortQuery) {
-        String query = String.format("SELECT * FROM %s", getDefaultDatabaseTable());
+    public Response select (String values, int from, int quantity, String queryCondition, String sortQuery, String table) {
+        String query = String.format("SELECT %s FROM %s", values, table);
         if (queryCondition.length() > 0) {
             query = query + " WHERE " + queryCondition;
         }
@@ -95,6 +95,10 @@ public class MovieManagementProcessor extends Processor {
             return new Response(e.getMessage(), StatusCode.BAD_REQUEST);
         }
     }
+    public Response getData(int from, int quantity, String queryCondition, String sortQuery) {
+        Response response = select("*", from, quantity, queryCondition, sortQuery, getDefaultDatabaseTable());
+        return response;
+    }
     public void getMovies() {
         String query = "SELECT * FROM MOVIES LIMIT 30";// LIMIT 30";
         ArrayList<Movie> tmpList = new ArrayList<Movie>();
@@ -103,7 +107,7 @@ public class MovieManagementProcessor extends Processor {
             ResultSet rs = st.executeQuery(query);
 
             while (rs.next()) {
-                Movie movie = new Movie(rs.getString("ID"), rs.getString("TITLE"), rs.getString("OVERVIEW"), rs.getString("MOVIE_STATUS"), rs.getInt("DURATION"), rs.getInt("VIEW_COUNT"), rs.getDate("RELEASE_DATE"), rs.getString("POSTER_PATH"), rs.getString("BACKDROP_PATH"), rs.getString("LANGUAGE"));
+                Movie movie = new Movie(rs.getString("ID"), rs.getString("TITLE"), rs.getString("OVERVIEW"), rs.getString("STATUS"), rs.getInt("DURATION"), rs.getInt("VIEW_COUNT"), rs.getDate("RELEASE_DATE"), rs.getString("POSTER_PATH"), rs.getString("BACKDROP_PATH"), rs.getString("LANGUAGE"));
                 tmpList.add(movie);
             }
             ExecutorService service = Executors.newCachedThreadPool();
@@ -137,9 +141,9 @@ public class MovieManagementProcessor extends Processor {
             System.out.println("Start creating schedule");
             Collections.sort(tmpList, Comparator.comparingInt(Movie::getDuration));
             System.out.println(tmpList.size());
-            for(Movie movie : tmpList) {
-                scheduleMovie(movie);
-            }
+//            for(Movie movie : tmpList) {
+//                scheduleMovie(movie);
+//            }
             this.movieManager.setMovieList(tmpList);
 //            for (Movie movie : tmpList) {
 //                this.movieManager.addMovie(movie);
@@ -164,7 +168,7 @@ public class MovieManagementProcessor extends Processor {
             for(String cinema : cinemas){
                 ArrayList<String> screen_rooms = createList("SCREEN_ROOMS", String.format("WHERE CINEMA_ID = \"%s\"",cinema));
                 for(String room : screen_rooms){
-                    ArrayList<String> show_times = createList("SHOW_TIMES", String.format("WHERE ROOM_ID = \"%s\"", room));
+                    ArrayList<String> show_times = createList("SHOW_TIMES", String.format("WHERE SCREEN_ROOM_ID = \"%s\"", room));
                     System.out.println("room1: " + room);
                     int count = 0; //Số lần chiếu phim trong phòng chiếu hiện tại
                     for(String showtime : show_times){
@@ -184,7 +188,7 @@ public class MovieManagementProcessor extends Processor {
                             if (otherRoom == room) {
                                 continue; // Bỏ qua phòng chiếu hiện tại
                             }
-                            String getShowtime = String.format("SELECT ST.* FROM (MOVIES M JOIN SCHEDULES SCH ON M.ID = SCH.MOVIE_ID) JOIN SHOW_TIMES ST ON SCH.SHOW_TIME_ID = ST.ID WHERE ST.ID = \"%s\" AND M.ID = \"%s\" AND ST.ROOM_ID = \"%s\";", showtime, movie.getId(), otherRoom);
+                            String getShowtime = String.format("SELECT ST.* FROM (MOVIES M JOIN SCHEDULES SCH ON M.ID = SCH.MOVIE_ID) JOIN SHOW_TIMES ST ON SCH.SHOW_TIME_ID = ST.ID WHERE ST.ID = \"%s\" AND M.ID = \"%s\" AND ST.SCREEN_ROOM_ID = \"%s\";", showtime, movie.getId(), otherRoom);
                             String scheduledFilm = null;
                             try {
                                 Statement st = getConnector().createStatement();
@@ -208,7 +212,7 @@ public class MovieManagementProcessor extends Processor {
                         System.out.println("hasn't conflict");
                             // Kiểm tra xem có suất chiếu trước đó trong cùng phòng chiếu trong khoảng thời gian tối thiểu
                             if (indextime > 0) {
-                                String queryPreviousId = String.format("SELECT ST.* FROM (MOVIES M JOIN SCHEDULES SCH ON M.ID = SCH.MOVIE_ID) JOIN SHOW_TIMES ST ON SCH.SHOW_TIME_ID = ST.ID WHERE M.ID = \"%s\" AND ST.ROOM_ID = \"%s\";", movie.getId(), room);
+                                String queryPreviousId = String.format("SELECT ST.* FROM (MOVIES M JOIN SCHEDULES SCH ON M.ID = SCH.MOVIE_ID) JOIN SHOW_TIMES ST ON SCH.SHOW_TIME_ID = ST.ID WHERE M.ID = \"%s\" AND ST.SCREEN_ROOM_ID = \"%s\";", movie.getId(), room);
                                 String previousShowTime = getPreviousID(queryPreviousId, showtime);
 
                                 String time = getOneColumnData("SELECT CAST(ABS(time_to_sec((SUBTIME(ST1.START_TIME, ST2.START_TIME)))/60) AS UNSIGNED) AS SUBTIMES FROM SHOW_TIMES ST1, SHOW_TIMES ST2 WHERE ST1.ID = \"%s\" AND ST2.ID = \"%s\";", showtime, previousShowTime, "SUBTIMES");
@@ -222,7 +226,7 @@ public class MovieManagementProcessor extends Processor {
                             // Kiểm tra xem có suất chiếu trước đó trong cùng rạp trong khoảng thời gian tối thiểu
                             int indexroom = screen_rooms.indexOf(room);
                             if (indexroom > 0) {
-                                String queryPreviousId = String.format("SELECT ST.* FROM ((MOVIES M JOIN SCHEDULES SCH ON M.ID = SCH.MOVIE_ID) JOIN SHOW_TIMES ST ON SCH.SHOW_TIME_ID = ST.ID) JOIN SCREEN_ROOMS SR ON ST.ROOM_ID = SR.ID WHERE M.ID = \"%s\" AND SR.ID = \"%s\";", movie.getId(), cinema);
+                                String queryPreviousId = String.format("SELECT ST.* FROM ((MOVIES M JOIN SCHEDULES SCH ON M.ID = SCH.MOVIE_ID) JOIN SHOW_TIMES ST ON SCH.SHOW_TIME_ID = ST.ID) JOIN SCREEN_ROOMS SR ON ST.SCREEN_ROOM_ID = SR.ID WHERE M.ID = \"%s\" AND SR.ID = \"%s\";", movie.getId(), cinema);
                                 String previousRoom = getPreviousID(queryPreviousId, room);
                                 String time = getOneColumnData("SELECT CAST(ABS(time_to_sec((SUBTIME(ST1.START_TIME, ST2.START_TIME)))/60) AS UNSIGNED) AS SUBTIMES FROM SHOW_TIMES ST1, SHOW_TIMES ST2 WHERE ST1.ID = \"%s\" AND ST2.ID = \"%s\";", showtime, previousRoom, "SUBTIMES");
                                 if(time == "")

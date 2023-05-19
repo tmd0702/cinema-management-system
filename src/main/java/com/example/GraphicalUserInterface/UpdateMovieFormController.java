@@ -2,6 +2,7 @@ package com.example.GraphicalUserInterface;
 
 import Utils.Response;
 import Utils.StatusCode;
+import javafx.collections.FXCollections;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.*;
@@ -27,6 +28,11 @@ public class UpdateMovieFormController implements Initializable {
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
         idFieldInit();
+        movieStatusFieldInit();
+    }
+    public void movieStatusFieldInit() {
+        String movieStatus[] = {"Planned", "Released"};
+        movieStatusField.setItems(FXCollections.observableArrayList(movieStatus));
     }
     public void idFieldInit() {
         idField.setDisable(true);
@@ -65,7 +71,7 @@ public class UpdateMovieFormController implements Initializable {
         movieInfo.put("TAGLINE", taglineField.getText());
         movieInfo.put("VOTE_COUNT", voteCountField.getText());
         movieInfo.put("VOTE_AVERAGE", voteAverageField.getText());
-        movieInfo.put("MOVIE_STATUS", movieStatusField.getValue().toString());
+        movieInfo.put("STATUS", movieStatusField.getValue().toString());
         Response response = main.getMovieManagementProcessor().update(movieInfo, String.format("ID = '%s'", idField.getText()));
         StatusCode status = response.getStatusCode();
         if (status == StatusCode.OK) {

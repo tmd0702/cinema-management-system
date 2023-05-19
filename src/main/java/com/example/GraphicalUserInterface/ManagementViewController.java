@@ -79,6 +79,8 @@ public class ManagementViewController implements Initializable {
     @FXML
     private Button homeTabPanel = new Button("Home");
     @FXML
+    private Button showTimePanel = new Button("Show Time");
+    @FXML
     private Button itemTabPanel = new Button("Item");
     @FXML
     private Button screenRoomTabPanel = new Button("Screen Room");
@@ -132,6 +134,7 @@ public class ManagementViewController implements Initializable {
         tabPanels.add(promotionTabPanel);
         tabPanels.add(itemTabPanel);
         tabPanels.add(screenRoomTabPanel);
+        tabPanels.add(showTimePanel);
 
         insertBtn = new ImageView(main.getImageManager().getInsertIconImage());
         deleteBtn = new ImageView(main.getImageManager().getDeleteIconImage());
@@ -213,6 +216,8 @@ public class ManagementViewController implements Initializable {
             managementPage.getChildren().add(FXMLLoader.load(getClass().getResource("add-item-form.fxml")));
         } else if (tabPanelOnClick == screenRoomTabPanel) {
             managementPage.getChildren().add(FXMLLoader.load(getClass().getResource("add-screen-room-form.fxml")));
+        } else if (tabPanelOnClick == showTimePanel) {
+            managementPage.getChildren().add(FXMLLoader.load(getClass().getResource("add-showtime-form.fxml")));
         } else {
             managementPage.getChildren().add(FXMLLoader.load(getClass().getResource("add-account-form.fxml")));
         }
@@ -231,6 +236,8 @@ public class ManagementViewController implements Initializable {
             managementPage.getChildren().add(FXMLLoader.load(getClass().getResource("update-item-form.fxml")));
         } else if (tabPanelOnClick == screenRoomTabPanel) {
             managementPage.getChildren().add(FXMLLoader.load(getClass().getResource("update-screen-room-form.fxml")));
+        } else if (tabPanelOnClick == showTimePanel) {
+            managementPage.getChildren().add(FXMLLoader.load(getClass().getResource("update-showtime-form.fxml")));
         } else {
             managementPage.getChildren().add(FXMLLoader.load(getClass().getResource("update-account-form.fxml")));
         }
@@ -257,7 +264,6 @@ public class ManagementViewController implements Initializable {
             public void handle(MouseEvent mouseEvent) {
                 if (cellOnClick != null) {
                     try {
-                        System.out.println("update btn clicked");
                         changeSceneToUpdateView();
                         int rowIndex = GridPane.getRowIndex(cellOnClick);
                         for (int i=0;i < data.get(0).size(); ++i) {
@@ -638,6 +644,7 @@ public class ManagementViewController implements Initializable {
     }
     public void renderTableOutline(ArrayList<ArrayList<String>> data) {
         ArrayList<String> columnNames = data.get(0);
+        System.out.println(columnNames);
         ArrayList<String> columnTypes = data.get(1);
         for (int i = 0; i <= 1; ++i) {
             for (int j = 0; j <= columnNames.size(); ++j) {
@@ -767,15 +774,22 @@ public class ManagementViewController implements Initializable {
             }
         }
     }
+    public void disableForms() {
+        managementPage.getChildren().get(0).setVisible(true);
+        if (managementPage.getChildren().size() > 2) {
+            managementPage.getChildren().remove(2);
+        }
+    }
     public void reRenderPage(boolean isInit) {
         cellOnClick = null;
         totalRowNum = activeProcessor.count(queryCondition);
         setTotalPageNum(Math.max(1, Math.ceilDiv(totalRowNum, rowPerPageNum)));
         setCurrentPage(Math.min(currentPage, totalPageNum));
         if (isInit) sortQuery = "";
-        data = activeProcessor.select((currentPage - 1) * rowPerPageNum, rowPerPageNum, queryCondition, sortQuery).getData();
+        data = activeProcessor.getData((currentPage - 1) * rowPerPageNum, rowPerPageNum, queryCondition, sortQuery).getData();
         ArrayList<String> columnNames = data.get(0);
         if (isInit) {
+            disableForms();
             setCurrentPage(1);
             dataView.getChildren().clear();
             renderTableOutline(data);
@@ -920,6 +934,9 @@ public class ManagementViewController implements Initializable {
                     reRenderPage(true);
                 } else if (tabPanelOnClick == screenRoomTabPanel) {
                     activeProcessor = main.getScreenRoomManagementProcessor();
+                    reRenderPage(true);
+                } else if (tabPanelOnClick == showTimePanel) {
+                    activeProcessor = main.getShowTimeManagementProcessor();
                     reRenderPage(true);
                 } else {
                     activeProcessor = main.getMovieManagementProcessor();

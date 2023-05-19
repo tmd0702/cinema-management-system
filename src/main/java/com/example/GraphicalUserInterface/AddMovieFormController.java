@@ -83,7 +83,7 @@ public class AddMovieFormController implements Initializable {
         movieInfo.put("TAGLINE", taglineField.getText());
         movieInfo.put("VOTE_COUNT", voteCountField.getText());
         movieInfo.put("VOTE_AVERAGE", voteAverageField.getText());
-        movieInfo.put("MOVIE_STATUS", movieStatusField.getValue().toString());
+        movieInfo.put("STATUS", movieStatusField.getValue().toString());
         Response response = main.getMovieManagementProcessor().add(movieInfo);
         StatusCode status = response.getStatusCode();
         if (status == StatusCode.OK) {

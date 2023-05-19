@@ -156,8 +156,8 @@ public class AddFakeDatabase {
                         System.out.println(localTime.toString());
                         time.put("SHOW_DATE", now.format(dateTimeFormatter));
                         System.out.println(now.format(dateTimeFormatter));
-                        time.put("ROOM_ID", "SR_" + String.format("%05d", (sr_id)));
-                        time.put("SCHEDULE_ID", "SCH_" + String.format("%05d",sch_id ));
+                        time.put("SCREEN_ROOM_ID", "SR_" + String.format("%05d", (sr_id)));
+//                        time.put("SCHEDULE_ID", "SCH_" + String.format("%05d",sch_id ));
                         Response response = showTimeManagementProcessor.add(time);
                         if (response.getStatusCode() == StatusCode.OK) {
                             System.out.println("insert 1 row success");
@@ -174,13 +174,15 @@ public class AddFakeDatabase {
 
     public static void main(String[] args) throws Exception {
         AddFakeDatabase addFakeDatabase = new AddFakeDatabase();
+//        for (int i=0; i<5; ++i) {
+//            Process p = new Process(addFakeDatabase.addFakeAccounts());
+//        }
         addFakeDatabase.addFakeAccounts();
         addFakeDatabase.addFakePromotions();
         addFakeDatabase.addFakeTheaters();
         addFakeDatabase.addFakeScreenRooms();
-        addFakeDatabase.addFakeSeats();
+//        addFakeDatabase.addFakeSeats();
         addFakeDatabase.addFakeShowTimes();
-
     }
 }
 

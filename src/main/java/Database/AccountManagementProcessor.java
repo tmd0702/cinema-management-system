@@ -55,6 +55,10 @@ public class AccountManagementProcessor extends Processor {
         }
 
     }
+    public Response getData(int from, int quantity, String queryCondition, String sortQuery) {
+        Response response = select("*", from, quantity, queryCondition, sortQuery, getDefaultDatabaseTable());
+        return response;
+    }
     public Response handleSignupAction(HashMap<String, String> signupInfo) {
         try {
             if (!Validator.validateEmail(signupInfo.get("email"))) {

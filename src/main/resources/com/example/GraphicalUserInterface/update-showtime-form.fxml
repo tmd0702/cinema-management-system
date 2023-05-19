@@ -12,12 +12,12 @@
 <?import javafx.scene.text.Font?>
 <?import javafx.scene.text.Text?>
 
-<VBox fx:id="updateShowtimeForm" layoutX="110.0" prefHeight="600.0" prefWidth="790.0" xmlns="http://javafx.com/javafx/19" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.example.GraphicalUserInterface.UpdateShowtimeFormController">
+<VBox fx:id="updateShowTimeForm" layoutX="110.0" prefHeight="600.0" prefWidth="790.0" xmlns="http://javafx.com/javafx/19" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.example.GraphicalUserInterface.UpdateShowTimeFormController">
    <children>
       <HBox prefHeight="46.0" prefWidth="200.0" spacing="10.0" style="-fx-alignment: CENTER_LEFT;">
          <children>
-            <Button fx:id="cancelInsertBtn" mnemonicParsing="false" onMouseClicked="#cancelInsertBtnOnClick" text="Cancel" />
-            <Button fx:id="saveInsertBtn" mnemonicParsing="false" onMouseClicked="#saveInsertBtnOnClick" text="Save" />
+            <Button fx:id="cancelUpdateBtn" mnemonicParsing="false" onMouseClicked="#cancelUpdateBtnOnClick" text="Cancel" />
+            <Button fx:id="saveUpdateBtn" mnemonicParsing="false" onMouseClicked="#saveUpdateBtnOnClick" text="Save" />
          </children>
          <padding>
             <Insets left="10.0" right="10.0" />
@@ -32,13 +32,13 @@
             </Text>
             <TextField fx:id="idField" layoutX="178.0" layoutY="104.0" />
             <Label layoutX="116.0" layoutY="142.0" prefHeight="17.0" prefWidth="52.0" text="Start time" />
-            <Label layoutX="103.0" layoutY="210.0" text="Room name" />
+            <Label layoutX="66.0" layoutY="210.0" text="Screen room name" />
             <Label layoutX="114.0" layoutY="176.0" text="Show date" />
-            <ComboBox fx:id="roomnameField" layoutX="177.0" layoutY="206.0" prefWidth="150.0" />
-            <Label layoutX="87.0" layoutY="244.0" text="Schedule name" />
-            <ComboBox fx:id="scheduleField" layoutX="177.0" layoutY="240.0" prefWidth="150.0" />
-            <DatePicker fx:id="showdateField" layoutX="177.0" layoutY="172.0" />
-            <TextField fx:id="starttimeField1" layoutX="177.0" layoutY="138.0" />
+            <ComboBox fx:id="screenRoomNameField" layoutX="177.0" layoutY="206.0" prefWidth="150.0" />
+            <Label layoutX="87.0" layoutY="244.0" text="Cinema name" />
+            <ComboBox fx:id="cinemaNameField" layoutX="177.0" layoutY="240.0" prefWidth="150.0" />
+            <DatePicker fx:id="showDateField" layoutX="177.0" layoutY="172.0" />
+            <TextField fx:id="startTimeField" layoutX="177.0" layoutY="138.0" />
             <Label layoutX="159.0" layoutY="108.0" prefHeight="17.0" prefWidth="19.0" text="ID" />
          </children>
       </AnchorPane>

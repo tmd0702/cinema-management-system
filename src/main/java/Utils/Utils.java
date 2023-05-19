@@ -39,6 +39,15 @@ public class Utils {
 
         return keysValuesList;
     }
+    public static ArrayList<ArrayList<String>> concat2dArray(ArrayList<ArrayList<String>> firstArray, ArrayList<ArrayList<String>> secondArray) {
+        for (int i = 0; i < secondArray.size();++i) {
+            for (int j=0; j<secondArray.get(i).size();++j) {
+                firstArray.get(i).add(secondArray.get(i).get(j));
+
+            }
+        }
+        return firstArray;
+    }
     public static long getDiffBetweenDates(Date date1, Date date2) {
         long diff;
         LocalDate localDate1 = new Date(date1.getTime()).toInstant().atZone(ZoneId.systemDefault()).toLocalDate();

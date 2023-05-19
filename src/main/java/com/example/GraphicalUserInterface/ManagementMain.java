@@ -1,5 +1,6 @@
 package com.example.GraphicalUserInterface;
 
+import Config.Config;
 import Database.*;
 import ImageManager.ImageManager;
 import Utils.IdGenerator;
@@ -15,7 +16,7 @@ import java.io.IOException;
 public class ManagementMain extends Application {
     private static Stage stage;
     private Scene scene;
-    private Processor cinemaManagementProcessor, theaterManagementProcessor, movieManagementProcessor, promotionManagementProcessor, itemManagementProcessor, screenRoomManagementProcessor;
+    private Processor showTimeManagementProcessor, cinemaManagementProcessor, theaterManagementProcessor, movieManagementProcessor, promotionManagementProcessor, itemManagementProcessor, screenRoomManagementProcessor;
     private AccountManagementProcessor accountManagementProcessor;
     private IdGenerator idGenerator;
     private ImageManager imageManager;
@@ -23,6 +24,7 @@ public class ManagementMain extends Application {
     public ManagementMain() throws Exception {
         managementMain = this;
         idGenerator = new IdGenerator();
+        showTimeManagementProcessor = new ShowTimeManagementProcessor();
         screenRoomManagementProcessor = new ScreenRoomManagementProcessor();
         itemManagementProcessor = new ItemManagementProcessor();
         cinemaManagementProcessor = new CinemaManagementProcessor();
@@ -31,6 +33,9 @@ public class ManagementMain extends Application {
         accountManagementProcessor = new AccountManagementProcessor();
         movieManagementProcessor = new MovieManagementProcessor();
         imageManager = new ImageManager();
+    }
+    public Processor getShowTimeManagementProcessor() {
+        return this.showTimeManagementProcessor;
     }
     public Processor getItemManagementProcessor() {
         return this.itemManagementProcessor;

@@ -1,5 +1,7 @@
 package Database;
 
+import Utils.Response;
+
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
@@ -23,6 +25,10 @@ public class FiltererProcessor extends Processor {
             System.out.println(sqle);
         }
         return genres;
+    }
+    public Response getData(int from, int quantity, String queryCondition, String sortQuery) {
+        Response response = select("*", from, quantity, queryCondition, sortQuery, getDefaultDatabaseTable());
+        return response;
     }
     public ArrayList<String> getLanguages() {
         String query = "SELECT DISTINCT LANGUAGE FROM MOVIES;";

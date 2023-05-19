@@ -2,6 +2,7 @@ package Database;
 import java.sql.*;
 import java.util.ArrayList;
 
+import Utils.Response;
 import com.example.GraphicalUserInterface.BookingController;
 import BookingManager.BookingInfor;
 public class BookingProcessor extends Processor{
@@ -9,6 +10,10 @@ public class BookingProcessor extends Processor{
     public BookingProcessor(){
         super();
         this.bookingInfor = new BookingInfor();
+    }
+    public Response getData(int from, int quantity, String queryCondition, String sortQuery) {
+        Response response = select("*", from, quantity, queryCondition, sortQuery, getDefaultDatabaseTable());
+        return response;
     }
     public BookingInfor getBookingInfor(){
         return this.bookingInfor;

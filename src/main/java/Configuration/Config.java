@@ -1,4 +1,4 @@
-package Config;
+package Configuration;
 
 import com.example.GraphicalUserInterface.Main;
 import com.example.GraphicalUserInterface.ManagementMain;
@@ -28,3 +28,4 @@ public class Config {
     }
 
 }
+

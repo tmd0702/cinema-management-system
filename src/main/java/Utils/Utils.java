@@ -13,7 +13,9 @@ import java.math.BigDecimal;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.time.ZoneId;
+import java.time.format.DateTimeFormatter;
 import java.time.temporal.ChronoUnit;
 import java.util.*;
 import java.util.stream.Collectors;
@@ -38,6 +40,13 @@ public class Utils {
         keysValuesList.add(listOfValues);
 
         return keysValuesList;
+    }
+    public static String addDateByNDays(Date date, int nDays) {
+        Calendar c = Calendar.getInstance();
+        c.setTime(date);
+        c.add(Calendar.DATE, nDays);
+        date = c.getTime();
+        return new SimpleDateFormat("yyyy-MM-dd").format(date);
     }
     public static ArrayList<ArrayList<String>> concat2dArray(ArrayList<ArrayList<String>> firstArray, ArrayList<ArrayList<String>> secondArray) {
         for (int i = 0; i < secondArray.size();++i) {
@@ -138,5 +147,19 @@ public class Utils {
         prop.setProperty("USERNAME", username);
         prop.setProperty("PASSWORD", password);
         prop.store(is,null);
+    }
+    public static String getRowValueByColumnName(int index, String columnName, ArrayList<ArrayList<String>> data) {
+        String ret = null;
+        try {
+            for (String dataColumnName : data.get(0)) {
+                if (columnName.equals(dataColumnName)) {
+                    ret = data.get(index).get(data.get(0).indexOf(dataColumnName));
+                    break;
+                }
+            }
+        } catch (Exception e) {
+//            System.out.println(e);
+        }
+        return ret;
     }
 }

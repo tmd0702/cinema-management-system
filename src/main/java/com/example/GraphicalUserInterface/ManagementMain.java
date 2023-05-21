@@ -1,8 +1,8 @@
 package com.example.GraphicalUserInterface;
 
-import Config.Config;
 import Database.*;
 import ImageManager.ImageManager;
+import MovieManager.Movie;
 import Utils.IdGenerator;
 import javafx.application.Application;
 import javafx.fxml.FXMLLoader;
@@ -16,7 +16,8 @@ import java.io.IOException;
 public class ManagementMain extends Application {
     private static Stage stage;
     private Scene scene;
-    private Processor showTimeManagementProcessor, cinemaManagementProcessor, theaterManagementProcessor, movieManagementProcessor, promotionManagementProcessor, itemManagementProcessor, screenRoomManagementProcessor;
+    private Processor showTimeManagementProcessor, cinemaManagementProcessor, theaterManagementProcessor, promotionManagementProcessor, itemManagementProcessor, screenRoomManagementProcessor;
+    private MovieManagementProcessor movieManagementProcessor;
     private AccountManagementProcessor accountManagementProcessor;
     private IdGenerator idGenerator;
     private ImageManager imageManager;
@@ -52,7 +53,7 @@ public class ManagementMain extends Application {
     public Processor getCinemaManagementProcessor() {
         return this.cinemaManagementProcessor;
     }
-    public Processor getMovieManagementProcessor() {
+    public MovieManagementProcessor getMovieManagementProcessor() {
         return this.movieManagementProcessor;
     }
     public Processor getPromotionManagementProcessor() {

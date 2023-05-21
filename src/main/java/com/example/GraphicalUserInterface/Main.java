@@ -1,8 +1,6 @@
 package com.example.GraphicalUserInterface;
-import Config.Config;
-import Database.BookingProcessor;
-import Database.FiltererProcessor;
-import Database.MovieManagementProcessor;
+import Configuration.Config;
+import Database.*;
 
 import MovieManager.Movie;
 import SearchEngine.SearchEngine;
@@ -31,21 +29,44 @@ public class Main extends Application {
     private String queryOnSearching;
     private BookingProcessor bookingProcessor;
     private FiltererProcessor filtererProcessor;
-//    private Config config;
     private SearchEngine searchEngine;
     private MovieManagementProcessor movieManagementProcessor;
+    private TheaterManagementProcessor theaterManagementProcessor;
+    private ShowTimeManagementProcessor showTimeManagementProcessor;
+    private ScreenRoomManagementProcessor screenRoomManagementProcessor;
+    private ScheduleManagementProcessor scheduleManagementProcessor;
+    private Config config;
     public Main() throws Exception {
         super();
         main = this;
+        this.config = new Config();
+        this.scheduleManagementProcessor = new ScheduleManagementProcessor();
+        this.screenRoomManagementProcessor = new ScreenRoomManagementProcessor();
+        this.theaterManagementProcessor = new TheaterManagementProcessor();
+        this.showTimeManagementProcessor = new ShowTimeManagementProcessor();
         this.movieManagementProcessor = new MovieManagementProcessor();
         this.bookingProcessor = new BookingProcessor();
-        this.movieManagementProcessor.getMovies();
         this.filtererProcessor = new FiltererProcessor();
         this.queryOnSearching = "";
-//        this.config = new Config();
         nowShowingMoviesTabActive = false;
         comingSoonMoviesTabActive = false;
         searchEngine = new SearchEngine();
+    }
+    public ScheduleManagementProcessor getScheduleManagementProcessor() {
+        return this.scheduleManagementProcessor;
+    }
+    public ScreenRoomManagementProcessor getScreenRoomManagementProcessor() {
+        return this.screenRoomManagementProcessor;
+    }
+    public TheaterManagementProcessor getTheaterManagementProcessor() {
+        return theaterManagementProcessor;
+    }
+    public ShowTimeManagementProcessor getShowTimeManagementProcessor() {
+        return showTimeManagementProcessor;
+    }
+
+    public Config getConfig() {
+        return this.config;
     }
     public void setMovieOnBooking(Movie movie){
         movieOnBooking = movie;
@@ -57,9 +78,6 @@ public class Main extends Application {
     public FiltererProcessor getFiltererProcessor() {
         return this.filtererProcessor;
     }
-//    public Config getConfig() throws Exception {
-//        return new Config();
-//    }
     public void setQueryOnSearching(String queryOnSearching) {
         this.queryOnSearching = queryOnSearching;
     }
@@ -70,8 +88,7 @@ public class Main extends Application {
         return this.queryOnSearching;
     }
     public void setNowShowingMoviesTabActive(boolean isActive) {
-        this.nowShowingMoviesTabActive = isActive;
-    }
+        this.nowShowingMoviesTabActive = isActive;}
     public void setComingSoonMoviesTabActive(boolean isActive) {
         this.comingSoonMoviesTabActive = isActive;
     }
@@ -105,6 +122,7 @@ public class Main extends Application {
     }
     @Override
     public void start(Stage primaryStage) throws IOException {
+        this.movieManagementProcessor.getMovies();
         stage = primaryStage;
         setMovieOnBooking(new Movie());
         FXMLLoader fxmlLoader = new FXMLLoader(Main.class.getResource("index-view.fxml"));

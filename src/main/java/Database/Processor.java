@@ -3,6 +3,7 @@ package Database;
 import Utils.ColumnType;
 import Utils.Response;
 import Utils.StatusCode;
+import com.example.GraphicalUserInterface.Main;
 
 import java.net.ResponseCache;
 import java.sql.*;
@@ -12,7 +13,10 @@ public abstract class Processor {
     private Database database;
     private Connection connector;
     private String defaultDatabaseTable;
+    public Main main;
+
     public Processor() {
+        this.main = Main.getInstance();
         this.database = new Database();
         this.connector = database.getConnection();
         this.defaultDatabaseTable = "";
@@ -109,7 +113,7 @@ public abstract class Processor {
         ArrayList<ArrayList<String>> result = new ArrayList<ArrayList<String>>();
 
         try {
-            System.out.println(query);
+//            System.out.println(query);
             Statement st = getConnector().createStatement();
             ResultSet rs = st.executeQuery(query);
             ResultSetMetaData rsmd = rs.getMetaData();

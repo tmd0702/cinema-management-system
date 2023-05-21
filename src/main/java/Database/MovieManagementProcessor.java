@@ -1,18 +1,20 @@
 package Database;
 import MovieManager.*;
 import Utils.*;
+import com.example.GraphicalUserInterface.Main;
 import javafx.scene.image.Image;
 
 import java.sql.*;
+import java.time.LocalTime;
+import java.time.temporal.ChronoUnit;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 import java.util.concurrent.TimeUnit;
-import java.util.concurrent.atomic.AtomicBoolean;
-import Utils.*;
 
 public class MovieManagementProcessor extends Processor {
     private MovieManager movieManager;
@@ -47,53 +49,6 @@ public class MovieManagementProcessor extends Processor {
             System.out.println(e);
         }
         return movieGenres;
-    }
-    @Override
-    public Response select (String values, int from, int quantity, String queryCondition, String sortQuery, String table) {
-        String query = String.format("SELECT %s FROM %s", values, table);
-        if (queryCondition.length() > 0) {
-            query = query + " WHERE " + queryCondition;
-        }
-        if (sortQuery.length() > 0) {
-            query = query + " ORDER BY " + sortQuery;
-        }
-        if (quantity > -1) {
-            query = query + String.format(" LIMIT %d, %d", from, quantity);
-        }
-
-        ArrayList<ArrayList<String>> result = new ArrayList<ArrayList<String>>();
-
-        try {
-            Statement st = getConnector().createStatement();
-            ResultSet rs = st.executeQuery(query);
-            System.out.println("okkkkk");
-            System.out.println(rs);
-            ResultSetMetaData rsmd = rs.getMetaData();
-            ArrayList<String> columnNames = new ArrayList<String>();
-            ArrayList<String> columnTypes = new ArrayList<String>();
-            for (int i=1; i <= rsmd.getColumnCount(); ++i) {
-                columnNames.add(rsmd.getColumnName(i));
-                columnTypes.add(ColumnType.getByValue(rsmd.getColumnType(i)).getDescription());
-            }
-//            columnNames.add("GENRES");
-//            columnTypes.add("Varchar");
-            result.add(columnNames);
-            result.add(columnTypes);
-            while (rs.next()) {
-                ArrayList<String> val = new ArrayList<String>();
-                for (String columnName : columnNames) {
-                    val.add(rs.getString(columnName));
-                }
-//                val.add(getMovieGenres("MOVIE_ID = '" + val.get(0) + "';"));
-                result.add(val);
-            }
-            st.close();
-            return new Response("OK", StatusCode.OK, result);
-
-        } catch (Exception e) {
-            System.out.println(e);
-            return new Response(e.getMessage(), StatusCode.BAD_REQUEST);
-        }
     }
     public Response getData(int from, int quantity, String queryCondition, String sortQuery) {
         Response response = select("*", from, quantity, queryCondition, sortQuery, getDefaultDatabaseTable());
@@ -159,100 +114,121 @@ public class MovieManagementProcessor extends Processor {
             System.out.println(e);
         }
     }
-
+    public boolean isMovieScheduledTooMuchTimes(Movie movie, String screenRoomId, String movieShowDateString) {
+        ArrayList<ArrayList<String>> movieScheduledTimesFetcher = select("COUNT(*) AS COUNT", 0, -1, String.format("SCREEN_ROOM_ID = '%s' AND MOVIE_ID = '%s' AND SHOW_DATE = '%s'", screenRoomId, movie.getId(), movieShowDateString), "", "SCHEDULES").getData();
+        int movieScheduledTimes = Integer.parseInt(Utils.getRowValueByColumnName(2, "COUNT", movieScheduledTimesFetcher));
+        if (movieScheduledTimes >= Integer.parseInt(main.getConfig().get("MAXIMUM_MOVIE_SHOW_TIMES_IN_ONE_SCREEN_ROOM"))) {
+            System.out.println(String.format("Movie id %s has been scheduled 3 times, ignore scheduling", movie.getId()));
+            return true;
+        } else {
+            return false;
+        }
+    }
+    public boolean isMovieScheduledTooSoonInScreenRoom(Movie movie, String showTime, String screenRoomId, String movieShowDateString) {
+        ArrayList<ArrayList<String>> previousScheduleShowTimeInScreenRoomFetcher = select("S.SHOW_DATE, ST.START_TIME", 0, 1, String.format("S.MOVIE_ID = '%s' AND ST.ID = S.SHOW_TIME_ID AND ST.START_TIME < '%s' AND S.SCREEN_ROOM_ID = '%s' AND S.SHOW_DATE = '%s'", movie.getId(), showTime, screenRoomId, movieShowDateString), "ST.START_TIME DESC", "SCHEDULES S, SHOW_TIMES ST").getData();
+        String previousScheduleShowTimeInScreenRoom = Utils.getRowValueByColumnName(2, "START_TIME", previousScheduleShowTimeInScreenRoomFetcher);
+        if (previousScheduleShowTimeInScreenRoom == null) {
+            return false;
+        } else {
+            long timeGap = LocalTime.parse(previousScheduleShowTimeInScreenRoom).until(LocalTime.parse(showTime), ChronoUnit.MINUTES);
+            if (timeGap < Integer.parseInt(main.getConfig().get("MINIMUM_MINUTES_BETWEEN_SHOW_TIME_OF_SAME_MOVIE_IN_PARTICULAR_SCREEN_ROOM"))) {
+                System.out.println(String.format("Movie id %s has been scheduled in this screen room (id %s) %d minutes ago, ignore scheduling", movie.getId(), screenRoomId, timeGap));
+                return true;
+            } else {
+                System.out.println(String.format("Movie id %s has been scheduled in this screen room (id %s) %d minutes ago, screen room accept scheduling", movie.getId(), screenRoomId, timeGap));
+                return false;
+            }
+        }
+    }
+    public boolean isMovieScheduledTooSoonInCinema(Movie movie, String showTime, String screenRoomId, String cinemaId, String movieShowDateString) {
+        ArrayList<ArrayList<String>> previousScheduleShowTimeInCinemaFetcher = select("S.SHOW_DATE, ST.START_TIME", 0, 1, String.format("S.MOVIE_ID = '%s' AND ST.ID = S.SHOW_TIME_ID AND ST.START_TIME < '%s' AND S.SCREEN_ROOM_ID <> '%s' AND S.SCREEN_ROOM_ID IN (SELECT ID FROM SCREEN_ROOMS WHERE CINEMA_ID = '%s') AND S.SHOW_DATE = '%s'", movie.getId(), showTime, screenRoomId, cinemaId, movieShowDateString), "ST.START_TIME DESC", "SCHEDULES S, SHOW_TIMES ST").getData();
+        String previousScheduleShowTimeInCinema = Utils.getRowValueByColumnName(2, "START_TIME", previousScheduleShowTimeInCinemaFetcher);
+        if (previousScheduleShowTimeInCinema == null) {
+            return false;
+        } else {
+            long timeGap = LocalTime.parse(previousScheduleShowTimeInCinema).until(LocalTime.parse(showTime), ChronoUnit.MINUTES);
+            if (timeGap < Integer.parseInt(main.getConfig().get("MINIMUM_MINUTES_BETWEEN_SHOW_TIME_OF_SAME_MOVIE_IN_PARTICULAR_CINEMA"))) {
+                System.out.println(String.format("Movie id %s has been scheduled in this cinema (id %s) %d minutes ago, ignore scheduling", movie.getId(), cinemaId, timeGap));
+                return true;
+            } else {
+                System.out.println(String.format("Movie id %s has been scheduled in this cinema (id %s) %d minutes ago, cinema accept scheduling", movie.getId(), cinemaId, timeGap));
+                return false;
+            }
+        }
+    }
+    public boolean isMovieScheduledInOtherScreenRooms(Movie movie, String showTime, String screenRoomId, String cinemaId, String movieShowDateString) {
+        ArrayList<ArrayList<String>> currentScheduleShowTimeInOtherScreenRoomsFetcher = select("S.SHOW_DATE, ST.START_TIME", 0, 1, String.format("S.MOVIE_ID = '%s' AND ST.ID = S.SHOW_TIME_ID AND ST.START_TIME = '%s' AND S.SCREEN_ROOM_ID <> '%s' AND S.SCREEN_ROOM_ID IN (SELECT ID FROM SCREEN_ROOMS WHERE CINEMA_ID = '%s') AND S.SHOW_DATE = '%s'", movie.getId(), showTime, screenRoomId, cinemaId, movieShowDateString), "", "SCHEDULES S, SHOW_TIMES ST").getData();
+        String currentScheduleShowTimeInOtherScreenRooms = Utils.getRowValueByColumnName(2, "START_TIME", currentScheduleShowTimeInOtherScreenRoomsFetcher);
+        if (currentScheduleShowTimeInOtherScreenRooms == null) {
+            return false;
+        } else {
+            System.out.println(String.format("Movie id %s has been scheduled in another screen room at %s on %s", movie.getId(), showTime, movieShowDateString));
+            return true;
+        }
+    }
+    public boolean isMovieScheduledConflict(Movie movie, String showTime, String screenRoomId, String movieShowDateString) {
+        ArrayList<ArrayList<String>> nearestScheduleShowTimeFetcher = select("S.SHOW_DATE, ST.START_TIME", 0, 1, String.format("ST.ID = S.SHOW_TIME_ID AND ST.START_TIME >= '%s' AND S.SCREEN_ROOM_ID = '%s' AND S.SHOW_DATE = '%s'", showTime, screenRoomId, movieShowDateString), "ST.START_TIME ASC", "SCHEDULES S, SHOW_TIMES ST").getData();
+        String nearestScheduleShowTime = Utils.getRowValueByColumnName(2, "START_TIME", nearestScheduleShowTimeFetcher);
+        if (nearestScheduleShowTime == null) {
+            return false;
+        } else {
+            long maxDurationMinutesAvailable = LocalTime.parse(showTime).until(LocalTime.parse(nearestScheduleShowTime), ChronoUnit.MINUTES);
+            if (maxDurationMinutesAvailable < movie.getDuration() + Integer.parseInt(main.getConfig().get("MINIMUM_MINUTES_BETWEEN_MOVIE_PLAYS"))) {
+                System.out.println(String.format("Movie id %s cannot be scheduled due to insufficient time range", movie.getId()));
+                return true;
+            } else {
+                return false;
+            }
+        }
+    }
+    public boolean isMovieSchedulingAvailable(Movie movie, String showTime, String screenRoomId, String cinemaId, String movieShowDateString) {
+        if (isMovieScheduledTooMuchTimes(movie, screenRoomId, movieShowDateString) || isMovieScheduledConflict(movie, showTime, screenRoomId, movieShowDateString) || isMovieScheduledInOtherScreenRooms(movie, showTime, screenRoomId, cinemaId, movieShowDateString) || isMovieScheduledTooSoonInScreenRoom(movie, showTime, screenRoomId, movieShowDateString) || isMovieScheduledTooSoonInCinema(movie, showTime, screenRoomId, cinemaId, movieShowDateString)){
+            return false;
+        } else {
+            return true;
+        }
+    }
     public void scheduleMovie(Movie movie) throws Exception {
-        System.out.println(movie.getTitle());
-        ArrayList<String> cinemas = createList("CINEMAS", " ");
-        HashMap<String, String> schedule = new HashMap<String, String>();
-        for(int day = 0; day < 7; day++){
-            for(String cinema : cinemas){
-                ArrayList<String> screen_rooms = createList("SCREEN_ROOMS", String.format("WHERE CINEMA_ID = \"%s\"",cinema));
-                for(String room : screen_rooms){
-                    ArrayList<String> show_times = createList("SHOW_TIMES", String.format("WHERE SCREEN_ROOM_ID = \"%s\"", room));
-                    System.out.println("room1: " + room);
-                    int count = 0; //Số lần chiếu phim trong phòng chiếu hiện tại
-                    for(String showtime : show_times){
-                        System.out.println(showtime);
-                        if(count >= 3){ // 3: là số lần phim có thể chiếu trong một phòng
-                            break;
+        if (movie.getDuration() == 0) {
+            System.out.println("Error: Invalid duration");
+            throw new Exception("Error: Invalid duration");
+        }
+        Date movieShowDate = movie.getReleaseDate();
+        ArrayList<ArrayList<String>> showTimesFetcher = main.getShowTimeManagementProcessor().getData(0, -1, "", "START_TIME ASC").getData();
+        ArrayList<ArrayList<String>> cinemasFetcher = main.getTheaterManagementProcessor().getData(0, -1, "", "").getData();
+        for(int i = 2; i < cinemasFetcher.size();++i) {
+            String cinemaId = Utils.getRowValueByColumnName(i, "ID", cinemasFetcher);
+            ArrayList<ArrayList<String>> screenRoomsFetcher = main.getScreenRoomManagementProcessor().getData(0, -1, String.format("CINEMA_ID = '%s'", Utils.getRowValueByColumnName(i, "ID", cinemasFetcher )), "").getData();
+            for (int j = 2; j < screenRoomsFetcher.size(); ++ j) {
+                String screenRoomId = Utils.getRowValueByColumnName(j, "ID", screenRoomsFetcher);
+                System.out.print(String.format("\nScheduling movie %s on cinema %s, screen room %s, release date ", movie.getId(), cinemaId, screenRoomId));
+                for (int nDay = 0; nDay < Integer.parseInt(main.getConfig().get("MOVIE_SHOW_DURATION_DAYS_FROM_RELEASE_DATE")); ++nDay) {
+                    String movieShowDateString = Utils.addDateByNDays(movieShowDate, nDay);
+                    System.out.println(movieShowDateString);
+                    for (int k = 2; k < showTimesFetcher.size(); ++k) {
+                        String showTime = Utils.getRowValueByColumnName(k, "START_TIME", showTimesFetcher);
+                        String showTimeId = Utils.getRowValueByColumnName(k, "ID", showTimesFetcher);
+                        if (isMovieSchedulingAvailable(movie, showTime, screenRoomId, cinemaId, movieShowDateString)) {
+                            addFakeSchedules(showTimeId, movie.getId(), screenRoomId, movieShowDateString);
                         }
-                        int indextime = show_times.indexOf(showtime);
-                        if(indextime == 0) {
-                            addFakeSchedules(schedule, showtime, movie.getId());
-                            count++;
-                            continue;
-                        }
-                        // Kiểm tra xem phòng chiếu khác trong cùng rạp có chiếu phim khác trong khoảng thời gian tương tự
-                        boolean hasConflict = false;
-                        for (String otherRoom : screen_rooms) {
-                            if (otherRoom == room) {
-                                continue; // Bỏ qua phòng chiếu hiện tại
-                            }
-                            String getShowtime = String.format("SELECT ST.* FROM (MOVIES M JOIN SCHEDULES SCH ON M.ID = SCH.MOVIE_ID) JOIN SHOW_TIMES ST ON SCH.SHOW_TIME_ID = ST.ID WHERE ST.ID = \"%s\" AND M.ID = \"%s\" AND ST.SCREEN_ROOM_ID = \"%s\";", showtime, movie.getId(), otherRoom);
-                            String scheduledFilm = null;
-                            try {
-                                Statement st = getConnector().createStatement();
-                                ResultSet Showtime = st.executeQuery(getShowtime);
-
-                                while (Showtime.next()) {
-                                    scheduledFilm = Showtime.getString("ID");
-                                }
-                            } catch (Exception e) {
-                                System.out.println(e);
-                            }
-                            if (scheduledFilm != null && scheduledFilm == showtime) {
-                                hasConflict = true;
-                                break;
-                            }
-                        }
-                        if (hasConflict) {
-                            System.out.println("has conflict");
-                            continue;
-                        }
-                        System.out.println("hasn't conflict");
-                            // Kiểm tra xem có suất chiếu trước đó trong cùng phòng chiếu trong khoảng thời gian tối thiểu
-                            if (indextime > 0) {
-                                String queryPreviousId = String.format("SELECT ST.* FROM (MOVIES M JOIN SCHEDULES SCH ON M.ID = SCH.MOVIE_ID) JOIN SHOW_TIMES ST ON SCH.SHOW_TIME_ID = ST.ID WHERE M.ID = \"%s\" AND ST.SCREEN_ROOM_ID = \"%s\";", movie.getId(), room);
-                                String previousShowTime = getPreviousID(queryPreviousId, showtime);
-
-                                String time = getOneColumnData("SELECT CAST(ABS(time_to_sec((SUBTIME(ST1.START_TIME, ST2.START_TIME)))/60) AS UNSIGNED) AS SUBTIMES FROM SHOW_TIMES ST1, SHOW_TIMES ST2 WHERE ST1.ID = \"%s\" AND ST2.ID = \"%s\";", showtime, previousShowTime, "SUBTIMES");
-                                if(time == null)
-                                    time = "0";
-                                if(Integer.parseInt(time) < 300) {
-                                    continue;
-                                }
-                                System.out.println("ok1");
-                            }
-                            // Kiểm tra xem có suất chiếu trước đó trong cùng rạp trong khoảng thời gian tối thiểu
-                            int indexroom = screen_rooms.indexOf(room);
-                            if (indexroom > 0) {
-                                String queryPreviousId = String.format("SELECT ST.* FROM ((MOVIES M JOIN SCHEDULES SCH ON M.ID = SCH.MOVIE_ID) JOIN SHOW_TIMES ST ON SCH.SHOW_TIME_ID = ST.ID) JOIN SCREEN_ROOMS SR ON ST.SCREEN_ROOM_ID = SR.ID WHERE M.ID = \"%s\" AND SR.ID = \"%s\";", movie.getId(), cinema);
-                                String previousRoom = getPreviousID(queryPreviousId, room);
-                                String time = getOneColumnData("SELECT CAST(ABS(time_to_sec((SUBTIME(ST1.START_TIME, ST2.START_TIME)))/60) AS UNSIGNED) AS SUBTIMES FROM SHOW_TIMES ST1, SHOW_TIMES ST2 WHERE ST1.ID = \"%s\" AND ST2.ID = \"%s\";", showtime, previousRoom, "SUBTIMES");
-                                if(time == "")
-                                    time = "170";
-                                if(Integer.parseInt(time) < 170)
-                                    continue;
-                                System.out.println("ok2");
-                            }
-                            addFakeSchedules(schedule, showtime, movie.getId());
-                            count++;
                     }
                 }
             }
         }
     }
-    public void addFakeSchedules(HashMap<String, String> schedule, String showtimeID,String movieId) throws Exception{
+    public void addFakeSchedules(String showtimeID,String movieId, String screenRoomId, String showDate) throws Exception{
+        HashMap<String, String> schedule = new HashMap<String, String>();
         schedule.put("ID", idGenerator.generateId(scheduleManagementProcessor.getDefaultDatabaseTable()));
         schedule.put("SHOW_TIME_ID", showtimeID);
         schedule.put("MOVIE_ID", movieId);
+        schedule.put("SCREEN_ROOM_ID", screenRoomId);
+        schedule.put("SHOW_DATE", showDate);
         Response response = scheduleManagementProcessor.add(schedule);
         if (response.getStatusCode() == StatusCode.OK) {
-            System.out.println("insert 1 row success " + schedule.get("ID"));
+            System.out.println(String.format("Scheduled movie id %s success on showtime id %s with id %s", movieId, showtimeID, schedule.get("ID")));
         } else {
-            System.out.println(" failed");
+            System.out.println(response.getMessage());
         }
-        System.out.println(schedule);
     }
     public String getPreviousID(String query, String id)
     {

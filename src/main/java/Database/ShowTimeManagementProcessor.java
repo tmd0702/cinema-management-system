@@ -10,12 +10,7 @@ public class ShowTimeManagementProcessor extends Processor{
         setDefaultDatabaseTable("SHOW_TIMES");
     }
     public Response getData(int from, int quantity, String queryCondition, String sortQuery) {
-        if (queryCondition.length() > 0) {
-            queryCondition = "SR.ID = ST.SCREEN_ROOM_ID AND SR.CINEMA_ID = C.ID AND " + queryCondition;
-        } else {
-            queryCondition = "SR.ID = ST.SCREEN_ROOM_ID AND SR.CINEMA_ID = C.ID";
-        }
-        Response response = select("ST.ID, ST.START_TIME, ST.SHOW_DATE, SR.NAME AS SCREEN_ROOM_NAME, C.NAME AS CINEMA_NAME", from, quantity, queryCondition, sortQuery, String.format("%s, SCREEN_ROOMS SR, CINEMAS C", getDefaultDatabaseTable() + " ST"));
+        Response response = select("ID, START_TIME", from, quantity, queryCondition, sortQuery, String.format("%s", getDefaultDatabaseTable()));
         return response;
     }
 }

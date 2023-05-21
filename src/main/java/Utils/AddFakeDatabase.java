@@ -79,7 +79,7 @@ public class AddFakeDatabase {
         theater.put("NAME", "4HB THU DUC");
         theater.put("ADDRESS", "test");
         theater.put("CINE_AREA", "TPHCM");
-        for (int i=0;i<50;++i) {
+        for (int i=0;i<2;++i) {
             theater.put("ID", idGenerator.generateId(theaterManagementProcessor.getDefaultDatabaseTable()));
             Response response = theaterManagementProcessor.add(theater);
             if (response.getStatusCode() == StatusCode.OK) {
@@ -93,7 +93,7 @@ public class AddFakeDatabase {
     public void addFakeScreenRooms() throws Exception{
         HashMap<String, String> room = new HashMap<String, String>();
         room.put("CAPACITY", "80");
-        for (int i=0;i<50;++i) {
+        for (int i=0;i<2;++i) {
             for(int j = 1; j <= 6; j++) {
                 room.put("ID", idGenerator.generateId(screenRoomManagementProcessor.getDefaultDatabaseTable()));
                 room.put("NAME", "ROOM_" + j);
@@ -112,7 +112,7 @@ public class AddFakeDatabase {
         seat.put("CATEGORY", "NORMAL");
         seat.put("SEAT_STATUS", "AVAILABLE");
         int sr_id = 0;
-        for (int i = 0; i < 50; ++i) { // i: cinema counter
+        for (int i = 0; i < 2; ++i) { // i: cinema counter
             for (int j = 1; j <= 6; j++) { // j: screen room counter per cinema
                 sr_id += 1;
                 for (int k = 0; k < 7; k++) { // k : rows number of seat per screen room
@@ -143,46 +143,57 @@ public class AddFakeDatabase {
         DateTimeFormatter dateTimeFormatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
         int sr_id = 0;
         int sch_id = 0;
-        for (int i=0;i<50;++i) {
-            for(int j = 1; j <= 6; j++) {
-                sr_id += 1;
-                LocalDateTime now = LocalDateTime.now();
-                for(int d = 0; d < 7; d++) {
-                    LocalTime localTime = LocalTime.of(12,40);
-                    for (int t = 0; t < 15; t++) {
-                        sch_id += 1;
-                        time.put("ID", idGenerator.generateId(showTimeManagementProcessor.getDefaultDatabaseTable()));
-                        time.put("START_TIME", localTime.toString());
-                        System.out.println(localTime.toString());
-                        time.put("SHOW_DATE", now.format(dateTimeFormatter));
-                        System.out.println(now.format(dateTimeFormatter));
-                        time.put("SCREEN_ROOM_ID", "SR_" + String.format("%05d", (sr_id)));
-//                        time.put("SCHEDULE_ID", "SCH_" + String.format("%05d",sch_id ));
-                        Response response = showTimeManagementProcessor.add(time);
-                        if (response.getStatusCode() == StatusCode.OK) {
-                            System.out.println("insert 1 row success");
-                        } else {
-                            System.out.println(i + " failed");
-                        }
-                       localTime =  localTime.plusMinutes(40);
-                    }
-                    now = now.plusDays(1);
-                }
+//        for (int i=0;i<50;++i) {
+//            for(int j = 1; j <= 6; j++) {
+//                sr_id += 1;
+//                LocalDateTime now = LocalDateTime.now();
+//                for(int d = 0; d < 7; d++) {
+//                    LocalTime localTime = LocalTime.of(12,40);
+//                    for (int t = 0; t < 15; t++) {
+//                        sch_id += 1;
+//                        time.put("ID", idGenerator.generateId(showTimeManagementProcessor.getDefaultDatabaseTable()));
+//                        time.put("START_TIME", localTime.toString());
+//                        System.out.println(localTime.toString());
+//                        time.put("SHOW_DATE", now.format(dateTimeFormatter));
+//                        System.out.println(now.format(dateTimeFormatter));
+////                        time.put("SCREEN_ROOM_ID", "SR_" + String.format("%05d", (sr_id)));
+////                        time.put("SCHEDULE_ID", "SCH_" + String.format("%05d",sch_id ));
+//                        Response response = showTimeManagementProcessor.add(time);
+//                        if (response.getStatusCode() == StatusCode.OK) {
+//                            System.out.println("insert 1 row success");
+//                        } else {
+//                            System.out.println(i + " failed");
+//                        }
+//                       localTime =  localTime.plusMinutes(40);
+//                    }
+//                    now = now.plusDays(1);
+//                }
+//            }
+//        }
+        LocalTime localTime = LocalTime.of(12,40);
+        for (int t = 0; t < 15; t++) {
+            sch_id += 1;
+            time.put("ID", idGenerator.generateId(showTimeManagementProcessor.getDefaultDatabaseTable()));
+            time.put("START_TIME", localTime.toString());
+            System.out.println(localTime.toString());
+            Response response = showTimeManagementProcessor.add(time);
+            if (response.getStatusCode() == StatusCode.OK) {
+                System.out.println("insert 1 row success");
+            } else {
+                System.out.println(response.getMessage());
             }
+            localTime =  localTime.plusMinutes(40);
         }
     }
 
     public static void main(String[] args) throws Exception {
         AddFakeDatabase addFakeDatabase = new AddFakeDatabase();
-//        for (int i=0; i<5; ++i) {
-//            Process p = new Process(addFakeDatabase.addFakeAccounts());
-//        }
-        addFakeDatabase.addFakeAccounts();
-        addFakeDatabase.addFakePromotions();
-        addFakeDatabase.addFakeTheaters();
-        addFakeDatabase.addFakeScreenRooms();
-//        addFakeDatabase.addFakeSeats();
-        addFakeDatabase.addFakeShowTimes();
+//        addFakeDatabase.addFakeAccounts();
+//        addFakeDatabase.addFakePromotions();
+//        addFakeDatabase.addFakeTheaters();
+//        addFakeDatabase.addFakeScreenRooms();
+        addFakeDatabase.addFakeSeats();
+//        addFakeDatabase.addFakeShowTimes();
     }
 }
 

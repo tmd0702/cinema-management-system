@@ -1,5 +1,6 @@
 package com.example.GraphicalUserInterface;
 
+import MovieManager.Movie;
 import Utils.IdGenerator;
 import Utils.Response;
 import Utils.StatusCode;
@@ -13,6 +14,7 @@ import javafx.scene.layout.VBox;
 import java.io.IOException;
 import java.net.URL;
 import java.time.format.DateTimeFormatter;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.Optional;
 import java.util.ResourceBundle;
@@ -63,14 +65,15 @@ public class AddMovieFormController implements Initializable {
         ((AnchorPane)addMovieForm.getParent()).getChildren().remove(2);
     }
     @FXML
-    public void saveInsertBtnOnClick() throws IOException {
+    public void saveInsertBtnOnClick() throws Exception {
         System.out.println("save");
         handleInsertRecordRequest();
         disableInsertForm();
     }
-    public void handleInsertRecordRequest() {
+    public void handleInsertRecordRequest() throws Exception {
         HashMap<String, String> movieInfo = new HashMap<String, String>();
-        movieInfo.put("ID", main.getIdGenerator().generateId("MOVIES"));
+        String id = main.getIdGenerator().generateId("MOVIES");
+        movieInfo.put("ID", id);
         movieInfo.put("TITLE", titleField.getText());
         movieInfo.put("OVERVIEW", overviewField.getText());
         movieInfo.put("LANGUAGE", languageField.getText());
@@ -87,6 +90,7 @@ public class AddMovieFormController implements Initializable {
         Response response = main.getMovieManagementProcessor().add(movieInfo);
         StatusCode status = response.getStatusCode();
         if (status == StatusCode.OK) {
+            main.getMovieManagementProcessor().scheduleMovie(new Movie(id, titleField.getText(), overviewField.getText(), movieStatusField.getValue().toString(), Integer.parseInt(durationField.getText()), Integer.parseInt(viewCountField.getText()), new Date(DateTimeFormatter.ofPattern("yyyy-MM-dd").format(releaseDateField.getValue())), posterPathField.getText(), backdropPathField.getText(), languageField.getText()));
             Dialog<String> dialog = new Dialog<String>();
             //Setting the title
             dialog.setTitle("Success");

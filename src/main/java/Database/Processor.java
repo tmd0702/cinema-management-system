@@ -113,7 +113,7 @@ public abstract class Processor {
         ArrayList<ArrayList<String>> result = new ArrayList<ArrayList<String>>();
 
         try {
-//            System.out.println(query);
+            System.out.println(query);
             Statement st = getConnector().createStatement();
             ResultSet rs = st.executeQuery(query);
             ResultSetMetaData rsmd = rs.getMetaData();

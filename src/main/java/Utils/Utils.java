@@ -162,4 +162,24 @@ public class Utils {
         }
         return ret;
     }
+    public static ArrayList<String> getDataValuesByColumnName(ArrayList<ArrayList<String>> data, String columnName) {
+        ArrayList<String> ret = new ArrayList<String>();
+        int index = -1;
+        for (String dataColumnName : data.get(0)) {
+            if (columnName.equals(dataColumnName)) {
+                index = data.get(0).indexOf(dataColumnName);
+                break;
+            }
+        }
+        if (index < 0) {
+            System.out.println("Error: Column not found");
+        } else if (data.size() < 3) {
+            System.out.println("Warning: Empty data");
+        } else {
+            for (int i=2; i<data.size(); ++i) {
+                ret.add(data.get(i).get(index));
+            }
+        }
+        return ret;
+    }
 }

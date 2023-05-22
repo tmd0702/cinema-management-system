@@ -19,12 +19,14 @@ public class ManagementMain extends Application {
     private Processor showTimeManagementProcessor, cinemaManagementProcessor, theaterManagementProcessor, promotionManagementProcessor, itemManagementProcessor, screenRoomManagementProcessor;
     private MovieManagementProcessor movieManagementProcessor;
     private AccountManagementProcessor accountManagementProcessor;
+    private ScheduleManagementProcessor scheduleManagementProcessor;
     private IdGenerator idGenerator;
     private ImageManager imageManager;
     private static ManagementMain managementMain;
     public ManagementMain() throws Exception {
         managementMain = this;
         idGenerator = new IdGenerator();
+        scheduleManagementProcessor = new ScheduleManagementProcessor();
         showTimeManagementProcessor = new ShowTimeManagementProcessor();
         screenRoomManagementProcessor = new ScreenRoomManagementProcessor();
         itemManagementProcessor = new ItemManagementProcessor();
@@ -34,6 +36,9 @@ public class ManagementMain extends Application {
         accountManagementProcessor = new AccountManagementProcessor();
         movieManagementProcessor = new MovieManagementProcessor();
         imageManager = new ImageManager();
+    }
+    public ScheduleManagementProcessor getScheduleManagementProcessor() {
+        return this.scheduleManagementProcessor;
     }
     public Processor getShowTimeManagementProcessor() {
         return this.showTimeManagementProcessor;

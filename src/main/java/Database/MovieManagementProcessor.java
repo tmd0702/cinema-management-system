@@ -114,80 +114,7 @@ public class MovieManagementProcessor extends Processor {
             System.out.println(e);
         }
     }
-    public boolean isMovieScheduledTooMuchTimes(Movie movie, String screenRoomId, String movieShowDateString) {
-        ArrayList<ArrayList<String>> movieScheduledTimesFetcher = select("COUNT(*) AS COUNT", 0, -1, String.format("SCREEN_ROOM_ID = '%s' AND MOVIE_ID = '%s' AND SHOW_DATE = '%s'", screenRoomId, movie.getId(), movieShowDateString), "", "SCHEDULES").getData();
-        int movieScheduledTimes = Integer.parseInt(Utils.getRowValueByColumnName(2, "COUNT", movieScheduledTimesFetcher));
-        if (movieScheduledTimes >= Integer.parseInt(main.getConfig().get("MAXIMUM_MOVIE_SHOW_TIMES_IN_ONE_SCREEN_ROOM"))) {
-            System.out.println(String.format("Movie id %s has been scheduled 3 times, ignore scheduling", movie.getId()));
-            return true;
-        } else {
-            return false;
-        }
-    }
-    public boolean isMovieScheduledTooSoonInScreenRoom(Movie movie, String showTime, String screenRoomId, String movieShowDateString) {
-        ArrayList<ArrayList<String>> previousScheduleShowTimeInScreenRoomFetcher = select("S.SHOW_DATE, ST.START_TIME", 0, 1, String.format("S.MOVIE_ID = '%s' AND ST.ID = S.SHOW_TIME_ID AND ST.START_TIME < '%s' AND S.SCREEN_ROOM_ID = '%s' AND S.SHOW_DATE = '%s'", movie.getId(), showTime, screenRoomId, movieShowDateString), "ST.START_TIME DESC", "SCHEDULES S, SHOW_TIMES ST").getData();
-        String previousScheduleShowTimeInScreenRoom = Utils.getRowValueByColumnName(2, "START_TIME", previousScheduleShowTimeInScreenRoomFetcher);
-        if (previousScheduleShowTimeInScreenRoom == null) {
-            return false;
-        } else {
-            long timeGap = LocalTime.parse(previousScheduleShowTimeInScreenRoom).until(LocalTime.parse(showTime), ChronoUnit.MINUTES);
-            if (timeGap < Integer.parseInt(main.getConfig().get("MINIMUM_MINUTES_BETWEEN_SHOW_TIME_OF_SAME_MOVIE_IN_PARTICULAR_SCREEN_ROOM"))) {
-                System.out.println(String.format("Movie id %s has been scheduled in this screen room (id %s) %d minutes ago, ignore scheduling", movie.getId(), screenRoomId, timeGap));
-                return true;
-            } else {
-                System.out.println(String.format("Movie id %s has been scheduled in this screen room (id %s) %d minutes ago, screen room accept scheduling", movie.getId(), screenRoomId, timeGap));
-                return false;
-            }
-        }
-    }
-    public boolean isMovieScheduledTooSoonInCinema(Movie movie, String showTime, String screenRoomId, String cinemaId, String movieShowDateString) {
-        ArrayList<ArrayList<String>> previousScheduleShowTimeInCinemaFetcher = select("S.SHOW_DATE, ST.START_TIME", 0, 1, String.format("S.MOVIE_ID = '%s' AND ST.ID = S.SHOW_TIME_ID AND ST.START_TIME < '%s' AND S.SCREEN_ROOM_ID <> '%s' AND S.SCREEN_ROOM_ID IN (SELECT ID FROM SCREEN_ROOMS WHERE CINEMA_ID = '%s') AND S.SHOW_DATE = '%s'", movie.getId(), showTime, screenRoomId, cinemaId, movieShowDateString), "ST.START_TIME DESC", "SCHEDULES S, SHOW_TIMES ST").getData();
-        String previousScheduleShowTimeInCinema = Utils.getRowValueByColumnName(2, "START_TIME", previousScheduleShowTimeInCinemaFetcher);
-        if (previousScheduleShowTimeInCinema == null) {
-            return false;
-        } else {
-            long timeGap = LocalTime.parse(previousScheduleShowTimeInCinema).until(LocalTime.parse(showTime), ChronoUnit.MINUTES);
-            if (timeGap < Integer.parseInt(main.getConfig().get("MINIMUM_MINUTES_BETWEEN_SHOW_TIME_OF_SAME_MOVIE_IN_PARTICULAR_CINEMA"))) {
-                System.out.println(String.format("Movie id %s has been scheduled in this cinema (id %s) %d minutes ago, ignore scheduling", movie.getId(), cinemaId, timeGap));
-                return true;
-            } else {
-                System.out.println(String.format("Movie id %s has been scheduled in this cinema (id %s) %d minutes ago, cinema accept scheduling", movie.getId(), cinemaId, timeGap));
-                return false;
-            }
-        }
-    }
-    public boolean isMovieScheduledInOtherScreenRooms(Movie movie, String showTime, String screenRoomId, String cinemaId, String movieShowDateString) {
-        ArrayList<ArrayList<String>> currentScheduleShowTimeInOtherScreenRoomsFetcher = select("S.SHOW_DATE, ST.START_TIME", 0, 1, String.format("S.MOVIE_ID = '%s' AND ST.ID = S.SHOW_TIME_ID AND ST.START_TIME = '%s' AND S.SCREEN_ROOM_ID <> '%s' AND S.SCREEN_ROOM_ID IN (SELECT ID FROM SCREEN_ROOMS WHERE CINEMA_ID = '%s') AND S.SHOW_DATE = '%s'", movie.getId(), showTime, screenRoomId, cinemaId, movieShowDateString), "", "SCHEDULES S, SHOW_TIMES ST").getData();
-        String currentScheduleShowTimeInOtherScreenRooms = Utils.getRowValueByColumnName(2, "START_TIME", currentScheduleShowTimeInOtherScreenRoomsFetcher);
-        if (currentScheduleShowTimeInOtherScreenRooms == null) {
-            return false;
-        } else {
-            System.out.println(String.format("Movie id %s has been scheduled in another screen room at %s on %s", movie.getId(), showTime, movieShowDateString));
-            return true;
-        }
-    }
-    public boolean isMovieScheduledConflict(Movie movie, String showTime, String screenRoomId, String movieShowDateString) {
-        ArrayList<ArrayList<String>> nearestScheduleShowTimeFetcher = select("S.SHOW_DATE, ST.START_TIME", 0, 1, String.format("ST.ID = S.SHOW_TIME_ID AND ST.START_TIME >= '%s' AND S.SCREEN_ROOM_ID = '%s' AND S.SHOW_DATE = '%s'", showTime, screenRoomId, movieShowDateString), "ST.START_TIME ASC", "SCHEDULES S, SHOW_TIMES ST").getData();
-        String nearestScheduleShowTime = Utils.getRowValueByColumnName(2, "START_TIME", nearestScheduleShowTimeFetcher);
-        if (nearestScheduleShowTime == null) {
-            return false;
-        } else {
-            long maxDurationMinutesAvailable = LocalTime.parse(showTime).until(LocalTime.parse(nearestScheduleShowTime), ChronoUnit.MINUTES);
-            if (maxDurationMinutesAvailable < movie.getDuration() + Integer.parseInt(main.getConfig().get("MINIMUM_MINUTES_BETWEEN_MOVIE_PLAYS"))) {
-                System.out.println(String.format("Movie id %s cannot be scheduled due to insufficient time range", movie.getId()));
-                return true;
-            } else {
-                return false;
-            }
-        }
-    }
-    public boolean isMovieSchedulingAvailable(Movie movie, String showTime, String screenRoomId, String cinemaId, String movieShowDateString) {
-        if (isMovieScheduledTooMuchTimes(movie, screenRoomId, movieShowDateString) || isMovieScheduledConflict(movie, showTime, screenRoomId, movieShowDateString) || isMovieScheduledInOtherScreenRooms(movie, showTime, screenRoomId, cinemaId, movieShowDateString) || isMovieScheduledTooSoonInScreenRoom(movie, showTime, screenRoomId, movieShowDateString) || isMovieScheduledTooSoonInCinema(movie, showTime, screenRoomId, cinemaId, movieShowDateString)){
-            return false;
-        } else {
-            return true;
-        }
-    }
+
     public void scheduleMovie(Movie movie) throws Exception {
         if (movie.getDuration() == 0) {
             System.out.println("Error: Invalid duration");
@@ -208,7 +135,7 @@ public class MovieManagementProcessor extends Processor {
                     for (int k = 2; k < showTimesFetcher.size(); ++k) {
                         String showTime = Utils.getRowValueByColumnName(k, "START_TIME", showTimesFetcher);
                         String showTimeId = Utils.getRowValueByColumnName(k, "ID", showTimesFetcher);
-                        if (isMovieSchedulingAvailable(movie, showTime, screenRoomId, cinemaId, movieShowDateString)) {
+                        if (main.getScheduleManagementProcessor().isMovieSchedulingAvailable(movie.getId(), showTime, screenRoomId, cinemaId, movieShowDateString)) {
                             addFakeSchedules(showTimeId, movie.getId(), screenRoomId, movieShowDateString);
                         }
                     }
@@ -216,7 +143,7 @@ public class MovieManagementProcessor extends Processor {
             }
         }
     }
-    public void addFakeSchedules(String showtimeID,String movieId, String screenRoomId, String showDate) throws Exception{
+    public void addFakeSchedules(String showtimeID, String movieId, String screenRoomId, String showDate) throws Exception{
         HashMap<String, String> schedule = new HashMap<String, String>();
         schedule.put("ID", idGenerator.generateId(scheduleManagementProcessor.getDefaultDatabaseTable()));
         schedule.put("SHOW_TIME_ID", showtimeID);

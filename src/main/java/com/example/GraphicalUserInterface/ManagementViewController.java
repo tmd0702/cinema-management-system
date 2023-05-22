@@ -95,6 +95,8 @@ public class ManagementViewController implements Initializable {
     @FXML
     private Button revenueTabPanel = new Button("Revenue");
     @FXML
+    private Button scheduleTabPanel = new Button("Schedule");
+    @FXML
     private ImageView pagingToolbarRefreshBtn;
     @FXML
     private Button nextBtn;
@@ -135,6 +137,7 @@ public class ManagementViewController implements Initializable {
         tabPanels.add(itemTabPanel);
         tabPanels.add(screenRoomTabPanel);
         tabPanels.add(showTimePanel);
+        tabPanels.add(scheduleTabPanel);
 
         insertBtn = new ImageView(main.getImageManager().getInsertIconImage());
         deleteBtn = new ImageView(main.getImageManager().getDeleteIconImage());
@@ -218,6 +221,8 @@ public class ManagementViewController implements Initializable {
             managementPage.getChildren().add(FXMLLoader.load(getClass().getResource("add-screen-room-form.fxml")));
         } else if (tabPanelOnClick == showTimePanel) {
             managementPage.getChildren().add(FXMLLoader.load(getClass().getResource("add-showtime-form.fxml")));
+        } else if (tabPanelOnClick == scheduleTabPanel) {
+            managementPage.getChildren().add(FXMLLoader.load(getClass().getResource("add-schedule-form.fxml")));
         } else {
             managementPage.getChildren().add(FXMLLoader.load(getClass().getResource("add-account-form.fxml")));
         }
@@ -238,6 +243,8 @@ public class ManagementViewController implements Initializable {
             managementPage.getChildren().add(FXMLLoader.load(getClass().getResource("update-screen-room-form.fxml")));
         } else if (tabPanelOnClick == showTimePanel) {
             managementPage.getChildren().add(FXMLLoader.load(getClass().getResource("update-showtime-form.fxml")));
+        } else if (tabPanelOnClick == scheduleTabPanel) {
+            managementPage.getChildren().add(FXMLLoader.load(getClass().getResource("update-schedule-form.fxml")));
         } else {
             managementPage.getChildren().add(FXMLLoader.load(getClass().getResource("update-account-form.fxml")));
         }
@@ -937,6 +944,9 @@ public class ManagementViewController implements Initializable {
                     reRenderPage(true);
                 } else if (tabPanelOnClick == showTimePanel) {
                     activeProcessor = main.getShowTimeManagementProcessor();
+                    reRenderPage(true);
+                } else if (tabPanelOnClick == scheduleTabPanel) {
+                    activeProcessor = main.getScheduleManagementProcessor();
                     reRenderPage(true);
                 } else {
                     activeProcessor = main.getMovieManagementProcessor();

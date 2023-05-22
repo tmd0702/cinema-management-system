@@ -61,13 +61,13 @@ public class ManagementViewController implements Initializable {
     @FXML
     private AnchorPane managementPage;
     @FXML
-    private ImageView insertBtn;
+    private Button insertBtn;
     @FXML
-    private ImageView updateBtn;
+    private Button updateBtn;
     @FXML
-    private ImageView deleteBtn;
+    private Button deleteBtn;
     @FXML
-    private ImageView refreshBtn;
+    private Button refreshBtn;
     private ManagementMain main;
     private Button tabPanelOnClick;
     @FXML
@@ -97,7 +97,7 @@ public class ManagementViewController implements Initializable {
     @FXML
     private Button scheduleTabPanel = new Button("Schedule");
     @FXML
-    private ImageView pagingToolbarRefreshBtn;
+    private Button pagingToolbarRefreshBtn;
     @FXML
     private Button nextBtn;
     @FXML
@@ -139,10 +139,10 @@ public class ManagementViewController implements Initializable {
         tabPanels.add(showTimePanel);
         tabPanels.add(scheduleTabPanel);
 
-        insertBtn = new ImageView(main.getImageManager().getInsertIconImage());
-        deleteBtn = new ImageView(main.getImageManager().getDeleteIconImage());
-        refreshBtn = new ImageView(main.getImageManager().getRefreshIconImage());
-        updateBtn = new ImageView(main.getImageManager().getUpdateIconImage());
+//        insertBtn = new ImageView(main.getImageManager().getInsertIconImage());
+//        deleteBtn = new ImageView(main.getImageManager().getDeleteIconImage());
+//        refreshBtn = new ImageView(main.getImageManager().getRefreshIconImage());
+//        updateBtn = new ImageView(main.getImageManager().getUpdateIconImage());
 
     }
     public void setTotalPageNum(int totalPageNum) {
@@ -203,7 +203,11 @@ public class ManagementViewController implements Initializable {
         setRowPerPageNum(11);
         setTotalPageNum(Math.ceilDiv(totalRowNum, rowPerPageNum));
         setCurrentPage(1);
-        pagingToolbarRefreshBtn.setImage(main.getImageManager().getRefreshIconImage());
+        menuBoxButtonsStylingOnMouseEvent(nextBtn);
+        menuBoxButtonsStylingOnMouseEvent(nextToTailBtn);
+        menuBoxButtonsStylingOnMouseEvent(pagingToolbarRefreshBtn);
+        menuBoxButtonsStylingOnMouseEvent(backBtn);
+        menuBoxButtonsStylingOnMouseEvent(backToHeadBtn);
     }
     public void changeSceneToInsertView() throws IOException {
         accountManagementView.setVisible(false);
@@ -250,8 +254,8 @@ public class ManagementViewController implements Initializable {
         }
     }
     public void menuBoxInit() {
-        insertBtn.setFitHeight(20);
-        insertBtn.setFitWidth(20);
+//        insertBtn.setPrefHeight(20);
+//        insertBtn.setPrefWidth(20);
         insertBtn.setOnMouseClicked(new EventHandler<MouseEvent>() {
             @Override
             public void handle(MouseEvent mouseEvent) {
@@ -263,8 +267,8 @@ public class ManagementViewController implements Initializable {
                 }
             }
         });
-        updateBtn.setFitHeight(20);
-        updateBtn.setFitWidth(20);
+//        updateBtn.setPrefHeight(20);
+//        updateBtn.setPrefWidth(20);
 
         updateBtn.setOnMouseClicked(new EventHandler<MouseEvent>() {
             @Override
@@ -291,8 +295,8 @@ public class ManagementViewController implements Initializable {
             }
         });
 
-        deleteBtn.setFitHeight(20);
-        deleteBtn.setFitWidth(20);
+//        deleteBtn.setPrefHeight(20);
+//        deleteBtn.setPrefWidth(20);
 
         deleteBtn.setOnMouseClicked(new EventHandler<MouseEvent>() {
             @Override
@@ -303,8 +307,8 @@ public class ManagementViewController implements Initializable {
             }
         });
 
-        refreshBtn.setFitHeight(20);
-        refreshBtn.setFitWidth(20);
+//        refreshBtn.setPrefHeight(20);
+//        refreshBtn.setPrefWidth(20);
 
         refreshBtn.setOnMouseClicked(new EventHandler<MouseEvent>() {
             @Override
@@ -312,11 +316,6 @@ public class ManagementViewController implements Initializable {
                 reRenderPage(false);
             }
         });
-
-        menuBox.getChildren().add(insertBtn);
-        menuBox.getChildren().add(updateBtn);
-        menuBox.getChildren().add(deleteBtn);
-        menuBox.getChildren().add(refreshBtn);
 
         Region region = new Region();
         HBox.setHgrow(region, Priority.ALWAYS);
@@ -334,8 +333,27 @@ public class ManagementViewController implements Initializable {
             }
         });
 
-        menuBox.setSpacing(20);
-
+        menuBox.setSpacing(10);
+        menuBoxButtonsStylingOnMouseEvent(insertBtn);
+        menuBoxButtonsStylingOnMouseEvent(deleteBtn);
+        menuBoxButtonsStylingOnMouseEvent(updateBtn);
+        menuBoxButtonsStylingOnMouseEvent(refreshBtn);
+    }
+    public void menuBoxButtonsStylingOnMouseEvent(Button btn) {
+        btn.setOnMouseEntered(new EventHandler<MouseEvent>() {
+            @Override
+            public void handle(MouseEvent mouseEvent) {
+                btn.getChildrenUnmodifiable().get(0).setStyle("-fx-font-family: FontAwesome; -fx-font-size: 20.0; -fx-fill: WHITE;");
+                btn.setStyle("-fx-background-color: #314090;");
+            }
+        });
+        btn.setOnMouseExited(new EventHandler<MouseEvent>() {
+            @Override
+            public void handle(MouseEvent mouseEvent) {
+                btn.getChildrenUnmodifiable().get(0).setStyle("-fx-font-family: FontAwesome; -fx-font-size: 20.0; -fx-fill: #314090;");
+                btn.setStyle("-fx-background-color: transparent;");
+            }
+        });
     }
     public String getRecordIdByRowIndex() {
         int onClickedCellRowIndex = GridPane.getRowIndex(cellOnClick);
@@ -907,7 +925,7 @@ public class ManagementViewController implements Initializable {
         tabPanel.setOnMouseEntered(new EventHandler<MouseEvent>() {
             @Override
             public void handle(MouseEvent mouseEvent) {
-                if (tabPanel != tabPanelOnClick) tabPanel.setStyle("-fx-pref-width: 110; -fx-pref-height: 48; -fx-font-weight: bold; -fx-text-fill: white; -fx-background-color: #700000;");
+                if (tabPanel != tabPanelOnClick) tabPanel.setStyle("-fx-pref-width: 110; -fx-pref-height: 48; -fx-font-weight: bold; -fx-text-fill: white; -fx-background-color: #293263;");
             }
         });
         tabPanel.setOnMouseExited(new EventHandler<MouseEvent>() {
@@ -922,7 +940,7 @@ public class ManagementViewController implements Initializable {
                 if (tabPanelOnClick != null) {
                     tabPanelOnClick.setStyle("-fx-pref-width: 110; -fx-pref-height: 48; -fx-font-weight: bold; -fx-text-fill: white; -fx-background-color: transparent;");
                 }
-                tabPanel.setStyle("-fx-pref-width: 110; -fx-pref-height: 48; -fx-font-weight: bold; -fx-text-fill: white; -fx-background-color: #A10000;");
+                tabPanel.setStyle("-fx-pref-width: 110; -fx-pref-height: 48; -fx-font-weight: bold; -fx-text-fill: white; -fx-background-color: rgba(0, 0, 255, 0.3);");
                 tabPanelOnClick = tabPanel;
                 if (tabPanelOnClick == accountTabPanel) {
                     activeProcessor = main.getAccountManagementProcessor();

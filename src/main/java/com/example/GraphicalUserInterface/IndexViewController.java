@@ -6,7 +6,9 @@ import javafx.beans.property.DoubleProperty;
 import javafx.event.Event;
 import javafx.event.EventHandler;
 import javafx.fxml.FXML;
+import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
+import de.jensd.fx.glyphs.fontawesome.FontAwesomeIconView;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.Group;
@@ -32,12 +34,17 @@ import javafx.scene.paint.Stop;
 import javafx.scene.shape.*;
 import javafx.scene.input.MouseEvent;
 import javafx.util.Duration;
+import org.controlsfx.glyphfont.FontAwesome;
 
 public class IndexViewController implements Initializable {
     private MovieManager movieManager;
     private ImageView currentFocusMovie;
     private Button currentFocusMovieBookingBtn;
     private Main main;
+    @FXML
+    private AnchorPane indexViewRootContainer, indexViewMainContainer;
+    @FXML
+    private ScrollPane indexViewScrollPane;
     @FXML
     private TextField inputField;
     @FXML
@@ -46,6 +53,8 @@ public class IndexViewController implements Initializable {
     private Button scrollRightBtn;
     @FXML
     private ImageView logoImageView;
+    @FXML
+    private AnchorPane headerBar;
     @FXML
     private Button signUpBtn;
     @FXML
@@ -75,6 +84,32 @@ public class IndexViewController implements Initializable {
         scrollRightBtn.setOpacity(0.2);
         scrollBtnChangeStyleOnHover(scrollLeftBtn);
         scrollBtnChangeStyleOnHover(scrollRightBtn);
+    }
+    public void setSignedInUI() {
+        signInBtn.setVisible(false);
+        signUpBtn.setVisible(false);
+        FontAwesomeIconView userIconContainer = new FontAwesomeIconView();
+        headerBar.getChildren().add(userIconContainer);
+    }
+    public void userIconContainerMouseClickEventListener(FontAwesomeIconView userIconContainer) {
+        userIconContainer.setOnMouseClicked(new EventHandler<MouseEvent>() {
+            @Override
+            public void handle(MouseEvent mouseEvent) {
+
+            }
+        });
+        userIconContainer.setOnMouseEntered(new EventHandler<MouseEvent>() {
+            @Override
+            public void handle(MouseEvent mouseEvent) {
+
+            }
+        });
+        userIconContainer.setOnMouseExited(new EventHandler<MouseEvent>() {
+            @Override
+            public void handle(MouseEvent mouseEvent) {
+
+            }
+        });
     }
     public void scrollAnimation(DoubleProperty property, double seconds, double targetHvalue) {
         Animation animation = new Timeline(
@@ -166,7 +201,6 @@ public class IndexViewController implements Initializable {
             @Override
             public void handle(MouseEvent mouseEvent) {
                 Main.getInstance().setMovieOnDetail(movie);
-                //main.setMovieOnDetail(new Movie("MOV1000", "Toy Story", "Led by Woody, Andy's toys live happily in his room until Andy's birthday brings Buzz Lightyear onto the scene. Afraid of losing his place in Andy's heart, Woody plots against Buzz. But when circumstances separate Buzz and Woody from their owner, the duo eventually learns to put aside their differences.", "ASDS", 100, 90, new Date(), "https://image.tmdb.org/t/p/original/7G9915LfUQ2lVfwMEEhDsn3kT4B.jpg", "https://image.tmdb.org/t/p/original/9FBwqcd9IRruEDUrTdcaafOMKUq.jpg"));
                 try {
                     Main.getInstance().changeScene("movie-detail-view.fxml");
                 } catch (IOException e) {
@@ -250,7 +284,7 @@ public class IndexViewController implements Initializable {
     @FXML
     public void onSearchFieldEnterKeyPress() throws IOException {
         main.setQueryOnSearching(inputField.getText());
-        main.changeScene("search-results-view.fxml");
+        main.changeScene("index-view.fxml");
     }
     @FXML
     public void onSeeMoreCPBtnClick() throws IOException {
@@ -323,11 +357,14 @@ public class IndexViewController implements Initializable {
 //            }
 //        });
     }
+    @FXML
     public void onSignInBtnClick() throws IOException {
-        this.main.popup("login-form.fxml");
+        indexViewMainContainer.setDisable(true);
+        indexViewRootContainer.getChildren().add(FXMLLoader.load(getClass().getResource("login-form.fxml")));
     }
-
+    @FXML
     public void onSignUpBtnClick() throws IOException {
-        this.main.popup("signup-form.fxml");
+        indexViewMainContainer.setDisable(true);
+        indexViewRootContainer.getChildren().add(FXMLLoader.load(getClass().getResource("signup-form.fxml")));
     }
 }

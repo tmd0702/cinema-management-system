@@ -17,13 +17,14 @@ import java.time.LocalTime;
 import MovieManager.MovieManager;
 import com.example.GraphicalUserInterface.Main;
 public class AddFakeDatabase {
-    Processor accountManagementProcessor, promotionManagementProcessor, theaterManagementProcessor, screenRoomManagementProcessor;
+    Processor accountManagementProcessor, promotionManagementProcessor, theaterManagementProcessor, screenRoomManagementProcessor, userCategoryManagementProcessor;
     Processor seatManagementProcessor, showTimeManagementProcessor, scheduleManagementProcessor;
     IdGenerator idGenerator;
     static MovieManagementProcessor movieManagementProcessor;
     Main main;
     public AddFakeDatabase() throws Exception {
         theaterManagementProcessor = new TheaterManagementProcessor();
+        this.userCategoryManagementProcessor = new UserCategoryManagementProcessor();
         this.promotionManagementProcessor = new PromotionManagementProcessor();
         this.accountManagementProcessor = new AccountManagementProcessor();
         this.screenRoomManagementProcessor = new ScreenRoomManagementProcessor();
@@ -43,6 +44,7 @@ public class AddFakeDatabase {
         account.put("GENDER", "M");
         account.put("USER_ROLE", "admin");
         for (int i=0;i<200;++i) {
+            account.put("USER_CATEGORY_ID", "UC_00001");
             account.put("ID", idGenerator.generateId(accountManagementProcessor.getDefaultDatabaseTable()));
             account.put("USERNAME", "admin" + (i + 1));
             Response response = accountManagementProcessor.add(account);
@@ -185,15 +187,29 @@ public class AddFakeDatabase {
             localTime =  localTime.plusMinutes(40);
         }
     }
+    public void addFakeUserCategory() {
+        ArrayList<String> categories = new ArrayList<String>();
+        categories.add("Member");
+        categories.add("VIP");
+        categories.add("VVIP");
+        for (String category : categories) {
+            HashMap<String, String> userCategory = new HashMap<String, String>();
+            userCategory.put("ID", idGenerator.generateId("USER_CATEGORY"));
+            userCategory.put("CATEGORY", category);
+            this.userCategoryManagementProcessor.add(userCategory);
+        }
+
+    }
 
     public static void main(String[] args) throws Exception {
         AddFakeDatabase addFakeDatabase = new AddFakeDatabase();
-//        addFakeDatabase.addFakeAccounts();
-//        addFakeDatabase.addFakePromotions();
-//        addFakeDatabase.addFakeTheaters();
-//        addFakeDatabase.addFakeScreenRooms();
+        addFakeDatabase.addFakeUserCategory();
+        addFakeDatabase.addFakeAccounts();
+        addFakeDatabase.addFakePromotions();
+        addFakeDatabase.addFakeTheaters();
+        addFakeDatabase.addFakeScreenRooms();
         addFakeDatabase.addFakeSeats();
-//        addFakeDatabase.addFakeShowTimes();
+        addFakeDatabase.addFakeShowTimes();
     }
 }
 

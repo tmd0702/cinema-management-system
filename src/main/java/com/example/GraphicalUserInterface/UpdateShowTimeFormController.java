@@ -21,10 +21,6 @@ public class UpdateShowTimeFormController implements Initializable {
     @FXML
     private TextField idField;
     @FXML
-    private DatePicker showDateField;
-    @FXML
-    private ComboBox screenRoomNameField, cinemaNameField;
-    @FXML
     private VBox updateShowTimeForm;
     private ManagementMain main;
     private ArrayList<ArrayList<String>> cinemaInfo, screenRoomInfo;
@@ -36,7 +32,6 @@ public class UpdateShowTimeFormController implements Initializable {
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
         idFieldInit();
-        cinemaNameFieldInit();
     }
     public void idFieldInit() {
         idField.setDisable(true);
@@ -68,51 +63,9 @@ public class UpdateShowTimeFormController implements Initializable {
         }
         return cinemaNames;
     }
-    public void cinemaNameFieldInit() {
-        screenRoomNameField.setDisable(true);
-        cinemaInfo = main.getCinemaManagementProcessor().getData(0, -1, "", "").getData();
-        cinemaNames = getCinemaNames();
-        cinemaNameField.setItems(FXCollections.observableArrayList(cinemaNames));
-        cinemaNameField.valueProperty().addListener((obs, oldItem, newItem) -> {
-            if (newItem == null) {
-
-            } else {
-                screenRoomNameFieldInit(getCinemaObjectIDFromComboBox(newItem));
-            }
-        });
-    }
-    public void screenRoomNameFieldInit(String currentSelectedCinemaId) {
-        screenRoomNameField.setDisable(false);
-        screenRoomInfo = main.getScreenRoomManagementProcessor().getData(0, -1, String.format("CINEMA_ID = '%s'", currentSelectedCinemaId), "").getData();
-        screenRoomNames = getScreenRoomNames();
-        screenRoomNameField.setItems(FXCollections.observableArrayList(screenRoomNames));
-    }
-    public String getCinemaObjectIDFromComboBox(Object value) {
-        String id = null;
-        for (int i=0; i<cinemaNames.size();++i) {
-            if (cinemaNames.get(i) == value) {
-                System.out.println(i + "sdsdsd");
-                id = cinemaInfo.get(2 + i).get(0);
-                break;
-            }
-        }
-        return id;
-    }
-    public String getScreenRoomObjectIDFromComboBox(Object value) {
-        String id = null;
-        for (int i=0; i<screenRoomNames.size();++i) {
-            if (screenRoomNames.get(i).equals(value)) {
-                id = screenRoomInfo.get(2 + i).get(0);
-                break;
-            }
-        }
-        return id;
-    }
     public void handleUpdateRecordRequest() {
         HashMap<String, String> showTimeInfo = new HashMap<String, String>();
         showTimeInfo.put("START_TIME", startTimeField.getText());
-        showTimeInfo.put("SHOW_DATE", showDateField.getValue().toString());
-        showTimeInfo.put("SCREEN_ROOM_ID", getScreenRoomObjectIDFromComboBox(screenRoomNameField.getValue()));
 
         Response response = main.getShowTimeManagementProcessor().update(showTimeInfo, String.format("ID = '%s'", idField.getText()));
         StatusCode status = response.getStatusCode();

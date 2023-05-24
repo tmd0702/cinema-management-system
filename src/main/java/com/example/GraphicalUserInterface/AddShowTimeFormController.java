@@ -20,10 +20,6 @@ public class AddShowTimeFormController implements Initializable {
     @FXML
     private TextField startTimeField;
     @FXML
-    private DatePicker showDateField;
-    @FXML
-    private ComboBox screenRoomNameField, cinemaNameField;
-    @FXML
     private VBox addShowTimeForm;
     private ManagementMain main;
     private ArrayList<ArrayList<String>> cinemaInfo, screenRoomInfo;
@@ -34,7 +30,7 @@ public class AddShowTimeFormController implements Initializable {
 
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
-        cinemaNameFieldInit();
+
     }
 
     public ArrayList<String> getCinemaNames() {
@@ -43,32 +39,6 @@ public class AddShowTimeFormController implements Initializable {
             cinemaNames.add(cinemaInfo.get(i).get(1));
         }
         return cinemaNames;
-    }
-    public ArrayList<String> getScreenRoomNames() {
-        screenRoomNames = new ArrayList<String>();
-        for (int i=2; i<screenRoomInfo.size();++i) {
-            screenRoomNames.add(screenRoomInfo.get(i).get(1));
-        }
-        return screenRoomNames;
-    }
-    public void screenRoomNameFieldInit(String currentSelectedCinemaId) {
-        screenRoomNameField.setDisable(false);
-        screenRoomInfo = main.getScreenRoomManagementProcessor().getData(0, -1, String.format("CINEMA_ID = '%s'", currentSelectedCinemaId), "").getData();
-        screenRoomNames = getScreenRoomNames();
-        screenRoomNameField.setItems(FXCollections.observableArrayList(screenRoomNames));
-    }
-    public void cinemaNameFieldInit() {
-        screenRoomNameField.setDisable(true);
-        cinemaInfo = main.getCinemaManagementProcessor().getData(0, -1, "", "").getData();
-        cinemaNames = getCinemaNames();
-        cinemaNameField.setItems(FXCollections.observableArrayList(cinemaNames));
-        cinemaNameField.valueProperty().addListener((obs, oldItem, newItem) -> {
-            if (newItem == null) {
-
-            } else {
-                screenRoomNameFieldInit(getCinemaObjectIDFromComboBox(newItem));
-            }
-        });
     }
     @FXML
     public void cancelInsertBtnOnClick() {
@@ -120,8 +90,6 @@ public class AddShowTimeFormController implements Initializable {
         HashMap<String, String> showTimeInfo = new HashMap<String, String>();
         showTimeInfo.put("ID", main.getIdGenerator().generateId(main.getShowTimeManagementProcessor().getDefaultDatabaseTable()));
         showTimeInfo.put("START_TIME", startTimeField.getText());
-        showTimeInfo.put("SHOW_DATE", showDateField.getValue().toString());
-        showTimeInfo.put("SCREEN_ROOM_ID", getScreenRoomObjectIDFromComboBox(screenRoomNameField.getValue()));
         Response response = main.getShowTimeManagementProcessor().add(showTimeInfo);
         StatusCode signupStatus = response.getStatusCode();
         if (signupStatus == StatusCode.OK) {

@@ -2,6 +2,7 @@ package com.example.GraphicalUserInterface;
 
 import Utils.Response;
 import Utils.StatusCode;
+import Utils.Utils;
 import javafx.collections.FXCollections;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
@@ -67,7 +68,7 @@ public class UpdateScreenRoomFormController implements Initializable {
         for (int i=0; i<cinemaNames.size();++i) {
             if (cinemaNames.get(i) == value) {
                 System.out.println(i + "sdsdsd");
-                id = cinemaInfo.get(2 + i).get(0);
+                id = Utils.getRowValueByColumnName(2 + i, "ID", cinemaInfo);
                 break;
             }
         }

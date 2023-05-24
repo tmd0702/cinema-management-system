@@ -2,13 +2,17 @@ package com.example.GraphicalUserInterface;
 import Utils.Response;
 import Utils.StatusCode;
 import javafx.fxml.FXML;
+import javafx.fxml.FXMLLoader;
 import javafx.scene.control.*;
+import javafx.scene.layout.AnchorPane;
 
 import java.time.format.DateTimeFormatter;
 import java.util.*;
 public class SignupFormController {
     @FXML
     ToggleGroup gender;
+    @FXML
+    private AnchorPane signupFormRoot;
     @FXML
     private TextField firstNameField, lastNameField, emailField, usernameField, passwordField, phoneField, addressField;
     @FXML
@@ -36,6 +40,7 @@ public class SignupFormController {
             dialog.setContentText("Sign up done!");
             dialog.getDialogPane().getButtonTypes().add(type);
             dialog.showAndWait();
+            disableForm();
         } else {
             Dialog<String> dialog = new Dialog<String>();
             //Setting the title
@@ -46,7 +51,12 @@ public class SignupFormController {
             dialog.showAndWait();
         }
     }
-    public void onSignInBtnClick() {
-
+    public void disableForm() {
+        ((AnchorPane)signupFormRoot.getParent()).getChildren().get(0).setDisable(false);
+        ((AnchorPane)signupFormRoot.getParent()).getChildren().remove(signupFormRoot);
+    }
+    public void onSignInBtnClick() throws Exception {
+        ((AnchorPane)signupFormRoot.getParent()).getChildren().add(FXMLLoader.load(getClass().getResource("login-form.fxml")));
+        ((AnchorPane)signupFormRoot.getParent()).getChildren().remove(signupFormRoot);
     }
 }

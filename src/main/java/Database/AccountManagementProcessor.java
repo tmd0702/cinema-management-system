@@ -1,10 +1,9 @@
 package Database;
 import UserManager.Manager;
-import UserManager.Subscriber;
+import UserManager.Customer;
 import UserManager.User;
 import Utils.*;
 import Exception.*;
-import com.example.GraphicalUserInterface.Main;
 import com.example.GraphicalUserInterface.ManagementMain;
 
 import java.sql.Date;
@@ -28,18 +27,17 @@ public class AccountManagementProcessor extends Processor {
             while (rs.next())
             {
                 String truePassword = rs.getString("pass");
-                System.out.println(truePassword + password+ truePassword.length()+ password.length());
                 if (truePassword.equals(password)) {
-                    return new Response("OK", StatusCode.OK);
+                    return new Response("OK", StatusCode.OK, getData(0, -1, String.format("USERNAME = '%s'", username), "").getData());
                 } else {
-                    return new Response("Wrong password", StatusCode.BAD_REQUEST);
+                    return new Response("Wrong username or password", StatusCode.BAD_REQUEST);
                 }
             }
             st.close();
-            return new Response("Wrong username", StatusCode.BAD_REQUEST);
+            return new Response("Wrong username or password", StatusCode.BAD_REQUEST);
         } catch (Exception e) {
             System.out.println(e);
-            return new Response(e.getMessage(), StatusCode.BAD_REQUEST);
+            return new Response(e.toString(), StatusCode.BAD_REQUEST);
         }
     }
     public void addAuthentication(String id, String password) {
@@ -72,7 +70,7 @@ public class AccountManagementProcessor extends Processor {
             }
             String id = ManagementMain.getInstance().getIdGenerator().generateId("USERS");
             System.out.println(id);
-            String insertUserQuery = String.format("INSERT INTO USERS(ID, USERNAME, FIRST_NAME, LAST_NAME, DOB, GENDER, ADDRESS, PHONE, EMAIL, USER_ROLE, SCORE) VALUES ('%s', '%s', '%s', '%s', '%s', '%s', '%s', '%s', '%s', '%s', %d);", id, signupInfo.get("username"), signupInfo.get("firstName"), signupInfo.get("lastName"), new Date(new SimpleDateFormat("dd-MM-yyyy").parse(signupInfo.get("dateOfBirth")).getTime()), signupInfo.get("gender"), signupInfo.get("address"), signupInfo.get("phone"), signupInfo.get("email"), "SUBSCRIBER", 0);
+            String insertUserQuery = String.format("INSERT INTO USERS(ID, USERNAME, FIRST_NAME, LAST_NAME, DOB, GENDER, ADDRESS, PHONE, EMAIL, USER_ROLE, SCORE) VALUES ('%s', '%s', '%s', '%s', '%s', '%s', '%s', '%s', '%s', '%s', %d);", id, signupInfo.get("username"), signupInfo.get("firstName"), signupInfo.get("lastName"), new Date(new SimpleDateFormat("yyyy-MM-dd").parse(signupInfo.get("dateOfBirth")).getTime()), signupInfo.get("gender"), signupInfo.get("address"), signupInfo.get("phone"), signupInfo.get("email"), "SUBSCRIBER", 0);
             System.out.println(insertUserQuery);
             Statement st = getConnector().createStatement();
             st.execute(insertUserQuery);
@@ -81,37 +79,16 @@ public class AccountManagementProcessor extends Processor {
             return new Response("OK", StatusCode.OK);
         } catch (InvalidEmailException e) {
             System.out.println(e);
-            return new Response(e.getMessage(), StatusCode.BAD_REQUEST);
+            return new Response(e.toString(), StatusCode.BAD_REQUEST);
         } catch (InvalidUsernameException e) {
             System.out.println(e);
-            return new Response(e.getMessage(), StatusCode.BAD_REQUEST);
+            return new Response(e.toString(), StatusCode.BAD_REQUEST);
         } catch (InvalidPasswordException e) {
             System.out.println(e);
-            return new Response(e.getMessage(), StatusCode.BAD_REQUEST);
+            return new Response(e.toString(), StatusCode.BAD_REQUEST);
         } catch (Exception e) {
             System.out.println(e);
-            return new Response(e.getMessage(), StatusCode.BAD_REQUEST);
+            return new Response(e.toString(), StatusCode.BAD_REQUEST);
         }
-    }
-    public User getUser(String table, HashMap<String, String> conditionColumnValueMap) {
-        User user = new Manager();
-        String query = String.format("SELECT * FROM %s WHERE %s", table);
-        try {
-            Statement st = getConnector().createStatement();
-            ResultSet rs = st.executeQuery(query);
-            if (rs.getString("USER_ROLE") == Role.SUBSCRIBER.getDescription()) {
-                user = new Subscriber(rs.getString("USERNAME"), rs.getString("ID"), rs.getString("FIRST_NAME"), rs.getString("LAST_NAME"), rs.getDate("DOB"), rs.getString("PHONE"), rs.getString("email"), rs.getInt("score"));
-            } else if (rs.getString("USER_ROLE") == Role.MANAGER.getDescription()) {
-                user = new Manager(rs.getString("USERNAME"), rs.getString("ID"), rs.getString("FIRST_NAME"), rs.getString("LAST_NAME"), rs.getDate("DOB"), rs.getString("PHONE"), rs.getString("email"), rs.getInt("score"));
-            } else {
-                user = new Subscriber(rs.getString("USERNAME"), rs.getString("ID"), rs.getString("FIRST_NAME"), rs.getString("LAST_NAME"), rs.getDate("DOB"), rs.getString("PHONE"), rs.getString("email"), rs.getInt("score"));
-            }
-
-            rs.close();
-            st.close();
-        } catch (Exception e) {
-            System.out.println(e);
-        }
-        return user;
     }
 }

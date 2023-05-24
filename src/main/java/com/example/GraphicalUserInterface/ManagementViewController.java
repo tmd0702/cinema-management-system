@@ -91,9 +91,13 @@ public class ManagementViewController implements Initializable {
     @FXML
     private Button theaterTabPanel = new Button("Theater");
     @FXML
+    private Button paymentTabPanel = new Button("Payment");
+    @FXML
     private Button promotionTabPanel = new Button("Promotion");
     @FXML
-    private Button revenueTabPanel = new Button("Revenue");
+    private Button seatTicketTabPanel = new Button("Seat Ticket");
+    @FXML
+    private Button itemTicketTabPanel = new Button("Item Ticket");
     @FXML
     private Button scheduleTabPanel = new Button("Schedule");
     @FXML
@@ -132,12 +136,14 @@ public class ManagementViewController implements Initializable {
         tabPanels.add(movieTabPanel);
         tabPanels.add(accountTabPanel);
         tabPanels.add(theaterTabPanel);
-        tabPanels.add(revenueTabPanel);
+        tabPanels.add(seatTicketTabPanel);
+        tabPanels.add(itemTicketTabPanel);
         tabPanels.add(promotionTabPanel);
         tabPanels.add(itemTabPanel);
         tabPanels.add(screenRoomTabPanel);
         tabPanels.add(showTimePanel);
         tabPanels.add(scheduleTabPanel);
+        tabPanels.add(paymentTabPanel);
 
 //        insertBtn = new ImageView(main.getImageManager().getInsertIconImage());
 //        deleteBtn = new ImageView(main.getImageManager().getDeleteIconImage());
@@ -702,8 +708,6 @@ public class ManagementViewController implements Initializable {
                                     getNodeByPosition(1, 1).requestFocus();
                                 }));
                                 timeline.play();
-
-
                                 isSearchFieldActive = !isSearchFieldActive;
                             }
                         });
@@ -965,6 +969,15 @@ public class ManagementViewController implements Initializable {
                     reRenderPage(true);
                 } else if (tabPanelOnClick == scheduleTabPanel) {
                     activeProcessor = main.getScheduleManagementProcessor();
+                    reRenderPage(true);
+                } else if (tabPanelOnClick == seatTicketTabPanel) {
+                    activeProcessor = main.getSeatTicketManagementProcessor();
+                    reRenderPage(true);
+                } else if (tabPanelOnClick == itemTicketTabPanel) {
+                    activeProcessor = main.getItemTicketManagementProcessor();
+                    reRenderPage(true);
+                } else if (tabPanelOnClick == paymentTabPanel) {
+                    activeProcessor = main.getPaymentManagementProcessor();
                     reRenderPage(true);
                 } else {
                     activeProcessor = main.getMovieManagementProcessor();

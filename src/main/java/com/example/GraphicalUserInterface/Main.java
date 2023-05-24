@@ -35,11 +35,14 @@ public class Main extends Application {
     private ShowTimeManagementProcessor showTimeManagementProcessor;
     private ScreenRoomManagementProcessor screenRoomManagementProcessor;
     private ScheduleManagementProcessor scheduleManagementProcessor;
+    private ReviewManagementProcessor reviewManagementProcessor;
+    private AccountManagementProcessor accountManagementProcessor;
     private Config config;
     public Main() throws Exception {
         super();
         main = this;
         this.config = new Config();
+        this.reviewManagementProcessor = new ReviewManagementProcessor();
         this.scheduleManagementProcessor = new ScheduleManagementProcessor();
         this.screenRoomManagementProcessor = new ScreenRoomManagementProcessor();
         this.theaterManagementProcessor = new TheaterManagementProcessor();
@@ -51,6 +54,15 @@ public class Main extends Application {
         nowShowingMoviesTabActive = false;
         comingSoonMoviesTabActive = false;
         searchEngine = new SearchEngine();
+    }
+    public ReviewManagementProcessor getReviewManagementProcessor() {
+        return this.reviewManagementProcessor;
+    }
+    public AccountManagementProcessor getAccountManagementProcessor() {
+        return this.accountManagementProcessor;
+    }
+    public Stage getStage() {
+        return this.stage;
     }
     public ScheduleManagementProcessor getScheduleManagementProcessor() {
         return this.scheduleManagementProcessor;
@@ -107,6 +119,9 @@ public class Main extends Application {
     public void setSignedInUser(User user) {
         this.signedInUser = user;
     }
+    public User getSignedInUser() {
+        return this.signedInUser;
+    }
     public  Movie getMovieOnDetail() {
         return movieOnDetail;
     }
@@ -125,7 +140,7 @@ public class Main extends Application {
         this.movieManagementProcessor.getMovies();
         stage = primaryStage;
         setMovieOnBooking(new Movie());
-        FXMLLoader fxmlLoader = new FXMLLoader(Main.class.getResource("index-view.fxml"));
+        FXMLLoader fxmlLoader = new FXMLLoader(Main.class.getResource("user-profile-view.fxml"));
         Scene scene = new Scene(fxmlLoader.load(), 920, 600);
         scene.getStylesheets().add(getClass().getResource("assets/css/index-style.css").toExternalForm());
         stage.setTitle("4HB Cinema Management");

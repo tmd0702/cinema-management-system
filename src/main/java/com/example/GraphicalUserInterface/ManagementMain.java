@@ -16,6 +16,9 @@ import java.io.IOException;
 public class ManagementMain extends Application {
     private static Stage stage;
     private Scene scene;
+    private PaymentManagementProcessor paymentManagementProcessor;
+    private ItemTicketManagementProcessor itemTicketManagementProcessor;
+    private SeatTicketManagementProcessor seatTicketManagementProcessor;
     private Processor showTimeManagementProcessor, cinemaManagementProcessor, theaterManagementProcessor, promotionManagementProcessor, itemManagementProcessor, screenRoomManagementProcessor;
     private MovieManagementProcessor movieManagementProcessor;
     private AccountManagementProcessor accountManagementProcessor;
@@ -26,6 +29,9 @@ public class ManagementMain extends Application {
     public ManagementMain() throws Exception {
         managementMain = this;
         idGenerator = new IdGenerator();
+        paymentManagementProcessor = new PaymentManagementProcessor();
+        itemTicketManagementProcessor = new ItemTicketManagementProcessor();
+        seatTicketManagementProcessor = new SeatTicketManagementProcessor();
         scheduleManagementProcessor = new ScheduleManagementProcessor();
         showTimeManagementProcessor = new ShowTimeManagementProcessor();
         screenRoomManagementProcessor = new ScreenRoomManagementProcessor();
@@ -36,6 +42,15 @@ public class ManagementMain extends Application {
         accountManagementProcessor = new AccountManagementProcessor();
         movieManagementProcessor = new MovieManagementProcessor();
         imageManager = new ImageManager();
+    }
+    public PaymentManagementProcessor getPaymentManagementProcessor() {
+        return this.paymentManagementProcessor;
+    }
+    public ItemTicketManagementProcessor getItemTicketManagementProcessor() {
+        return this.itemTicketManagementProcessor;
+    }
+    public SeatTicketManagementProcessor getSeatTicketManagementProcessor() {
+        return this.seatTicketManagementProcessor;
     }
     public ScheduleManagementProcessor getScheduleManagementProcessor() {
         return this.scheduleManagementProcessor;

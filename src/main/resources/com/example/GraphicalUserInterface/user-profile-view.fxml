@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.TextField?>
+<?import javafx.scene.image.ImageView?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.VBox?>
+
+<AnchorPane fx:id="userProfileViewRootContainer" prefHeight="600.0" prefWidth="903.0" xmlns="http://javafx.com/javafx/19" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.example.GraphicalUserInterface.UserProfileViewController">
+    <AnchorPane fx:id="headerBar" layoutX="10.0" layoutY="10.0" prefHeight="56.0" prefWidth="891.0" style="-fx-background-color: #D9D9D9; -fx-pref-height: 56;" AnchorPane.bottomAnchor="600.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+        <children>
+            <ImageView fx:id="logoImageView" fitHeight="56.0" fitWidth="56.0" onMouseClicked="#logoImageViewOnClick" pickOnBounds="true" preserveRatio="true">
+                <image>
+                </image>
+            </ImageView>
+            <TextField fx:id="inputField" layoutX="263.0" layoutY="11.0" onAction="#onSearchFieldEnterKeyPress" prefHeight="25.0" prefWidth="359.0" promptText="Search" />
+        </children>
+    </AnchorPane>
+   <VBox fx:id="userProfileViewTabPanelContainer" layoutY="56.0" prefHeight="600.0" prefWidth="110.0" style="-fx-background-color: #333333;" />
+
+</AnchorPane>

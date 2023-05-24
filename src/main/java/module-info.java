@@ -9,6 +9,7 @@ module com.example.cinemamanagementsystem {
 
     requires java.sql;
     requires org.json;
+    requires de.jensd.fx.glyphs.fontawesome;
     opens com.example.GraphicalUserInterface to javafx.fxml;
     exports com.example.GraphicalUserInterface;
 

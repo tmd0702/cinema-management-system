@@ -29,6 +29,13 @@ abstract public class User {
         this.email = email;
         this.score = score;
     }
+    public String getId() {
+        return this.id;
+    }
+    public String getUsername() {
+        return this.username;
+    }
+
     public void setRole(int role) {
         this.role = role;
     }

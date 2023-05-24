@@ -3,7 +3,7 @@ package Utils;
 public enum Role {
     UNKNOWN(0, "UNKNOWN"),
     MANAGER(1, "Manager"),
-    SUBSCRIBER(2, "Subscriber");
+    CUSTOMER(2, "Customer");
 
     private final int value;
     private final String description;

@@ -51,7 +51,7 @@ public abstract class Processor {
             return new Response("OK", StatusCode.OK);
         } catch (Exception e) {
             System.out.println(e);
-            return new Response(e.getMessage(), StatusCode.BAD_REQUEST);
+            return new Response(e.toString(), StatusCode.BAD_REQUEST);
         }
     }
     public String constructUpdateSQLSetStatement(ArrayList<String> columns, ArrayList<String> values) {
@@ -81,7 +81,7 @@ public abstract class Processor {
             return new Response("OK", StatusCode.OK);
         } catch (Exception e) {
             System.out.println(e);
-            return new Response(e.getMessage(), StatusCode.BAD_REQUEST);
+            return new Response(e.toString(), StatusCode.BAD_REQUEST);
         }
 
     }
@@ -95,7 +95,7 @@ public abstract class Processor {
             return new Response("OK", StatusCode.OK);
         } catch (Exception e) {
             System.out.println(e);
-            return new Response(e.getMessage(), StatusCode.BAD_REQUEST);
+            return new Response(e.toString(), StatusCode.BAD_REQUEST);
         }
     }
     public Response select (String values, int from, int quantity, String queryCondition, String sortQuery, String table) {
@@ -135,7 +135,7 @@ public abstract class Processor {
             st.close();
         } catch (Exception e) {
             System.out.println(e);
-            return new Response(e.getMessage(), StatusCode.BAD_REQUEST);
+            return new Response(e.toString(), StatusCode.BAD_REQUEST);
         }
         return new Response("OK", StatusCode.OK, result);
     }

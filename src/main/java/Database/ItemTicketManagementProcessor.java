@@ -4,7 +4,7 @@ import Utils.Response;
 
 public class ItemTicketManagementProcessor extends Processor{
     public ItemTicketManagementProcessor() {
-        setDefaultDatabaseTable("TICKET_ITEMS");
+        setDefaultDatabaseTable("PAYMENT_ITEMS");
     }
 
     @Override

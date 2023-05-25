@@ -18,7 +18,8 @@ import MovieManager.MovieManager;
 import com.example.GraphicalUserInterface.Main;
 public class AddFakeDatabase {
     Processor accountManagementProcessor, promotionManagementProcessor, theaterManagementProcessor, screenRoomManagementProcessor, userCategoryManagementProcessor;
-    Processor seatManagementProcessor, showTimeManagementProcessor, scheduleManagementProcessor;
+    Processor seatManagementProcessor, showTimeManagementProcessor, scheduleManagementProcessor, itemManagementProcessor, seatTicketManagementProcessor, itemTicketMangementProcessor;
+    Processor bookingitemsManagementProcessor, bookingTicketsManagementProcessor, ticketManagementProcessor;
     IdGenerator idGenerator;
     static MovieManagementProcessor movieManagementProcessor;
     Main main;
@@ -31,6 +32,12 @@ public class AddFakeDatabase {
         this.seatManagementProcessor = new SeatManagementProcessor();
         this.showTimeManagementProcessor = new ShowTimeManagementProcessor();
         this.scheduleManagementProcessor = new ScheduleManagementProcessor();
+        this.itemManagementProcessor = new ItemManagementProcessor();
+        this.seatTicketManagementProcessor = new SeatTicketManagementProcessor();
+        this.itemTicketMangementProcessor = new ItemTicketManagementProcessor();
+        this.bookingitemsManagementProcessor = new BookingItemManagementProccessor();
+        this.bookingTicketsManagementProcessor = new BookingSeatManagementProcessor();
+        this.ticketManagementProcessor = new TicketManagementProcessor();
         this.idGenerator = new IdGenerator();
     }
     public void addFakeAccounts() throws Exception {
@@ -78,10 +85,11 @@ public class AddFakeDatabase {
     public void addFakeTheaters() throws Exception {
         HashMap<String, String> theater = new HashMap<String, String>();
 
-        theater.put("NAME", "4HB THU DUC");
+
         theater.put("ADDRESS", "test");
         theater.put("CINE_AREA", "TPHCM");
-        for (int i=0;i<2;++i) {
+        for (int i=0;i<50;++i) {
+            theater.put("NAME", "4HB THU DUC"+ i);
             theater.put("ID", idGenerator.generateId(theaterManagementProcessor.getDefaultDatabaseTable()));
             Response response = theaterManagementProcessor.add(theater);
             if (response.getStatusCode() == StatusCode.OK) {
@@ -95,7 +103,7 @@ public class AddFakeDatabase {
     public void addFakeScreenRooms() throws Exception{
         HashMap<String, String> room = new HashMap<String, String>();
         room.put("CAPACITY", "80");
-        for (int i=0;i<2;++i) {
+        for (int i=0;i<50;++i) {
             for(int j = 1; j <= 6; j++) {
                 room.put("ID", idGenerator.generateId(screenRoomManagementProcessor.getDefaultDatabaseTable()));
                 room.put("NAME", "ROOM_" + j);
@@ -200,16 +208,119 @@ public class AddFakeDatabase {
         }
 
     }
+    public void addFakeItems(){
+        HashMap<String, String> item = new HashMap<String, String>();
+            for(int j = 1; j <= 6; j++) {
+                item.put("ID", idGenerator.generateId(itemManagementProcessor.getDefaultDatabaseTable()));
+                item.put("NAME", "Popcorn" + j);
+                item.put("CATEGORY", "Snack");
+                item.put("PRICE", "5.99");
+                Response response = itemManagementProcessor.add(item);
+                if (response.getStatusCode() == StatusCode.OK) {
+                    System.out.println("insert 1 row success" + item.get("ID"));
+                } else {
+                    System.out.println(" failed");
+                }
+            }
+    }
+    public void addFakeTicket(){
+        HashMap<String, String> seatTicket = new HashMap<String, String>();
+        for (int k = 0; k < 7; k++) { // k : rows number of seat per screen room
+            for (int h = 0; h < 12; h++) { // h: columns number of seat per screen room
+                int t = h + 1;
+                seatTicket.put("ID", idGenerator.generateId(ticketManagementProcessor.getDefaultDatabaseTable()));
+                seatTicket.put("SEAT_ID", "SEA_" + String.format("%05d", k * 12 + t));
+                seatTicket.put("SCHEDULE_ID", "SCH_" + String.format("%05d", 1));
+                seatTicket.put("AMOUNT", "70000");
+                Response response = seatTicketManagementProcessor.add(seatTicket);
+                if (response.getStatusCode() == StatusCode.OK) {
+                    System.out.println("insert 1 row success" + seatTicket.get("ID"));
+                } else {
+                System.out.println(" failed");
+                }
+            }
+        }
+    }
+    public void addFakeItemTicket(){ // PaymentItems
+        HashMap<String, String> itemTicket = new HashMap<String, String>();
+        for (int k = 0; k < 7; k++) { // k : rows number of seat per screen room
+            for (int h = 0; h < 12; h++) { // h: columns number of seat per screen room
+                int t = h + 1;
+                itemTicket.put("ID", idGenerator.generateId(itemTicketMangementProcessor.getDefaultDatabaseTable()));
+                Response response = itemTicketMangementProcessor.add(itemTicket);
+                if (response.getStatusCode() == StatusCode.OK) {
+                    System.out.println("insert 1 row success" + itemTicket.get("ID"));
+                } else {
+                    System.out.println(" failed");
+                }
+            }
+        }
+    }
+    public void addFakeSeatTicket(){ // PaymentSeats
+        HashMap<String, String> seatTicket = new HashMap<String, String>();
+        for (int k = 0; k < 7; k++) { // k : rows number of seat per screen room
+            for (int h = 0; h < 12; h++) { // h: columns number of seat per screen room
+                int t = h + 1;
+                seatTicket.put("ID", idGenerator.generateId(seatTicketManagementProcessor.getDefaultDatabaseTable()));
+                Response response = seatTicketManagementProcessor.add(seatTicket);
+                if (response.getStatusCode() == StatusCode.OK) {
+                    System.out.println("insert 1 row success" + seatTicket.get("ID"));
+                } else {
+                    System.out.println(" failed");
+                }
+            }
+        }
+    }
+    public void addFakeBookingSeats(){
+        HashMap<String, String> seatBooing = new HashMap<String, String>();
+        for (int k = 0; k < 7; k++) { // k : rows number of seat per screen room
+            for (int h = 0; h < 12; h++) { // h: columns number of seat per screen room
+                int t = h + 1;
+                seatBooing.put("PAYMENT_TICKET_ID", "PT_" + String.format("%05d", k*12+t));
+                seatBooing.put("TICKET_ID", "TIC_" + String.format("%05d", k*12+t));
+                Response response = bookingTicketsManagementProcessor.add(seatBooing);
+                if (response.getStatusCode() == StatusCode.OK) {
+                    System.out.println("insert 1 row success" + seatBooing.get("ID"));
+                } else {
+                    System.out.println(" failed");
+                }
+            }
+        }
+    }
+    public void addFakeBookingItems(){
+        HashMap<String, String> itemBooking = new HashMap<String, String>();
+        for (int k = 0; k < 7; k++) { // k : rows number of seat per screen room
+            for (int h = 0; h < 12; h++) { // h: columns number of seat per screen room
+                int t = h + 1;
+                itemBooking.put("PAYMENT_ITEM_ID", "PI_" + String.format("%05d",  k * 12 + t));
+                itemBooking.put("ITEM_ID", "ITE_" + String.format("%05d", 1));
+                itemBooking.put("QUANTITY", "1");
+                Response response = bookingitemsManagementProcessor.add(itemBooking);
+                if (response.getStatusCode() == StatusCode.OK) {
+                    System.out.println("insert 1 row success" + itemBooking.get("ID"));
+                } else {
+                    System.out.println(" failed");
+                }
+            }
+        }
+    }
+
 
     public static void main(String[] args) throws Exception {
         AddFakeDatabase addFakeDatabase = new AddFakeDatabase();
-        addFakeDatabase.addFakeUserCategory();
-        addFakeDatabase.addFakeAccounts();
-        addFakeDatabase.addFakePromotions();
-        addFakeDatabase.addFakeTheaters();
-        addFakeDatabase.addFakeScreenRooms();
-        addFakeDatabase.addFakeSeats();
-        addFakeDatabase.addFakeShowTimes();
+//        addFakeDatabase.addFakeUserCategory();
+//        addFakeDatabase.addFakeAccounts();
+//        addFakeDatabase.addFakePromotions();
+//        addFakeDatabase.addFakeTheaters();
+//        addFakeDatabase.addFakeScreenRooms();
+//        addFakeDatabase.addFakeSeats();
+//        addFakeDatabase.addFakeShowTimes();
+//        addFakeDatabase.addFakeItems();
+//        addFakeDatabase.addFakeTicket();
+//        addFakeDatabase.addFakeItemTicket();
+//        addFakeDatabase.addFakeBookingItems();
+//        addFakeDatabase.addFakeSeatTicket();
+//        addFakeDatabase.addFakeBookingSeats();
     }
 }
 

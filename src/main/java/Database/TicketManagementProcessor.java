@@ -2,12 +2,11 @@ package Database;
 
 import Utils.Response;
 
-public class SeatTicketManagementProcessor extends Processor {
-    public SeatTicketManagementProcessor() {
+public class TicketManagementProcessor extends Processor{
+    public TicketManagementProcessor(){
         super();
-        setDefaultDatabaseTable("PAYMENT_TICKETS");
+        setDefaultDatabaseTable("TICKETS");
     }
-
     @Override
     public Response getData(int from, int quantity, String queryCondition, String sortQuery) {
         if (queryCondition.length() == 0) {

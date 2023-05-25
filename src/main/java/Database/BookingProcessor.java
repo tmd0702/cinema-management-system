@@ -40,7 +40,6 @@ public class BookingProcessor extends Processor{
         try {
             Statement stmt = getConnector().createStatement();
             ResultSet rs = stmt.executeQuery(query);
-
             while (rs.next()) {
                 String seatName = rs.getString("NAME");
                 seatlist.add(seatName);
@@ -49,5 +48,36 @@ public class BookingProcessor extends Processor{
         } catch (SQLException sqle) {
             System.out.println(sqle);
         }
+    }
+    public ArrayList<String> getTimeSlotList(){
+        ArrayList<String> timeSlotList = new ArrayList<String>();
+        String query =("SELECT DISTINCT(DATE_FORMAT(START_TIME, \'%h:%i\')) AS TIME_SLOT FROM SCHEDULES SCH, SHOW_TIMES ST WHERE SCH.SHOW_TIME_ID = ST.ID AND SCH.MOVIE_ID = \"100450\" AND SCH.SHOW_DATE = \"2023-11-01\" ORDER BY TIME_SLOT ASC;");
+        try{
+            Statement stmt = getConnector().createStatement();
+            ResultSet rs = stmt.executeQuery(query);
+            while (rs.next()){
+                String startTimeSlot = rs.getString("TIME_SLOT");
+                timeSlotList.add(startTimeSlot);
+
+            }
+        }catch (SQLException sqle) {
+            System.out.println(sqle);
+        }
+        return timeSlotList;
+    }
+    public ArrayList<String> getTheaterList(){
+        ArrayList<String> theaterlist = new ArrayList<String>();
+        String query = String.format("SELECT DISTINCT(CIN.NAME) FROM SCHEDULES SCH, SCREEN_ROOMS SR, CINEMAS CIN WHERE SCH.SCREEN_ROOM_ID = SR.ID AND SR.CINEMA_ID = CIN.ID AND MOVIE_ID = \"100450\" AND SCH.SHOW_DATE = \"2023-11-01\";");
+        try{
+            Statement stmt = getConnector().createStatement();
+            ResultSet rs = stmt.executeQuery(query);
+            while(rs.next()){
+                String theater = rs.getString("NAME");
+                theaterlist.add(theater);
+            }
+        }catch (SQLException sqle) {
+            System.out.println(sqle);
+        }
+        return theaterlist;
     }
 }

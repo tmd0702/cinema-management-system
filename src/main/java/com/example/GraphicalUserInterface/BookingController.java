@@ -1,13 +1,19 @@
 package com.example.GraphicalUserInterface;
+import de.jensd.fx.glyphs.fontawesome.FontAwesomeIconView;
+import javafx.beans.property.DoubleProperty;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.fxml.FXML;
+import javafx.scene.Node;
 import javafx.scene.control.*;
+import javafx.scene.control.skin.ScrollBarSkin;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.GridPane;
+import javafx.scene.layout.HBox;
 import javafx.scene.layout.StackPane;
+import javafx.scene.paint.Color;
 import javafx.scene.text.Font;
 import Database.BookingProcessor;
 import java.io.IOException;
@@ -15,7 +21,9 @@ import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import javafx.animation.*;
 
+import javafx.scene.text.TextAlignment;
 import javafx.util.Duration;
+import org.controlsfx.glyphfont.FontAwesome;
 
 import java.util.*;
 
@@ -28,8 +36,6 @@ public class BookingController {
     private  AnchorPane pane1;
     @FXML
     private ImageView image1;
-    @FXML
-    private AnchorPane AnchorDateButton = new AnchorPane();
     private ArrayList<Button> DateButton = new ArrayList<Button>();
     private ArrayList<Boolean> isDateActive = new ArrayList<Boolean>();
     private ArrayList<Button> CinemaButton  = new ArrayList<Button>();
@@ -39,9 +45,19 @@ public class BookingController {
     @FXML
     private Button DateBtn1, DateBtn2, DateBtn3, DateBtn4, DateBtn5, DateBtn6, DateBtn7;
     @FXML
-    private Button Cinema1, Cinema2, Cinema3, Cinema4;
+    private HBox cinemaSection = new HBox();
     @FXML
-    private Button Time1, Time2, Time3, Time4, Time5, Time6;
+    private ScrollPane cinemaSectionScrollPane = new ScrollPane();
+    @FXML
+    private HBox timeSection = new HBox();
+    @FXML
+    private ScrollPane timeSlotSecionScrollPane = new ScrollPane();
+    @FXML
+    private FontAwesomeIconView cineScrollLeftBtn, cineScrollRightBtn, timeSlotScrollLeftBtn, timeSlotScrollRightBtn;
+    @FXML
+    private AnchorPane cinemaAnchorPane = new AnchorPane();
+    @FXML
+    private Label announceTime, announceCinema;
     private LocalDateTime now = LocalDateTime.now();
     // page2
     @FXML
@@ -83,6 +99,7 @@ public class BookingController {
 
     @FXML
      public void initialize(){
+
         ConstructHomButton();
         ConstructPane();
 
@@ -91,6 +108,7 @@ public class BookingController {
         FormartDateButton();
         ConstructCinemaButton();
         ConstructTimeButton();
+        scrollBtnInit();
 
         //page2
         ConstructSeatGrid();
@@ -103,7 +121,6 @@ public class BookingController {
         setCountDown();
     }
     public BookingController(){
-
      this.bookingProcessor = Main.getInstance().getBookingProcessor();
     }
     public void ConstructHomButton(){
@@ -171,19 +188,41 @@ public class BookingController {
          ConstructActiveList(DateButton, isDateActive);
      }
      public void ConstructCinemaButton(){
-        CinemaButton.add(Cinema1);
-        CinemaButton.add(Cinema2);
-        CinemaButton.add(Cinema3);
-        CinemaButton.add(Cinema4);
+        cinemaSection.setSpacing(5);
+        cinemaSectionScrollPane.setVbarPolicy(ScrollPane.ScrollBarPolicy.NEVER);
+        ArrayList<String> cinemaList = bookingProcessor.getTheaterList();
+        for(String cinema : cinemaList){
+            Button button = new Button();
+            button.setWrapText(true);
+            button.setTextAlignment(TextAlignment.CENTER);
+            //button.setPrefSize(134,48);
+            button.setMinSize(134, 48);
+            button.setStyle("-fx-background-color: #2B2B2B");
+            button.setTextFill(Color.WHITE);
+            button.setText(cinema);
+            button.setOnAction(e->handleDateButtonAction(e));
+            CinemaButton.add(button);
+            cinemaSection.getChildren().add(button);
+        }
         ConstructActiveList(CinemaButton, isCinemaActive);
      }
      public void ConstructTimeButton(){
-        TimeButton.add(Time1);
-        TimeButton.add(Time2);
-        TimeButton.add(Time3);
-        TimeButton.add(Time4);
-        TimeButton.add(Time5);
-        TimeButton.add(Time6);
+        timeSection.setSpacing(5);
+        timeSlotSecionScrollPane.setVbarPolicy(ScrollPane.ScrollBarPolicy.NEVER);
+        ArrayList<String> timeSlotList = bookingProcessor.getTimeSlotList();
+        for(String timeSlot : timeSlotList){
+            Button button = new Button();
+            button.setWrapText(true);
+            button.setTextAlignment(TextAlignment.CENTER);
+            //button.setPrefSize(134,48);
+            button.setMinSize(75, 48);
+            button.setStyle("-fx-background-color: #2B2B2B");
+            button.setTextFill(Color.WHITE);
+            button.setText(timeSlot);
+            button.setOnAction(e->handleDateButtonAction(e));
+            TimeButton.add(button);
+            timeSection.getChildren().add(button);
+        }
         ConstructActiveList(TimeButton, isTimeActive);
      }
      public void ConstructSeatGrid(){
@@ -201,7 +240,7 @@ public class BookingController {
             int rowIndex = s.charAt(0) - 'A';
             int columnIndex = Integer.parseInt(s.substring(1));
             Button button = new Button(s);
-            button.setPrefSize(25,32);
+            button.setPrefSize(25,34);
             button.setStyle("-fx-background-color: #A4A4A4");
             button.setFont(Font.font(7.5));
             button.setWrapText(true);
@@ -217,7 +256,7 @@ public class BookingController {
                     SeatId.remove(button.getText());
                     displaySeatInfor();
                 }
-
+                SeatGrid.requestFocus();
             });
         }
 //         for(int i = 0; i < 7; i++){
@@ -239,6 +278,37 @@ public class BookingController {
 //         }
 
      }
+     public void displayAnnounce(){
+        if(showDate.getText() == ""){
+            InvisibleScrollpane(cinemaSection, cineScrollLeftBtn, cineScrollRightBtn);
+            InvisibleScrollpane(timeSection, timeSlotScrollLeftBtn, timeSlotScrollRightBtn);
+            announceCinema.setVisible(true);
+            announceTime.setVisible(true);
+        }else {
+            VisibleScrollpane(cinemaSection, cineScrollLeftBtn, cineScrollRightBtn);
+            System.out.println(cinemaSection.isVisible());
+            if (nameCinema.getText() == "") {
+                InvisibleScrollpane(timeSection, timeSlotScrollLeftBtn, timeSlotScrollRightBtn);
+                announceCinema.setVisible(false);
+                announceTime.setVisible(true);
+            } else {
+                VisibleScrollpane(timeSection, timeSlotScrollLeftBtn, timeSlotScrollRightBtn);
+                announceCinema.setVisible(false);
+                announceTime.setVisible(false);
+
+            }
+        }
+     }
+     public void InvisibleScrollpane(HBox hbox, FontAwesomeIconView left, FontAwesomeIconView right){
+        hbox.setVisible(false);
+        left.setVisible(false);
+        right.setVisible(false);
+     }
+    public void VisibleScrollpane(HBox hbox, FontAwesomeIconView left, FontAwesomeIconView right){
+        hbox.setVisible(true);
+        left.setVisible(true);
+        right.setVisible(true);
+    }
      public void getColumnRowOfRoom(ArrayList<String> list, int r, int c){
          char maxChar = 'A';
          int maxNum = 1;
@@ -363,6 +433,7 @@ public class BookingController {
             ListButton.get(i).setStyle("-fx-background-color: #2B2B2B");
             label.setText("");
         }
+        displayAnnounce();
     }
 
     public boolean checkDate(Button b){
@@ -428,8 +499,6 @@ public class BookingController {
         bookingProcessor.getScreen();
         this.screenName.setText( bookingProcessor.getBookingInfor().getScreen());
 
-
-
     }
     public  void handleSwitchPageAfter(ActionEvent event){
         Button b = (Button) event.getSource();
@@ -475,6 +544,75 @@ public class BookingController {
                 })
         );
         timeline.play();
+    }
+    public void scrollBtnInit() {
+        scrollBtnChangeStyleOnHover(cineScrollLeftBtn);
+        scrollBtnChangeStyleOnHover(cineScrollRightBtn);
+        scrollBtnChangeStyleOnHover(timeSlotScrollLeftBtn);
+        scrollBtnChangeStyleOnHover(timeSlotScrollRightBtn);
+    }
+    public void scrollAnimation(DoubleProperty property, double seconds, double targetHvalue) {
+        Animation animation = new Timeline(
+                new KeyFrame(Duration.seconds(seconds),
+                        new KeyValue(property, targetHvalue)));
+        animation.play();
+    }
+    public ScrollPane getScrollPane(FontAwesomeIconView button){
+        if(button.getId().contains("cine")){
+            return cinemaSectionScrollPane;
+        }
+        if(button.getId().contains("time")){
+            return timeSlotSecionScrollPane;
+        }
+        return null;
+    }
+    @FXML
+    public void scrollLeftBtnOnClick(MouseEvent event) {
+        Button button = (Button)(cinemaSection.getChildren().get(0));
+        ScrollPane scrollPane = getScrollPane((FontAwesomeIconView) event.getSource());
+        int n = 0;
+        if(scrollPane == cinemaSectionScrollPane){
+            n = 4;
+        }else{
+            n = 7;
+        }
+        HBox hbox = (HBox)scrollPane.getContent();
+        scrollAnimation(scrollPane.hvalueProperty(), 0.5, scrollPane.getHvalue() - (((button.getWidth() + hbox.getSpacing()) * n )/ hbox.getWidth() + 0.007)) ;
+    }
+    @FXML
+    public void scrollRightBtnOnClick(MouseEvent event) {
+        Button button = (Button)(cinemaSection.getChildren().get(0));
+        ScrollPane scrollPane = getScrollPane((FontAwesomeIconView) event.getSource());
+        int n = 0;
+        if(scrollPane == cinemaSectionScrollPane){
+            n = 4;
+        }else{
+            n = 7;
+        }
+        HBox hbox = (HBox)scrollPane.getContent();
+        scrollAnimation(scrollPane.hvalueProperty(), 0.5, scrollPane.getHvalue() + (((button.getWidth() + hbox.getSpacing()) * n )/ hbox.getWidth() + 0.007));
+    }
+    public void scrollBtnChangeStyleOnHover(FontAwesomeIconView btn) {
+        Animation fadeInAnimation = new Timeline(
+                new KeyFrame(Duration.seconds(0.3),
+                        new KeyValue(btn.opacityProperty(), 0.8)));
+        Animation fadeOutAnimation = new Timeline(
+                new KeyFrame(Duration.seconds(0.3),
+                        new KeyValue(btn.opacityProperty(), 0.3)));
+        btn.setOnMouseEntered(new EventHandler<MouseEvent>() {
+            @Override
+            public void handle(MouseEvent mouseEvent) {
+                fadeInAnimation.play();
+                btn.setOpacity(0.5);
+            }
+        });
+        btn.setOnMouseExited(new EventHandler<MouseEvent>() {
+            @Override
+            public void handle(MouseEvent mouseEvent) {
+                fadeOutAnimation.play();
+                btn.setOpacity(0.2);
+            }
+        });
     }
     public void onButtonClicked(){
 

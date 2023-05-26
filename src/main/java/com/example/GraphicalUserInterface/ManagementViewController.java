@@ -1,8 +1,7 @@
 package com.example.GraphicalUserInterface;
 
-import Database.AccountManagementProcessor;
 import Database.Processor;
-import java.util.*;
+
 import java.lang.Math;
 import Utils.ColumnType;
 import Utils.Response;
@@ -17,11 +16,8 @@ import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
-import javafx.geometry.BoundingBox;
 import javafx.geometry.Bounds;
 import javafx.geometry.Insets;
-import javafx.geometry.Point2D;
-import javafx.scene.Group;
 import javafx.scene.Node;
 import javafx.scene.control.*;
 import javafx.scene.image.Image;
@@ -29,7 +25,6 @@ import javafx.scene.image.ImageView;
 import javafx.scene.input.MouseButton;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.*;
-import javafx.scene.shape.Rectangle;
 import javafx.scene.text.TextAlignment;
 import javafx.util.Duration;
 
@@ -38,7 +33,6 @@ import java.net.URL;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.Optional;
 import java.util.ResourceBundle;
 
@@ -95,9 +89,9 @@ public class ManagementViewController implements Initializable {
     @FXML
     private Button promotionTabPanel = new Button("Promotion");
     @FXML
-    private Button seatTicketTabPanel = new Button("Seat Ticket");
+    private Button bookingSeatTabPanel = new Button("Booking Seat");
     @FXML
-    private Button itemTicketTabPanel = new Button("Item Ticket");
+    private Button bookingItemTabPanel = new Button("Booking Item");
     @FXML
     private Button scheduleTabPanel = new Button("Schedule");
     @FXML
@@ -136,8 +130,8 @@ public class ManagementViewController implements Initializable {
         tabPanels.add(movieTabPanel);
         tabPanels.add(accountTabPanel);
         tabPanels.add(theaterTabPanel);
-        tabPanels.add(seatTicketTabPanel);
-        tabPanels.add(itemTicketTabPanel);
+        tabPanels.add(bookingSeatTabPanel);
+        tabPanels.add(bookingItemTabPanel);
         tabPanels.add(promotionTabPanel);
         tabPanels.add(itemTabPanel);
         tabPanels.add(screenRoomTabPanel);
@@ -970,10 +964,10 @@ public class ManagementViewController implements Initializable {
                 } else if (tabPanelOnClick == scheduleTabPanel) {
                     activeProcessor = main.getScheduleManagementProcessor();
                     reRenderPage(true);
-                } else if (tabPanelOnClick == seatTicketTabPanel) {
+                } else if (tabPanelOnClick == bookingSeatTabPanel) {
                     activeProcessor = main.getSeatTicketManagementProcessor();
                     reRenderPage(true);
-                } else if (tabPanelOnClick == itemTicketTabPanel) {
+                } else if (tabPanelOnClick == bookingItemTabPanel) {
                     activeProcessor = main.getItemTicketManagementProcessor();
                     reRenderPage(true);
                 } else if (tabPanelOnClick == paymentTabPanel) {

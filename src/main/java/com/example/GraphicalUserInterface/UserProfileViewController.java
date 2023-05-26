@@ -2,6 +2,7 @@ package com.example.GraphicalUserInterface;
 
 import javafx.event.EventHandler;
 import javafx.fxml.FXML;
+import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
 import javafx.scene.Node;
 import javafx.scene.control.Button;
@@ -9,6 +10,7 @@ import javafx.scene.control.TextField;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.MouseEvent;
+import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.VBox;
 
 import java.io.IOException;
@@ -20,6 +22,8 @@ public class UserProfileViewController implements Initializable {
     private Button tabPanelOnClick;
     @FXML
     private ImageView logoImageView;
+    @FXML
+    private AnchorPane userProfileViewMainContainer;
     @FXML
     private VBox userProfileViewTabPanelContainer;
     @FXML
@@ -78,8 +82,27 @@ public class UserProfileViewController implements Initializable {
                 }
                 tabPanel.setStyle("-fx-pref-width: 110; -fx-pref-height: 48; -fx-font-weight: bold; -fx-text-fill: white; -fx-background-color: rgba(0, 0, 255, 0.3);");
                 tabPanelOnClick = tabPanel;
+                try {
+                    loadScreen();
+                } catch(IOException e) {
+                    System.out.println(e);
+                }
             }
         });
+    }
+    public void loadScreen() throws IOException {
+        if (userProfileViewMainContainer.getChildren().size() > 1) {
+            userProfileViewMainContainer.getChildren().remove(1);
+        }
+        if (tabPanelOnClick == paymentHistoryTabPanel) {
+            userProfileViewMainContainer.getChildren().add(FXMLLoader.load(getClass().getResource("payment-history-view.fxml")));
+        } else if (tabPanelOnClick == dashboardTabPanel) {
+            userProfileViewMainContainer.getChildren().add(FXMLLoader.load(getClass().getResource("dashboard-view.fxml")));
+        } else if (tabPanelOnClick == profileTabPanel) {
+            userProfileViewMainContainer.getChildren().add(FXMLLoader.load(getClass().getResource("profile-view.fxml")));
+        } else if (tabPanelOnClick == pointTabPanel) {
+            userProfileViewMainContainer.getChildren().add(FXMLLoader.load(getClass().getResource("point-view.fxml")));
+        }
     }
     @FXML
     public void logoImageViewOnClick() throws IOException {

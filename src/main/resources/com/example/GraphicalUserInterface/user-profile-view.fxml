@@ -15,6 +15,10 @@
             <TextField fx:id="inputField" layoutX="263.0" layoutY="11.0" onAction="#onSearchFieldEnterKeyPress" prefHeight="25.0" prefWidth="359.0" promptText="Search" />
         </children>
     </AnchorPane>
-   <VBox fx:id="userProfileViewTabPanelContainer" layoutY="56.0" prefHeight="600.0" prefWidth="110.0" style="-fx-background-color: #333333;" />
+   <AnchorPane fx:id="userProfileViewMainContainer" layoutY="56.0" prefHeight="600.0" prefWidth="903.0">
+      <children>
+         <VBox fx:id="userProfileViewTabPanelContainer" prefHeight="600.0" prefWidth="110.0" style="-fx-background-color: #333333;" />
+      </children>
+   </AnchorPane>
 
 </AnchorPane>

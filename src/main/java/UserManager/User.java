@@ -36,6 +36,30 @@ abstract public class User {
         return this.username;
     }
 
+    public Date getDateOfBirth() {
+        return dateOfBirth;
+    }
+
+    public String getFirstName() {
+        return firstName;
+    }
+
+    public String getLastName() {
+        return lastName;
+    }
+
+    public int getScore() {
+        return score;
+    }
+
+    public String getEmail() {
+        return email;
+    }
+
+    public String getPhone() {
+        return phone;
+    }
+
     public void setRole(int role) {
         this.role = role;
     }

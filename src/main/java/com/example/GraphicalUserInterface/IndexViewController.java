@@ -284,7 +284,7 @@ public class IndexViewController implements Initializable {
     @FXML
     public void onSearchFieldEnterKeyPress() throws IOException {
         main.setQueryOnSearching(inputField.getText());
-        main.changeScene("index-view.fxml");
+        main.changeScene("search-results-view.fxml");
     }
     @FXML
     public void onSeeMoreCPBtnClick() throws IOException {

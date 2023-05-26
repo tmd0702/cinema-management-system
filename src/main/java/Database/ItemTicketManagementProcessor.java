@@ -10,11 +10,11 @@ public class ItemTicketManagementProcessor extends Processor{
     @Override
     public Response getData(int from, int quantity, String queryCondition, String sortQuery) {
         if (queryCondition.length() == 0) {
-            queryCondition = "BI.ITEM_ID = I.ID AND BI.TICKET_ITEM_ID = TI.ID";
+            queryCondition = "BI.ITEM_ID = I.ID AND BI.PAYMENT_ITEM_ID = PI.ID";
         } else {
-            queryCondition = queryCondition + " AND BI.ITEM_ID = I.ID AND BI.TICKET_ITEM_ID = TI.ID";
+            queryCondition = queryCondition + " AND BI.ITEM_ID = I.ID AND BI.PAYMENT_ITEM_ID = PI.ID";
         }
-        Response response = select("I.NAME, I.CATEGORY, I.PRICE, BI.QUANTITY, TI.ID", from, quantity, queryCondition, sortQuery, "BOOKING_ITEMS BI, TICKET_ITEMS TI, ITEMS I");
+        Response response = select("I.ID AS ITEM_ID, I.NAME AS ITEM_NAME, I.CATEGORY AS ITEM_CATEGORY, I.PRICE AS ITEM_PRICE, BI.QUANTITY AS BOOKING_ITEM_QUANTITY, PI.ID AS PAYMENT_ITEM_ID", from, quantity, queryCondition, sortQuery, "BOOKING_ITEMS BI, PAYMENT_ITEMS PI, ITEMS I");
         return response;
     }
 }

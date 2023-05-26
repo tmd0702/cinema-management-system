@@ -19,7 +19,7 @@ import com.example.GraphicalUserInterface.Main;
 public class AddFakeDatabase {
     Processor accountManagementProcessor, promotionManagementProcessor, theaterManagementProcessor, screenRoomManagementProcessor, userCategoryManagementProcessor;
     Processor seatManagementProcessor, showTimeManagementProcessor, scheduleManagementProcessor, itemManagementProcessor, seatTicketManagementProcessor, itemTicketMangementProcessor;
-    Processor bookingitemsManagementProcessor, bookingTicketsManagementProcessor, ticketManagementProcessor;
+    Processor bookingitemsManagementProcessor, bookingTicketsManagementProcessor, ticketManagementProcessor, paymentManagementProcessor, paymentMethodManagementProcessor;
     IdGenerator idGenerator;
     static MovieManagementProcessor movieManagementProcessor;
     Main main;
@@ -38,6 +38,8 @@ public class AddFakeDatabase {
         this.bookingitemsManagementProcessor = new BookingItemManagementProccessor();
         this.bookingTicketsManagementProcessor = new BookingSeatManagementProcessor();
         this.ticketManagementProcessor = new TicketManagementProcessor();
+        this.paymentManagementProcessor = new PaymentManagementProcessor();
+        this.paymentMethodManagementProcessor = new PaymentMethodManagementProcessor();
         this.idGenerator = new IdGenerator();
     }
     public void addFakeAccounts() throws Exception {
@@ -304,8 +306,45 @@ public class AddFakeDatabase {
             }
         }
     }
-
-
+    public void addFakePayments(){
+        HashMap<String, String> payment = new HashMap<String, String>();
+        for (int k = 0; k < 7; k++) { // k : rows number of seat per screen room
+            for (int h = 0; h < 12; h++) { // h: columns number of seat per screen room
+                int t = h + 1;
+                payment.put("ID", idGenerator.generateId(paymentManagementProcessor.getDefaultDatabaseTable()));
+                payment.put("PAYMENT_ITEM_ID", "PI_" + String.format("%05d",  k * 12 + t));
+                payment.put("PAYMENT_TICKET_ID", "PT_" + String.format("%05d",  k * 12 + t));
+                payment.put("USER_ID", "USE_00001");
+                payment.put("PAYMENT_DATE", "2023-05-30");
+                payment.put("PAYMENT_METHOD_ID", "PM_00001");
+                payment.put("TOTAL_AMOUNT", "299000");
+                Response response = paymentManagementProcessor.add(payment);
+                if (response.getStatusCode() == StatusCode.OK) {
+                    System.out.println("insert 1 row success" + payment.get("ID"));
+                } else {
+                    System.out.println(" failed");
+                }
+            }
+        }
+    }
+    public void addFakePaymetMethod(){
+        HashMap<String, String> paymentMethor = new HashMap<String, String>();
+        ArrayList<String> method = new ArrayList<String>();
+        method.add("MOMO");
+        method.add("ZALOPAY");
+        method.add("VISA_CARD");
+        method.add("CRASH_MONEY");
+        for(int i = 0; i < 3; i++){
+                paymentMethor.put("ID", idGenerator.generateId(paymentMethodManagementProcessor.getDefaultDatabaseTable()));
+                paymentMethor.put("NAME",method.get(i));
+                Response response = paymentMethodManagementProcessor.add(paymentMethor);
+                if (response.getStatusCode() == StatusCode.OK) {
+                    System.out.println("insert 1 row success" + paymentMethor.get("ID"));
+                } else {
+                    System.out.println(" failed");
+                }
+        }
+    }
     public static void main(String[] args) throws Exception {
         AddFakeDatabase addFakeDatabase = new AddFakeDatabase();
 //        addFakeDatabase.addFakeUserCategory();
@@ -321,6 +360,8 @@ public class AddFakeDatabase {
 //        addFakeDatabase.addFakeBookingItems();
 //        addFakeDatabase.addFakeSeatTicket();
 //        addFakeDatabase.addFakeBookingSeats();
+//        addFakeDatabase.addFakePaymetMethod();;
+        addFakeDatabase.addFakePayments();
     }
 }
 

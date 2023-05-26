@@ -88,7 +88,7 @@ public class AddFakeDatabase {
 
         theater.put("ADDRESS", "test");
         theater.put("CINE_AREA", "TPHCM");
-        for (int i=0;i<2;++i) {
+        for (int i=0;i<50;++i) {
             theater.put("NAME", "4HB THU DUC"+ i);
             theater.put("ID", idGenerator.generateId(theaterManagementProcessor.getDefaultDatabaseTable()));
             Response response = theaterManagementProcessor.add(theater);
@@ -103,7 +103,7 @@ public class AddFakeDatabase {
     public void addFakeScreenRooms() throws Exception{
         HashMap<String, String> room = new HashMap<String, String>();
         room.put("CAPACITY", "80");
-        for (int i=0;i<2;++i) {
+        for (int i=0;i<50;++i) {
             for(int j = 1; j <= 6; j++) {
                 room.put("ID", idGenerator.generateId(screenRoomManagementProcessor.getDefaultDatabaseTable()));
                 room.put("NAME", "ROOM_" + j);
@@ -232,7 +232,7 @@ public class AddFakeDatabase {
                 seatTicket.put("SEAT_ID", "SEA_" + String.format("%05d", k * 12 + t));
                 seatTicket.put("SCHEDULE_ID", "SCH_" + String.format("%05d", 1));
                 seatTicket.put("AMOUNT", "70000");
-                Response response = ticketManagementProcessor.add(seatTicket);
+                Response response = seatTicketManagementProcessor.add(seatTicket);
                 if (response.getStatusCode() == StatusCode.OK) {
                     System.out.println("insert 1 row success" + seatTicket.get("ID"));
                 } else {
@@ -308,19 +308,19 @@ public class AddFakeDatabase {
 
     public static void main(String[] args) throws Exception {
         AddFakeDatabase addFakeDatabase = new AddFakeDatabase();
-        addFakeDatabase.addFakeUserCategory();
-        addFakeDatabase.addFakeAccounts();
-        addFakeDatabase.addFakePromotions();
+//        addFakeDatabase.addFakeUserCategory();
+//        addFakeDatabase.addFakeAccounts();
+//        addFakeDatabase.addFakePromotions();
 //        addFakeDatabase.addFakeTheaters();
 //        addFakeDatabase.addFakeScreenRooms();
-        addFakeDatabase.addFakeSeats();
+//        addFakeDatabase.addFakeSeats();
 //        addFakeDatabase.addFakeShowTimes();
-        addFakeDatabase.addFakeItems();
-        addFakeDatabase.addFakeTicket();
-        addFakeDatabase.addFakeItemTicket();
-        addFakeDatabase.addFakeBookingItems();
-        addFakeDatabase.addFakeSeatTicket();
-        addFakeDatabase.addFakeBookingSeats();
+//        addFakeDatabase.addFakeItems();
+//        addFakeDatabase.addFakeTicket();
+//        addFakeDatabase.addFakeItemTicket();
+//        addFakeDatabase.addFakeBookingItems();
+//        addFakeDatabase.addFakeSeatTicket();
+//        addFakeDatabase.addFakeBookingSeats();
     }
 }
 

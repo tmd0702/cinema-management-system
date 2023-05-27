@@ -26,6 +26,7 @@ import javafx.util.Duration;
 import org.controlsfx.glyphfont.FontAwesome;
 
 import java.util.*;
+import Utils.Utils;
 
 
 public class BookingController {
@@ -58,6 +59,10 @@ public class BookingController {
     private AnchorPane cinemaAnchorPane = new AnchorPane();
     @FXML
     private Label announceTime, announceCinema;
+    private ArrayList<ArrayList<String>> cinemaInfor = new ArrayList<ArrayList<String>>();
+    private ArrayList<String> cinemaName;
+    private ArrayList<ArrayList<String>> timeInfor = new ArrayList<ArrayList<String>>();
+    private ArrayList<String> timeSlotList;
     private LocalDateTime now = LocalDateTime.now();
     // page2
     @FXML
@@ -106,19 +111,12 @@ public class BookingController {
         //page1
         ConstructDateButton();
         FormartDateButton();
-        ConstructCinemaButton();
-        ConstructTimeButton();
         scrollBtnInit();
-
-        //page2
-        ConstructSeatGrid();
-        ConstructTicketInfor();
-        //ConstructBookingProcessor();
         //page3
         ConstructItemsButton();
         ConstructItem();
         //page4
-        setCountDown();
+
     }
     public BookingController(){
      this.bookingProcessor = Main.getInstance().getBookingProcessor();
@@ -153,6 +151,8 @@ public class BookingController {
         ComboButton.add(comboSub);
     }
     public void ConstructPane(){
+        bookingProcessor.getBookingInfor().setIdMovie(Main.getInstance().getMovieOnBooking().getId());
+        bookingProcessor.getBookingInfor().setNameMovie(Main.getInstance().getMovieOnBooking().getTitle());
         listPane.add(pane1);
         listPane.add(pane2);
         listPane.add(pane3);
@@ -164,17 +164,14 @@ public class BookingController {
     }
 
      public void ConstructTicketInfor() {
-
          nameMovieBooking.setText(Main.getInstance().getMovieOnBooking().getTitle());
-         nameCinema.setText("");
          setScreenTicketInfor();
-         showTime.setText("");
-         showDate.setText("");
          price.setText("0");
          combo.setText("0");
          total.setText("0");
          seatID.setText("");
          countdownLabel.setText("15:00");
+         setCountDown();
 
      }
      public void ConstructDateButton(){
@@ -190,8 +187,18 @@ public class BookingController {
      public void ConstructCinemaButton(){
         cinemaSection.setSpacing(5);
         cinemaSectionScrollPane.setVbarPolicy(ScrollPane.ScrollBarPolicy.NEVER);
-        ArrayList<String> cinemaList = bookingProcessor.getTheaterList();
-        for(String cinema : cinemaList){
+        ArrayList<String> nameTypeCoulumn = new ArrayList<String>();
+        ArrayList<String> nameColumn = new ArrayList<String>();
+        nameColumn.add("ID");
+        nameColumn.add("NAME");
+        nameTypeCoulumn.add("Varchar");
+        nameTypeCoulumn.add("Varchar");
+        cinemaInfor.add(nameColumn);
+        cinemaInfor.add(nameTypeCoulumn);
+        cinemaInfor.addAll( bookingProcessor.getTheaterList());
+        System.out.println(cinemaInfor);
+        cinemaName = Utils.getDataValuesByColumnName(cinemaInfor, "NAME");
+        for(String cinema : cinemaName){
             Button button = new Button();
             button.setWrapText(true);
             button.setTextAlignment(TextAlignment.CENTER);
@@ -206,10 +213,30 @@ public class BookingController {
         }
         ConstructActiveList(CinemaButton, isCinemaActive);
      }
+    public String getCinemaIdFromName(ArrayList<ArrayList<String>> infor, ArrayList<String> names, String name ) {
+        String id = null;
+        for (int i=0; i<names.size();++i) {
+            if (names.get(i).equals(name)) {
+                id = infor.get(2 + i).get(0);
+                break;
+            }
+        }
+        return id;
+    }
      public void ConstructTimeButton(){
         timeSection.setSpacing(5);
         timeSlotSecionScrollPane.setVbarPolicy(ScrollPane.ScrollBarPolicy.NEVER);
-        ArrayList<String> timeSlotList = bookingProcessor.getTimeSlotList();
+         ArrayList<String> nameTypeCoulumn = new ArrayList<String>();
+         ArrayList<String> nameColumn = new ArrayList<String>();
+         nameColumn.add("ID");
+         nameColumn.add("TIME_SLOT");
+         nameTypeCoulumn.add("Varchar");
+         nameTypeCoulumn.add("Varchar");
+         timeInfor.add(nameColumn);
+         timeInfor.add(nameTypeCoulumn);
+         timeInfor.addAll(bookingProcessor.getTimeSlotList());
+         System.out.println(timeInfor);
+         timeSlotList = Utils.getDataValuesByColumnName(timeInfor, "TIME_SLOT");
         for(String timeSlot : timeSlotList){
             Button button = new Button();
             button.setWrapText(true);
@@ -288,6 +315,7 @@ public class BookingController {
             VisibleScrollpane(cinemaSection, cineScrollLeftBtn, cineScrollRightBtn);
             System.out.println(cinemaSection.isVisible());
             if (nameCinema.getText() == "") {
+                System.out.println(nameCinema.getText() + "Aaaaaaaaaa");
                 InvisibleScrollpane(timeSection, timeSlotScrollLeftBtn, timeSlotScrollRightBtn);
                 announceCinema.setVisible(false);
                 announceTime.setVisible(true);
@@ -419,12 +447,17 @@ public class BookingController {
             setActiveButton(i, ListActive);
             if(checkDate(button)) {
                 int j;
-                for(j = 0; i < DateButton.size(); j++)
+                for(j = 0; j < DateButton.size(); j++)
                     if(button == DateButton.get(j))
                         break;
                 LocalDateTime now = LocalDateTime.now().plusDays(i);
                 DateTimeFormatter ShowDateFormat = DateTimeFormatter.ofPattern("dd/MM/yyyy");
                 label.setText(now.format(ShowDateFormat));
+                DateTimeFormatter showDateFormat = DateTimeFormatter.ofPattern("yyyy-MM-dd");
+                System.out.println(now.format(showDateFormat));
+                bookingProcessor.getBookingInfor().setDate(now.format(showDateFormat));
+                System.out.println(bookingProcessor.getBookingInfor().getDate());
+                ConstructCinemaButton();
             }
             else
                 label.setText(button.getText());
@@ -432,6 +465,18 @@ public class BookingController {
             ListActive.set(i, false);
             ListButton.get(i).setStyle("-fx-background-color: #2B2B2B");
             label.setText("");
+        }
+        if(CinemaButton.contains(button)){
+            System.out.println(getCinemaIdFromName(cinemaInfor, cinemaName, nameCinema.getText()));
+            bookingProcessor.getBookingInfor().setNameCinema(getCinemaIdFromName(cinemaInfor, cinemaName, nameCinema.getText()));
+            ConstructTimeButton();
+        }
+        if(TimeButton.contains(button)){
+            System.out.println(getCinemaIdFromName(timeInfor, timeSlotList, showTime.getText()));
+            bookingProcessor.getBookingInfor().setTime(getCinemaIdFromName(timeInfor, timeSlotList, showTime.getText()));
+            ConstructTicketInfor();
+            System.out.println(bookingProcessor.getBookingInfor().getScreen());
+            ConstructSeatGrid();
         }
         displayAnnounce();
     }
@@ -496,8 +541,8 @@ public class BookingController {
 
     }
     public void setScreenTicketInfor(){
-        bookingProcessor.getScreen();
-        this.screenName.setText( bookingProcessor.getBookingInfor().getScreen());
+
+        this.screenName.setText(bookingProcessor.getScreen());
 
     }
     public  void handleSwitchPageAfter(ActionEvent event){

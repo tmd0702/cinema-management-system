@@ -140,7 +140,7 @@ public class Main extends Application {
         this.movieManagementProcessor.getMovies();
         stage = primaryStage;
         setMovieOnBooking(new Movie());
-        FXMLLoader fxmlLoader = new FXMLLoader(Main.class.getResource("user-profile-view.fxml"));
+        FXMLLoader fxmlLoader = new FXMLLoader(Main.class.getResource("index-view.fxml"));
         Scene scene = new Scene(fxmlLoader.load(), 920, 600);
         scene.getStylesheets().add(getClass().getResource("assets/css/index-style.css").toExternalForm());
         stage.setTitle("4HB Cinema Management");

@@ -78,7 +78,6 @@ public class AddScreenRoomFormController implements Initializable {
         String id = null;
         for (int i=0; i<cinemaNames.size();++i) {
             if (cinemaNames.get(i) == value) {
-                System.out.println(i + "sdsdsd");
                 id = cinemaInfo.get(2 + i).get(0);
                 break;
             }

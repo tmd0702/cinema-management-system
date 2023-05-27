@@ -18,25 +18,26 @@ public class BookingProcessor extends Processor{
     public BookingInfor getBookingInfor(){
         return this.bookingInfor;
     }
-    public void getScreen() {
-        String query = String.format("SELECT * FROM SCREEN_ROOMS");
+    public String getScreen() {
+        String query = String.format("SELECT SR.* FROM SCREEN_ROOMS SR, SCHEDULES SCH WHERE SCH.SCREEN_ROOM_ID = SR.ID AND SCH.MOVIE_ID = \"%s\" AND SCH.SHOW_DATE = \"%s\" AND SCH.SHOW_TIME_ID = \"%s\" AND CINEMA_ID = \"%s\";", bookingInfor.getIdMovie(), bookingInfor.getDate(),bookingInfor.getTime(),bookingInfor.getNameCinema());
+        String nameScreen = null;
         try {
             Statement stmt = getConnector().createStatement();
             ResultSet rs = stmt.executeQuery(query);
 
             while (rs.next()) {
-                String sCreen = rs.getString("NAME");
-                bookingInfor.setScreen(sCreen);
+                 nameScreen = rs.getString("NAME");
+                bookingInfor.setScreen(rs.getString("ID"));
 
             }
         } catch (SQLException sqle) {
             System.out.println(sqle);
         }
-
+        return nameScreen;
     }
     public void getSeat(){
         ArrayList<String> seatlist = new ArrayList<String>();
-        String query = String.format("SELECT * FROM SEATS S JOIN SCREEN_ROOMS SR ON S.SCREEN_ROOM_ID = SR.ID WHERE SCREEN_ROOM_ID = \"SR_00001\"  AND CINEMA_ID = \"CIN_00001\" ;");
+        String query = String.format("SELECT * FROM SEATS S JOIN SCREEN_ROOMS SR ON S.SCREEN_ROOM_ID = SR.ID WHERE SCREEN_ROOM_ID = \"%s\"  AND CINEMA_ID = \"%s\" ;", bookingInfor.getScreen(), bookingInfor.getNameCinema());
         try {
             Statement stmt = getConnector().createStatement();
             ResultSet rs = stmt.executeQuery(query);
@@ -49,15 +50,19 @@ public class BookingProcessor extends Processor{
             System.out.println(sqle);
         }
     }
-    public ArrayList<String> getTimeSlotList(){
-        ArrayList<String> timeSlotList = new ArrayList<String>();
-        String query =("SELECT DISTINCT(DATE_FORMAT(START_TIME, \'%h:%i\')) AS TIME_SLOT FROM SCHEDULES SCH, SHOW_TIMES ST WHERE SCH.SHOW_TIME_ID = ST.ID AND SCH.MOVIE_ID = \"100450\" AND SCH.SHOW_DATE = \"2023-11-01\" ORDER BY TIME_SLOT ASC;");
+    public ArrayList<ArrayList<String>> getTimeSlotList(){
+        ArrayList<ArrayList<String>> timeSlotList = new ArrayList<ArrayList<String>>();
+        String query = "SELECT DISTINCT(DATE_FORMAT(START_TIME, \'%h:%i\'))" + String.format(" AS TIME_SLOT, ST.ID FROM SCHEDULES SCH, SHOW_TIMES ST, SCREEN_ROOMS SR WHERE SCH.SHOW_TIME_ID = ST.ID AND SCH.SCREEN_ROOM_ID = SR.ID AND SCH.MOVIE_ID = \"%s\" AND SCH.SHOW_DATE = \"%s\" AND SR.CINEMA_ID = \"%s\" ORDER BY TIME_SLOT ASC;", bookingInfor.getIdMovie(), bookingInfor.getDate(), bookingInfor.getNameCinema());
         try{
             Statement stmt = getConnector().createStatement();
             ResultSet rs = stmt.executeQuery(query);
             while (rs.next()){
+                ArrayList<String> timeSlot = new ArrayList<String>();
+                String id = rs.getString("ID");
                 String startTimeSlot = rs.getString("TIME_SLOT");
-                timeSlotList.add(startTimeSlot);
+                timeSlot.add(id);
+                timeSlot.add(startTimeSlot);
+                timeSlotList.add(timeSlot);
 
             }
         }catch (SQLException sqle) {
@@ -65,16 +70,22 @@ public class BookingProcessor extends Processor{
         }
         return timeSlotList;
     }
-    public ArrayList<String> getTheaterList(){
-        ArrayList<String> theaterlist = new ArrayList<String>();
-        String query = String.format("SELECT DISTINCT(CIN.NAME) FROM SCHEDULES SCH, SCREEN_ROOMS SR, CINEMAS CIN WHERE SCH.SCREEN_ROOM_ID = SR.ID AND SR.CINEMA_ID = CIN.ID AND MOVIE_ID = \"100450\" AND SCH.SHOW_DATE = \"2023-11-01\";");
+    public ArrayList<ArrayList<String>> getTheaterList(){
+        ArrayList<ArrayList<String>> theaterlist = new ArrayList<ArrayList<String>>();
+        System.out.println(bookingInfor.getDate());
+        String query = String.format("SELECT DISTINCT(CIN.NAME), CIN.ID FROM SCHEDULES SCH, SCREEN_ROOMS SR, CINEMAS CIN WHERE SCH.SCREEN_ROOM_ID = SR.ID AND SR.CINEMA_ID = CIN.ID AND MOVIE_ID = \"%s\" AND SCH.SHOW_DATE = \"%s\";", bookingInfor.getIdMovie(), bookingInfor.getDate());
         try{
             Statement stmt = getConnector().createStatement();
             ResultSet rs = stmt.executeQuery(query);
             while(rs.next()){
-                String theater = rs.getString("NAME");
-                theaterlist.add(theater);
+                ArrayList<String> theaterInfor = new ArrayList<String>();
+                String idTheater = rs.getString("ID");
+                String nameTheater = rs.getString("NAME");
+                theaterInfor.add(idTheater);
+                theaterInfor.add(nameTheater);
+                theaterlist.add(theaterInfor);
             }
+
         }catch (SQLException sqle) {
             System.out.println(sqle);
         }

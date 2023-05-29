@@ -45,6 +45,7 @@ public abstract class Processor {
 
         String query = String.format("INSERT INTO %s (%s) VALUES (%s)", defaultDatabaseTable, insertColumns, insertValues);
         try {
+            System.out.println(query);
             Statement st = getConnector().createStatement();
             st.execute(query);
             st.close();

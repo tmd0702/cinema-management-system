@@ -40,7 +40,12 @@ public class IndexViewController implements Initializable {
     private MovieManager movieManager;
     private ImageView currentFocusMovie;
     private Button currentFocusMovieBookingBtn;
+    @FXML
+    private VBox userNavigator;
+
     private Main main;
+    @FXML
+    private Button viewUserProfileBtn, signOutBtn;
     @FXML
     private AnchorPane indexViewRootContainer, indexViewMainContainer;
     @FXML
@@ -70,12 +75,45 @@ public class IndexViewController implements Initializable {
     private HBox moviePreviewSection;
 
     public void initialize(URL url, ResourceBundle rb) {
+        userNavigatorInit();
         moviePreviewSectionInit();
         currentlyPlayingListInit();
         comingSoonListInit();
         backDropImageSectionInit();
         logoImageViewInit();
         scrollBtnInit();
+    }
+    public void userNavigatorInit() {
+        userNavigator.setVisible(false);
+        userNavigatorButtonChangeStyleOnHover(viewUserProfileBtn);
+        userNavigatorButtonChangeStyleOnHover(signOutBtn);
+
+    }
+    @FXML
+    public void viewUserProfileBtnOnClick() throws Exception {
+        main.changeScene("user-profile-view.fxml");
+    }
+    @FXML
+    public void userProfileBtnOnClick() throws Exception {
+        userNavigator.setVisible(!userNavigator.isVisible());
+    }
+    @FXML
+    public void signOutBtnOnClick() throws Exception {
+
+    }
+    public void userNavigatorButtonChangeStyleOnHover(Button button) {
+        button.setOnMouseEntered(new EventHandler<MouseEvent>() {
+            @Override
+            public void handle(MouseEvent mouseEvent) {
+                button.setStyle("-fx-effect: dropshadow(gaussian, rgba(0, 0, 0, 0.5), 10, 0.5, 0.0, 0.0); -fx-text-fill: white; -fx-font-weight: bold; -fx-background-color: #828282;");
+            }
+        });
+        button.setOnMouseExited(new EventHandler<MouseEvent>() {
+            @Override
+            public void handle(MouseEvent mouseEvent) {
+                button.setStyle("-fx-effect: dropshadow(gaussian, rgba(0, 0, 0, 0.5), 10, 0.5, 0.0, 0.0); -fx-text-fill: white; -fx-font-weight: bold; -fx-background-color: #333333;");
+            }
+        });
     }
     public void scrollBtnInit() {
 //        scrollLeftBtn.setVisible(false);
@@ -284,7 +322,7 @@ public class IndexViewController implements Initializable {
     @FXML
     public void onSearchFieldEnterKeyPress() throws IOException {
         main.setQueryOnSearching(inputField.getText());
-        main.changeScene("search-results-view.fxml");
+        main.changeScene("index-view.fxml");
     }
     @FXML
     public void onSeeMoreCPBtnClick() throws IOException {

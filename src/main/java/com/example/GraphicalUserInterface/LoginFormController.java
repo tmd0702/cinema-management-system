@@ -35,12 +35,12 @@ public class LoginFormController {
         HashMap<String, String> signinInfo = new HashMap<String, String>();
         signinInfo.put("username", this.usernameField.getText());
         signinInfo.put("password", this.passwordField.getText());
-        Response response =  ManagementMain.getInstance().getAccountManagementProcessor().handleSigninAction(signinInfo);
+        Response response =  Main.getInstance().getAccountManagementProcessor().handleSigninAction(signinInfo);
         StatusCode signinStatus = response.getStatusCode();
         if (signinStatus == StatusCode.OK) {
             ArrayList<ArrayList<String>> userInfo = response.getData();
             System.out.println("Sign in success");
-            Main.getInstance().setSignedInUser(new Manager(Utils.getRowValueByColumnName(2, "USERNAME", userInfo), Utils.getRowValueByColumnName(2, "ID", userInfo), Utils.getRowValueByColumnName(2, "FIRST_NAME", userInfo), Utils.getRowValueByColumnName(2, "LAST_NAME", userInfo), new Date(new SimpleDateFormat("yyyy-MM-dd").parse(Utils.getRowValueByColumnName(2, "DOB", userInfo)).getTime()), Utils.getRowValueByColumnName(2, "PHONE", userInfo), Utils.getRowValueByColumnName(2, "EMAIL", userInfo)));
+            Main.getInstance().setSignedInUser(new Manager(Utils.getRowValueByColumnName(2, "USERNAME", userInfo), Utils.getRowValueByColumnName(2, "ID", userInfo), Utils.getRowValueByColumnName(2, "FIRST_NAME", userInfo), Utils.getRowValueByColumnName(2, "LAST_NAME", userInfo), new Date(new SimpleDateFormat("yyyy-MM-dd").parse(Utils.getRowValueByColumnName(2, "DOB", userInfo)).getTime()), Utils.getRowValueByColumnName(2, "PHONE", userInfo), Utils.getRowValueByColumnName(2, "EMAIL", userInfo), Utils.getRowValueByColumnName(2, "GENDER", userInfo)));
             disableForm();
         } else {
             System.out.println("Sign in failed");

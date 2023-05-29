@@ -28,7 +28,7 @@ public class ProfileViewController implements Initializable {
 
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
-//        profileViewInit();
+        profileViewInit();
     }
     public void profileViewInit() {
         firstNameField.setText(main.getSignedInUser().getFirstName());
@@ -37,5 +37,11 @@ public class ProfileViewController implements Initializable {
         phoneField.setText(main.getSignedInUser().getPhone());
         emailField.setText(main.getSignedInUser().getEmail());
         dateOfBirthField.setValue(LocalDate.parse(main.getSignedInUser().getDateOfBirth().toString(), DateTimeFormatter.ofPattern("yyyy-MM-dd")));
+        System.out.println(main.getSignedInUser().getGender());
+        if (main.getSignedInUser().getGender() == "M") {
+            maleRadioBtn.setSelected(true);
+        } else {
+            femaleRadioBtn.setSelected(true);
+        }
     }
 }

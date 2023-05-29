@@ -30,6 +30,7 @@ public class Main extends Application {
     private BookingProcessor bookingProcessor;
     private FiltererProcessor filtererProcessor;
     private SearchEngine searchEngine;
+    private PaymentManagementProcessor paymentManagementProcessor;
     private MovieManagementProcessor movieManagementProcessor;
     private TheaterManagementProcessor theaterManagementProcessor;
     private ShowTimeManagementProcessor showTimeManagementProcessor;
@@ -42,6 +43,8 @@ public class Main extends Application {
         super();
         main = this;
         this.config = new Config();
+        this.paymentManagementProcessor = new PaymentManagementProcessor();
+        this.accountManagementProcessor = new AccountManagementProcessor();
         this.reviewManagementProcessor = new ReviewManagementProcessor();
         this.scheduleManagementProcessor = new ScheduleManagementProcessor();
         this.screenRoomManagementProcessor = new ScreenRoomManagementProcessor();
@@ -54,6 +57,9 @@ public class Main extends Application {
         nowShowingMoviesTabActive = false;
         comingSoonMoviesTabActive = false;
         searchEngine = new SearchEngine();
+    }
+    public PaymentManagementProcessor getPaymentManagementProcessor() {
+        return this.paymentManagementProcessor;
     }
     public ReviewManagementProcessor getReviewManagementProcessor() {
         return this.reviewManagementProcessor;

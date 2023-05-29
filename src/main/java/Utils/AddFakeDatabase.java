@@ -1,21 +1,13 @@
 package Utils;
 
 import Database.*;
-import MovieManager.Movie;
 import com.example.GraphicalUserInterface.Main;
-import javafx.scene.control.RadioButton;
-import javafx.scene.image.Image;
-import java.text.DateFormat;
-import java.text.SimpleDateFormat;
-import java.time.LocalDateTime;
+
 import java.time.LocalTime;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.HashMap;
-import java.time.LocalTime;
-import MovieManager.MovieManager;
-import com.example.GraphicalUserInterface.Main;
+
 public class AddFakeDatabase {
     Processor accountManagementProcessor, promotionManagementProcessor, theaterManagementProcessor, screenRoomManagementProcessor, userCategoryManagementProcessor;
     Processor seatManagementProcessor, showTimeManagementProcessor, scheduleManagementProcessor, itemManagementProcessor, seatTicketManagementProcessor, itemTicketMangementProcessor;
@@ -90,7 +82,7 @@ public class AddFakeDatabase {
 
         theater.put("ADDRESS", "test");
         theater.put("CINE_AREA", "TPHCM");
-        for (int i=0;i<50;++i) {
+        for (int i=0;i<2;++i) {
             theater.put("NAME", "4HB THU DUC"+ i);
             theater.put("ID", idGenerator.generateId(theaterManagementProcessor.getDefaultDatabaseTable()));
             Response response = theaterManagementProcessor.add(theater);
@@ -105,7 +97,7 @@ public class AddFakeDatabase {
     public void addFakeScreenRooms() throws Exception{
         HashMap<String, String> room = new HashMap<String, String>();
         room.put("CAPACITY", "80");
-        for (int i=0;i<50;++i) {
+        for (int i=0;i<2;++i) {
             for(int j = 1; j <= 6; j++) {
                 room.put("ID", idGenerator.generateId(screenRoomManagementProcessor.getDefaultDatabaseTable()));
                 room.put("NAME", "ROOM_" + j);
@@ -153,38 +145,8 @@ public class AddFakeDatabase {
     public void addFakeShowTimes() throws Exception{
         HashMap<String, String> time = new HashMap<String, String>();
         DateTimeFormatter dateTimeFormatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
-        int sr_id = 0;
-        int sch_id = 0;
-//        for (int i=0;i<50;++i) {
-//            for(int j = 1; j <= 6; j++) {
-//                sr_id += 1;
-//                LocalDateTime now = LocalDateTime.now();
-//                for(int d = 0; d < 7; d++) {
-//                    LocalTime localTime = LocalTime.of(12,40);
-//                    for (int t = 0; t < 15; t++) {
-//                        sch_id += 1;
-//                        time.put("ID", idGenerator.generateId(showTimeManagementProcessor.getDefaultDatabaseTable()));
-//                        time.put("START_TIME", localTime.toString());
-//                        System.out.println(localTime.toString());
-//                        time.put("SHOW_DATE", now.format(dateTimeFormatter));
-//                        System.out.println(now.format(dateTimeFormatter));
-////                        time.put("SCREEN_ROOM_ID", "SR_" + String.format("%05d", (sr_id)));
-////                        time.put("SCHEDULE_ID", "SCH_" + String.format("%05d",sch_id ));
-//                        Response response = showTimeManagementProcessor.add(time);
-//                        if (response.getStatusCode() == StatusCode.OK) {
-//                            System.out.println("insert 1 row success");
-//                        } else {
-//                            System.out.println(i + " failed");
-//                        }
-//                       localTime =  localTime.plusMinutes(40);
-//                    }
-//                    now = now.plusDays(1);
-//                }
-//            }
-//        }
         LocalTime localTime = LocalTime.of(12,40);
         for (int t = 0; t < 15; t++) {
-            sch_id += 1;
             time.put("ID", idGenerator.generateId(showTimeManagementProcessor.getDefaultDatabaseTable()));
             time.put("START_TIME", localTime.toString());
             System.out.println(localTime.toString());
@@ -234,7 +196,7 @@ public class AddFakeDatabase {
                 seatTicket.put("SEAT_ID", "SEA_" + String.format("%05d", k * 12 + t));
                 seatTicket.put("SCHEDULE_ID", "SCH_" + String.format("%05d", 1));
                 seatTicket.put("AMOUNT", "70000");
-                Response response = seatTicketManagementProcessor.add(seatTicket);
+                Response response = ticketManagementProcessor.add(seatTicket);
                 if (response.getStatusCode() == StatusCode.OK) {
                     System.out.println("insert 1 row success" + seatTicket.get("ID"));
                 } else {
@@ -327,7 +289,7 @@ public class AddFakeDatabase {
             }
         }
     }
-    public void addFakePaymetMethod(){
+    public void addFakePaymentMethod(){
         HashMap<String, String> paymentMethor = new HashMap<String, String>();
         ArrayList<String> method = new ArrayList<String>();
         method.add("MOMO");
@@ -355,13 +317,13 @@ public class AddFakeDatabase {
 //        addFakeDatabase.addFakeSeats();
 //        addFakeDatabase.addFakeShowTimes();
 //        addFakeDatabase.addFakeItems();
-//        addFakeDatabase.addFakeTicket();
+        addFakeDatabase.addFakeTicket();
 //        addFakeDatabase.addFakeItemTicket();
 //        addFakeDatabase.addFakeBookingItems();
-//        addFakeDatabase.addFakeSeatTicket();
-//        addFakeDatabase.addFakeBookingSeats();
-//        addFakeDatabase.addFakePaymetMethod();;
-        addFakeDatabase.addFakePayments();
+        addFakeDatabase.addFakeSeatTicket();
+        addFakeDatabase.addFakeBookingSeats();
+//        addFakeDatabase.addFakePaymentMethod();;
+//        addFakeDatabase.addFakePayments();
     }
 }
 

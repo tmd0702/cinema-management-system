@@ -4,7 +4,7 @@ import Utils.Role;
 import java.util.Date;
 
 abstract public class User {
-    private String username, id, firstName, lastName, phone, email;
+    private String username, id, firstName, lastName, phone, email, gender;
     private Date dateOfBirth;
     private int role, score;
 
@@ -19,7 +19,10 @@ abstract public class User {
         this.role = Role.UNKNOWN.getValue();
         this.score = 0;
     }
-    public User(String username, String id, String firstName, String lastName, Date dateOfBirth, String phone, String email, int score) {
+    public String getGender() {
+        return this.gender;
+    }
+    public User(String username, String id, String firstName, String lastName, Date dateOfBirth, String phone, String email, String gender, int score) {
         this.username = username;
         this.id = id;
         this.firstName = firstName;
@@ -28,6 +31,7 @@ abstract public class User {
         this.phone = phone;
         this.email = email;
         this.score = score;
+        this.gender = gender;
     }
     public String getId() {
         return this.id;

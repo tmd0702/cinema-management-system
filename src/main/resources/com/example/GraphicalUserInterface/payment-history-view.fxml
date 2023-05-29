@@ -19,7 +19,7 @@
             </Label>
          </children>
       </AnchorPane>
-      <ScrollPane hbarPolicy="NEVER" layoutX="85.0" layoutY="99.0" prefHeight="414.0" prefWidth="604.0" style="-fx-background: black; -fx-border-color: black;">
+      <ScrollPane fx:id="paymentHistoryViewScrollPane" hbarPolicy="NEVER" layoutX="85.0" layoutY="99.0" prefHeight="414.0" prefWidth="604.0" style="-fx-background: black; -fx-border-color: black;">
          <content>
             <GridPane fx:id="paymentHistoryViewGrid" prefHeight="25.0" prefWidth="602.0" style="-fx-background-color: black;">
               <columnConstraints>

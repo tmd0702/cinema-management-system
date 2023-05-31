@@ -9,10 +9,11 @@ import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 import java.util.concurrent.TimeUnit;
 public class BookingInfor {
-    private String idMovie, nameMovie, nameCinema, date, time, screen;
+    private String idMovie, nameMovie, nameCinema, date, time, screen, promotionCode, paymentMethodId;
     private ArrayList<String> seats;
     private ArrayList<Integer> items;
-    private int ticketPrice, comboPrice, total;
+    private int ticketPrice, comboPrice, total, discount;
+
 
     public BookingInfor(){
         this.idMovie = "";
@@ -21,19 +22,25 @@ public class BookingInfor {
         this.date = "";
         this.time = "";
         this.screen = "";
+        this.discount = 0;
+        this.promotionCode = "";
+        this.paymentMethodId = "";
         this.seats = new ArrayList<>();
         this.items = new ArrayList<>();
         this.ticketPrice = 0;
         this.comboPrice = 0;
         this.total = 0;
     }
-    public BookingInfor(String id, String movie, String cinema, String date, String time, String screen, ArrayList<String> seats, ArrayList<Integer> items, int ticketp, int combop, int totalp){
+    public BookingInfor(String id, String movie, String cinema, String date, String time, String screen, String promotionCode, String method, int discount, ArrayList<String> seats, ArrayList<Integer> items, int ticketp, int combop, int totalp){
         this.idMovie = id;
         this.nameMovie = movie;
         this.nameCinema = cinema;
         this.date = date;
         this.time = time;
         this.screen = screen;
+        this.promotionCode = promotionCode;
+        this.paymentMethodId = method;
+        this.discount = discount;
         this.seats = seats;
         this.items = items;
         this.ticketPrice = ticketp;
@@ -52,6 +59,9 @@ public class BookingInfor {
     public void setDate(String date){this.date = date;}
     public void setTime(String time){this.time = time;}
     public void setScreen(String screen){this.screen = screen;}
+    public void setDiscount(int discount){this.discount = discount;}
+    public void setPromotionCode(String promotionCode){this.promotionCode = promotionCode;}
+    public void setPaymentMethodId(String paymentMethodId){this.paymentMethodId = paymentMethodId;}
     public void setSeats(ArrayList<String> seats){this.seats = seats;}
     public void setItems(ArrayList<Integer> items){this.items = items;}
     public void setTicketPrice(int price){this.ticketPrice = price;}
@@ -62,6 +72,9 @@ public class BookingInfor {
     public String getDate(){return this.date;}
     public String getTime(){return this.time;}
     public String getScreen(){return this.screen;}
+    public int getDiscount(){return this.discount;}
+    public String getPromotionCode(){return this.promotionCode;}
+    public String getPaymentMethodId(){return this.paymentMethodId;}
     public ArrayList<String> getSeats(){return this.seats;}
     public ArrayList<Integer> getItems(){return this.items;}
     public int getTicketPrice(){return this.ticketPrice;}

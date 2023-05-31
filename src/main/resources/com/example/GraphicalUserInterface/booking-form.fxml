@@ -2,8 +2,6 @@
 
 <?import de.jensd.fx.glyphs.fontawesome.FontAwesomeIconView?>
 <?import javafx.scene.control.Button?>
-<?import javafx.scene.control.CheckBox?>
-<?import javafx.scene.control.ComboBox?>
 <?import javafx.scene.control.Label?>
 <?import javafx.scene.control.ScrollPane?>
 <?import javafx.scene.control.TextField?>
@@ -26,58 +24,68 @@
    <children>
       <AnchorPane fx:id="pane4" prefHeight="600.0" prefWidth="920.0" style="-fx-background-color: #121212;">
          <children>
-            <Label layoutX="628.0" layoutY="59.0" text="ORDER" textFill="WHITE">
+            <Label layoutX="628.0" layoutY="40.0" text="ORDER" textFill="WHITE">
                <font>
                   <Font size="25.0" />
                </font>
             </Label>
-            <VBox layoutX="473.0" layoutY="128.0" prefHeight="472.0" prefWidth="391.0">
-               <children>
-                  <Label prefHeight="32.0" prefWidth="201.0" text="Name and surname" textFill="WHITE">
-                     <font>
-                        <Font name="System Bold" size="22.0" />
-                     </font>
-                  </Label>
-                  <TextField />
-                  <Label prefHeight="32.0" prefWidth="201.0" text="Email" textFill="WHITE">
-                     <font>
-                        <Font name="System Bold" size="22.0" />
-                     </font>
-                  </Label>
-                  <TextField />
-                  <Label prefHeight="32.0" prefWidth="201.0" text="Promo" textFill="WHITE">
-                     <font>
-                        <Font name="System Bold" size="22.0" />
-                     </font>
-                  </Label>
-                  <ComboBox prefHeight="26.0" prefWidth="236.0" />
-                  <Label prefHeight="32.0" prefWidth="201.0" text="Payment" textFill="WHITE">
-                     <font>
-                        <Font name="System Bold" size="22.0" />
-                     </font>
-                  </Label>
-                  <ComboBox prefHeight="26.0" prefWidth="393.0" />
-                  <Label prefHeight="32.0" prefWidth="201.0" text="Cell phone" textFill="WHITE">
-                     <font>
-                        <Font name="System Bold" size="22.0" />
-                     </font>
-                  </Label>
-                  <AnchorPane prefHeight="147.0" prefWidth="391.0">
-                     <children>
-                        <ComboBox layoutX="-1.0" layoutY="-4.0" prefHeight="26.0" prefWidth="87.0" />
-                        <TextField layoutX="108.0" layoutY="-4.0" prefHeight="26.0" prefWidth="280.0" />
-                        <CheckBox layoutX="86.0" layoutY="45.0" mnemonicParsing="false" text="Remember Card information" textFill="WHITE" />
-                        <Button layoutX="144.0" layoutY="106.0" mnemonicParsing="false" prefHeight="35.0" prefWidth="105.0" style="-fx-background-color: #8D090D;" text="Pucharse" textFill="WHITE">
-                           <font>
-                              <Font size="18.0" />
-                           </font>
-                        </Button>
-                     </children>
-                  </AnchorPane>
-               </children>
-            </VBox>
             <ImageView fx:id="image4" fitHeight="600.0" fitWidth="364.0" layoutY="2.0" pickOnBounds="true" preserveRatio="true" />
             <Button layoutX="430.0" layoutY="42.0" mnemonicParsing="false" onAction="#handleSwitchToPageBefore" onMouseClicked="#onButtonClicked" text="Back" />
+            <AnchorPane layoutX="441.0" layoutY="83.0" maxHeight="513.0" maxWidth="526.0" minHeight="394.0" minWidth="266.0" prefHeight="513.0" prefWidth="526.0" style="-fx-background-color: #121212;">
+               <children>
+                  <Label layoutX="179.0" layoutY="481.0" prefHeight="16.0" prefWidth="105.0" text="Time left to purchase: " textFill="#eeeeee">
+                     <font>
+                        <Font size="11.0" />
+                     </font>
+                  </Label>
+                  <Line endX="368.971435546875" endY="-1.52587890625E-5" layoutX="132.0" layoutY="62.0" startX="-100.0" stroke="#f2f2f2" />
+                  <Label layoutX="32.0" layoutY="81.0" text="Theater:" textFill="#fcfcfc" />
+                  <Label layoutX="279.0" layoutY="120.0" text="Seats:" textFill="#fcfcfc" wrapText="true" />
+                  <Label layoutX="31.0" layoutY="120.0" text="Showtime:" textFill="#fcfcfc" />
+                  <Label layoutX="276.0" layoutY="81.0" text="Screen:" textFill="#fcfcfc" />
+                  <Line endX="362.83099365234375" layoutX="137.0" layoutY="216.0" startX="-100.0" stroke="#f2f2f2" />
+                  <Label layoutX="39.0" layoutY="185.0" text="Ticket price:" textFill="#fcfcfc" />
+                  <Label layoutX="279.0" layoutY="183.0" text="Combo:" textFill="#fcfcfc" />
+                  <Line endX="356.971435546875" layoutX="140.0" layoutY="162.0" startX="-100.0" stroke="#f2f2f2" />
+                  <Label layoutX="41.0" layoutY="236.0" text="Total:" textFill="#fcfcfc" />
+                  <Label fx:id="nameMovieBookingFinal" layoutX="47.0" layoutY="3.0" maxWidth="448.0" prefHeight="49.0" prefWidth="448.0" text="Label" textFill="WHITE" wrapText="true">
+                     <font>
+                        <Font name="System Bold" size="17.0" />
+                     </font>
+                  </Label>
+                  <Label fx:id="nameCinemaFinal" layoutX="97.0" layoutY="81.0" maxWidth="134.0" prefHeight="17.0" prefWidth="134.0" text="Theater" textFill="#fcfcfc" />
+                  <Label fx:id="showTimeFinal" layoutX="108.0" layoutY="120.0" text="time" textFill="#fcfcfc" />
+                  <Label fx:id="screenNameFinal" layoutX="336.0" layoutY="81.0" maxWidth="134.0" prefHeight="17.0" prefWidth="134.0" text="ScreenID" textFill="#fcfcfc" />
+                  <Label fx:id="seatIDFinal" layoutX="328.0" layoutY="111.0" maxWidth="176.0" prefHeight="36.0" prefWidth="176.0" text="SeatsID" textFill="#fcfcfc" wrapText="true" />
+                  <Label fx:id="priceFinal" layoutX="125.0" layoutY="184.0" maxWidth="134.0" prefHeight="17.0" prefWidth="134.0" text="Price" textFill="#fcfcfc" />
+                  <Label fx:id="comboFinal" layoutX="340.0" layoutY="184.0" maxWidth="134.0" prefHeight="17.0" prefWidth="134.0" text="Comboi" textFill="#fcfcfc" />
+                  <Label fx:id="totalFinal" layoutX="92.0" layoutY="237.0" maxWidth="134.0" prefHeight="17.0" prefWidth="134.0" text="total" textFill="#fcfcfc" />
+                  <Label fx:id="countdownLabel1" layoutX="290.0" layoutY="481.0" prefHeight="16.0" prefWidth="57.0" text="clock" textFill="#eeeeee">
+                     <font>
+                        <Font size="11.0" />
+                     </font>
+                  </Label>
+                  <Button layoutX="195.0" layoutY="436.0" mnemonicParsing="false" onAction="#onPurchaseButtonClicked" prefHeight="35.0" prefWidth="105.0" style="-fx-background-color: #8D090D;" text="Pucharse" textFill="WHITE">
+                     <font>
+                        <Font size="18.0" />
+                     </font>
+                  </Button>
+                  <Label layoutX="42.0" layoutY="270.0" prefHeight="56.0" prefWidth="117.0" text="Please enter promotion code" textFill="WHITE" wrapText="true">
+                     <font>
+                        <Font name="System Bold" size="15.0" />
+                     </font>
+                  </Label>
+                  <TextField fx:id="promotionField" layoutX="167.0" layoutY="284.0" />
+                  <Label layoutX="283.0" layoutY="237.0" text="Discount:" textFill="#fcfcfc" />
+                  <Label fx:id="discount" layoutX="348.0" layoutY="237.0" maxWidth="134.0" prefHeight="17.0" prefWidth="134.0" text="Price" textFill="#fcfcfc" />
+                  <Button layoutX="348.0" layoutY="280.0" mnemonicParsing="false" onMouseClicked="#applyPromotionOnClick" prefHeight="29.0" prefWidth="75.0" style="-fx-background-color: #8D090D;" text="Apply" textFill="WHITE">
+                     <font>
+                        <Font size="18.0" />
+                     </font>
+                  </Button>
+                  <VBox fx:id="paymentMethodVbox" layoutX="25.0" layoutY="330.0" prefHeight="89.0" prefWidth="472.0" />
+               </children>
+            </AnchorPane>
          </children>
       </AnchorPane>
       <AnchorPane fx:id="pane3" prefHeight="600.0" prefWidth="920.0" style="-fx-background-color: #121212;">

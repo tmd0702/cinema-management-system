@@ -5,7 +5,6 @@ import Utils.Response;
 import Utils.StatusCode;
 import com.example.GraphicalUserInterface.Main;
 
-import java.net.ResponseCache;
 import java.sql.*;
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -34,7 +33,14 @@ public abstract class Processor {
     public String getDefaultDatabaseTable() {
         return this.defaultDatabaseTable;
     }
-    public Response add(HashMap <String, String> columnValueMap) {
+    public void rollback() throws SQLException {
+        this.connector.rollback();
+    }
+    public void commit() throws SQLException {
+        this.connector.commit();
+    }
+    public abstract Response insertData(HashMap<String, String> columnValueMap, boolean isCommit);
+    public Response insert(HashMap <String, String> columnValueMap, String table, boolean isCommit) {
         ArrayList<ArrayList<String>> columnsValuesList = Utils.Utils.getKeysValuesFromMap(columnValueMap);
 
         ArrayList<String> columns = columnsValuesList.get(0);
@@ -43,12 +49,13 @@ public abstract class Processor {
         String insertColumns = String.join(", ", columns);
         String insertValues = "'" + String.join("', '", values) + "'";
 
-        String query = String.format("INSERT INTO %s (%s) VALUES (%s)", defaultDatabaseTable, insertColumns, insertValues);
+        String query = String.format("INSERT INTO %s (%s) VALUES (%s)", table, insertColumns, insertValues);
         try {
             System.out.println(query);
             Statement st = getConnector().createStatement();
             st.execute(query);
             st.close();
+            if (isCommit) this.connector.commit();
             return new Response("OK", StatusCode.OK);
         } catch (Exception e) {
             System.out.println(e);
@@ -65,7 +72,8 @@ public abstract class Processor {
         }
         return setStatement;
     }
-    public Response update(HashMap <String, String> columnValueMap, String queryCondition) {
+    public abstract Response updateData(HashMap<String, String> columnValueMap, String queryCondition, boolean isCommit);
+    public Response update(HashMap <String, String> columnValueMap, String queryCondition, String table, boolean isCommit) {
         ArrayList<ArrayList<String>> columnsValuesList = Utils.Utils.getKeysValuesFromMap(columnValueMap);
 
         ArrayList<String> columns = columnsValuesList.get(0);
@@ -73,12 +81,13 @@ public abstract class Processor {
 
 
 
-        String query = String.format("UPDATE %s SET %s WHERE %s", defaultDatabaseTable, constructUpdateSQLSetStatement(columns, values), queryCondition);
+        String query = String.format("UPDATE %s SET %s WHERE %s", table, constructUpdateSQLSetStatement(columns, values), queryCondition);
         System.out.println(query);
         try {
             Statement st = getConnector().createStatement();
             st.execute(query);
             st.close();
+            if (isCommit) commit();
             return new Response("OK", StatusCode.OK);
         } catch (Exception e) {
             System.out.println(e);
@@ -86,12 +95,14 @@ public abstract class Processor {
         }
 
     }
-    public Response delete(String queryCondition) {
-        String query = String.format("DELETE FROM %s WHERE %s", defaultDatabaseTable, queryCondition);
+    public abstract Response deleteData(String queryCondition, boolean isCommit);
+    public Response delete(String queryCondition, String table, boolean isCommit) {
+        String query = String.format("DELETE FROM %s WHERE %s", table, queryCondition);
         System.out.println(query);
         try {
             Statement st = getConnector().createStatement();
             st.execute(query);
+            if (isCommit) this.connector.commit();
             st.close();
             return new Response("OK", StatusCode.OK);
         } catch (Exception e) {

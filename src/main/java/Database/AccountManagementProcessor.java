@@ -17,6 +17,15 @@ public class AccountManagementProcessor extends Processor {
         super();
         setDefaultDatabaseTable("USERS");
     }
+    public Response updateData(HashMap<String, String> columnValueMap, String queryCondition, boolean isCommit) {
+        return update(columnValueMap, queryCondition, getDefaultDatabaseTable(), isCommit);
+    }
+    public Response insertData(HashMap<String, String> columnValueMap, boolean isCommit) {
+        return insert(columnValueMap, getDefaultDatabaseTable(), isCommit);
+    }
+    public Response deleteData(String queryCondition, boolean isCommit) {
+        return delete(queryCondition, getDefaultDatabaseTable(), isCommit);
+    }
     public Response handleSigninAction(HashMap<String, String> signinInfo) {
         String username = signinInfo.get("username");
         String password = signinInfo.get("password");
@@ -54,19 +63,24 @@ public class AccountManagementProcessor extends Processor {
 
     }
     public Response getData(int from, int quantity, String queryCondition, String sortQuery) {
-        Response response = select("*", from, quantity, queryCondition, sortQuery, getDefaultDatabaseTable());
+        if (queryCondition.length() == 0) {
+            queryCondition = "U.USER_CATEGORY_ID = UC.ID";
+        } else {
+            queryCondition = queryCondition + " AND U.USER_CATEGORY_ID = UC.ID";
+        }
+        Response response = select("U.*, UC.CATEGORY AS USER_CATEGORY_CATEGORY", from, quantity, queryCondition, sortQuery, "USERS U, USER_CATEGORY UC");
         return response;
     }
     public Response handleSignupAction(HashMap<String, String> signupInfo) {
         try {
             if (!Validator.validateEmail(signupInfo.get("email"))) {
-                throw new InvalidEmailException(signupInfo.get("email") + " is invalid!");
+                throw new InvalidEmailException("Email: " + signupInfo.get("email") + " is invalid!");
             }
             if (!Validator.validateUsername(signupInfo.get("username"))) {
-                throw new InvalidUsernameException(signupInfo.get("username") + " is invalid!");
+                throw new InvalidUsernameException("Username: " + signupInfo.get("username") + " is invalid!");
             }
             if (!Validator.validatePassword(signupInfo.get("password"))) {
-                throw new InvalidPasswordException(signupInfo.get("password") + " is invalid!");
+                throw new InvalidPasswordException("Password: " + signupInfo.get("password") + " is invalid!");
             }
             String id = ManagementMain.getInstance().getIdGenerator().generateId("USERS");
             System.out.println(id);

@@ -31,7 +31,7 @@ public class UserProfileViewController implements Initializable {
     @FXML
     private TextField inputField;
     @FXML
-    private Button dashboardTabPanel = new Button("Dashboard"), profileTabPanel = new Button("Profile"), pointTabPanel = new Button("Point"), paymentHistoryTabPanel = new Button("Payment History");
+    private Button dashboardTabPanel, profileTabPanel, pointTabPanel, paymentHistoryTabPanel;
     public UserProfileViewController() {
         main = Main.getInstance();
     }
@@ -39,7 +39,7 @@ public class UserProfileViewController implements Initializable {
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
         logoImageViewInit();
-        userProfileViewTabPanelContainerInit();
+//        userProfileViewTabPanelContainerInit();
         userProfileViewTabPanelsInit();
         Event.fireEvent(dashboardTabPanel, new MouseEvent(MouseEvent.MOUSE_CLICKED, 0,
                 0, 0, 0, MouseButton.PRIMARY, 1, true, true, true, true,

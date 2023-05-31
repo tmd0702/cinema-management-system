@@ -6,6 +6,7 @@ import MovieManager.Movie;
 import SearchEngine.SearchEngine;
 import UserManager.User;
 import javafx.application.Application;
+import javafx.scene.Node;
 import javafx.scene.image.Image;
 import javafx.application.Preloader;
 import javafx.fxml.FXMLLoader;
@@ -38,11 +39,18 @@ public class Main extends Application {
     private ScheduleManagementProcessor scheduleManagementProcessor;
     private ReviewManagementProcessor reviewManagementProcessor;
     private AccountManagementProcessor accountManagementProcessor;
+    private PromotionManagementProcessor promotionManagementProcessor;
+    private ItemManagementProcessor itemManagementProcessor;
+    private UserCategoryManagementProcessor userCategoryManagementProcessor;
+    private AuthenticationManagementProcessor authenticationManagementProcessor;
     private Config config;
     public Main() throws Exception {
         super();
         main = this;
         this.config = new Config();
+        this.promotionManagementProcessor = new PromotionManagementProcessor();
+        this.authenticationManagementProcessor = new AuthenticationManagementProcessor();
+        this.userCategoryManagementProcessor = new UserCategoryManagementProcessor();
         this.paymentManagementProcessor = new PaymentManagementProcessor();
         this.accountManagementProcessor = new AccountManagementProcessor();
         this.reviewManagementProcessor = new ReviewManagementProcessor();
@@ -53,10 +61,23 @@ public class Main extends Application {
         this.movieManagementProcessor = new MovieManagementProcessor();
         this.bookingProcessor = new BookingProcessor();
         this.filtererProcessor = new FiltererProcessor();
+        this.itemManagementProcessor = new ItemManagementProcessor();
         this.queryOnSearching = "";
         nowShowingMoviesTabActive = false;
         comingSoonMoviesTabActive = false;
         searchEngine = new SearchEngine();
+    }
+    public ItemManagementProcessor getItemManagementProcessor() {
+        return this.itemManagementProcessor;
+    }
+    public PromotionManagementProcessor getPromotionManagementProcessor() {
+        return this.promotionManagementProcessor;
+    }
+    public AuthenticationManagementProcessor getAuthenticationManagementProcessor() {
+        return this.authenticationManagementProcessor;
+    }
+    public UserCategoryManagementProcessor getUserCategoryManagementProcessor() {
+        return this.userCategoryManagementProcessor;
     }
     public PaymentManagementProcessor getPaymentManagementProcessor() {
         return this.paymentManagementProcessor;
@@ -75,6 +96,9 @@ public class Main extends Application {
     }
     public ScreenRoomManagementProcessor getScreenRoomManagementProcessor() {
         return this.screenRoomManagementProcessor;
+    }
+    public Node getNodeById(String id) {
+        return stage.getScene().lookup(id);
     }
     public TheaterManagementProcessor getTheaterManagementProcessor() {
         return theaterManagementProcessor;
@@ -143,7 +167,7 @@ public class Main extends Application {
     }
     @Override
     public void start(Stage primaryStage) throws IOException {
-        this.movieManagementProcessor.getMovies();
+//        this.movieManagementProcessor.getMovies();
         stage = primaryStage;
         setMovieOnBooking(new Movie());
         FXMLLoader fxmlLoader = new FXMLLoader(Main.class.getResource("index-view.fxml"));

@@ -21,8 +21,6 @@ import javafx.scene.layout.HBox;
 import javafx.scene.layout.StackPane;
 import javafx.scene.layout.VBox;
 import javafx.scene.shape.Line;
-import javafx.scene.shape.Rectangle;
-import org.w3c.dom.Text;
 
 import java.io.IOException;
 import java.net.URL;
@@ -205,7 +203,7 @@ public class MovieDetailViewController implements Initializable {
             reviewInfo.put("RATING", String.valueOf(ratingScore));
             reviewInfo.put("COMMENT", String.valueOf(commentField.getText()));
             reviewInfo.put("DATE", new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").format(new Date()));
-            Response response = main.getReviewManagementProcessor().add(reviewInfo);
+            Response response = main.getReviewManagementProcessor().insertData(reviewInfo, true);
             StatusCode status = response.getStatusCode();
             if (status == status.OK) {
                 Alert alert = new Alert(Alert.AlertType.CONFIRMATION);

@@ -2,7 +2,6 @@ package com.example.GraphicalUserInterface;
 
 import Utils.Response;
 import Utils.StatusCode;
-import javafx.collections.FXCollections;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.*;
@@ -11,7 +10,6 @@ import javafx.scene.layout.VBox;
 
 import java.io.IOException;
 import java.net.URL;
-import java.time.format.DateTimeFormatter;
 import java.util.HashMap;
 import java.util.Optional;
 import java.util.ResourceBundle;
@@ -63,7 +61,7 @@ public class AddCinemaFormController implements Initializable {
         cinemaInfo.put("ADDRESS", addressField.getText());
         cinemaInfo.put("CINE_AREA", cineAreaField.getText());
 
-        Response response = main.getCinemaManagementProcessor().add(cinemaInfo);
+        Response response = main.getCinemaManagementProcessor().insertData(cinemaInfo, true);
         StatusCode status = response.getStatusCode();
         if (status == StatusCode.OK) {
             Dialog<String> dialog = new Dialog<String>();

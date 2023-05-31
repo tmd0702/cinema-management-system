@@ -90,7 +90,7 @@ public class AddScreenRoomFormController implements Initializable {
         screenRoomInfo.put("NAME", nameField.getText());
         screenRoomInfo.put("CINEMA_ID", getCinemaObjectIDFromComboBox(cinemaNameField.getValue()));
         screenRoomInfo.put("CAPACITY", capacityField.getText());
-        Response response = main.getScreenRoomManagementProcessor().add(screenRoomInfo);
+        Response response = main.getScreenRoomManagementProcessor().insertData(screenRoomInfo, true);
         StatusCode signupStatus = response.getStatusCode();
         if (signupStatus == StatusCode.OK) {
             Dialog<String> dialog = new Dialog<String>();

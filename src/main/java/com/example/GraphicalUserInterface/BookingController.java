@@ -5,6 +5,8 @@ import javafx.beans.property.DoubleProperty;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.fxml.FXML;
+import javafx.geometry.Insets;
+import javafx.geometry.Pos;
 import javafx.scene.Node;
 import javafx.scene.control.*;
 import javafx.scene.control.skin.ScrollBarSkin;
@@ -38,6 +40,8 @@ public class BookingController {
     private  AnchorPane pane1;
     @FXML
     private ImageView image1;
+    @FXML
+    private VBox itemControllerContainer;
     private ArrayList<Button> DateButton = new ArrayList<Button>();
     private ArrayList<Boolean> isDateActive = new ArrayList<Boolean>();
     private ArrayList<Button> CinemaButton  = new ArrayList<Button>();
@@ -122,10 +126,44 @@ public class BookingController {
         FormartDateButton();
         scrollBtnInit();
         //page3
+        itemsControllerInit();
         ConstructItemsButton();
         ConstructItem();
         //page4
         ConstructPaymentMethodButton();
+    }
+    public void itemsControllerInit() {
+        ArrayList<ArrayList<String>> itemFetcher = Main.getInstance().getItemManagementProcessor().getData(0, -1, "", "").getData();
+        ArrayList<String> itemNames = Utils.getDataValuesByColumnName(itemFetcher, "NAME");
+        for (String itemName : itemNames) {
+
+            Label itemLabel = new Label(itemName);
+            itemLabel.setStyle("-fx-text-fill: white; -fx-font-weight: bold; -fx-font-size: 16px");
+            HBox itemLabelContainer = new HBox(itemLabel);
+            itemLabelContainer.setAlignment(Pos.CENTER);
+            itemLabelContainer.setStyle("-fx-background-color: #2B2B2B; -fx-background-radius: 10px");
+            itemLabelContainer.setPadding(new Insets(5, 5, 5, 5));
+            itemLabelContainer.setPrefWidth(150);
+            Label quantityLabel = new Label("0");
+            quantityLabel.setStyle("-fx-text-fill: white; -fx-font-size: 16px;");
+            Button subtractQuantityBtn = new Button("-"), addQuantityBtn = new Button("+");
+            HBox itemController = new HBox(subtractQuantityBtn, quantityLabel, addQuantityBtn);
+            itemController.setPadding(new Insets(10, 10, 10, 10));
+            subtractQuantityBtn.setStyle("-fx-background-color: #7C7C7C; -fx-text-fill: white; -fx-font-weight: bold;");
+            addQuantityBtn.setStyle("-fx-background-color: #7C7C7C; -fx-text-fill: white; -fx-font-weight: bold;");
+            subtractQuantityBtn.setPrefWidth(30);
+            addQuantityBtn.setPrefWidth(30);
+            itemController.setStyle("-fx-background-color: #2B2B2B; -fx-background-radius: 10px;");
+            itemController.setPrefWidth(150);
+            itemController.setSpacing(20);
+            itemController.setAlignment(Pos.CENTER);
+            HBox itemControllerInstance = new HBox(itemLabelContainer, itemController);
+            itemControllerInstance.setAlignment(Pos.CENTER);
+            itemControllerInstance.setSpacing(50);
+            itemControllerContainer.setSpacing(20);
+            itemControllerContainer.setAlignment(Pos.TOP_CENTER);
+            itemControllerContainer.getChildren().add(itemControllerInstance);
+        }
     }
     public BookingController(){
      this.bookingProcessor = Main.getInstance().getBookingProcessor();

@@ -5,9 +5,13 @@ import Utils.Response;
 import Utils.Utils;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
-import javafx.scene.control.PasswordField;
-import javafx.scene.control.TextField;
+import javafx.fxml.Initializable;
+import javafx.scene.Group;
+import javafx.scene.control.*;
 
+import java.io.IOException;
+import java.io.InputStream;
+import java.net.URL;
 import java.sql.Date;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
@@ -16,22 +20,52 @@ import java.util.*;
 import Utils.StatusCode;
 import javafx.scene.layout.AnchorPane;
 
-public class LoginFormController {
+public class LoginFormController implements Initializable {
+    private Properties prop;
+    private String filePath;
     @FXML
     private AnchorPane loginFormRoot;
     @FXML
     private TextField usernameField;
     @FXML
     private PasswordField passwordField;
+    @FXML
+    private CheckBox rememberAccountCheckBox;
     private Main main;
-    public LoginFormController() {
+    public LoginFormController() throws IOException {
         main = Main.getInstance();
+        this.prop = new Properties();
+        InputStream is = ManagementMain.class.getResourceAsStream("/cache/account-cache.properties");
+        System.out.println((Main.class.getResource("/cache").getPath() + "account-cache.properties").substring(1));
+        filePath = (Main.class.getResource("/cache").getPath() + "account-cache.properties").substring(1);
+        //load a properties file from class path, inside static method
+        this.prop.load(is);
+    }
+
+    @Override
+    public void initialize(URL url, ResourceBundle resourceBundle) {
+        // Read properties
+        rememberAccountCheckBox.setSelected(true);
+        System.out.println(this.prop.getProperty("USERNAME") + " " +  this.prop.getProperty("PASSWORD"));
+        //get the property value and print it out
+        if (this.prop.getProperty("USERNAME") != "" && this.prop.getProperty("PASSWORD") != "") {
+            this.usernameField.setText(this.prop.getProperty("USERNAME"));
+            this.passwordField.setText(this.prop.getProperty("PASSWORD"));
+        }
+    }
+
+    public void modifyHeaderUI() {
+        main.getNodeById("#signInBtn").setVisible(false);
+        main.getNodeById("#signUpBtn").setVisible(false);
+        main.getNodeById("#userProfileBtn").setVisible(true);
+        ((Label)main.getNodeById("#userFullNameDisplayField")).setText(main.getSignedInUser().getFirstName() + " " + main.getSignedInUser().getLastName());
     }
     public void disableForm() {
+        modifyHeaderUI();
         ((AnchorPane)loginFormRoot.getParent()).getChildren().get(0).setDisable(false);
         ((AnchorPane)loginFormRoot.getParent()).getChildren().remove(loginFormRoot);
     }
-    public void onLoginSubmitBtnClick() throws ParseException {
+    public void onLoginSubmitBtnClick() throws Exception {
         HashMap<String, String> signinInfo = new HashMap<String, String>();
         signinInfo.put("username", this.usernameField.getText());
         signinInfo.put("password", this.passwordField.getText());
@@ -39,9 +73,25 @@ public class LoginFormController {
         StatusCode signinStatus = response.getStatusCode();
         if (signinStatus == StatusCode.OK) {
             ArrayList<ArrayList<String>> userInfo = response.getData();
+            if (rememberAccountCheckBox.isSelected()) {
+                Utils.writeProperties(this.prop, this.usernameField.getText(), this.passwordField.getText(), filePath);
+            } else {
+                Utils.writeProperties(this.prop, "", "", filePath);
+            }
             System.out.println("Sign in success");
-            Main.getInstance().setSignedInUser(new Manager(Utils.getRowValueByColumnName(2, "USERNAME", userInfo), Utils.getRowValueByColumnName(2, "ID", userInfo), Utils.getRowValueByColumnName(2, "FIRST_NAME", userInfo), Utils.getRowValueByColumnName(2, "LAST_NAME", userInfo), new Date(new SimpleDateFormat("yyyy-MM-dd").parse(Utils.getRowValueByColumnName(2, "DOB", userInfo)).getTime()), Utils.getRowValueByColumnName(2, "PHONE", userInfo), Utils.getRowValueByColumnName(2, "EMAIL", userInfo), Utils.getRowValueByColumnName(2, "GENDER", userInfo)));
+            System.out.println(userInfo);
+            Main.getInstance().setSignedInUser(new Manager(Utils.getRowValueByColumnName(2, "USERNAME", userInfo), Utils.getRowValueByColumnName(2, "ID", userInfo), Utils.getRowValueByColumnName(2, "FIRST_NAME", userInfo), Utils.getRowValueByColumnName(2, "LAST_NAME", userInfo), new Date(new SimpleDateFormat("yyyy-MM-dd").parse(Utils.getRowValueByColumnName(2, "DOB", userInfo)).getTime()), Utils.getRowValueByColumnName(2, "PHONE", userInfo), Utils.getRowValueByColumnName(2, "EMAIL", userInfo), Utils.getRowValueByColumnName(2, "GENDER", userInfo), Utils.getRowValueByColumnName(2, "ADDRESS", userInfo), Utils.getRowValueByColumnName(2, "USER_CATEGORY_CATEGORY", userInfo)));
+            Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
+            alert.setTitle("Confirmation");
+            alert.setContentText("Sign in success");
+            Optional<ButtonType> result = alert.showAndWait();
+            if (result.get() == ButtonType.OK) {
+                System.out.println("ok");
+            } else {
+                System.out.println("cancel");
+            }
             disableForm();
+
         } else {
             System.out.println("Sign in failed");
         }

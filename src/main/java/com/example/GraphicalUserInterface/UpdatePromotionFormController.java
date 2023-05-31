@@ -55,7 +55,7 @@ public class UpdatePromotionFormController implements Initializable {
         promotionInfo.put("END_DATE", DateTimeFormatter.ofPattern("yyyy-MM-dd").format(endDateField.getValue()));
         promotionInfo.put("DISCOUNT", discountField.getText());
 
-        Response response = main.getPromotionManagementProcessor().update(promotionInfo, String.format("ID = '%s'", idField.getText()));
+        Response response = main.getPromotionManagementProcessor().updateData(promotionInfo, String.format("ID = '%s'", idField.getText()), true);
         StatusCode status = response.getStatusCode();
         if (status == StatusCode.OK) {
             Dialog<String> dialog = new Dialog<String>();

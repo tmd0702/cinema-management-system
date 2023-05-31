@@ -11,7 +11,6 @@ import javafx.scene.layout.VBox;
 
 import java.io.IOException;
 import java.net.URL;
-import java.time.format.DateTimeFormatter;
 import java.util.HashMap;
 import java.util.Optional;
 import java.util.ResourceBundle;
@@ -69,7 +68,7 @@ public class AddItemFormController implements Initializable {
         itemInfo.put("CATEGORY", categoryField.getValue().toString());
         itemInfo.put("PRICE", priceField.getText());
         itemInfo.put("ID", main.getIdGenerator().generateId(main.getItemManagementProcessor().getDefaultDatabaseTable()));
-        Response response = main.getItemManagementProcessor().add(itemInfo);
+        Response response = main.getItemManagementProcessor().insertData(itemInfo, true);
         StatusCode signupStatus = response.getStatusCode();
         if (signupStatus == StatusCode.OK) {
             Dialog<String> dialog = new Dialog<String>();

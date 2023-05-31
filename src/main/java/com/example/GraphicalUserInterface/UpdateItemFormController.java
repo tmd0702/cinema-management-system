@@ -55,7 +55,7 @@ public class UpdateItemFormController implements Initializable {
         itemInfo.put("CATEGORY", categoryField.getValue().toString());
         itemInfo.put("PRICE", priceField.getText());
 
-        Response response = main.getItemManagementProcessor().update(itemInfo, String.format("ID = '%s'", idField.getText()));
+        Response response = main.getItemManagementProcessor().updateData(itemInfo, String.format("ID = '%s'", idField.getText()), true);
         StatusCode status = response.getStatusCode();
         if (status == StatusCode.OK) {
             Dialog<String> dialog = new Dialog<String>();

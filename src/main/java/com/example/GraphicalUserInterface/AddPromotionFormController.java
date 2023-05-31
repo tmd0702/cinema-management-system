@@ -2,7 +2,6 @@ package com.example.GraphicalUserInterface;
 
 import Utils.Response;
 import Utils.StatusCode;
-import javafx.collections.FXCollections;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.*;
@@ -68,7 +67,7 @@ public class AddPromotionFormController implements Initializable {
         promotionInfo.put("END_DATE", DateTimeFormatter.ofPattern("yyyy-MM-dd").format(endDateField.getValue()));
         promotionInfo.put("DISCOUNT", discountField.getText());
 
-        Response response = main.getPromotionManagementProcessor().add(promotionInfo);
+        Response response = main.getPromotionManagementProcessor().insertData(promotionInfo, true);
         StatusCode status = response.getStatusCode();
 
         if (status == StatusCode.OK) {

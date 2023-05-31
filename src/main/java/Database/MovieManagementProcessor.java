@@ -1,12 +1,9 @@
 package Database;
 import MovieManager.*;
 import Utils.*;
-import com.example.GraphicalUserInterface.Main;
 import javafx.scene.image.Image;
 
 import java.sql.*;
-import java.time.LocalTime;
-import java.time.temporal.ChronoUnit;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
@@ -114,7 +111,9 @@ public class MovieManagementProcessor extends Processor {
             System.out.println(e);
         }
     }
-
+    public Response updateData(HashMap<String, String> columnValueMap, String queryCondition, boolean isCommit) {
+        return update(columnValueMap, queryCondition, getDefaultDatabaseTable(), isCommit);
+    }
     public void scheduleMovie(Movie movie) throws Exception {
         if (movie.getDuration() == 0) {
             System.out.println("Error: Invalid duration");
@@ -150,7 +149,7 @@ public class MovieManagementProcessor extends Processor {
         schedule.put("MOVIE_ID", movieId);
         schedule.put("SCREEN_ROOM_ID", screenRoomId);
         schedule.put("SHOW_DATE", showDate);
-        Response response = scheduleManagementProcessor.add(schedule);
+        Response response = scheduleManagementProcessor.insertData(schedule, true);
         if (response.getStatusCode() == StatusCode.OK) {
             System.out.println(String.format("Scheduled movie id %s success on showtime id %s with id %s", movieId, showtimeID, schedule.get("ID")));
         } else {
@@ -204,8 +203,10 @@ public class MovieManagementProcessor extends Processor {
         }
         return data;
     }
-    public void setOnCurrentShowingStatus(){
-        System.out.println(movieManager.getCurrentlyPlayingMovieList());
+    public Response insertData(HashMap<String, String> columnValueMap, boolean isCommit) {
+        return insert(columnValueMap, getDefaultDatabaseTable(), isCommit);
     }
-
+    public Response deleteData(String queryCondition, boolean isCommit) {
+        return delete(queryCondition, getDefaultDatabaseTable(), isCommit);
+    }
 }

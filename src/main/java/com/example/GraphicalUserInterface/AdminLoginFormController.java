@@ -31,7 +31,6 @@ public class AdminLoginFormController implements Initializable {
         InputStream is = ManagementMain.class.getResourceAsStream("/cache/account-cache.properties");
         System.out.println((Main.class.getResource("/cache").getPath() + "account-cache.properties").substring(1));
         filePath = (Main.class.getResource("/cache").getPath() + "account-cache.properties").substring(1);
-//        InputStream is = new FileInputStream(fileName);
         //load a properties file from class path, inside static method
         this.prop.load(is);
     }

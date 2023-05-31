@@ -189,7 +189,7 @@ public class UpdateScheduleFormController implements Initializable {
         scheduleInfo.put("SHOW_DATE", showDateField.getValue().toString());
         scheduleInfo.put("MOVIE_ID", getMovieObjectIDFromComBoBox(movieTitleField.getValue()));
         scheduleInfo.put("SCREEN_ROOM_ID", getScreenRoomObjectIDFromComboBox(screenRoomNameField.getValue()));
-        Response response = main.getScheduleManagementProcessor().update(scheduleInfo, String.format("ID = '%s'", idField.getText()));
+        Response response = main.getScheduleManagementProcessor().updateData(scheduleInfo, String.format("ID = '%s'", idField.getText()), true);
         StatusCode status = response.getStatusCode();
         if (status == StatusCode.OK) {
             Dialog<String> dialog = new Dialog<String>();

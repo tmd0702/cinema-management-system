@@ -2,7 +2,6 @@ package com.example.GraphicalUserInterface;
 
 import Utils.Response;
 import Utils.StatusCode;
-import javafx.collections.FXCollections;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.*;
@@ -90,7 +89,7 @@ public class AddShowTimeFormController implements Initializable {
         HashMap<String, String> showTimeInfo = new HashMap<String, String>();
         showTimeInfo.put("ID", main.getIdGenerator().generateId(main.getShowTimeManagementProcessor().getDefaultDatabaseTable()));
         showTimeInfo.put("START_TIME", startTimeField.getText());
-        Response response = main.getShowTimeManagementProcessor().add(showTimeInfo);
+        Response response = main.getShowTimeManagementProcessor().insertData(showTimeInfo, true);
         StatusCode signupStatus = response.getStatusCode();
         if (signupStatus == StatusCode.OK) {
             Dialog<String> dialog = new Dialog<String>();

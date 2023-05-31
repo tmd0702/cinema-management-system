@@ -80,7 +80,7 @@ public class UpdateScreenRoomFormController implements Initializable {
         screenRoomInfo.put("CAPACITY", capacityField.getText());
         screenRoomInfo.put("CINEMA_ID", getCinemaObjectIDFromComboBox(cinemaNameField.getValue()));
 
-        Response response = main.getScreenRoomManagementProcessor().update(screenRoomInfo, String.format("ID = '%s'", idField.getText()));
+        Response response = main.getScreenRoomManagementProcessor().updateData(screenRoomInfo, String.format("ID = '%s'", idField.getText()), true);
         StatusCode status = response.getStatusCode();
         if (status == StatusCode.OK) {
             Dialog<String> dialog = new Dialog<String>();

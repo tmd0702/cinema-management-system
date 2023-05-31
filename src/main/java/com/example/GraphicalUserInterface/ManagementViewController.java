@@ -369,7 +369,7 @@ public class ManagementViewController implements Initializable {
     public void handleDeleteRecordRequest() {
         String recordId = getRecordIdByRowIndex();
         String queryCondition = String.format("ID = '%s'", recordId);
-        Response response = activeProcessor.delete(queryCondition);
+        Response response = activeProcessor.deleteData(queryCondition, true);
         StatusCode status = response.getStatusCode();
         if (status == StatusCode.OK) {
             System.out.println("delete success");

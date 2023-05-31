@@ -1,5 +1,7 @@
 package com.example.GraphicalUserInterface;
 import MovieManager.MovieManager;
+import UserManager.Customer;
+import UserManager.User;
 import Utils.Utils;
 import javafx.animation.*;
 import javafx.beans.property.DoubleProperty;
@@ -23,6 +25,7 @@ import MovieManager.*;
 import java.io.IOException;
 import java.net.URL;
 import java.util.ArrayList;
+import java.util.Optional;
 import java.util.ResourceBundle;
 import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.TimeUnit;
@@ -45,6 +48,8 @@ public class IndexViewController implements Initializable {
 
     private Main main;
     @FXML
+    private Group userProfileBtn;
+    @FXML
     private Button viewUserProfileBtn, signOutBtn;
     @FXML
     private AnchorPane indexViewRootContainer, indexViewMainContainer;
@@ -56,6 +61,8 @@ public class IndexViewController implements Initializable {
     private Button scrollLeftBtn;
     @FXML
     private Button scrollRightBtn;
+    @FXML
+    private Label userFullNameDisplayField;
     @FXML
     private ImageView logoImageView;
     @FXML
@@ -82,6 +89,12 @@ public class IndexViewController implements Initializable {
         backDropImageSectionInit();
         logoImageViewInit();
         scrollBtnInit();
+        if (main.getSignedInUser() != null) {
+            signInBtn.setVisible(false);
+            signUpBtn.setVisible(false);
+            userProfileBtn.setVisible(true);
+            userFullNameDisplayField.setText(main.getSignedInUser().getFirstName() + " " + main.getSignedInUser().getLastName());
+        }
     }
     public void userNavigatorInit() {
         userNavigator.setVisible(false);
@@ -97,9 +110,25 @@ public class IndexViewController implements Initializable {
     public void userProfileBtnOnClick() throws Exception {
         userNavigator.setVisible(!userNavigator.isVisible());
     }
+    public void modifyHeaderUI() {
+        main.getNodeById("#signInBtn").setVisible(true);
+        main.getNodeById("#signUpBtn").setVisible(true);
+        main.getNodeById("#userProfileBtn").setVisible(false);
+        main.getNodeById("#userNavigator").setVisible(false);
+    }
     @FXML
     public void signOutBtnOnClick() throws Exception {
-
+        main.setSignedInUser(new Customer());
+        modifyHeaderUI();
+        Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
+        alert.setTitle("Confirmation");
+        alert.setContentText("Sign out success");
+        Optional<ButtonType> result = alert.showAndWait();
+        if (result.get() == ButtonType.OK) {
+            System.out.println("ok");
+        } else {
+            System.out.println("cancel");
+        }
     }
     public void userNavigatorButtonChangeStyleOnHover(Button button) {
         button.setOnMouseEntered(new EventHandler<MouseEvent>() {
@@ -240,6 +269,7 @@ public class IndexViewController implements Initializable {
             public void handle(MouseEvent mouseEvent) {
                 Main.getInstance().setMovieOnDetail(movie);
                 try {
+                    System.out.println("change scene to movie detail view");
                     Main.getInstance().changeScene("movie-detail-view.fxml");
                 } catch (IOException e) {
                     System.out.println(e);

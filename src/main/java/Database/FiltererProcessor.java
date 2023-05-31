@@ -6,6 +6,7 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.ArrayList;
+import java.util.HashMap;
 
 public class FiltererProcessor extends Processor {
     public FiltererProcessor() {
@@ -44,5 +45,14 @@ public class FiltererProcessor extends Processor {
             System.out.println(sqle);
         }
         return languages;
+    }
+    public Response updateData(HashMap<String, String> columnValueMap, String queryCondition, boolean isCommit) {
+        return update(columnValueMap, queryCondition, getDefaultDatabaseTable(), isCommit);
+    }
+    public Response insertData(HashMap<String, String> columnValueMap, boolean isCommit) {
+        return insert(columnValueMap, getDefaultDatabaseTable(), isCommit);
+    }
+    public Response deleteData(String queryCondition, boolean isCommit) {
+        return delete(queryCondition, getDefaultDatabaseTable(), isCommit);
     }
 }

@@ -66,7 +66,7 @@ public class UpdateAccountFormController implements Initializable {
         signUpInfo.put("ADDRESS", addressField.getText());
         signUpInfo.put("USERNAME", usernameField.getText());
         signUpInfo.put("GENDER", genderField.getValue().toString().substring(0, 1));
-        Response response = main.getAccountManagementProcessor().update(signUpInfo, String.format("ID = '%s'", idField.getText()));
+        Response response = main.getAccountManagementProcessor().updateData(signUpInfo, String.format("ID = '%s'", idField.getText()), true);
         StatusCode signupStatus = response.getStatusCode();
         if (signupStatus == StatusCode.OK) {
             Dialog<String> dialog = new Dialog<String>();

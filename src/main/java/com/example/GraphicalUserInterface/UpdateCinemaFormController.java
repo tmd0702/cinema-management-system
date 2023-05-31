@@ -38,6 +38,7 @@ public class UpdateCinemaFormController implements Initializable {
         ((AnchorPane)updateCinemaForm.getParent()).getChildren().get(0).setVisible(true);
         ((AnchorPane)updateCinemaForm.getParent()).getChildren().remove(2);
     }
+
     @FXML
     public void saveUpdateBtnOnClick() throws IOException {
         System.out.println("save");
@@ -55,7 +56,7 @@ public class UpdateCinemaFormController implements Initializable {
         cinemaInfo.put("ADDRESS", addressField.getText());
         cinemaInfo.put("NAME", nameField.getText());
         cinemaInfo.put("CINE_AREA", cineAreaField.getText());
-        Response response = main.getCinemaManagementProcessor().update(cinemaInfo, String.format("ID = '%s'", idField.getText()));
+        Response response = main.getCinemaManagementProcessor().updateData(cinemaInfo, String.format("ID = '%s'", idField.getText()), true);
         StatusCode status = response.getStatusCode();
         if (status == StatusCode.OK) {
             Dialog<String> dialog = new Dialog<String>();

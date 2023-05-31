@@ -44,6 +44,7 @@ public class Database {
             Class.forName("com.mysql.cj.jdbc.Driver");
             System.out.println("Driver Loaded Successfully");
             this.con = DriverManager.getConnection(this.databaseDns, this.databaseUsername, this.databasePassword); // not the actual password
+            this.con.setAutoCommit(false);
             System.out.println("Successful Connection");
             Statement st = this.con.createStatement();
             st.execute("USE movie;");

@@ -186,7 +186,7 @@ public class AddScheduleFormController implements Initializable {
         scheduleInfo.put("SHOW_DATE", showDateField.getValue().toString());
         scheduleInfo.put("MOVIE_ID", getMovieObjectIDFromComBoBox(movieTitleField.getValue()));
         scheduleInfo.put("SCREEN_ROOM_ID", getScreenRoomObjectIDFromComboBox(screenRoomNameField.getValue()));
-        Response response = main.getScheduleManagementProcessor().add(scheduleInfo);
+        Response response = main.getScheduleManagementProcessor().insertData(scheduleInfo, true);
         StatusCode signupStatus = response.getStatusCode();
         if (signupStatus == StatusCode.OK) {
             Dialog<String> dialog = new Dialog<String>();

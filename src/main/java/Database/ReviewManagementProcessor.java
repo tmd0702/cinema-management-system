@@ -2,6 +2,8 @@ package Database;
 
 import Utils.Response;
 
+import java.util.HashMap;
+
 public class ReviewManagementProcessor extends Processor{
     public ReviewManagementProcessor() {
         super();
@@ -17,5 +19,14 @@ public class ReviewManagementProcessor extends Processor{
         }
         Response response = select("UC.CATEGORY, U.USERNAME, M.ID AS MOVIE_ID, R.RATING, R.COMMENT, R.DATE", from, quantity, queryCondition, sortQuery, "REVIEW R, USERS U, MOVIES M, USER_CATEGORY UC");
         return response;
+    }
+    public Response updateData(HashMap<String, String> columnValueMap, String queryCondition, boolean isCommit) {
+        return update(columnValueMap, queryCondition, getDefaultDatabaseTable(), isCommit);
+    }
+    public Response insertData(HashMap<String, String> columnValueMap, boolean isCommit) {
+        return insert(columnValueMap, getDefaultDatabaseTable(), isCommit);
+    }
+    public Response deleteData(String queryCondition, boolean isCommit) {
+        return delete(queryCondition, getDefaultDatabaseTable(), isCommit);
     }
 }

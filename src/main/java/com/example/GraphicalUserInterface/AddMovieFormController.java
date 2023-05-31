@@ -1,7 +1,6 @@
 package com.example.GraphicalUserInterface;
 
 import MovieManager.Movie;
-import Utils.IdGenerator;
 import Utils.Response;
 import Utils.StatusCode;
 import javafx.collections.FXCollections;
@@ -11,7 +10,6 @@ import javafx.scene.control.*;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.VBox;
 
-import java.io.IOException;
 import java.net.URL;
 import java.time.format.DateTimeFormatter;
 import java.util.Date;
@@ -87,7 +85,7 @@ public class AddMovieFormController implements Initializable {
         movieInfo.put("VOTE_COUNT", voteCountField.getText());
         movieInfo.put("VOTE_AVERAGE", voteAverageField.getText());
         movieInfo.put("STATUS", movieStatusField.getValue().toString());
-        Response response = main.getMovieManagementProcessor().add(movieInfo);
+        Response response = main.getMovieManagementProcessor().insertData(movieInfo, true);
         StatusCode status = response.getStatusCode();
         if (status == StatusCode.OK) {
             main.getMovieManagementProcessor().scheduleMovie(new Movie(id, titleField.getText(), overviewField.getText(), movieStatusField.getValue().toString(), Integer.parseInt(durationField.getText()), Integer.parseInt(viewCountField.getText()), new Date(DateTimeFormatter.ofPattern("yyyy-MM-dd").format(releaseDateField.getValue())), posterPathField.getText(), backdropPathField.getText(), languageField.getText()));

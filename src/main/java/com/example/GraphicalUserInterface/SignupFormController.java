@@ -9,6 +9,7 @@ import javafx.scene.layout.AnchorPane;
 import java.time.format.DateTimeFormatter;
 import java.util.*;
 public class SignupFormController {
+    private Main main;
     @FXML
     ToggleGroup gender;
     @FXML
@@ -18,6 +19,7 @@ public class SignupFormController {
     @FXML
     private DatePicker dateOfBirthField;
     public SignupFormController() throws Exception {
+        main = Main.getInstance();
     }
     public void onSubmitSignUpBtn() {
         HashMap<String, String> signUpInfo = new HashMap<String, String>();

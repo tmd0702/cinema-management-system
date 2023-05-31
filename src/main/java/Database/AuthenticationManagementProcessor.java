@@ -4,15 +4,17 @@ import Utils.Response;
 
 import java.util.HashMap;
 
-public class PaymentMethodManagementProcessor  extends Processor{
-    public PaymentMethodManagementProcessor(){
+public class AuthenticationManagementProcessor extends Processor {
+    public AuthenticationManagementProcessor() {
         super();
-        setDefaultDatabaseTable("PAYMENT_METHODS");
+        setDefaultDatabaseTable("AUTHENTICATION");
     }
+
+    @Override
     public Response getData(int from, int quantity, String queryCondition, String sortQuery) {
-        Response response = select("*", from, quantity, queryCondition, sortQuery, getDefaultDatabaseTable());
-        return response;
+        return null;
     }
+
     public Response updateData(HashMap<String, String> columnValueMap, String queryCondition, boolean isCommit) {
         return update(columnValueMap, queryCondition, getDefaultDatabaseTable(), isCommit);
     }

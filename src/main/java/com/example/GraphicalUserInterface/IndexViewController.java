@@ -43,36 +43,14 @@ public class IndexViewController implements Initializable {
     private MovieManager movieManager;
     private ImageView currentFocusMovie;
     private Button currentFocusMovieBookingBtn;
-    @FXML
-    private VBox userNavigator;
 
-    private Main main;
-    @FXML
-    private Group userProfileBtn;
-    @FXML
-    private Button viewUserProfileBtn, signOutBtn;
-    @FXML
-    private AnchorPane indexViewRootContainer, indexViewMainContainer;
-    @FXML
-    private ScrollPane indexViewScrollPane;
-    @FXML
-    private TextField inputField;
+    private static Main main;
     @FXML
     private Button scrollLeftBtn;
     @FXML
     private Button scrollRightBtn;
     @FXML
-    private Label userFullNameDisplayField;
-    @FXML
-    private ImageView logoImageView;
-    @FXML
-    private AnchorPane headerBar;
-    @FXML
-    private Button signUpBtn;
-    @FXML
     private ScrollPane moviePreviewSectionScrollPane;
-    @FXML
-    private Button signInBtn;
     @FXML ImageView backdropImageSection;
     @FXML
     private HBox currentlyPlayingList;
@@ -82,67 +60,11 @@ public class IndexViewController implements Initializable {
     private HBox moviePreviewSection;
 
     public void initialize(URL url, ResourceBundle rb) {
-        userNavigatorInit();
         moviePreviewSectionInit();
         currentlyPlayingListInit();
         comingSoonListInit();
         backDropImageSectionInit();
-        logoImageViewInit();
         scrollBtnInit();
-        if (main.getSignedInUser() != null) {
-            signInBtn.setVisible(false);
-            signUpBtn.setVisible(false);
-            userProfileBtn.setVisible(true);
-            userFullNameDisplayField.setText(main.getSignedInUser().getFirstName() + " " + main.getSignedInUser().getLastName());
-        }
-    }
-    public void userNavigatorInit() {
-        userNavigator.setVisible(false);
-        userNavigatorButtonChangeStyleOnHover(viewUserProfileBtn);
-        userNavigatorButtonChangeStyleOnHover(signOutBtn);
-
-    }
-    @FXML
-    public void viewUserProfileBtnOnClick() throws Exception {
-        main.changeScene("user-profile-view.fxml");
-    }
-    @FXML
-    public void userProfileBtnOnClick() throws Exception {
-        userNavigator.setVisible(!userNavigator.isVisible());
-    }
-    public void modifyHeaderUI() {
-        main.getNodeById("#signInBtn").setVisible(true);
-        main.getNodeById("#signUpBtn").setVisible(true);
-        main.getNodeById("#userProfileBtn").setVisible(false);
-        main.getNodeById("#userNavigator").setVisible(false);
-    }
-    @FXML
-    public void signOutBtnOnClick() throws Exception {
-        main.setSignedInUser(new Customer());
-        modifyHeaderUI();
-        Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
-        alert.setTitle("Confirmation");
-        alert.setContentText("Sign out success");
-        Optional<ButtonType> result = alert.showAndWait();
-        if (result.get() == ButtonType.OK) {
-            System.out.println("ok");
-        } else {
-            System.out.println("cancel");
-        }
-    }
-    public void userNavigatorButtonChangeStyleOnHover(Button button) {
-        button.setOnMouseEntered(new EventHandler<MouseEvent>() {
-            @Override
-            public void handle(MouseEvent mouseEvent) {
-                button.setStyle("-fx-effect: dropshadow(gaussian, rgba(0, 0, 0, 0.5), 10, 0.5, 0.0, 0.0); -fx-text-fill: white; -fx-font-weight: bold; -fx-background-color: #828282;");
-            }
-        });
-        button.setOnMouseExited(new EventHandler<MouseEvent>() {
-            @Override
-            public void handle(MouseEvent mouseEvent) {
-                button.setStyle("-fx-effect: dropshadow(gaussian, rgba(0, 0, 0, 0.5), 10, 0.5, 0.0, 0.0); -fx-text-fill: white; -fx-font-weight: bold; -fx-background-color: #333333;");
-            }
-        });
     }
     public void scrollBtnInit() {
 //        scrollLeftBtn.setVisible(false);
@@ -151,32 +73,6 @@ public class IndexViewController implements Initializable {
         scrollRightBtn.setOpacity(0.2);
         scrollBtnChangeStyleOnHover(scrollLeftBtn);
         scrollBtnChangeStyleOnHover(scrollRightBtn);
-    }
-    public void setSignedInUI() {
-        signInBtn.setVisible(false);
-        signUpBtn.setVisible(false);
-        FontAwesomeIconView userIconContainer = new FontAwesomeIconView();
-        headerBar.getChildren().add(userIconContainer);
-    }
-    public void userIconContainerMouseClickEventListener(FontAwesomeIconView userIconContainer) {
-        userIconContainer.setOnMouseClicked(new EventHandler<MouseEvent>() {
-            @Override
-            public void handle(MouseEvent mouseEvent) {
-
-            }
-        });
-        userIconContainer.setOnMouseEntered(new EventHandler<MouseEvent>() {
-            @Override
-            public void handle(MouseEvent mouseEvent) {
-
-            }
-        });
-        userIconContainer.setOnMouseExited(new EventHandler<MouseEvent>() {
-            @Override
-            public void handle(MouseEvent mouseEvent) {
-
-            }
-        });
     }
     public void scrollAnimation(DoubleProperty property, double seconds, double targetHvalue) {
         Animation animation = new Timeline(
@@ -215,19 +111,6 @@ public class IndexViewController implements Initializable {
                 btn.setOpacity(0.2);
             }
         });
-    }
-    public void logoImageViewInit() {
-        String imageSource = "https://docs.google.com/uc?id=1F2pXOLfvuynr9JcURTR5Syg7N1YdPJXK";
-        Image logo = new Image(imageSource);
-        if (logo.isError()) {
-            System.out.println("Error loading image from " + imageSource);
-        } else {
-            logoImageView.setImage(logo);
-        }
-    }
-    @FXML
-    public void logoImageViewOnClick() throws IOException {
-        main.changeScene("index-view.fxml");
     }
     public void movieListViewSectionInit(HBox listView, ArrayList<Movie> movieList) {
         double listSpacing = 10;
@@ -270,7 +153,7 @@ public class IndexViewController implements Initializable {
                 Main.getInstance().setMovieOnDetail(movie);
                 try {
                     System.out.println("change scene to movie detail view");
-                    Main.getInstance().changeScene("movie-detail-view.fxml");
+                    main.changeView("movie-detail-view.fxml");
                 } catch (IOException e) {
                     System.out.println(e);
                 }
@@ -307,7 +190,7 @@ public class IndexViewController implements Initializable {
                 public void handle(MouseEvent event) {
                     try {
                         main.setMovieOnBooking(movie);
-                        main.changeScene("booking-form.fxml");
+                        main.changeView("booking-form.fxml");
                     } catch (IOException e) {
                         System.out.println(e);
                     }
@@ -350,19 +233,14 @@ public class IndexViewController implements Initializable {
         movieManager = main.getMovieManagementProcessor().getMovieManager();
     }
     @FXML
-    public void onSearchFieldEnterKeyPress() throws IOException {
-        main.setQueryOnSearching(inputField.getText());
-        main.changeScene("index-view.fxml");
-    }
-    @FXML
     public void onSeeMoreCPBtnClick() throws IOException {
         main.setNowShowingMoviesTabActive(true);
-        main.changeScene("movie-list-view.fxml");
+        main.changeView("movie-list-view.fxml");
     }
     @FXML
     public void onSeeMoreCSBtnClick() throws IOException {
         main.setComingSoonMoviesTabActive(true);
-        main.changeScene("movie-list-view.fxml");
+        main.changeView("movie-list-view.fxml");
     }
     public void opacityAnimation(DoubleProperty property, double seconds, double targetOpacity) {
         Animation animation = new Timeline(
@@ -425,14 +303,5 @@ public class IndexViewController implements Initializable {
 //            }
 //        });
     }
-    @FXML
-    public void onSignInBtnClick() throws IOException {
-        indexViewMainContainer.setDisable(true);
-        indexViewRootContainer.getChildren().add(FXMLLoader.load(getClass().getResource("login-form.fxml")));
-    }
-    @FXML
-    public void onSignUpBtnClick() throws IOException {
-        indexViewMainContainer.setDisable(true);
-        indexViewRootContainer.getChildren().add(FXMLLoader.load(getClass().getResource("signup-form.fxml")));
-    }
+
 }

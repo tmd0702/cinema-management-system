@@ -2,6 +2,8 @@ package com.example.GraphicalUserInterface;
 
 import Utils.Response;
 import Utils.StatusCode;
+import Utils.Utils;
+import javafx.collections.FXCollections;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.*;
@@ -11,12 +13,17 @@ import javafx.scene.layout.VBox;
 import java.io.IOException;
 import java.net.URL;
 import java.time.format.DateTimeFormatter;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Optional;
 import java.util.ResourceBundle;
 
 public class AddPromotionFormController implements Initializable {
     private ManagementMain main;
+    ArrayList<ArrayList<String>> userCategoryInfo;
+    ArrayList<String> userCategoryCategories;
+    @FXML
+    private ComboBox userCategoryNameField;
     @FXML
     private TextField nameField, descriptionField, discountField;
     @FXML
@@ -30,6 +37,22 @@ public class AddPromotionFormController implements Initializable {
 
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
+        userCategoryNameFieldInit();
+    }
+    public String getUserCategoryObjectIDFromComboBox(Object value) {
+        String id = null;
+        for (int i=0; i<userCategoryCategories.size();++i) {
+            if (userCategoryCategories.get(i) == value) {
+                id = Utils.getRowValueByColumnName(i, "ID", userCategoryInfo);
+                break;
+            }
+        }
+        return id;
+    }
+    public void userCategoryNameFieldInit() {
+        userCategoryInfo = main.getUserCategoryManagementProcessor().getData(0, -1, "", "").getData();
+        userCategoryCategories = Utils.getDataValuesByColumnName(userCategoryInfo, "CATEGORY");
+        userCategoryNameField.setItems(FXCollections.observableArrayList(userCategoryCategories));
     }
     @FXML
     public void cancelInsertBtnOnClick() {
@@ -65,8 +88,9 @@ public class AddPromotionFormController implements Initializable {
         promotionInfo.put("NAME", nameField.getText());
         promotionInfo.put("START_DATE", DateTimeFormatter.ofPattern("yyyy-MM-dd").format(startDateField.getValue()));
         promotionInfo.put("END_DATE", DateTimeFormatter.ofPattern("yyyy-MM-dd").format(endDateField.getValue()));
+        promotionInfo.put("DISCRIPTION", descriptionField.getText());
         promotionInfo.put("DISCOUNT", discountField.getText());
-
+        promotionInfo.put("USER_CATEGORY_ID", getUserCategoryObjectIDFromComboBox(userCategoryNameField.getValue()));
         Response response = main.getPromotionManagementProcessor().insertData(promotionInfo, true);
         StatusCode status = response.getStatusCode();
 

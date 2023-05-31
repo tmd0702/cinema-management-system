@@ -3,6 +3,7 @@ package com.example.GraphicalUserInterface;
 import Database.*;
 import ImageManager.ImageManager;
 import MovieManager.Movie;
+import UserManager.User;
 import Utils.IdGenerator;
 import javafx.application.Application;
 import javafx.fxml.FXMLLoader;
@@ -18,6 +19,7 @@ public class ManagementMain extends Application {
     private Scene scene;
     private PaymentManagementProcessor paymentManagementProcessor;
     private ItemTicketManagementProcessor itemTicketManagementProcessor;
+    private UserCategoryManagementProcessor userCategoryManagementProcessor;
     private SeatTicketManagementProcessor seatTicketManagementProcessor;
     private Processor showTimeManagementProcessor, cinemaManagementProcessor, theaterManagementProcessor, promotionManagementProcessor, itemManagementProcessor, screenRoomManagementProcessor;
     private MovieManagementProcessor movieManagementProcessor;
@@ -29,6 +31,7 @@ public class ManagementMain extends Application {
     public ManagementMain() throws Exception {
         managementMain = this;
         idGenerator = new IdGenerator();
+        userCategoryManagementProcessor = new UserCategoryManagementProcessor();
         paymentManagementProcessor = new PaymentManagementProcessor();
         itemTicketManagementProcessor = new ItemTicketManagementProcessor();
         seatTicketManagementProcessor = new SeatTicketManagementProcessor();
@@ -42,6 +45,9 @@ public class ManagementMain extends Application {
         accountManagementProcessor = new AccountManagementProcessor();
         movieManagementProcessor = new MovieManagementProcessor();
         imageManager = new ImageManager();
+    }
+    public UserCategoryManagementProcessor getUserCategoryManagementProcessor() {
+        return this.userCategoryManagementProcessor;
     }
     public PaymentManagementProcessor getPaymentManagementProcessor() {
         return this.paymentManagementProcessor;

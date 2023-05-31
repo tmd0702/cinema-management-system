@@ -6,6 +6,7 @@ import Utils.StatusCode;
 import Utils.Utils;
 import de.jensd.fx.glyphs.fontawesome.FontAwesomeIcon;
 import de.jensd.fx.glyphs.fontawesome.FontAwesomeIconView;
+import javafx.event.Event;
 import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
@@ -15,6 +16,7 @@ import javafx.scene.Node;
 import javafx.scene.control.*;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
+import javafx.scene.input.MouseButton;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.HBox;
@@ -37,7 +39,7 @@ public class MovieDetailViewController implements Initializable {
     private boolean isRated;
     private double ratingScore;
     @FXML
-    private AnchorPane movieDetailViewRootContainer, movieDetailViewMainContainer;
+    private AnchorPane movieDetailViewMainContainer;
     @FXML
     private TextArea commentField;
     @FXML
@@ -45,11 +47,7 @@ public class MovieDetailViewController implements Initializable {
     @FXML
     private ImageView logoImageView;
     @FXML
-    private Label cast;
-    @FXML
     private Line separator;
-    @FXML
-    private TextField inputField;
     @FXML
     private Label director;
     @FXML
@@ -65,45 +63,16 @@ public class MovieDetailViewController implements Initializable {
     @FXML
     private VBox movieDetailSection;
     @FXML
-    private TextArea description;
+    private Label description;
     public MovieDetailViewController () {
         main = Main.getInstance();
         movieOnDetail = main.getMovieOnDetail();
         isRated = false;
         ratingScore = 0.0;
     }
-    @FXML
-    public void onSearchFieldEnterKeyPress() throws IOException {
-        main.setQueryOnSearching(inputField.getText());
-        main.changeScene("search-results-view.fxml");
-    }
-    public void logoImageViewInit() {
-        String imageSource = "https://docs.google.com/uc?id=1F2pXOLfvuynr9JcURTR5Syg7N1YdPJXK";
-        Image logo = new Image(imageSource);
-        if (logo.isError()) {
-            System.out.println("Error loading image from " + imageSource);
-        } else {
-            logoImageView.setImage(logo);
-        }
-    }
-    @FXML
-    public void logoImageViewOnClick() throws IOException {
-        main.changeScene("index-view.fxml");
-    }
-    @FXML
-    public void onSignInBtnClick() throws IOException {
-        movieDetailViewMainContainer.setDisable(true);
-        movieDetailViewRootContainer.getChildren().add(FXMLLoader.load(getClass().getResource("login-form.fxml")));
-    }
-    @FXML
-    public void onSignUpBtnClick() throws IOException {
-        movieDetailViewMainContainer.setDisable(true);
-        movieDetailViewRootContainer.getChildren().add(FXMLLoader.load(getClass().getResource("signup-form.fxml")));
-    }
 
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
-        logoImageViewInit();
         movieDetailSectionInit();
         ratingFieldInit();
         commentViewSectionInit();
@@ -232,8 +201,9 @@ public class MovieDetailViewController implements Initializable {
             alert.setContentText("Please sign in to comment!");
             Optional<ButtonType> result = alert.showAndWait();
             if (result.get() == ButtonType.OK) {
-                movieDetailViewMainContainer.setDisable(true);
-                movieDetailViewRootContainer.getChildren().add(FXMLLoader.load(getClass().getResource("login-form.fxml")));
+                Event.fireEvent(main.getNodeById("#signInBtn"), new MouseEvent(MouseEvent.MOUSE_CLICKED, 0,
+                        0, 0, 0, MouseButton.PRIMARY, 1, true, true, true, true,
+                        true, true, true, true, true, true, null));
             } else {
 
             }

@@ -2,6 +2,8 @@ package com.example.GraphicalUserInterface;
 
 import Utils.Response;
 import Utils.StatusCode;
+import Utils.Utils;
+import javafx.collections.FXCollections;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.*;
@@ -11,20 +13,31 @@ import javafx.scene.layout.VBox;
 import java.io.IOException;
 import java.net.URL;
 import java.time.format.DateTimeFormatter;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.ResourceBundle;
 
 public class UpdatePromotionFormController implements Initializable {
     private ManagementMain main;
+    ArrayList<ArrayList<String>> userCategoryInfo;
+    ArrayList<String> userCategoryCategories;
     @FXML
     private TextField idField, nameField, descriptionField, discountField;
     @FXML
     private DatePicker startDateField, endDateField;
     @FXML
     private VBox updatePromotionForm;
+    @FXML
+    private ComboBox userCategoryNameField;
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
         idFieldInit();
+        userCategoryNameFieldInit();
+    }
+    public void userCategoryNameFieldInit() {
+        userCategoryInfo = main.getUserCategoryManagementProcessor().getData(0, -1, "", "").getData();
+        userCategoryCategories = Utils.getDataValuesByColumnName(userCategoryInfo, "CATEGORY");
+        userCategoryNameField.setItems(FXCollections.observableArrayList(userCategoryCategories));
     }
     public void idFieldInit() {
         idField.setDisable(true);
@@ -48,13 +61,24 @@ public class UpdatePromotionFormController implements Initializable {
         System.out.println("cancel");
         disableUpdateForm();
     }
+    public String getUserCategoryObjectIDFromComboBox(Object value) {
+        String id = null;
+        for (int i=0; i<userCategoryCategories.size();++i) {
+            if (userCategoryCategories.get(i) == value) {
+                id = Utils.getRowValueByColumnName(i, "ID", userCategoryInfo);
+                break;
+            }
+        }
+        return id;
+    }
     public void handleUpdateRecordRequest() {
         HashMap<String, String> promotionInfo = new HashMap<String, String>();
         promotionInfo.put("NAME", nameField.getText());
         promotionInfo.put("START_DATE", DateTimeFormatter.ofPattern("yyyy-MM-dd").format(startDateField.getValue()));
         promotionInfo.put("END_DATE", DateTimeFormatter.ofPattern("yyyy-MM-dd").format(endDateField.getValue()));
         promotionInfo.put("DISCOUNT", discountField.getText());
-
+        promotionInfo.put("DISCRIPTION", descriptionField.getText());
+        promotionInfo.put("USER_CATEGORY_ID", getUserCategoryObjectIDFromComboBox(userCategoryNameField.getValue()));
         Response response = main.getPromotionManagementProcessor().updateData(promotionInfo, String.format("ID = '%s'", idField.getText()), true);
         StatusCode status = response.getStatusCode();
         if (status == StatusCode.OK) {

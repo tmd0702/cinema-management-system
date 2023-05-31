@@ -7,10 +7,12 @@ import SearchEngine.SearchEngine;
 import UserManager.User;
 import javafx.application.Application;
 import javafx.scene.Node;
+import javafx.scene.control.ScrollPane;
 import javafx.scene.image.Image;
 import javafx.application.Preloader;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Scene;
+import javafx.scene.layout.AnchorPane;
 import javafx.stage.Stage;
 import javafx.stage.*;
 
@@ -29,6 +31,7 @@ public class Main extends Application {
 
     private String queryOnSearching;
     private BookingProcessor bookingProcessor;
+    private UserCategoryManagementProcessor userCategoryManagementProcessor;
     private FiltererProcessor filtererProcessor;
     private SearchEngine searchEngine;
     private PaymentManagementProcessor paymentManagementProcessor;
@@ -41,7 +44,6 @@ public class Main extends Application {
     private AccountManagementProcessor accountManagementProcessor;
     private PromotionManagementProcessor promotionManagementProcessor;
     private ItemManagementProcessor itemManagementProcessor;
-    private UserCategoryManagementProcessor userCategoryManagementProcessor;
     private AuthenticationManagementProcessor authenticationManagementProcessor;
     private Config config;
     public Main() throws Exception {
@@ -167,16 +169,21 @@ public class Main extends Application {
     }
     @Override
     public void start(Stage primaryStage) throws IOException {
-//        this.movieManagementProcessor.getMovies();
+        this.movieManagementProcessor.getMovies();
         stage = primaryStage;
         setMovieOnBooking(new Movie());
-        FXMLLoader fxmlLoader = new FXMLLoader(Main.class.getResource("index-view.fxml"));
+        FXMLLoader fxmlLoader = new FXMLLoader(Main.class.getResource("main-outline.fxml"));
         Scene scene = new Scene(fxmlLoader.load(), 920, 600);
         scene.getStylesheets().add(getClass().getResource("assets/css/index-style.css").toExternalForm());
         stage.setTitle("4HB Cinema Management");
         stage.setScene(scene);
         stage.setResizable(false);
         stage.show();
+    }
+    public void changeView(String fxml) throws IOException {
+        ((ScrollPane) getNodeById("#mainOutlineScrollPane")).setVvalue(0.0);
+        ((AnchorPane) getNodeById("#mainOutlineContainer")).getChildren().add(FXMLLoader.load(getClass().getResource(fxml)));
+        ((AnchorPane) getNodeById("#mainOutlineContainer")).getChildren().remove(0);
     }
     public void changeScene(String fxml) throws IOException {
         FXMLLoader fxmlLoader = new FXMLLoader(Main.class.getResource(fxml));

@@ -26,10 +26,6 @@ public class SearchResultsViewController implements Initializable {
     private HashMap<String, Double> searchResults;
     private String filterLanguage, filterGenre, filterSortMethod;
     @FXML
-    private AnchorPane headerSection;
-    @FXML
-    private AnchorPane pageSubContainer;
-    @FXML
     private ChoiceBox sortingChoiceBox;
     @FXML
     private ChoiceBox genreChoiceBox;
@@ -38,32 +34,12 @@ public class SearchResultsViewController implements Initializable {
     @FXML
     private ChoiceBox languageChoiceBox;
     @FXML
-    private TextField inputField;
-    @FXML
-    private ImageView logoImageView;
-    @FXML
     private VBox resultsContainer;
-    @FXML
-    private ScrollPane pageContainer;
 
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
-        inputFieldInit();
-        logoImageViewInit();
         searchResultsInit();
         choiceBoxesInit();
-    }
-    public void logoImageViewInit() {
-        String imageSource = "https://docs.google.com/uc?id=1F2pXOLfvuynr9JcURTR5Syg7N1YdPJXK";
-        Image logo = new Image(imageSource);
-        if (logo.isError()) {
-            System.out.println("Error loading image from " + imageSource);
-        } else {
-            logoImageView.setImage(logo);
-        }
-    }
-    public void inputFieldInit() {
-        inputField.setText(main.getQueryOnSearching());
     }
     public void choiceBoxesInit() {
         genreChoiceBox.setItems(FXCollections.observableArrayList(main.getFiltererProcessor().getGenres()));
@@ -86,28 +62,11 @@ public class SearchResultsViewController implements Initializable {
         filterSortMethod = "Relevant";
     }
     @FXML
-    public void onSearchFieldEnterKeyPress() throws IOException {
-        main.setQueryOnSearching(inputField.getText());
-        main.changeScene("search-results-view.fxml");
-    }
-    @FXML
-    public void logoImageViewOnClick() throws IOException {
-        main.changeScene("index-view.fxml");
-    }
-    @FXML
     public void filterSearchResultsBtnOnClick() {
         filterGenre = genreChoiceBox.getValue() == "All genres"? "" : (String)genreChoiceBox.getValue();
         filterLanguage = languageChoiceBox.getValue() == "All languages"? "" : (String)languageChoiceBox.getValue();
         filterSortMethod = (String)sortingChoiceBox.getValue();
         displaySearchResults();
-    }
-    @FXML
-    public void onSignInBtnClick() throws IOException {
-        this.main.popup("login-form.fxml");
-    }
-    @FXML
-    public void onSignUpBtnClick() throws IOException {
-        this.main.popup("signup-form.fxml");
     }
     public void displaySearchResults() {
         resultsContainer.getChildren().clear();
@@ -152,7 +111,7 @@ public class SearchResultsViewController implements Initializable {
                         Main.getInstance().setMovieOnDetail(movie);
                         //main.setMovieOnDetail(new Movie("MOV1000", "Toy Story", "Led by Woody, Andy's toys live happily in his room until Andy's birthday brings Buzz Lightyear onto the scene. Afraid of losing his place in Andy's heart, Woody plots against Buzz. But when circumstances separate Buzz and Woody from their owner, the duo eventually learns to put aside their differences.", "ASDS", 100, 90, new Date(), "https://image.tmdb.org/t/p/original/7G9915LfUQ2lVfwMEEhDsn3kT4B.jpg", "https://image.tmdb.org/t/p/original/9FBwqcd9IRruEDUrTdcaafOMKUq.jpg"));
                         try {
-                            Main.getInstance().changeScene("movie-detail-view.fxml");
+                            Main.getInstance().changeView("movie-detail-view.fxml");
                         } catch (IOException e) {
                             System.out.println(e);
                         }
@@ -162,10 +121,9 @@ public class SearchResultsViewController implements Initializable {
                 resultsContainer.getChildren().add(movieContainer);
             }
         }
-        headerSection.setPrefHeight(56);
     }
     public void searchResultsInit() {
-        searchResults = main.getSearchEngine().getSearchResults(inputField.getText(), "search_engine");//"semantic_searching");
+        searchResults = main.getSearchEngine().getSearchResults(((TextField) main.getNodeById("#inputField")).getText(), "search_engine");//"semantic_searching");
         System.out.println("results " + searchResults);
         resultsContainer.setSpacing(20);
         displaySearchResults();

@@ -37,25 +37,12 @@ public class   MovieListViewController implements Initializable {
         nowShowingMoviesTabInit();
         comingSoonMoviesTabInit();
         reRenderPage();
-        logoImageViewInit();
     }
     public MovieListViewController() {
         main = Main.getInstance();
         tabs = new ArrayList<String>();
         tabs.add("nowShowingTab");
         tabs.add("comingSoonTab");
-    }
-    @FXML
-    public void logoImageViewOnClick() throws IOException {
-        main.changeScene("index-view.fxml");
-    }
-    @FXML
-    public void onSignInBtnClick() throws IOException {
-        this.main.popup("login-form.fxml");
-    }
-    @FXML
-    public void onSignUpBtnClick() throws IOException {
-        this.main.popup("signup-form.fxml");
     }
     public void reRenderPage() {
         nowShowingMoviesTab.setVisible(this.main.getNowShowingMoviesTabActive());
@@ -126,15 +113,6 @@ public class   MovieListViewController implements Initializable {
                 moviesContainer.getChildren().add(listView);
             }
             listView.getChildren().add(IndexViewController.getMovieView(listView, listSpacing, movie));
-        }
-    }
-    public void logoImageViewInit() {
-        String imageSource = "https://docs.google.com/uc?id=1F2pXOLfvuynr9JcURTR5Syg7N1YdPJXK";
-        Image logo = new Image(imageSource);
-        if (logo.isError()) {
-            System.out.println("Error loading image from " + imageSource);
-        } else {
-            logoImageView.setImage(logo);
         }
     }
     @FXML

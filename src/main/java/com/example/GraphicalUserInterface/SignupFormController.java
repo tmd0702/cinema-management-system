@@ -54,7 +54,7 @@ public class SignupFormController {
         }
     }
     public void disableForm() {
-        ((AnchorPane)signupFormRoot.getParent()).getChildren().get(0).setDisable(false);
+        main.getNodeById("#mainOutlineContentView").setDisable(false);
         ((AnchorPane)signupFormRoot.getParent()).getChildren().remove(signupFormRoot);
     }
     public void onSignInBtnClick() throws Exception {

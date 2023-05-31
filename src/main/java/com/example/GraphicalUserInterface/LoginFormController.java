@@ -62,7 +62,7 @@ public class LoginFormController implements Initializable {
     }
     public void disableForm() {
         modifyHeaderUI();
-        ((AnchorPane)loginFormRoot.getParent()).getChildren().get(0).setDisable(false);
+        main.getNodeById("#mainOutlineContentView").setDisable(false);
         ((AnchorPane)loginFormRoot.getParent()).getChildren().remove(loginFormRoot);
     }
     public void onLoginSubmitBtnClick() throws Exception {

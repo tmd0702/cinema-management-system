@@ -23,13 +23,9 @@ public class UserProfileViewController implements Initializable {
     private Main main;
     private Button tabPanelOnClick;
     @FXML
-    private ImageView logoImageView;
-    @FXML
     private AnchorPane userProfileViewMainContainer;
     @FXML
     private VBox userProfileViewTabPanelContainer;
-    @FXML
-    private TextField inputField;
     @FXML
     private Button dashboardTabPanel, profileTabPanel, pointTabPanel, paymentHistoryTabPanel;
     public UserProfileViewController() {
@@ -38,32 +34,15 @@ public class UserProfileViewController implements Initializable {
 
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
-        logoImageViewInit();
-//        userProfileViewTabPanelContainerInit();
         userProfileViewTabPanelsInit();
         Event.fireEvent(dashboardTabPanel, new MouseEvent(MouseEvent.MOUSE_CLICKED, 0,
                 0, 0, 0, MouseButton.PRIMARY, 1, true, true, true, true,
                 true, true, true, true, true, true, null));
     }
-    public void userProfileViewTabPanelContainerInit() {
-        userProfileViewTabPanelContainer.getChildren().add(dashboardTabPanel);
-        userProfileViewTabPanelContainer.getChildren().add(profileTabPanel);
-        userProfileViewTabPanelContainer.getChildren().add(pointTabPanel);
-        userProfileViewTabPanelContainer.getChildren().add(paymentHistoryTabPanel);
-    }
     public void userProfileViewTabPanelsInit() {
         for (Node tabPanel : userProfileViewTabPanelContainer.getChildren()) {
             tabPanel.setStyle("-fx-pref-width: 110; -fx-pref-height: 48; -fx-font-weight: bold; -fx-text-fill: white; -fx-background-color: transparent;");
             tabPanelMouseEventListener((Button) tabPanel);
-        }
-    }
-    public void logoImageViewInit() {
-        String imageSource = "https://docs.google.com/uc?id=1F2pXOLfvuynr9JcURTR5Syg7N1YdPJXK";
-        Image logo = new Image(imageSource);
-        if (logo.isError()) {
-            System.out.println("Error loading image from " + imageSource);
-        } else {
-            logoImageView.setImage(logo);
         }
     }
     public void tabPanelMouseEventListener(Button tabPanel) {
@@ -108,14 +87,5 @@ public class UserProfileViewController implements Initializable {
         } else if (tabPanelOnClick == pointTabPanel) {
             userProfileViewMainContainer.getChildren().add(FXMLLoader.load(getClass().getResource("point-view.fxml")));
         }
-    }
-    @FXML
-    public void logoImageViewOnClick() throws IOException {
-        main.changeScene("index-view.fxml");
-    }
-    @FXML
-    public void onSearchFieldEnterKeyPress() throws IOException {
-        main.setQueryOnSearching(inputField.getText());
-        main.changeScene("search-results-view.fxml");
     }
 }

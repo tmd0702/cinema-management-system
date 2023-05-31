@@ -205,36 +205,36 @@ public class AddFakeDatabase {
             }
         }
     }
-    public void addFakeItemTicket(){ // PaymentItems
-        HashMap<String, String> itemTicket = new HashMap<String, String>();
-        for (int k = 0; k < 7; k++) { // k : rows number of seat per screen room
-            for (int h = 0; h < 12; h++) { // h: columns number of seat per screen room
-                int t = h + 1;
-                itemTicket.put("ID", idGenerator.generateId(itemTicketMangementProcessor.getDefaultDatabaseTable()));
-                Response response = itemTicketMangementProcessor.insertData(itemTicket, true);
-                if (response.getStatusCode() == StatusCode.OK) {
-                    System.out.println("insert 1 row success" + itemTicket.get("ID"));
-                } else {
-                    System.out.println(" failed");
-                }
-            }
-        }
-    }
-    public void addFakeSeatTicket(){ // PaymentSeats
-        HashMap<String, String> seatTicket = new HashMap<String, String>();
-        for (int k = 0; k < 7; k++) { // k : rows number of seat per screen room
-            for (int h = 0; h < 12; h++) { // h: columns number of seat per screen room
-                int t = h + 1;
-                seatTicket.put("ID", idGenerator.generateId(seatTicketManagementProcessor.getDefaultDatabaseTable()));
-                Response response = seatTicketManagementProcessor.insertData(seatTicket, true);
-                if (response.getStatusCode() == StatusCode.OK) {
-                    System.out.println("insert 1 row success" + seatTicket.get("ID"));
-                } else {
-                    System.out.println(" failed");
-                }
-            }
-        }
-    }
+//    public void addFakeItemTicket(){ // PaymentItems
+//        HashMap<String, String> itemTicket = new HashMap<String, String>();
+//        for (int k = 0; k < 7; k++) { // k : rows number of seat per screen room
+//            for (int h = 0; h < 12; h++) { // h: columns number of seat per screen room
+//                int t = h + 1;
+//                itemTicket.put("ID", idGenerator.generateId(itemTicketMangementProcessor.getDefaultDatabaseTable()));
+//                Response response = itemTicketMangementProcessor.insertData(itemTicket, true);
+//                if (response.getStatusCode() == StatusCode.OK) {
+//                    System.out.println("insert 1 row success" + itemTicket.get("ID"));
+//                } else {
+//                    System.out.println(" failed");
+//                }
+//            }
+//        }
+//    }
+//    public void addFakeSeatTicket(){ // PaymentSeats
+//        HashMap<String, String> seatTicket = new HashMap<String, String>();
+//        for (int k = 0; k < 7; k++) { // k : rows number of seat per screen room
+//            for (int h = 0; h < 12; h++) { // h: columns number of seat per screen room
+//                int t = h + 1;
+//                seatTicket.put("ID", idGenerator.generateId(seatTicketManagementProcessor.getDefaultDatabaseTable()));
+//                Response response = seatTicketManagementProcessor.insertData(seatTicket, true);
+//                if (response.getStatusCode() == StatusCode.OK) {
+//                    System.out.println("insert 1 row success" + seatTicket.get("ID"));
+//                } else {
+//                    System.out.println(" failed");
+//                }
+//            }
+//        }
+//    }
     public void addFakeBookingSeats(){
         HashMap<String, String> seatBooing = new HashMap<String, String>();
         for (int k = 0; k < 7; k++) { // k : rows number of seat per screen room

@@ -65,7 +65,6 @@ public class AddFakeDatabase {
         promotion.put("PROMOTION_DESCRIPTION", "mai dzo mai dzo, khuyen mai giam 20%");
         promotion.put("DISCOUNT", "0.2");
         promotion.put("USER_CATEGORY_ID", "UC_00001");
-        promotion.put("PAYMENT_ID", "PAY_00001");
         for (int i=0;i<200;++i) {
             promotion.put("ID", idGenerator.generateId(promotionManagementProcessor.getDefaultDatabaseTable()));
             promotion.put("PROMOTION_NAME", "Khuyen mai dot " + i);

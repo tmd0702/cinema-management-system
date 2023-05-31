@@ -4,6 +4,7 @@ import mysql.connector
 import requests
 import os
 import json
+from datetime import date
 
 class Database:
     def __init__(self):
@@ -28,6 +29,15 @@ class Database:
         except:
             print("error, skip")
 
+    def update_releasedate_movie(self):
+        today = date.today()
+        sql = "UPDATE MOVIES SET RELEASE_DATE = DATE_FORMAT(RELEASE_DATE ,'{today}');".format(today=today)
+        try:
+            self.cursor.execute(sql)
+            self.mydb.commit()
+            print("the row is updated.")
+        except:
+            print("error skip.")
     def insert_genre(self, genre_vals, movie_genre_vals):
         genre_sql = "INSERT INTO GENRES (ID, NAME) VALUES (%s, %s);"
         try:
@@ -57,6 +67,7 @@ def themoviedb_url_checker(urlsf):
     except:
         print("error")
         return False
+
 if __name__ == "__main__":
     db = Database()
     data_path = os.getcwd().replace('\\', '/').replace('/python', '/resources/4hb-data/movies_metadata_cleaned.csv')
@@ -71,7 +82,7 @@ if __name__ == "__main__":
         db.insert_movies(vals)
 #         else:
 #             print(index, 'error')
-
+    db.update_releasedate_movie()
     for index, row in metadata.iterrows():
         genres = json.loads(row['genres'].replace("'", '"'))
         movie_id = str(row['id'])

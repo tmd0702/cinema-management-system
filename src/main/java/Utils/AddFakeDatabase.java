@@ -240,7 +240,7 @@ public class AddFakeDatabase {
         for (int k = 0; k < 7; k++) { // k : rows number of seat per screen room
             for (int h = 0; h < 12; h++) { // h: columns number of seat per screen room
                 int t = h + 1;
-                seatBooing.put("PAYMENT_TICKET_ID", "PT_" + String.format("%05d", k*12+t));
+                seatBooing.put("PAYMENT_ID", "PAY_" + String.format("%05d", k*12+t));
                 seatBooing.put("TICKET_ID", "TIC_" + String.format("%05d", k*12+t));
                 Response response = bookingTicketsManagementProcessor.insertData(seatBooing, true);
                 if (response.getStatusCode() == StatusCode.OK) {
@@ -256,7 +256,7 @@ public class AddFakeDatabase {
         for (int k = 0; k < 7; k++) { // k : rows number of seat per screen room
             for (int h = 0; h < 12; h++) { // h: columns number of seat per screen room
                 int t = h + 1;
-                itemBooking.put("PAYMENT_ITEM_ID", "PI_" + String.format("%05d",  k * 12 + t));
+                itemBooking.put("PAYMENT_ID", "PAY_" + String.format("%05d",  k * 12 + t));
                 itemBooking.put("ITEM_ID", "ITE_" + String.format("%05d", 1));
                 itemBooking.put("QUANTITY", "1");
                 Response response = bookingitemsManagementProcessor.insertData(itemBooking, true);

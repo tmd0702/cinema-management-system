@@ -64,7 +64,8 @@ public class AddFakeDatabase {
         promotion.put("END_DATE", "2023-05-15");
         promotion.put("PROMOTION_DESCRIPTION", "mai dzo mai dzo, khuyen mai giam 20%");
         promotion.put("DISCOUNT", "0.2");
-
+        promotion.put("USER_CATEGORY_ID", "UC_00001");
+        promotion.put("PAYMENT_ID", "PAY_00001");
         for (int i=0;i<200;++i) {
             promotion.put("ID", idGenerator.generateId(promotionManagementProcessor.getDefaultDatabaseTable()));
             promotion.put("PROMOTION_NAME", "Khuyen mai dot " + i);
@@ -274,10 +275,8 @@ public class AddFakeDatabase {
             for (int h = 0; h < 12; h++) { // h: columns number of seat per screen room
                 int t = h + 1;
                 payment.put("ID", idGenerator.generateId(paymentManagementProcessor.getDefaultDatabaseTable()));
-                payment.put("PAYMENT_ITEM_ID", "PI_" + String.format("%05d",  k * 12 + t));
-                payment.put("PAYMENT_TICKET_ID", "PT_" + String.format("%05d",  k * 12 + t));
                 payment.put("USER_ID", "USE_00001");
-                payment.put("PAYMENT_DATE", "2023-05-30");
+                payment.put("PAYMENT_DATE", "2023-05-30 00:00:00");
                 payment.put("PAYMENT_METHOD_ID", "PM_00001");
                 payment.put("TOTAL_AMOUNT", "299000");
                 payment.put("SCHEDULE_ID", "SCH_00001");

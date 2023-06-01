@@ -10,21 +10,19 @@ import java.util.ArrayList;
 import java.util.HashMap;
 public abstract class Processor {
     private Database database;
-    private Connection connector;
     private String defaultDatabaseTable;
     public Main main;
 
     public Processor() {
         this.main = Main.getInstance();
-        this.database = new Database();
-        this.connector = database.getConnection();
+        this.database = Database.getInstance();
         this.defaultDatabaseTable = "";
     }
     public Database getDatabase() {
         return this.database;
     }
     public Connection getConnector() {
-        return this.connector;
+        return database.getConnection();
     }
 
     public void setDefaultDatabaseTable(String defaultDatabaseTable) {
@@ -34,10 +32,10 @@ public abstract class Processor {
         return this.defaultDatabaseTable;
     }
     public void rollback() throws SQLException {
-        this.connector.rollback();
+        getConnector().rollback();
     }
     public void commit() throws SQLException {
-        this.connector.commit();
+        getConnector().commit();
     }
     public abstract Response insertData(HashMap<String, String> columnValueMap, boolean isCommit);
     public Response insert(HashMap <String, String> columnValueMap, String table, boolean isCommit) {
@@ -55,7 +53,7 @@ public abstract class Processor {
             Statement st = getConnector().createStatement();
             st.execute(query);
             st.close();
-            if (isCommit) this.connector.commit();
+//            if (isCommit) commit();
             return new Response("OK", StatusCode.OK);
         } catch (Exception e) {
             System.out.println(e);
@@ -87,7 +85,7 @@ public abstract class Processor {
             Statement st = getConnector().createStatement();
             st.execute(query);
             st.close();
-            if (isCommit) commit();
+//            if (isCommit) commit();
             return new Response("OK", StatusCode.OK);
         } catch (Exception e) {
             System.out.println(e);
@@ -102,7 +100,7 @@ public abstract class Processor {
         try {
             Statement st = getConnector().createStatement();
             st.execute(query);
-            if (isCommit) this.connector.commit();
+//            if (isCommit) commit();
             st.close();
             return new Response("OK", StatusCode.OK);
         } catch (Exception e) {

@@ -206,6 +206,12 @@ public class ManagementViewController implements Initializable {
         menuBoxButtonsStylingOnMouseEvent(nextBtn);
         menuBoxButtonsStylingOnMouseEvent(nextToTailBtn);
         menuBoxButtonsStylingOnMouseEvent(pagingToolbarRefreshBtn);
+        pagingToolbarRefreshBtn.setOnMouseClicked(new EventHandler<MouseEvent>() {
+            @Override
+            public void handle(MouseEvent mouseEvent) {
+                reRenderPage(false);
+            }
+        });
         menuBoxButtonsStylingOnMouseEvent(backBtn);
         menuBoxButtonsStylingOnMouseEvent(backToHeadBtn);
     }

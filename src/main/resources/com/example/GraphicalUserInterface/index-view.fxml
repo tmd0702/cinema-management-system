@@ -9,7 +9,7 @@
 <?import javafx.scene.text.Font?>
 
 
-     <AnchorPane fx:id="indexViewMainContainer" maxHeight="1538.0" maxWidth="903.0" prefHeight="1538.0" prefWidth="903.0" xmlns="http://javafx.com/javafx/19" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.example.GraphicalUserInterface.IndexViewController">
+     <AnchorPane fx:id="indexViewMainContainer" maxHeight="1538.0" maxWidth="903.0" prefHeight="1538.0" prefWidth="903.0" style="-fx-background-color: black;" xmlns="http://javafx.com/javafx/19" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.example.GraphicalUserInterface.IndexViewController">
         <children>
            <ImageView fx:id="backdropImageSection" fitHeight="530.0" fitWidth="903.0" pickOnBounds="true" preserveRatio="true" />
            <ScrollPane fx:id="moviePreviewSectionScrollPane" layoutY="210.0" prefHeight="305.0" prefWidth="890.0" style="-fx-background-color: transparent; -fx-background: transparent;">
@@ -17,23 +17,23 @@
                  <HBox fx:id="moviePreviewSection" prefHeight="288.0" prefWidth="890.0" style="-fx-background-color: transparent;" />
               </content>
            </ScrollPane>
-           <Label layoutX="57.0" layoutY="615.0" text="Currently playing">
+           <Label layoutX="57.0" layoutY="615.0" text="Currently playing" textFill="WHITE">
               <font>
                  <Font name="System Bold" size="14.0" />
               </font>
            </Label>
-           <Label fx:id="seeMoreCPBtn" layoutX="781.0" layoutY="616.0" onMouseClicked="#onSeeMoreCPBtnClick" text="see more">
+           <Label fx:id="seeMoreCPBtn" layoutX="781.0" layoutY="616.0" onMouseClicked="#onSeeMoreCPBtnClick" text="see more" textFill="WHITE">
               <font>
                  <Font name="System Bold" size="12.0" />
               </font>
            </Label>
            <HBox fx:id="currentlyPlayingList" layoutX="57.0" layoutY="667.0" prefHeight="259.0" prefWidth="777.0" />
-           <Label layoutX="59.0" layoutY="1033.0" text="Coming soon">
+           <Label layoutX="59.0" layoutY="1033.0" text="Coming soon" textFill="WHITE">
               <font>
                  <Font name="System Bold" size="14.0" />
               </font>
            </Label>
-           <Label fx:id="seeMoreCSBtn" layoutX="784.0" layoutY="1034.0" onMouseClicked="#onSeeMoreCSBtnClick" text="see more">
+           <Label fx:id="seeMoreCSBtn" layoutX="784.0" layoutY="1034.0" onMouseClicked="#onSeeMoreCSBtnClick" text="see more" textFill="WHITE">
               <font>
                  <Font name="System Bold" size="12.0" />
               </font>

@@ -59,15 +59,15 @@ public class AddFakeDatabase {
     public void addFakePromotions() throws Exception {
         HashMap<String, String> promotion = new HashMap<String, String>();
 
-        promotion.put("PROMOTION_NAME", "Khuyen mai dot 1");
+        promotion.put("NAME", "Khuyen mai dot 1");
         promotion.put("START_DATE", "2023-05-03");
         promotion.put("END_DATE", "2023-05-15");
-        promotion.put("PROMOTION_DESCRIPTION", "mai dzo mai dzo, khuyen mai giam 20%");
+        promotion.put("DESCRIPTION", "mai dzo mai dzo, khuyen mai giam 20%");
         promotion.put("DISCOUNT", "0.2");
         promotion.put("USER_CATEGORY_ID", "UC_00001");
         for (int i=0;i<200;++i) {
             promotion.put("ID", idGenerator.generateId(promotionManagementProcessor.getDefaultDatabaseTable()));
-            promotion.put("PROMOTION_NAME", "Khuyen mai dot " + i);
+            promotion.put("NAME", "Khuyen mai dot " + i);
             Response response = promotionManagementProcessor.insertData(promotion, true);
             if (response.getStatusCode() == StatusCode.OK) {
                 System.out.println("insert 1 row success");
@@ -316,13 +316,11 @@ public class AddFakeDatabase {
 //        addFakeDatabase.addFakeSeats();
 //        addFakeDatabase.addFakeShowTimes();
 //        addFakeDatabase.addFakeItems();
-//        addFakeDatabase.addFakeTicket();
-//        addFakeDatabase.addFakeItemTicket();
-//        addFakeDatabase.addFakeBookingItems();
-//        addFakeDatabase.addFakeSeatTicket();
-//        addFakeDatabase.addFakeBookingSeats();
-//        addFakeDatabase.addFakePaymentMethod();;
+        addFakeDatabase.addFakeTicket();
+        addFakeDatabase.addFakePaymentMethod();;
         addFakeDatabase.addFakePayments();
+        addFakeDatabase.addFakeBookingItems();
+        addFakeDatabase.addFakeBookingSeats();
     }
 }
 

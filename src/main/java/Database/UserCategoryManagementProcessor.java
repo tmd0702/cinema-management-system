@@ -12,7 +12,7 @@ public class UserCategoryManagementProcessor extends Processor {
     }
     @Override
     public Response getData(int from, int quantity, String queryCondition, String sortQuery) {
-        Response response = select("CATEGORY, POINT_LOWERBOUND", from, quantity, queryCondition, sortQuery, getDefaultDatabaseTable());
+        Response response = select("ID, CATEGORY, POINT_LOWERBOUND", from, quantity, queryCondition, sortQuery, getDefaultDatabaseTable());
         return response;
     }
     public Response updateData(HashMap<String, String> columnValueMap, String queryCondition, boolean isCommit) {

@@ -64,8 +64,8 @@ public class UpdatePromotionFormController implements Initializable {
     public String getUserCategoryObjectIDFromComboBox(Object value) {
         String id = null;
         for (int i=0; i<userCategoryCategories.size();++i) {
-            if (userCategoryCategories.get(i) == value) {
-                id = Utils.getRowValueByColumnName(i, "ID", userCategoryInfo);
+            if (userCategoryCategories.get(i).equals(value)) {
+                id = Utils.getRowValueByColumnName(i + 2, "ID", userCategoryInfo);
                 break;
             }
         }
@@ -77,7 +77,7 @@ public class UpdatePromotionFormController implements Initializable {
         promotionInfo.put("START_DATE", DateTimeFormatter.ofPattern("yyyy-MM-dd").format(startDateField.getValue()));
         promotionInfo.put("END_DATE", DateTimeFormatter.ofPattern("yyyy-MM-dd").format(endDateField.getValue()));
         promotionInfo.put("DISCOUNT", discountField.getText());
-        promotionInfo.put("DISCRIPTION", descriptionField.getText());
+        promotionInfo.put("DESCRIPTION", descriptionField.getText());
         promotionInfo.put("USER_CATEGORY_ID", getUserCategoryObjectIDFromComboBox(userCategoryNameField.getValue()));
         Response response = main.getPromotionManagementProcessor().updateData(promotionInfo, String.format("ID = '%s'", idField.getText()), true);
         StatusCode status = response.getStatusCode();

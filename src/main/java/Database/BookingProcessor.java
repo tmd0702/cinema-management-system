@@ -18,7 +18,9 @@ public class BookingProcessor extends Processor {
         this.bookingInfor = new BookingInfor();
         this.idGenerator = new IdGenerator();
     }
-
+    public int countData(String queryCondition) {
+        return count(queryCondition, getDefaultDatabaseTable());
+    }
     public Response getData(int from, int quantity, String queryCondition, String sortQuery) {
         Response response = select("*", from, quantity, queryCondition, sortQuery, getDefaultDatabaseTable());
         return response;

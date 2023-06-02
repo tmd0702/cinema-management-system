@@ -20,6 +20,14 @@ public class ReviewManagementProcessor extends Processor{
         Response response = select("UC.CATEGORY, U.USERNAME, M.ID AS MOVIE_ID, R.RATING, R.COMMENT, R.DATE", from, quantity, queryCondition, sortQuery, "REVIEW R, USERS U, MOVIES M, USER_CATEGORY UC");
         return response;
     }
+    public int countData(String queryCondition) {
+        if (queryCondition.length() > 0) {
+            queryCondition = "R.MOVIE_ID = M.ID AND R.USER_ID = U.ID AND U.USER_CATEGORY_ID = UC.ID AND " + queryCondition;
+        } else {
+            queryCondition = "R.MOVIE_ID = M.ID AND R.USER_ID = U.ID AND U.USER_CATEGORY_ID = UC.ID";
+        }
+        return count(queryCondition, "REVIEW R, USERS U, MOVIES M, USER_CATEGORY UC");
+    }
     public Response updateData(HashMap<String, String> columnValueMap, String queryCondition, boolean isCommit) {
         return update(columnValueMap, queryCondition, getDefaultDatabaseTable(), isCommit);
     }

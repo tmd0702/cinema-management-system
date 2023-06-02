@@ -151,8 +151,8 @@ public abstract class Processor {
         return new Response("OK", StatusCode.OK, result);
     }
     public abstract Response getData(int from, int quantity, String queryCondition, String sortQuery);
-    public int count(String queryCondition) {
-        String query = String.format("SELECT COUNT(*) FROM %s", defaultDatabaseTable);
+    public int count(String queryCondition, String table) {
+        String query = String.format("SELECT COUNT(*) FROM %s", table);
         if (queryCondition.length() > 0) {
             query = query + " WHERE " + queryCondition;
         }
@@ -170,6 +170,7 @@ public abstract class Processor {
         }
         return count;
     }
+    public abstract int countData(String queryCondition);
     public ArrayList<String> normColumnNames(ArrayList<String> columnNames, String tableName) {
         for (int i=0;i<columnNames.size();++i) {
             columnNames.set(i, tableName.substring(0, tableName.length()) + "_" + columnNames.get(i));

@@ -109,6 +109,14 @@ public class ScheduleManagementProcessor extends Processor {
     public Response updateData(HashMap<String, String> columnValueMap, String queryCondition, boolean isCommit) {
         return update(columnValueMap, queryCondition, getDefaultDatabaseTable(), isCommit);
     }
+    public int countData(String queryCondition) {
+        if (queryCondition.length() > 0) {
+            queryCondition = queryCondition + " AND SCHEDULES.MOVIE_ID = MOVIES.ID AND SCHEDULES.SCREEN_ROOM_ID = SCREEN_ROOMS.ID AND CINEMAS.ID = SCREEN_ROOMS.CINEMA_ID AND SCHEDULES.SHOW_TIME_ID = SHOW_TIMES.ID";
+        } else {
+            queryCondition = "SCHEDULES.MOVIE_ID = MOVIES.ID AND SCHEDULES.SCREEN_ROOM_ID = SCREEN_ROOMS.ID AND CINEMAS.ID = SCREEN_ROOMS.CINEMA_ID AND SCHEDULES.SHOW_TIME_ID = SHOW_TIMES.ID";
+        }
+        return count(queryCondition, "SCHEDULES, MOVIES, SHOW_TIMES, SCREEN_ROOMS, CINEMAS");
+    }
     @Override
     public Response getData(int from, int quantity, String queryCondition, String sortQuery) {
         if (queryCondition.length() > 0) {

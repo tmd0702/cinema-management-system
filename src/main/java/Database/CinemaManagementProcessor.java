@@ -13,6 +13,9 @@ public class CinemaManagementProcessor extends Processor {
         Response response = select("*", from, quantity, queryCondition, sortQuery, getDefaultDatabaseTable());
         return response;
     }
+    public int countData(String queryCondition) {
+        return count(queryCondition, getDefaultDatabaseTable());
+    }
     public Response updateData(HashMap<String, String> columnValueMap, String queryCondition, boolean isCommit) {
         return update(columnValueMap, queryCondition, getDefaultDatabaseTable(), isCommit);
     }

@@ -62,6 +62,14 @@ public class AccountManagementProcessor extends Processor {
         }
 
     }
+    public int countData(String queryCondition) {
+        if (queryCondition.length() == 0) {
+            queryCondition = "USERS.USER_CATEGORY_ID = USER_CATEGORY.ID";
+        } else {
+            queryCondition = queryCondition + " AND USERS.USER_CATEGORY_ID = USER_CATEGORY.ID";
+        }
+        return count(queryCondition, "USERS, USER_CATEGORY");
+    }
     public Response getData(int from, int quantity, String queryCondition, String sortQuery) {
         if (queryCondition.length() == 0) {
             queryCondition = "USERS.USER_CATEGORY_ID = USER_CATEGORY.ID";

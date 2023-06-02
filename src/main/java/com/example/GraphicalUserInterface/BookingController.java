@@ -266,11 +266,11 @@ public class BookingController {
         handleApplyPromotionRequest();
      }
      public void handleApplyPromotionRequest(){
-        Response response = Main.getInstance().getPromotionManagementProcessor().getData(0,-1, String.format("ID = '%s'", bookingProcessor.getBookingInfor().getPromotionCode()),"");
+        Response response = Main.getInstance().getPromotionManagementProcessor().getData(0,-1, String.format("PROMOTIONS.ID = '%s'", bookingProcessor.getBookingInfor().getPromotionCode()),"");
         System.out.println(response.getData());
 
-        if(Utils.getDataValuesByColumnName(response.getData(), "ID").size() > 0){
-            Float discountNumber = Float.parseFloat(Utils.getDataValuesByColumnName(response.getData(), "DISCOUNT").get(0));
+        if(Utils.getDataValuesByColumnName(response.getData(), "PROMOTIONS.ID").size() > 0){
+            Float discountNumber = Float.parseFloat(Utils.getDataValuesByColumnName(response.getData(), "PROMOTIONS.DISCOUNT").get(0));
             calculateDiscount(discountNumber);
         }else{
             Dialog<String> dialog = new Dialog<String>();

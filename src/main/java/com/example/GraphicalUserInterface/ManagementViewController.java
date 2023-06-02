@@ -830,7 +830,9 @@ public class ManagementViewController implements Initializable {
     }
     public void reRenderPage(boolean isInit) {
         cellOnClick = null;
-        totalRowNum = activeProcessor.count(queryCondition);
+        totalRowNum = activeProcessor.countData(queryCondition);
+        System.out.println(queryCondition);
+        System.out.println(Math.ceilDiv(totalRowNum, rowPerPageNum) + " " + totalRowNum + " " + rowPerPageNum);
         setTotalPageNum(Math.max(1, Math.ceilDiv(totalRowNum, rowPerPageNum)));
         setCurrentPage(Math.min(currentPage, totalPageNum));
         if (isInit) resetQueryStatementValues();

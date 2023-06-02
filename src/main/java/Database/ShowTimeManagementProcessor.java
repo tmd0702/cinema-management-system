@@ -17,6 +17,9 @@ public class ShowTimeManagementProcessor extends Processor{
     public Response updateData(HashMap<String, String> columnValueMap, String queryCondition, boolean isCommit) {
         return update(columnValueMap, queryCondition, getDefaultDatabaseTable(), isCommit);
     }
+    public int countData(String queryCondition) {
+        return count(queryCondition, getDefaultDatabaseTable());
+    }
     public Response insertData(HashMap<String, String> columnValueMap, boolean isCommit) {
         return insert(columnValueMap, getDefaultDatabaseTable(), isCommit);
     }

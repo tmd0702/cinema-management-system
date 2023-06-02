@@ -27,6 +27,9 @@ public class FiltererProcessor extends Processor {
         }
         return genres;
     }
+    public int countData(String queryCondition) {
+        return count(queryCondition, getDefaultDatabaseTable());
+    }
     public Response getData(int from, int quantity, String queryCondition, String sortQuery) {
         Response response = select("*", from, quantity, queryCondition, sortQuery, getDefaultDatabaseTable());
         return response;

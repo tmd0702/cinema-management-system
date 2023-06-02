@@ -9,7 +9,9 @@ public class AuthenticationManagementProcessor extends Processor {
         super();
         setDefaultDatabaseTable("AUTHENTICATION");
     }
-
+    public int countData(String queryCondition) {
+        return count(queryCondition, getDefaultDatabaseTable());
+    }
     @Override
     public Response getData(int from, int quantity, String queryCondition, String sortQuery) {
         return select("*", from, quantity, queryCondition, sortQuery, getDefaultDatabaseTable());

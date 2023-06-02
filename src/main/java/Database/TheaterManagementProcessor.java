@@ -13,6 +13,9 @@ public class TheaterManagementProcessor extends Processor {
         Response response = select("CINEMAS.ID AS 'CINEMAS.ID', CINEMAS.NAME AS 'CINEMAS.NAME', CINEMAS.ADDRESS AS 'CINEMAS.ADDRESS', CINEMAS.CINE_AREA AS 'CINEMAS.CINE_AREA'", from, quantity, queryCondition, sortQuery, getDefaultDatabaseTable());
         return response;
     }
+    public int countData(String queryCondition) {
+        return count(queryCondition, getDefaultDatabaseTable());
+    }
     public Response updateData(HashMap<String, String> columnValueMap, String queryCondition, boolean isCommit) {
         return update(columnValueMap, queryCondition, getDefaultDatabaseTable(), isCommit);
     }

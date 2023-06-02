@@ -12,6 +12,9 @@ public class ItemCategoryManagementProcessor extends Processor {
     public Response insertData(HashMap<String, String> columnValueMap, boolean isCommit) {
         return insert(columnValueMap, getDefaultDatabaseTable(), isCommit);
     }
+    public int countData(String queryCondition) {
+        return count(queryCondition, getDefaultDatabaseTable());
+    }
     public Response deleteData(String queryCondition, boolean isCommit) {
         return delete(queryCondition, getDefaultDatabaseTable(), isCommit);
     }

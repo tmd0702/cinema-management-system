@@ -19,6 +19,9 @@ public class TicketManagementProcessor extends Processor{
         Response response = select("T.ID, T.AMOUNT, SC.SHOW_DATE, ST.START_TIME, S.NAME", from ,quantity, queryCondition, sortQuery, "TICKETS T, SEATS S, SCHEDULES SC, SHOW_TIMES ST, SCREEN_ROOMS SR, CINEMAS C");
         return response;
     }
+    public int countData(String queryCondition) {
+        return count(queryCondition, getDefaultDatabaseTable());
+    }
     public Response updateData(HashMap<String, String> columnValueMap, String queryCondition, boolean isCommit) {
         return update(columnValueMap, queryCondition, getDefaultDatabaseTable(), isCommit);
     }

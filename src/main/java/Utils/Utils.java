@@ -152,7 +152,6 @@ public class Utils {
         String ret = null;
         try {
             for (String dataColumnName : data.get(0)) {
-                System.out.println(columnName + " " + dataColumnName);
                 if (columnName.equals(dataColumnName)) {
                     ret = data.get(index).get(data.get(0).indexOf(dataColumnName));
                     break;

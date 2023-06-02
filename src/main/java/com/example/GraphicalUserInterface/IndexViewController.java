@@ -185,16 +185,37 @@ public class IndexViewController implements Initializable {
             // initialize booking button
             Button bookingBtn = new Button();
             bookingBtn.setId(movie.getId() + "BookingBtn");
+            bookingBtn.setPrefWidth(50 * 1.8);
+            bookingBtn.setPrefHeight(20 * 1.8);
+            bookingBtn.setStyle("-fx-background-color: #AB0A10;-fx-text-fill: white;-fx-font-weight: bold;-fx-font-size:8px;");
+            bookingBtn.setText("Book Now");
+            bookingBtn.setOpacity(0);
+            bookingBtn.setVisible(false);
+            bookingBtn.setLayoutY(220);
             bookingBtn.setOnMouseClicked(new EventHandler<MouseEvent>() {
                 @Override
                 public void handle(MouseEvent event) {
-                    try {
-                        main.setMovieOnBooking(movie);
-                        main.changeView("booking-form.fxml");
-                    } catch (IOException e) {
-                        System.out.println(e);
-                    }
+                    if (main.getSignedInUser() != null) {
+                        try {
+                            main.setMovieOnBooking(movie);
+                            main.changeView("booking-form.fxml");
+                        } catch (IOException e) {
+                            System.out.println(e);
+                        }
 
+                    } else {
+                    Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
+                    alert.setTitle("Failed");
+                    alert.setContentText("Please sign in to comment!");
+                    Optional<ButtonType> result = alert.showAndWait();
+                    if (result.get() == ButtonType.OK) {
+                        Event.fireEvent(main.getNodeById("#signInBtn"), new MouseEvent(MouseEvent.MOUSE_CLICKED, 0,
+                                0, 0, 0, MouseButton.PRIMARY, 1, true, true, true, true,
+                                true, true, true, true, true, true, null));
+                    } else {
+
+                    }
+                }
                 }
             });
             // initialize movie view
@@ -205,13 +226,6 @@ public class IndexViewController implements Initializable {
             poster.setFitHeight(148);
             poster.setFitWidth(103);
             poster.setLayoutY(poster.getFitHeight() - 15);
-            bookingBtn.setPrefWidth(50 * 1.8);
-            bookingBtn.setPrefHeight(20 * 1.8);
-            bookingBtn.setStyle("-fx-background-color: #AB0A10;-fx-text-fill: white;-fx-font-weight: bold;-fx-font-size:8px;");
-            bookingBtn.setText("Book Now");
-            bookingBtn.setOpacity(0);
-            bookingBtn.setVisible(false);
-            bookingBtn.setLayoutY(220);
             //bookingBtn.setDisable(true);
             movieView.setStyle("-fx-background-radius:30%;");
             movieView.getChildren().add(poster);

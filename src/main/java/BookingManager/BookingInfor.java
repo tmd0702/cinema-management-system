@@ -9,9 +9,9 @@ import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 import java.util.concurrent.TimeUnit;
 public class BookingInfor {
-    private String idMovie, nameMovie, nameCinema, date, time, screen, promotionCode, paymentMethodId;
+    private String idMovie, nameMovie, nameCinema, date, time, screen, promotionCode, paymentMethodId, scheduleId;
     private ArrayList<String> seats;
-    private ArrayList<Integer> items;
+    private ArrayList<ArrayList<String>> items;
     private int ticketPrice, comboPrice, total, discount;
 
 
@@ -31,7 +31,7 @@ public class BookingInfor {
         this.comboPrice = 0;
         this.total = 0;
     }
-    public BookingInfor(String id, String movie, String cinema, String date, String time, String screen, String promotionCode, String method, int discount, ArrayList<String> seats, ArrayList<Integer> items, int ticketp, int combop, int totalp){
+    public BookingInfor(String id, String movie, String cinema, String date, String time, String screen, String promotionCode, String scheduleId, String method, int discount, ArrayList<String> seats, ArrayList<ArrayList<String>> items, int ticketp, int combop, int totalp){
         this.idMovie = id;
         this.nameMovie = movie;
         this.nameCinema = cinema;
@@ -40,6 +40,7 @@ public class BookingInfor {
         this.screen = screen;
         this.promotionCode = promotionCode;
         this.paymentMethodId = method;
+        this.scheduleId = scheduleId;
         this.discount = discount;
         this.seats = seats;
         this.items = items;
@@ -48,7 +49,7 @@ public class BookingInfor {
         this.total = totalp;
     }
     public void setIdMovie(String id){this.idMovie = id;}
-    public void addItems(Integer item){
+    public void addItems(ArrayList<String> item){
         this.items.add(item);
     }
     public void addSeats(String seat){
@@ -59,11 +60,12 @@ public class BookingInfor {
     public void setDate(String date){this.date = date;}
     public void setTime(String time){this.time = time;}
     public void setScreen(String screen){this.screen = screen;}
+    public void setScheduleId(String scheduleId) {this.scheduleId = scheduleId;}
     public void setDiscount(int discount){this.discount = discount;}
     public void setPromotionCode(String promotionCode){this.promotionCode = promotionCode;}
     public void setPaymentMethodId(String paymentMethodId){this.paymentMethodId = paymentMethodId;}
     public void setSeats(ArrayList<String> seats){this.seats = seats;}
-    public void setItems(ArrayList<Integer> items){this.items = items;}
+    public void setItems(ArrayList<ArrayList<String>> items){this.items = items;}
     public void setTicketPrice(int price){this.ticketPrice = price;}
     public void setComboPrice(int price){this.comboPrice = price;}
     public void setTotal(int price){this.total = price;}
@@ -72,11 +74,12 @@ public class BookingInfor {
     public String getDate(){return this.date;}
     public String getTime(){return this.time;}
     public String getScreen(){return this.screen;}
+    public String getScheduleId(){return this.scheduleId;}
     public int getDiscount(){return this.discount;}
     public String getPromotionCode(){return this.promotionCode;}
     public String getPaymentMethodId(){return this.paymentMethodId;}
     public ArrayList<String> getSeats(){return this.seats;}
-    public ArrayList<Integer> getItems(){return this.items;}
+    public ArrayList<ArrayList<String>> getItems(){return this.items;}
     public int getTicketPrice(){return this.ticketPrice;}
     public int getComboPrice(){return this.comboPrice;}
     public int getTotal(){return this.total;}

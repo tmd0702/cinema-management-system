@@ -39,12 +39,16 @@ public class Main extends Application {
     private TheaterManagementProcessor theaterManagementProcessor;
     private ShowTimeManagementProcessor showTimeManagementProcessor;
     private ScreenRoomManagementProcessor screenRoomManagementProcessor;
+    private SeatManagementProcessor seatManagementProcessor;
     private ScheduleManagementProcessor scheduleManagementProcessor;
     private ReviewManagementProcessor reviewManagementProcessor;
     private AccountManagementProcessor accountManagementProcessor;
     private PromotionManagementProcessor promotionManagementProcessor;
     private ItemManagementProcessor itemManagementProcessor;
     private AuthenticationManagementProcessor authenticationManagementProcessor;
+    private TicketManagementProcessor ticketManagementProcessor;
+    private BookingSeatManagementProcessor bookingSeatManagementProcessor;
+    private BookingItemManagementProccessor bookingItemManagementProccessor;
     private Config config;
     public Main() throws Exception {
         super();
@@ -58,12 +62,16 @@ public class Main extends Application {
         this.reviewManagementProcessor = new ReviewManagementProcessor();
         this.scheduleManagementProcessor = new ScheduleManagementProcessor();
         this.screenRoomManagementProcessor = new ScreenRoomManagementProcessor();
+        this.seatManagementProcessor = new SeatManagementProcessor();
         this.theaterManagementProcessor = new TheaterManagementProcessor();
         this.showTimeManagementProcessor = new ShowTimeManagementProcessor();
         this.movieManagementProcessor = new MovieManagementProcessor();
         this.bookingProcessor = new BookingProcessor();
         this.filtererProcessor = new FiltererProcessor();
         this.itemManagementProcessor = new ItemManagementProcessor();
+        this.ticketManagementProcessor = new TicketManagementProcessor();
+        this.bookingSeatManagementProcessor = new BookingSeatManagementProcessor();
+        this.bookingItemManagementProccessor = new BookingItemManagementProccessor();
         this.queryOnSearching = "";
         nowShowingMoviesTabActive = false;
         comingSoonMoviesTabActive = false;
@@ -75,30 +83,28 @@ public class Main extends Application {
     public PromotionManagementProcessor getPromotionManagementProcessor() {
         return this.promotionManagementProcessor;
     }
-    public AuthenticationManagementProcessor getAuthenticationManagementProcessor() {
-        return this.authenticationManagementProcessor;
-    }
-    public UserCategoryManagementProcessor getUserCategoryManagementProcessor() {
-        return this.userCategoryManagementProcessor;
-    }
+    public AuthenticationManagementProcessor getAuthenticationManagementProcessor() {return this.authenticationManagementProcessor;}
+    public UserCategoryManagementProcessor getUserCategoryManagementProcessor() {return this.userCategoryManagementProcessor;}
     public PaymentManagementProcessor getPaymentManagementProcessor() {
         return this.paymentManagementProcessor;
     }
+    public BookingItemManagementProccessor getBookingItemManagementProccessor(){return this.bookingItemManagementProccessor;}
     public ReviewManagementProcessor getReviewManagementProcessor() {
         return this.reviewManagementProcessor;
+    }
+    public  TicketManagementProcessor getTicketManagementProcessor(){
+        return this.ticketManagementProcessor;
     }
     public AccountManagementProcessor getAccountManagementProcessor() {
         return this.accountManagementProcessor;
     }
-    public Stage getStage() {
-        return this.stage;
-    }
+    public BookingSeatManagementProcessor getBookingSeatManagementProcessor(){return this.bookingSeatManagementProcessor;}
+    public Stage getStage() {return this.stage;}
     public ScheduleManagementProcessor getScheduleManagementProcessor() {
         return this.scheduleManagementProcessor;
     }
-    public ScreenRoomManagementProcessor getScreenRoomManagementProcessor() {
-        return this.screenRoomManagementProcessor;
-    }
+    public ScreenRoomManagementProcessor getScreenRoomManagementProcessor() {return this.screenRoomManagementProcessor;}
+    public SeatManagementProcessor getSeatManagementProcessor(){return this.seatManagementProcessor;}
     public Node getNodeById(String id) {
         return stage.getScene().lookup(id);
     }
@@ -125,9 +131,7 @@ public class Main extends Application {
     public void setQueryOnSearching(String queryOnSearching) {
         this.queryOnSearching = queryOnSearching;
     }
-    public SearchEngine getSearchEngine() {
-        return this.searchEngine;
-    }
+    public SearchEngine getSearchEngine() {return this.searchEngine;}
     public String getQueryOnSearching() {
         return this.queryOnSearching;
     }
@@ -173,7 +177,7 @@ public class Main extends Application {
         stage = primaryStage;
         setMovieOnBooking(new Movie());
         FXMLLoader fxmlLoader = new FXMLLoader(Main.class.getResource("main-outline.fxml"));
-        Scene scene = new Scene(fxmlLoader.load(), 920, 600);
+        Scene scene = new Scene(fxmlLoader.load(), 920, 656);
         scene.getStylesheets().add(getClass().getResource("assets/css/index-style.css").toExternalForm());
         stage.setTitle("4HB Cinema Management");
         stage.setScene(scene);

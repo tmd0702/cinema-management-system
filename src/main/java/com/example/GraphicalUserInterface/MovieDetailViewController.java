@@ -64,6 +64,8 @@ public class MovieDetailViewController implements Initializable {
     private VBox movieDetailSection;
     @FXML
     private Label description;
+    @FXML
+    private Button bookMovieBtn;
     public MovieDetailViewController () {
         main = Main.getInstance();
         movieOnDetail = main.getMovieOnDetail();
@@ -89,6 +91,38 @@ public class MovieDetailViewController implements Initializable {
         description.setWrapText(true);
         description.setText(movieOnDetail.getOverview());
         description.setDisable(true);
+        System.out.println("parent: " + bookMovieBtn.getParent());
+        if (main.getMovieManagementProcessor().getMovieManager().getCurrentlyPlayingMovieList().contains(movieOnDetail)) {
+            bookMovieBtn.setOnMouseClicked(new EventHandler<MouseEvent>() {
+                @Override
+                public void handle(MouseEvent event) {
+                    if (main.getSignedInUser() != null) {
+                        try {
+                            main.setMovieOnBooking(movieOnDetail);
+                            main.changeView("booking-form.fxml");
+                        } catch (IOException e) {
+                            System.out.println(e);
+                        }
+
+                    }else {
+                        Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
+                        alert.setTitle("Failed");
+                        alert.setContentText("Please sign in to comment!");
+                        Optional<ButtonType> result = alert.showAndWait();
+                        if (result.get() == ButtonType.OK) {
+                            Event.fireEvent(main.getNodeById("#signInBtn"), new MouseEvent(MouseEvent.MOUSE_CLICKED, 0,
+                                    0, 0, 0, MouseButton.PRIMARY, 1, true, true, true, true,
+                                    true, true, true, true, true, true, null));
+                        } else {
+
+                        }
+                    }
+                }
+            });
+        } else {
+            movieDetailSection.getChildren().remove(bookMovieBtn);
+        }
+
     }
     public void ratingFieldInit() {
         for (int i=0; i < ratingField.getChildren().size();++i) {

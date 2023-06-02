@@ -308,19 +308,19 @@ public class AddFakeDatabase {
     }
     public static void main(String[] args) throws Exception {
         AddFakeDatabase addFakeDatabase = new AddFakeDatabase();
-        addFakeDatabase.addFakeUserCategory();
-        addFakeDatabase.addFakeAccounts();
-        addFakeDatabase.addFakePromotions();
-        addFakeDatabase.addFakeTheaters();
-        addFakeDatabase.addFakeScreenRooms();
-        addFakeDatabase.addFakeSeats();
-        addFakeDatabase.addFakeShowTimes();
-        addFakeDatabase.addFakeItems();
-//        addFakeDatabase.addFakeTicket();
-//        addFakeDatabase.addFakePaymentMethod();;
-//        addFakeDatabase.addFakePayments();
-//        addFakeDatabase.addFakeBookingItems();
-//        addFakeDatabase.addFakeBookingSeats();
+//        addFakeDatabase.addFakeUserCategory();
+//        addFakeDatabase.addFakeAccounts();
+//        addFakeDatabase.addFakePromotions();
+//        addFakeDatabase.addFakeTheaters();
+//        addFakeDatabase.addFakeScreenRooms();
+//        addFakeDatabase.addFakeSeats();
+//        addFakeDatabase.addFakeShowTimes();
+//        addFakeDatabase.addFakeItems();
+        addFakeDatabase.addFakeTicket();
+        addFakeDatabase.addFakePaymentMethod();;
+        addFakeDatabase.addFakePayments();
+        addFakeDatabase.addFakeBookingItems();
+        addFakeDatabase.addFakeBookingSeats();
     }
 }
 

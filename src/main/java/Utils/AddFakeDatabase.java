@@ -10,9 +10,8 @@ import java.util.HashMap;
 
 public class AddFakeDatabase {
     Processor accountManagementProcessor, promotionManagementProcessor, theaterManagementProcessor, screenRoomManagementProcessor, userCategoryManagementProcessor;
-    Processor seatManagementProcessor, showTimeManagementProcessor, scheduleManagementProcessor, itemManagementProcessor, bookingTicketManagementProcessor, bookingItemMangementProcessor;
-    Processor ticketManagementProcessor, paymentManagementProcessor, paymentMethodManagementProcessor;
-    Processor seatCategoryManangementProcessor, itemCategoryManagementProcessor;
+    Processor seatManagementProcessor, showTimeManagementProcessor, scheduleManagementProcessor, itemManagementProcessor, priceManagementProcessor;
+    Processor bookingitemsManagementProcessor, bookingTicketsManagementProcessor, ticketManagementProcessor, paymentManagementProcessor, paymentMethodManagementProcessor;
     IdGenerator idGenerator;
     static MovieManagementProcessor movieManagementProcessor;
     Main main;
@@ -26,13 +25,12 @@ public class AddFakeDatabase {
         this.showTimeManagementProcessor = new ShowTimeManagementProcessor();
         this.scheduleManagementProcessor = new ScheduleManagementProcessor();
         this.itemManagementProcessor = new ItemManagementProcessor();
-        this.bookingTicketManagementProcessor = new BookingTicketManagementProcessor();
-        this.bookingItemMangementProcessor = new BookingItemManagementProcessor();
+        this.bookingitemsManagementProcessor = new BookingItemManagementProcessor();
+        this.bookingTicketsManagementProcessor = new BookingTicketManagementProcessor();
         this.ticketManagementProcessor = new TicketManagementProcessor();
         this.paymentManagementProcessor = new PaymentManagementProcessor();
         this.paymentMethodManagementProcessor = new PaymentMethodManagementProcessor();
-        this.seatCategoryManangementProcessor = new SeatCategoryManagementProcessor();
-        this.itemCategoryManagementProcessor = new ItemCategoryManagementProcessor();
+        this.priceManagementProcessor = new PriceManagementProcessor();
         this.idGenerator = new IdGenerator();
     }
     public void addFakeAccounts() throws Exception {
@@ -112,27 +110,10 @@ public class AddFakeDatabase {
             }
         }
     }
-    public void addFakeSeatCategory(){
-        HashMap<String, String> seatCategory = new HashMap<String, String>();
-        ArrayList<String> category = new ArrayList<String>();
-        category.add("NORMAL");
-        category.add("VIP");
-        category.add("COUPLE");
-        for(String c : category) {
-            seatCategory.put("ID", idGenerator.generateId(seatCategoryManangementProcessor.getDefaultDatabaseTable()));
-            seatCategory.put("CATEGORY", c);
-            Response response = seatCategoryManangementProcessor.insertData(seatCategory, true);
-            if (response.getStatusCode() == StatusCode.OK) {
-                System.out.println("insert 1 row success" + seatCategory.get("ID"));
-            } else {
-                System.out.println(" failed");
-            }
-        }
-    }
     public void addFakeSeats() throws Exception {
         HashMap<String, String> seat = new HashMap<String, String>();
-        seat.put("SEAT_CATEGORY_ID", "SC_00001");
-        seat.put("STATUS", "1");
+        seat.put("CATEGORY", "NORMAL");
+        seat.put("SEAT_STATUS", "AVAILABLE");
         int sr_id = 0;
         for (int i = 0; i < 2; ++i) { // i: cinema counter
             for (int j = 1; j <= 6; j++) { // j: screen room counter per cinema
@@ -149,7 +130,7 @@ public class AddFakeDatabase {
 
                         Response response = seatManagementProcessor.insertData(seat, true);
                         if (response.getStatusCode() == StatusCode.OK) {
-                            System.out.println("insert 1 row success" + seat.get("ID"));
+                            System.out.println("insert 1 row success" + seat.get("CINEMA_ID"));
                         } else {
                             System.out.println(i + " failed");
                         }
@@ -182,45 +163,28 @@ public class AddFakeDatabase {
         categories.add("Member");
         categories.add("VIP");
         categories.add("VVIP");
-        ArrayList<String> pointLowerbounds = new ArrayList<String>();
-        pointLowerbounds.add("0");
-        pointLowerbounds.add("2000");
-        pointLowerbounds.add("4000");
         for (String category : categories) {
             HashMap<String, String> userCategory = new HashMap<String, String>();
             userCategory.put("ID", idGenerator.generateId("USER_CATEGORY"));
             userCategory.put("CATEGORY", category);
-            userCategory.put("POINT_LOWERBOUND", pointLowerbounds.get(categories.indexOf(category)));
             this.userCategoryManagementProcessor.insertData(userCategory, true);
         }
 
     }
-    public void addFakeItemCategory(){
-        ArrayList<String> categories = new ArrayList<String>();
-        categories.add("Drink");
-        categories.add("Popcorn");
-        categories.add("Combo1");
-        categories.add("Combo2");
-        for (String category : categories) {
-            HashMap<String, String> itemCategory = new HashMap<String, String>();
-            itemCategory.put("ID", idGenerator.generateId("ITEM_CATEGORY"));
-            itemCategory.put("CATEGORY", category);
-            this.itemCategoryManagementProcessor.insertData(itemCategory, true);
-        }
-    }
     public void addFakeItems(){
         HashMap<String, String> item = new HashMap<String, String>();
-        for(int j = 1; j <= 6; j++) {
-            item.put("ID", idGenerator.generateId(itemManagementProcessor.getDefaultDatabaseTable()));
-            item.put("NAME", "Popcorn" + j);
-            item.put("ITEM_CATEGORY_ID", "IC_00002");
-            Response response = itemManagementProcessor.insertData(item, true);
-            if (response.getStatusCode() == StatusCode.OK) {
-                System.out.println("insert 1 row success" + item.get("ID"));
-            } else {
-                System.out.println(" failed");
+            for(int j = 1; j <= 6; j++) {
+                item.put("ID", idGenerator.generateId(itemManagementProcessor.getDefaultDatabaseTable()));
+                item.put("NAME", "Popcorn" + j);
+                item.put("CATEGORY", "Snack");
+                item.put("PRICE", "5.99");
+                Response response = itemManagementProcessor.insertData(item, true);
+                if (response.getStatusCode() == StatusCode.OK) {
+                    System.out.println("insert 1 row success" + item.get("ID"));
+                } else {
+                    System.out.println(" failed");
+                }
             }
-        }
     }
     public void addFakeTicket(){
         HashMap<String, String> seatTicket = new HashMap<String, String>();
@@ -230,15 +194,46 @@ public class AddFakeDatabase {
                 seatTicket.put("ID", idGenerator.generateId(ticketManagementProcessor.getDefaultDatabaseTable()));
                 seatTicket.put("SEAT_ID", "SEA_" + String.format("%05d", k * 12 + t));
                 seatTicket.put("SCHEDULE_ID", "SCH_" + String.format("%05d", 1));
+                seatTicket.put("AMOUNT", "70000");
                 Response response = ticketManagementProcessor.insertData(seatTicket, true);
                 if (response.getStatusCode() == StatusCode.OK) {
                     System.out.println("insert 1 row success" + seatTicket.get("ID"));
                 } else {
-                    System.out.println(" failed");
+                System.out.println(" failed");
                 }
             }
         }
     }
+//    public void addFakeItemTicket(){ // PaymentItems
+//        HashMap<String, String> itemTicket = new HashMap<String, String>();
+//        for (int k = 0; k < 7; k++) { // k : rows number of seat per screen room
+//            for (int h = 0; h < 12; h++) { // h: columns number of seat per screen room
+//                int t = h + 1;
+//                itemTicket.put("ID", idGenerator.generateId(itemTicketMangementProcessor.getDefaultDatabaseTable()));
+//                Response response = itemTicketMangementProcessor.insertData(itemTicket, true);
+//                if (response.getStatusCode() == StatusCode.OK) {
+//                    System.out.println("insert 1 row success" + itemTicket.get("ID"));
+//                } else {
+//                    System.out.println(" failed");
+//                }
+//            }
+//        }
+//    }
+//    public void addFakeSeatTicket(){ // PaymentSeats
+//        HashMap<String, String> seatTicket = new HashMap<String, String>();
+//        for (int k = 0; k < 7; k++) { // k : rows number of seat per screen room
+//            for (int h = 0; h < 12; h++) { // h: columns number of seat per screen room
+//                int t = h + 1;
+//                seatTicket.put("ID", idGenerator.generateId(seatTicketManagementProcessor.getDefaultDatabaseTable()));
+//                Response response = seatTicketManagementProcessor.insertData(seatTicket, true);
+//                if (response.getStatusCode() == StatusCode.OK) {
+//                    System.out.println("insert 1 row success" + seatTicket.get("ID"));
+//                } else {
+//                    System.out.println(" failed");
+//                }
+//            }
+//        }
+//    }
     public void addFakeBookingSeats(){
         HashMap<String, String> seatBooing = new HashMap<String, String>();
         for (int k = 0; k < 7; k++) { // k : rows number of seat per screen room
@@ -246,7 +241,7 @@ public class AddFakeDatabase {
                 int t = h + 1;
                 seatBooing.put("PAYMENT_ID", "PAY_" + String.format("%05d", k*12+t));
                 seatBooing.put("TICKET_ID", "TIC_" + String.format("%05d", k*12+t));
-                Response response = bookingTicketManagementProcessor.insertData(seatBooing, true);
+                Response response = bookingTicketsManagementProcessor.insertData(seatBooing, true);
                 if (response.getStatusCode() == StatusCode.OK) {
                     System.out.println("insert 1 row success" + seatBooing.get("ID"));
                 } else {
@@ -263,7 +258,7 @@ public class AddFakeDatabase {
                 itemBooking.put("PAYMENT_ID", "PAY_" + String.format("%05d",  k * 12 + t));
                 itemBooking.put("ITEM_ID", "ITE_" + String.format("%05d", 1));
                 itemBooking.put("QUANTITY", "1");
-                Response response = bookingTicketManagementProcessor.insertData(itemBooking, true);
+                Response response = bookingitemsManagementProcessor.insertData(itemBooking, true);
                 if (response.getStatusCode() == StatusCode.OK) {
                     System.out.println("insert 1 row success" + itemBooking.get("ID"));
                 } else {
@@ -300,11 +295,31 @@ public class AddFakeDatabase {
         method.add("VISA_CARD");
         method.add("CRASH_MONEY");
         for(int i = 0; i < 3; i++){
-            paymentMethor.put("ID", idGenerator.generateId(paymentMethodManagementProcessor.getDefaultDatabaseTable()));
-            paymentMethor.put("NAME",method.get(i));
-            Response response = paymentMethodManagementProcessor.insertData(paymentMethor, true);
+                paymentMethor.put("ID", idGenerator.generateId(paymentMethodManagementProcessor.getDefaultDatabaseTable()));
+                paymentMethor.put("NAME",method.get(i));
+                Response response = paymentMethodManagementProcessor.insertData(paymentMethor, true);
+                if (response.getStatusCode() == StatusCode.OK) {
+                    System.out.println("insert 1 row success" + paymentMethor.get("ID"));
+                } else {
+                    System.out.println(" failed");
+                }
+        }
+    }
+    public void addFakePrice(){
+        HashMap<String, String> price = new HashMap<String, String>();
+        for(int i = 1; i < 8; i++){
+            price.put("ID", idGenerator.generateId(priceManagementProcessor.getDefaultDatabaseTable()));
+            if(i <= 4) {
+                price.put("COMPONENT_ID", "IC_" + String.format("%05d", i));
+                price.put("PRICE", "45000");
+            }else {
+                price.put("COMPONENT_ID", "SC_" + String.format("%05d", i - 4));
+                price.put("PRICE", Integer.toString(70000 + 10000* (i-4)));
+            }
+            price.put("DATE", "2023-06-03");
+            Response response = priceManagementProcessor.insertData(price, true);
             if (response.getStatusCode() == StatusCode.OK) {
-                System.out.println("insert 1 row success" + paymentMethor.get("ID"));
+                System.out.println("insert 1 row success" + price.get("ID"));
             } else {
                 System.out.println(" failed");
             }
@@ -317,15 +332,15 @@ public class AddFakeDatabase {
 //        addFakeDatabase.addFakePromotions();
 //        addFakeDatabase.addFakeTheaters();
 //        addFakeDatabase.addFakeScreenRooms();
-//        addFakeDatabase.addFakeSeatCategory();
 //        addFakeDatabase.addFakeSeats();
 //        addFakeDatabase.addFakeShowTimes();
-//        addFakeDatabase.addFakeItemCategory();
-        addFakeDatabase.addFakeItems();
+//        addFakeDatabase.addFakeItems();
 //        addFakeDatabase.addFakeTicket();
 //        addFakeDatabase.addFakePaymentMethod();;
 //        addFakeDatabase.addFakePayments();
 //        addFakeDatabase.addFakeBookingItems();
 //        addFakeDatabase.addFakeBookingSeats();
+        addFakeDatabase.addFakePrice();
     }
 }
+

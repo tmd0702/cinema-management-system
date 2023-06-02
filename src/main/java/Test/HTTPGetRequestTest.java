@@ -26,13 +26,46 @@ public class HTTPGetRequestTest{
         }
         return scores;
     }
+    public static String helloWorld() {
+        String inputLine = "";
+        String url = String.format("http://localhost:3300/");
+        try {
+            URL keywordsSearchingURL = new URL(url);
+            URLConnection keywordsSearchingHTTP = keywordsSearchingURL.openConnection();
+            BufferedReader in = new BufferedReader(new InputStreamReader(
+                    keywordsSearchingHTTP.getInputStream()));
+
+            while ((inputLine = in.readLine()) != null)
+                System.out.println(inputLine);
+
+            in.close();
+        } catch (Exception e) {
+            System.out.println(e);
+        }
+        System.out.println(inputLine);
+        return inputLine;
+    }
+    public static String signIn() {
+        String inputLine = "";
+        String url = String.format("http://localhost:3300/auth/sign_in?username=admin1&password=sa123456");
+        try {
+            URL keywordsSearchingURL = new URL(url);
+            URLConnection keywordsSearchingHTTP = keywordsSearchingURL.openConnection();
+            BufferedReader in = new BufferedReader(new InputStreamReader(
+                    keywordsSearchingHTTP.getInputStream()));
+
+            while ((inputLine = in.readLine()) != null)
+                System.out.println(inputLine);
+
+            in.close();
+        } catch (Exception e) {
+            System.out.println(e);
+        }
+        System.out.println(inputLine);
+        return inputLine;
+    }
     public static void main(String[] args) {
-        String tmp = getKeywordsSearchingResults();
-        System.out.println(tmp);
-        JSONObject jo = new JSONObject(tmp);
-        System.out.println(jo);
-        //HashMap<String, Double> scores = Utils.Utils.sortMapByValue(Utils.Utils.jsonToMap(jo));
-        //System.out.println(scores);
+        signIn();
     }
 
 }

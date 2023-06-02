@@ -34,12 +34,13 @@ public class PointViewController implements Initializable {
         pointViewLabelsInit();
     }
     public void pointStatusInit() {
-        ArrayList<ArrayList<String>> userCategoryFetcher = main.getUserCategoryManagementProcessor().getData(0, -1, "", "POINT_LOWERBOUND ASC").getData();
+        ArrayList<ArrayList<String>> userCategoryFetcher = main.getUserCategoryManagementProcessor().getData(0, -1, "", "USER_CATEGORY.POINT_LOWERBOUND ASC").getData();
+        System.out.println(userCategoryFetcher);
         int userCategoryFetcherLength = userCategoryFetcher.size() - 2;
         for (int i=2; i < userCategoryFetcher.size();++i) {
             HBox userCategoryLabelContainer = new HBox();
             userCategoryLabelContainer.setAlignment(Pos.CENTER);
-            Label userCategoryLabel = new Label(Utils.Utils.getRowValueByColumnName(i, "CATEGORY", userCategoryFetcher));
+            Label userCategoryLabel = new Label(Utils.Utils.getRowValueByColumnName(i, "USER_CATEGORY.CATEGORY", userCategoryFetcher));
             userCategoryLabelContainer.setPrefWidth(70);
             userCategoryLabelContainer.setPrefHeight(70);
             userCategoryLabelContainer.setLayoutX(Math.min(scoreBar.getPrefWidth() + scoreBarContainer.getLayoutX() + userCategoryLabelContainer.getPrefWidth() / 2, scoreBarContainer.getLayoutX() - userCategoryLabelContainer.getPrefWidth() / 2 + (scoreBar.getPrefWidth() + userCategoryLabelContainer.getPrefWidth() - userCategoryLabelContainer.getPrefWidth()) / (userCategoryFetcherLength - 1) * (i - 2)));
@@ -49,11 +50,11 @@ public class PointViewController implements Initializable {
             userCategoryLabelContainer.getChildren().add(userCategoryLabel);
             pointViewMainContainer.getChildren().add(createTriangle(userCategoryLabelContainer.getLayoutX() + userCategoryLabelContainer.getPrefWidth() / 2, userCategoryLabelContainer.getLayoutY() + 68));
 
-            Label userCategoryPointLabel = new Label(Utils.Utils.getRowValueByColumnName(i, "POINT_LOWERBOUND", userCategoryFetcher));
+            Label userCategoryPointLabel = new Label(Utils.Utils.getRowValueByColumnName(i, "USER_CATEGORY.POINT_LOWERBOUND", userCategoryFetcher));
             userCategoryPointLabel.setStyle("-fx-font-weight: bold; -fx-text-fill: white; -fx-font-size: 16px;");
             userCategoryPointLabel.setLayoutY(userCategoryLabelContainer.getLayoutY() + 120);
             pointViewMainContainer.getChildren().add(userCategoryPointLabel);
-            userCategoryPointLabel.setLayoutX(userCategoryLabelContainer.getLayoutX() + userCategoryLabelContainer.getPrefWidth() / 2 - Utils.Utils.getRowValueByColumnName(i, "POINT_LOWERBOUND", userCategoryFetcher).length() * 4.5);
+            userCategoryPointLabel.setLayoutX(userCategoryLabelContainer.getLayoutX() + userCategoryLabelContainer.getPrefWidth() / 2 - Utils.Utils.getRowValueByColumnName(i, "USER_CATEGORY.POINT_LOWERBOUND", userCategoryFetcher).length() * 4.5);
             pointViewMainContainer.getChildren().add(userCategoryLabelContainer);
         }
         scoreBarFill.setPrefWidth(scoreBar.getPrefWidth() * (double)(main.getSignedInUser().getScore()) / 4000);

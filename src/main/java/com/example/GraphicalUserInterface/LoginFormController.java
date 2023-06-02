@@ -80,7 +80,7 @@ public class LoginFormController implements Initializable {
             }
             System.out.println("Sign in success");
             System.out.println(userInfo);
-            Main.getInstance().setSignedInUser(new Manager(Utils.getRowValueByColumnName(2, "USERNAME", userInfo), Utils.getRowValueByColumnName(2, "ID", userInfo), Utils.getRowValueByColumnName(2, "FIRST_NAME", userInfo), Utils.getRowValueByColumnName(2, "LAST_NAME", userInfo), new Date(new SimpleDateFormat("yyyy-MM-dd").parse(Utils.getRowValueByColumnName(2, "DOB", userInfo)).getTime()), Utils.getRowValueByColumnName(2, "PHONE", userInfo), Utils.getRowValueByColumnName(2, "EMAIL", userInfo), Utils.getRowValueByColumnName(2, "GENDER", userInfo), Utils.getRowValueByColumnName(2, "ADDRESS", userInfo), Utils.getRowValueByColumnName(2, "USER_CATEGORY_CATEGORY", userInfo)));
+            Main.getInstance().setSignedInUser(new Manager(Utils.getRowValueByColumnName(2, "USERS.USERNAME", userInfo), Utils.getRowValueByColumnName(2, "USERS.ID", userInfo), Utils.getRowValueByColumnName(2, "USERS.FIRST_NAME", userInfo), Utils.getRowValueByColumnName(2, "USERS.LAST_NAME", userInfo), new Date(new SimpleDateFormat("yyyy-MM-dd").parse(Utils.getRowValueByColumnName(2, "USERS.DOB", userInfo)).getTime()), Utils.getRowValueByColumnName(2, "USERS.PHONE", userInfo), Utils.getRowValueByColumnName(2, "USERS.EMAIL", userInfo), Utils.getRowValueByColumnName(2, "USERS.GENDER", userInfo), Utils.getRowValueByColumnName(2, "USERS.ADDRESS", userInfo), Utils.getRowValueByColumnName(2, "USERS.USER_CATEGORY_CATEGORY", userInfo)));
             Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
             alert.setTitle("Confirmation");
             alert.setContentText("Sign in success");

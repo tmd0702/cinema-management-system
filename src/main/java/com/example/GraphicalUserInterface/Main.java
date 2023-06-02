@@ -8,8 +8,6 @@ import UserManager.User;
 import javafx.application.Application;
 import javafx.scene.Node;
 import javafx.scene.control.ScrollPane;
-import javafx.scene.image.Image;
-import javafx.application.Preloader;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Scene;
 import javafx.scene.layout.AnchorPane;
@@ -18,8 +16,6 @@ import javafx.stage.*;
 
 
 import java.io.IOException;
-import java.util.ArrayList;
-import java.util.logging.Filter;
 
 public class Main extends Application {
     private static Main main;
@@ -47,8 +43,8 @@ public class Main extends Application {
     private ItemManagementProcessor itemManagementProcessor;
     private AuthenticationManagementProcessor authenticationManagementProcessor;
     private TicketManagementProcessor ticketManagementProcessor;
-    private BookingSeatManagementProcessor bookingSeatManagementProcessor;
-    private BookingItemManagementProccessor bookingItemManagementProccessor;
+    private BookingTicketManagementProcessor bookingTicketManagementProcessor;
+    private BookingItemManagementProcessor bookingItemManagementProccessor;
     private Config config;
     public Main() throws Exception {
         super();
@@ -70,8 +66,8 @@ public class Main extends Application {
         this.filtererProcessor = new FiltererProcessor();
         this.itemManagementProcessor = new ItemManagementProcessor();
         this.ticketManagementProcessor = new TicketManagementProcessor();
-        this.bookingSeatManagementProcessor = new BookingSeatManagementProcessor();
-        this.bookingItemManagementProccessor = new BookingItemManagementProccessor();
+        this.bookingTicketManagementProcessor = new BookingTicketManagementProcessor();
+        this.bookingItemManagementProccessor = new BookingItemManagementProcessor();
         this.queryOnSearching = "";
         nowShowingMoviesTabActive = false;
         comingSoonMoviesTabActive = false;
@@ -88,7 +84,7 @@ public class Main extends Application {
     public PaymentManagementProcessor getPaymentManagementProcessor() {
         return this.paymentManagementProcessor;
     }
-    public BookingItemManagementProccessor getBookingItemManagementProccessor(){return this.bookingItemManagementProccessor;}
+    public BookingItemManagementProcessor getBookingItemManagementProccessor(){return this.bookingItemManagementProccessor;}
     public ReviewManagementProcessor getReviewManagementProcessor() {
         return this.reviewManagementProcessor;
     }
@@ -98,7 +94,7 @@ public class Main extends Application {
     public AccountManagementProcessor getAccountManagementProcessor() {
         return this.accountManagementProcessor;
     }
-    public BookingSeatManagementProcessor getBookingSeatManagementProcessor(){return this.bookingSeatManagementProcessor;}
+    public BookingTicketManagementProcessor getBookingTicketManagementProcessor(){return this.bookingTicketManagementProcessor;}
     public Stage getStage() {return this.stage;}
     public ScheduleManagementProcessor getScheduleManagementProcessor() {
         return this.scheduleManagementProcessor;

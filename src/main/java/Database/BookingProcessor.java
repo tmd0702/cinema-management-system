@@ -7,9 +7,7 @@ import java.util.HashMap;
 
 import Utils.Response;
 import Utils.*;
-import com.example.GraphicalUserInterface.BookingController;
 import BookingManager.BookingInfor;
-import UserManager.User;
 import com.example.GraphicalUserInterface.Main;
 
 public class BookingProcessor extends Processor {
@@ -121,7 +119,7 @@ public class BookingProcessor extends Processor {
         for(String ticket : ticketSeats) {
             seatBooking.put("PAYMENT_ID", paymentId);
             seatBooking.put("TICKET_ID", ticket);
-            Response response = Main.getInstance().getBookingSeatManagementProcessor().insertData(seatBooking, false);
+            Response response = Main.getInstance().getBookingTicketManagementProcessor().insertData(seatBooking, false);
             if (response.getStatusCode() == StatusCode.OK) {
                 System.out.println("insert 1 row success");
             } else {

@@ -93,9 +93,9 @@ public class MovieManagementProcessor extends Processor {
             System.out.println("Start creating schedule");
             Collections.sort(tmpList, Comparator.comparingInt(Movie::getDuration));
             System.out.println(tmpList.size());
-//            for(Movie movie : tmpList) {
+            for(Movie movie : tmpList) {
 //                scheduleMovie(movie);
-//            }
+            }
             this.movieManager.setMovieList(tmpList);
             rs.close();
             st.close();
@@ -112,20 +112,20 @@ public class MovieManagementProcessor extends Processor {
             throw new Exception("Error: Invalid duration");
         }
         Date movieShowDate = movie.getReleaseDate();
-        ArrayList<ArrayList<String>> showTimesFetcher = main.getShowTimeManagementProcessor().getData(0, -1, "", "START_TIME ASC").getData();
+        ArrayList<ArrayList<String>> showTimesFetcher = main.getShowTimeManagementProcessor().getData(0, -1, "", "SHOW_TIMES.START_TIME ASC").getData();
         ArrayList<ArrayList<String>> cinemasFetcher = main.getTheaterManagementProcessor().getData(0, -1, "", "").getData();
         for(int i = 2; i < cinemasFetcher.size();++i) {
-            String cinemaId = Utils.getRowValueByColumnName(i, "ID", cinemasFetcher);
-            ArrayList<ArrayList<String>> screenRoomsFetcher = main.getScreenRoomManagementProcessor().getData(0, -1, String.format("CINEMA_ID = '%s'", Utils.getRowValueByColumnName(i, "ID", cinemasFetcher )), "").getData();
+            String cinemaId = Utils.getRowValueByColumnName(i, "CINEMAS.ID", cinemasFetcher);
+            ArrayList<ArrayList<String>> screenRoomsFetcher = main.getScreenRoomManagementProcessor().getData(0, -1, String.format("CINEMAS.ID = '%s'", Utils.getRowValueByColumnName(i, "CINEMAS.ID", cinemasFetcher )), "").getData();
             for (int j = 2; j < screenRoomsFetcher.size(); ++ j) {
-                String screenRoomId = Utils.getRowValueByColumnName(j, "ID", screenRoomsFetcher);
+                String screenRoomId = Utils.getRowValueByColumnName(j, "SCREEN_ROOMS.ID", screenRoomsFetcher);
                 System.out.print(String.format("\nScheduling movie %s on cinema %s, screen room %s, release date ", movie.getId(), cinemaId, screenRoomId));
                 for (int nDay = 0; nDay < Integer.parseInt(main.getConfig().get("MOVIE_SHOW_DURATION_DAYS_FROM_RELEASE_DATE")); ++nDay) {
                     String movieShowDateString = Utils.addDateByNDays(movieShowDate, nDay);
                     System.out.println(movieShowDateString);
                     for (int k = 2; k < showTimesFetcher.size(); ++k) {
-                        String showTime = Utils.getRowValueByColumnName(k, "START_TIME", showTimesFetcher);
-                        String showTimeId = Utils.getRowValueByColumnName(k, "ID", showTimesFetcher);
+                        String showTime = Utils.getRowValueByColumnName(k, "SHOW_TIMES.START_TIME", showTimesFetcher);
+                        String showTimeId = Utils.getRowValueByColumnName(k, "SHOW_TIMES.ID", showTimesFetcher);
                         if (main.getScheduleManagementProcessor().isMovieSchedulingAvailable(movie.getId(), showTime, screenRoomId, cinemaId, movieShowDateString)) {
                             addFakeSchedules(showTimeId, movie.getId(), screenRoomId, movieShowDateString);
                         }

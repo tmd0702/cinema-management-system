@@ -26,14 +26,14 @@ public class PaymentHistoryViewController implements Initializable {
         paymentHistoryViewGridInit();
     }
     public void paymentHistoryViewGridInit() {
-        paymentHistoryFetcher = main.getPaymentManagementProcessor().getData(0, -1, String.format("U.ID = '%s'", main.getSignedInUser().getId()), "P.PAYMENT_DATE DESC").getData();
+        paymentHistoryFetcher = main.getPaymentManagementProcessor().getData(0, -1, String.format("USERS.ID = '%s'", main.getSignedInUser().getId()), "PAYMENTS.PAYMENT_DATE DESC").getData();
 
         System.out.println(paymentHistoryFetcher);
         for (int i=2; i<paymentHistoryFetcher.size();++i) {
             ArrayList<String> paymentHistoryInfo = paymentHistoryFetcher.get(i);
             RowConstraints rowConstraints = new RowConstraints();
-            Label paymentDateLabel = new Label(Utils.getRowValueByColumnName(i, "PAYMENT_PAYMENT_DATE", paymentHistoryFetcher));
-            Label totalAmountLabel = new Label(Utils.getRowValueByColumnName(i, "PAYMENT_TOTAL_AMOUNT", paymentHistoryFetcher));
+            Label paymentDateLabel = new Label(Utils.getRowValueByColumnName(i, "PAYMENTS.PAYMENT_DATE", paymentHistoryFetcher));
+            Label totalAmountLabel = new Label(Utils.getRowValueByColumnName(i, "PAYMENTS.TOTAL_AMOUNT", paymentHistoryFetcher));
             Label movieTitleLabel = new Label("test1");
             Label cinemaNameLabel = new Label("test2");
             setStyleForGridViewLabel(paymentDateLabel);

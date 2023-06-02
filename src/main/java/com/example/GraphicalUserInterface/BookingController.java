@@ -112,7 +112,7 @@ public class BookingController {
 
     @FXML
      public void initialize() throws SQLException {
-        bookingProcessor.getConnector().setAutoCommit(false);
+//        bookingProcessor.getConnector().setAutoCommit(false);
         ConstructPane();
         //page1
         ConstructDateButton();
@@ -124,8 +124,8 @@ public class BookingController {
     }
     public void itemsControllerInit(ArrayList<ArrayList<String>> itemFetcher) {
 //        ArrayList<ArrayList<String>> itemFetcher = bookingProcessor.getItems();
-        ArrayList<String> itemNames = Utils.getDataValuesByColumnName(itemFetcher, "NAME");
-        ArrayList<String> priceItems = Utils.getDataValuesByColumnName(itemFetcher, "PRICE");
+        ArrayList<String> itemNames = Utils.getDataValuesByColumnName(itemFetcher, "ITEMS.NAME");
+        ArrayList<String> priceItems = Utils.getDataValuesByColumnName(itemFetcher, "PRICES.PRICE");
         for (String itemName : itemNames) {
             Label itemLabel = new Label(itemName);
             itemLabel.setStyle("-fx-text-fill: white; -fx-font-weight: bold; -fx-font-size: 16px");
@@ -184,7 +184,7 @@ public class BookingController {
 
     public void ConstructItem(){
         ArrayList<ArrayList<String>> itemFetcher = bookingProcessor.getItems();
-        ArrayList<String> itemNames = Utils.getDataValuesByColumnName(itemFetcher, "NAME");
+        ArrayList<String> itemNames = Utils.getDataValuesByColumnName(itemFetcher, "ITEMS.NAME");
         for(int i = 0; i < itemNames.size(); i++)
         numberOfitems.add(0);
         itemsControllerInit(itemFetcher);
@@ -891,7 +891,7 @@ public class BookingController {
                 } catch (IOException e) {
                     throw new RuntimeException(e);
                 }
-                bookingProcessor.getConnector().setAutoCommit(true);
+//                bookingProcessor.getConnector().setAutoCommit(true);
             }
         }
     }

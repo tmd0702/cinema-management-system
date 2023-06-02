@@ -12,7 +12,7 @@ public class AuthenticationManagementProcessor extends Processor {
 
     @Override
     public Response getData(int from, int quantity, String queryCondition, String sortQuery) {
-        return null;
+        return select("*", from, quantity, queryCondition, sortQuery, getDefaultDatabaseTable());
     }
 
     public Response updateData(HashMap<String, String> columnValueMap, String queryCondition, boolean isCommit) {

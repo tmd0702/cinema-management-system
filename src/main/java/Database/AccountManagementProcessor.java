@@ -83,9 +83,7 @@ public class AccountManagementProcessor extends Processor {
                 throw new InvalidPasswordException("Password: " + signupInfo.get("password") + " is invalid!");
             }
             String id = ManagementMain.getInstance().getIdGenerator().generateId("USERS");
-            System.out.println(id);
             String insertUserQuery = String.format("INSERT INTO USERS(ID, USERNAME, FIRST_NAME, LAST_NAME, DOB, GENDER, ADDRESS, PHONE, EMAIL, USER_ROLE, SCORE) VALUES ('%s', '%s', '%s', '%s', '%s', '%s', '%s', '%s', '%s', '%s', %d);", id, signupInfo.get("username"), signupInfo.get("firstName"), signupInfo.get("lastName"), new Date(new SimpleDateFormat("yyyy-MM-dd").parse(signupInfo.get("dateOfBirth")).getTime()), signupInfo.get("gender"), signupInfo.get("address"), signupInfo.get("phone"), signupInfo.get("email"), "SUBSCRIBER", 0);
-            System.out.println(insertUserQuery);
             Statement st = getConnector().createStatement();
             st.execute(insertUserQuery);
             addAuthentication(id, signupInfo.get("password"));

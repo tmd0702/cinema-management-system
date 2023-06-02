@@ -993,10 +993,10 @@ public class ManagementViewController implements Initializable {
                     activeProcessor = main.getScheduleManagementProcessor();
                     reRenderPage(true);
                 } else if (tabPanelOnClick == bookingSeatTabPanel) {
-                    activeProcessor = main.getSeatTicketManagementProcessor();
+                    activeProcessor = main.getBookingTicketManagementProcessor();
                     reRenderPage(true);
                 } else if (tabPanelOnClick == bookingItemTabPanel) {
-                    activeProcessor = main.getItemTicketManagementProcessor();
+                    activeProcessor = main.getBookingItemManagementProcessor();
                     reRenderPage(true);
                 } else if (tabPanelOnClick == paymentTabPanel) {
                     activeProcessor = main.getPaymentManagementProcessor();

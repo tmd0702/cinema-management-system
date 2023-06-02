@@ -4,10 +4,10 @@ import Utils.Response;
 
 import java.util.HashMap;
 
-public class SeatTicketManagementProcessor extends Processor {
-    public SeatTicketManagementProcessor() {
+public class BookingTicketManagementProcessor extends Processor {
+    public BookingTicketManagementProcessor() {
         super();
-        setDefaultDatabaseTable("PAYMENT_TICKETS");
+        setDefaultDatabaseTable("BOOKING_TICKETS");
     }
 
     @Override

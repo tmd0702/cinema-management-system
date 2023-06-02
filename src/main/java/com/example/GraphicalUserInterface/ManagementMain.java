@@ -2,14 +2,11 @@ package com.example.GraphicalUserInterface;
 
 import Database.*;
 import ImageManager.ImageManager;
-import MovieManager.Movie;
-import UserManager.User;
 import Utils.IdGenerator;
 import javafx.application.Application;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Node;
 import javafx.scene.Scene;
-import javafx.scene.input.MouseEvent;
 import javafx.stage.Stage;
 
 import java.io.IOException;
@@ -18,9 +15,9 @@ public class ManagementMain extends Application {
     private static Stage stage;
     private Scene scene;
     private PaymentManagementProcessor paymentManagementProcessor;
-    private ItemTicketManagementProcessor itemTicketManagementProcessor;
+    private BookingItemManagementProcessor bookingItemManagementProcessor;
     private UserCategoryManagementProcessor userCategoryManagementProcessor;
-    private SeatTicketManagementProcessor seatTicketManagementProcessor;
+    private BookingTicketManagementProcessor bookingTicketManagementProcessor;
     private Processor showTimeManagementProcessor, cinemaManagementProcessor, theaterManagementProcessor, promotionManagementProcessor, itemManagementProcessor, screenRoomManagementProcessor;
     private MovieManagementProcessor movieManagementProcessor;
     private AccountManagementProcessor accountManagementProcessor;
@@ -33,8 +30,8 @@ public class ManagementMain extends Application {
         idGenerator = new IdGenerator();
         userCategoryManagementProcessor = new UserCategoryManagementProcessor();
         paymentManagementProcessor = new PaymentManagementProcessor();
-        itemTicketManagementProcessor = new ItemTicketManagementProcessor();
-        seatTicketManagementProcessor = new SeatTicketManagementProcessor();
+        bookingItemManagementProcessor = new BookingItemManagementProcessor();
+        bookingTicketManagementProcessor = new BookingTicketManagementProcessor();
         scheduleManagementProcessor = new ScheduleManagementProcessor();
         showTimeManagementProcessor = new ShowTimeManagementProcessor();
         screenRoomManagementProcessor = new ScreenRoomManagementProcessor();
@@ -52,11 +49,11 @@ public class ManagementMain extends Application {
     public PaymentManagementProcessor getPaymentManagementProcessor() {
         return this.paymentManagementProcessor;
     }
-    public ItemTicketManagementProcessor getItemTicketManagementProcessor() {
-        return this.itemTicketManagementProcessor;
+    public BookingItemManagementProcessor getBookingItemManagementProcessor() {
+        return this.bookingItemManagementProcessor;
     }
-    public SeatTicketManagementProcessor getSeatTicketManagementProcessor() {
-        return this.seatTicketManagementProcessor;
+    public BookingTicketManagementProcessor getBookingTicketManagementProcessor() {
+        return this.bookingTicketManagementProcessor;
     }
     public ScheduleManagementProcessor getScheduleManagementProcessor() {
         return this.scheduleManagementProcessor;

@@ -97,14 +97,6 @@ public class MovieManagementProcessor extends Processor {
 //                scheduleMovie(movie);
             }
             this.movieManager.setMovieList(tmpList);
-//            for (Movie movie : tmpList) {
-//                this.movieManager.addMovie(movie);
-////                if (movie.getPosterImage().getProgress() == 1 && !movie.getPosterImage().isError()) {
-////                    this.movieManager.addMovie(movie);
-////                } else {
-////                    continue;
-////                }
-//            }
             rs.close();
             st.close();
         } catch (Exception e) {

@@ -42,7 +42,7 @@
                </AnchorPane>
                <AnchorPane fx:id="mainOutlineContainer" prefHeight="200.0" prefWidth="200.0" />
             </VBox>
-            <VBox fx:id="userNavigator" alignment="TOP_CENTER" layoutX="652.0" layoutY="56.0" prefHeight="123.0" prefWidth="219.0" spacing="20.0" style="-fx-background-color: #333333; -fx-effect: dropshadow(gaussian, rgba(0, 0, 0, 0.3), 10, 0.5, 0.0, 0.0);">
+            <VBox fx:id="userNavigator" alignment="TOP_CENTER" layoutX="653.0" layoutY="47.0" prefHeight="123.0" prefWidth="219.0" spacing="20.0" style="-fx-background-color: #333333; -fx-effect: dropshadow(gaussian, rgba(0, 0, 0, 0.3), 10, 0.5, 0.0, 0.0);">
                <children>
                   <Button fx:id="viewUserProfileBtn" mnemonicParsing="false" onMouseClicked="#viewUserProfileBtnOnClick" prefHeight="37.0" prefWidth="179.0" style="-fx-effect: dropshadow(gaussian, rgba(0, 0, 0, 0.5), 10, 0.5, 0.0, 0.0); -fx-text-fill: white; -fx-font-weight: bold; -fx-background-color: #333333;">
                      <graphic>

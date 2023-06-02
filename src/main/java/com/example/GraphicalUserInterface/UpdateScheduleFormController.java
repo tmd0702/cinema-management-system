@@ -1,6 +1,5 @@
 package com.example.GraphicalUserInterface;
 
-import MovieManager.Movie;
 import Utils.Response;
 import Utils.StatusCode;
 import Utils.Utils;
@@ -23,7 +22,7 @@ import java.util.ResourceBundle;
 
 public class UpdateScheduleFormController implements Initializable {
     @FXML
-    private ComboBox startTimeField;
+    private ComboBox showTimeStartTimeField;
     @FXML
     private ComboBox movieTitleField;
     @FXML
@@ -84,7 +83,7 @@ public class UpdateScheduleFormController implements Initializable {
         });
     }
     public void startTimeFieldInit() {
-        startTimeField.setDisable(false);
+        showTimeStartTimeField.setDisable(false);
         showTimeInfo = main.getShowTimeManagementProcessor().select("ST.*", 0, -1, String.format("NOT EXISTS (SELECT S.SHOW_TIME_ID FROM SCHEDULES S WHERE S.SHOW_DATE = '%s' AND S.SCREEN_ROOM_ID = '%s' AND S.SHOW_TIME_ID = ST.ID)", showDateField.getValue(), getScreenRoomObjectIDFromComboBox(screenRoomNameField.getValue())), "ST.START_TIME ASC", "SHOW_TIMES ST").getData();
         startTimes = Utils.getDataValuesByColumnName(showTimeInfo, "START_TIME");
         ArrayList<String> removeObjectList = new ArrayList<String>();
@@ -96,7 +95,7 @@ public class UpdateScheduleFormController implements Initializable {
         for (String object : removeObjectList) {
             startTimes.remove(object);
         }
-        startTimeField.setItems(FXCollections.observableArrayList(startTimes));
+        showTimeStartTimeField.setItems(FXCollections.observableArrayList(startTimes));
     }
     public void movieTitleFieldInit() {
         movieTitleField.setDisable(false);
@@ -104,9 +103,9 @@ public class UpdateScheduleFormController implements Initializable {
         movieTitles = Utils.getDataValuesByColumnName(movieInfo, "TITLE");
         movieTitleField.setItems(FXCollections.observableArrayList(movieTitles));
         movieTitleField.valueProperty().addListener((obs, oldItem, newItem) -> {
-            startTimeField.setValue(null);
+            showTimeStartTimeField.setValue(null);
             if (newItem == null) {
-                startTimeField.setDisable(true);
+                showTimeStartTimeField.setDisable(true);
             } else {
                 startTimeFieldInit();
             }
@@ -185,7 +184,7 @@ public class UpdateScheduleFormController implements Initializable {
     }
     public void handleUpdateRecordRequest() {
         HashMap<String, String> scheduleInfo = new HashMap<String, String>();
-        scheduleInfo.put("SHOW_TIME_ID", getShowTimeObjectIDFromComBoBox(startTimeField.getValue()));
+        scheduleInfo.put("SHOW_TIME_ID", getShowTimeObjectIDFromComBoBox(showTimeStartTimeField.getValue()));
         scheduleInfo.put("SHOW_DATE", showDateField.getValue().toString());
         scheduleInfo.put("MOVIE_ID", getMovieObjectIDFromComBoBox(movieTitleField.getValue()));
         scheduleInfo.put("SCREEN_ROOM_ID", getScreenRoomObjectIDFromComboBox(screenRoomNameField.getValue()));

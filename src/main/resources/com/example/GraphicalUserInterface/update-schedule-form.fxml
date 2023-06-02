@@ -37,7 +37,7 @@
                 <Label layoutX="379.0" layoutY="143.0" text="Cinema name" />
                 <ComboBox fx:id="cinemaNameField" layoutX="469.0" layoutY="139.0" prefWidth="150.0" />
                 <DatePicker fx:id="showDateField" layoutX="178.0" layoutY="138.0" prefHeight="25.0" prefWidth="149.0" />
-                <ComboBox fx:id="startTimeField" layoutX="469.0" layoutY="176.0" prefWidth="150.0" />
+                <ComboBox fx:id="showTimeStartTimeField" layoutX="469.0" layoutY="176.0" prefWidth="150.0" />
                 <Label layoutX="88.0" layoutY="180.0" text="Movie title" />
                 <ComboBox fx:id="movieTitleField" layoutX="178.0" layoutY="176.0" prefWidth="150.0" />
             <Label layoutX="137.0" layoutY="109.0" text="ID" />

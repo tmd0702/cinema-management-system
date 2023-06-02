@@ -137,6 +137,7 @@ public abstract class Processor {
             result.add(columnTypes);
             while (rs.next()) {
                 ArrayList<String> val = new ArrayList<String>();
+
                 for (String columnName : columnNames) {
                     val.add(rs.getString(columnName));
                 }

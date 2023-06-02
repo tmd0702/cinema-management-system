@@ -10,7 +10,7 @@ public class ItemManagementProcessor extends Processor {
         setDefaultDatabaseTable("ITEMS");
     }
     public Response getData(int from, int quantity, String queryCondition, String sortQuery) {
-        Response response = select("*", from, quantity, queryCondition, sortQuery, getDefaultDatabaseTable());
+        Response response = select("ITEMS.ID AS 'ITEMS.ID', ITEMS.NAME AS 'ITEMS.NAME', ITEMS.CATEGORY AS 'ITEMS.CATEGORY', ITEMS.PRICE AS 'ITEMS.PRICE', ITEMS.REVENUE AS 'ITEMS.REVENUE'", from, quantity, queryCondition, sortQuery, getDefaultDatabaseTable());
         return response;
     }
     public Response updateData(HashMap<String, String> columnValueMap, String queryCondition, boolean isCommit) {

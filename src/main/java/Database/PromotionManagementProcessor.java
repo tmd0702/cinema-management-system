@@ -11,11 +11,11 @@ public class PromotionManagementProcessor extends Processor {
     }
     public Response getData(int from, int quantity, String queryCondition, String sortQuery) {
         if (queryCondition.length() > 0) {
-            queryCondition = queryCondition + " AND UC.ID = P.USER_CATEGORY_ID";
+            queryCondition = queryCondition + " AND USER_CATEGORY.ID = PROMOTIONS.USER_CATEGORY_ID";
         } else {
-            queryCondition = "UC.ID = P.USER_CATEGORY_ID";
+            queryCondition = "USER_CATEGORY.ID = PROMOTIONS.USER_CATEGORY_ID";
         }
-        Response response = select("P.*, UC.CATEGORY AS USER_CATEGORY_CATEGORY", from, quantity, queryCondition, sortQuery, "PROMOTIONS P, USER_CATEGORY UC");
+        Response response = select("PROMOTIONS.ID AS 'PROMOTIONS.ID', PROMOTIONS.NAME AS 'PROMOTIONS.NAME', PROMOTIONS.START_DATE AS 'PROMOTIONS.START_DATE', PROMOTIONS.END_DATE AS 'PROMOTIONS.END_DATE', PROMOTIONS.DESCRIPTION AS 'PROMOTIONS.DESCRIPTION', PROMOTIONS.DISCOUNT AS 'PROMOTIONS.DISCOUNT', USER_CATEGORY.CATEGORY AS 'USER_CATEGORY.CATEGORY'", from, quantity, queryCondition, sortQuery, "PROMOTIONS, USER_CATEGORY");
         return response;
     }
     public Response updateData(HashMap<String, String> columnValueMap, String queryCondition, boolean isCommit) {

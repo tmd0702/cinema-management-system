@@ -64,11 +64,11 @@ public class AccountManagementProcessor extends Processor {
     }
     public Response getData(int from, int quantity, String queryCondition, String sortQuery) {
         if (queryCondition.length() == 0) {
-            queryCondition = "U.USER_CATEGORY_ID = UC.ID";
+            queryCondition = "USERS.USER_CATEGORY_ID = USER_CATEGORY.ID";
         } else {
-            queryCondition = queryCondition + " AND U.USER_CATEGORY_ID = UC.ID";
+            queryCondition = queryCondition + " AND USERS.USER_CATEGORY_ID = USER_CATEGORY.ID";
         }
-        Response response = select("U.*, UC.CATEGORY AS USER_CATEGORY_CATEGORY", from, quantity, queryCondition, sortQuery, "USERS U, USER_CATEGORY UC");
+        Response response = select("USERS.ID AS 'USERS.ID', USERS.USERNAME AS 'USERS.USERNAME', USERS.FIRST_NAME AS 'USERS.FIRST_NAME', USERS.LAST_NAME AS 'USERS.LAST_NAME', USERS.DOB AS 'USERS.DOB', USERS.GENDER AS 'USERS.GENDER', USERS.ADDRESS AS 'USERS.ADDRESS', USERS.PHONE AS 'USERS.PHONE', USERS.EMAIL AS 'USERS.EMAIL', USERS.USER_ROLE AS 'USERS.USER_ROLE', USERS.SCORE AS 'USERS.SCORE', USER_CATEGORY.CATEGORY AS 'USER_CATEGORY.CATEGORY'", from, quantity, queryCondition, sortQuery, "USERS, USER_CATEGORY");
         return response;
     }
     public Response handleSignupAction(HashMap<String, String> signupInfo) {

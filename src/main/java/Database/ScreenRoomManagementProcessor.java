@@ -11,11 +11,11 @@ public class ScreenRoomManagementProcessor extends Processor {
     }
     public Response getData(int from, int quantity, String queryCondition, String sortQuery) {
         if (queryCondition.length() > 0) {
-            queryCondition = "SR.CINEMA_ID = C.ID AND " + queryCondition;
+            queryCondition = "SCREEN_ROOMS.CINEMA_ID = CINEMAS.ID AND " + queryCondition;
         } else {
-            queryCondition = "SR.CINEMA_ID = C.ID";
+            queryCondition = "SCREEN_ROOMS.CINEMA_ID = CINEMAS.ID";
         }
-        Response response = select("SR.ID, SR.NAME, SR.CAPACITY, C.NAME AS CINEMA_NAME", from, quantity, queryCondition, sortQuery, String.format("%s, CINEMAS C", getDefaultDatabaseTable() + " SR"));
+        Response response = select("SCREEN_ROOMS.ID AS 'SCREEN_ROOMS.ID', SCREEN_ROOMS.NAME AS 'SCREEN_ROOMS.NAME', SCREEN_ROOMS.CAPACITY AS 'SCREEN_ROOMS.CAPACITY', CINEMAS.NAME AS 'CINEMAS.NAME'", from, quantity, queryCondition, sortQuery, String.format("%s, CINEMAS", getDefaultDatabaseTable()));
         return response;
     }
     public Response updateData(HashMap<String, String> columnValueMap, String queryCondition, boolean isCommit) {

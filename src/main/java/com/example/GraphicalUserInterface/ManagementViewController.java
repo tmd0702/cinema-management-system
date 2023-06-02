@@ -259,9 +259,17 @@ public class ManagementViewController implements Initializable {
             managementPage.getChildren().add(FXMLLoader.load(getClass().getResource("update-account-form.fxml")));
         }
     }
+    public String normColumnNameToElementID(String columnName) {
+        String[] columnNameElements = columnName.split("\\.");
+        String normColumnName;
+        if (columnNameElements[0].equals(activeProcessor.getDefaultDatabaseTable())) {
+            normColumnName = columnNameElements[1];
+        } else {
+            normColumnName = columnNameElements[0].substring(0, columnNameElements[0].length() - 1) + "_" + columnNameElements[1];
+        }
+        return normColumnName;
+    }
     public void menuBoxInit() {
-//        insertBtn.setPrefHeight(20);
-//        insertBtn.setPrefWidth(20);
         insertBtn.setOnMouseClicked(new EventHandler<MouseEvent>() {
             @Override
             public void handle(MouseEvent mouseEvent) {
@@ -273,8 +281,6 @@ public class ManagementViewController implements Initializable {
                 }
             }
         });
-//        updateBtn.setPrefHeight(20);
-//        updateBtn.setPrefWidth(20);
 
         updateBtn.setOnMouseClicked(new EventHandler<MouseEvent>() {
             @Override
@@ -285,7 +291,8 @@ public class ManagementViewController implements Initializable {
                         int rowIndex = GridPane.getRowIndex(cellOnClick);
                         for (int i=0;i < data.get(0).size(); ++i) {
                             String columnName = data.get(0).get(i);
-                            Node node = main.getNodeById("#" + Utils.Utils.toCamelCase(columnName) + "Field");
+                            System.out.println("#" + Utils.Utils.toCamelCase(normColumnNameToElementID(columnName)) + "Field");
+                            Node node = main.getNodeById("#" + Utils.Utils.toCamelCase(normColumnNameToElementID(columnName)) + "Field");
                             if (node instanceof TextField) {
                                 ((TextField) node).setText(data.get(rowIndex).get(i));
                             } else if (node instanceof DatePicker) {
@@ -514,6 +521,7 @@ public class ManagementViewController implements Initializable {
     }
     public String constructQueryCondition(ArrayList<String> columnNames) {
         String queryCondition = "";
+        System.out.println(queryConditionFormatStrings);
         for (int i=0;i<queryConditionFormatStrings.size(); ++i) {
             if (queryConditionValues.get(i).equals("")|| queryConditionValues.get(i).equals("%%")) continue;
 
@@ -570,6 +578,11 @@ public class ManagementViewController implements Initializable {
                 dataViewContainer.getChildren().remove(node);
             }
         });
+    }
+    public void activateBtn() {
+        insertBtn.setDisable(false);
+        deleteBtn.setDisable(false);
+        updateBtn.setDisable(false);
     }
     public void constructSortList(Region sortButton) {
         sortButton.setOnMouseClicked(new EventHandler<MouseEvent>() {
@@ -809,12 +822,18 @@ public class ManagementViewController implements Initializable {
             managementPage.getChildren().remove(2);
         }
     }
+    public void resetQueryStatementValues() {
+        sortQuery = "";
+        queryCondition = "";
+        queryConditionValues = new ArrayList<String>();
+        queryConditionFormatStrings = new ArrayList<String>();
+    }
     public void reRenderPage(boolean isInit) {
         cellOnClick = null;
         totalRowNum = activeProcessor.count(queryCondition);
         setTotalPageNum(Math.max(1, Math.ceilDiv(totalRowNum, rowPerPageNum)));
         setCurrentPage(Math.min(currentPage, totalPageNum));
-        if (isInit) sortQuery = "";
+        if (isInit) resetQueryStatementValues();
         data = activeProcessor.getData((currentPage - 1) * rowPerPageNum, rowPerPageNum, queryCondition, sortQuery).getData();
         ArrayList<String> columnNames = data.get(0);
         if (isInit) {
@@ -946,8 +965,11 @@ public class ManagementViewController implements Initializable {
                 }
                 tabPanel.setStyle("-fx-pref-width: 110; -fx-pref-height: 48; -fx-font-weight: bold; -fx-text-fill: white; -fx-background-color: rgba(0, 0, 255, 0.3);");
                 tabPanelOnClick = tabPanel;
+                activateBtn();
                 if (tabPanelOnClick == accountTabPanel) {
                     activeProcessor = main.getAccountManagementProcessor();
+                    insertBtn.setDisable(true);
+                    deleteBtn.setDisable(true);
                     reRenderPage(true);
                 } else if (tabPanelOnClick == movieTabPanel) {
                     activeProcessor = main.getMovieManagementProcessor();
@@ -978,6 +1000,9 @@ public class ManagementViewController implements Initializable {
                     reRenderPage(true);
                 } else if (tabPanelOnClick == paymentTabPanel) {
                     activeProcessor = main.getPaymentManagementProcessor();
+                    insertBtn.setDisable(true);
+                    deleteBtn.setDisable(true);
+                    updateBtn.setDisable(true);
                     reRenderPage(true);
                 } else {
                     activeProcessor = main.getMovieManagementProcessor();

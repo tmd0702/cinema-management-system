@@ -112,10 +112,10 @@ public class ScheduleManagementProcessor extends Processor {
     @Override
     public Response getData(int from, int quantity, String queryCondition, String sortQuery) {
         if (queryCondition.length() > 0) {
-            queryCondition = queryCondition + " AND S.MOVIE_ID = M.ID AND S.SCREEN_ROOM_ID = SR.ID AND C.ID = SR.CINEMA_ID AND S.SHOW_TIME_ID = ST.ID";
+            queryCondition = queryCondition + " AND SCHEDULES.MOVIE_ID = MOVIES.ID AND SCHEDULES.SCREEN_ROOM_ID = SCREEN_ROOMS.ID AND CINEMAS.ID = SCREEN_ROOMS.CINEMA_ID AND SCHEDULES.SHOW_TIME_ID = SHOW_TIMES.ID";
         } else {
-            queryCondition = "S.MOVIE_ID = M.ID AND S.SCREEN_ROOM_ID = SR.ID AND C.ID = SR.CINEMA_ID AND S.SHOW_TIME_ID = ST.ID";
+            queryCondition = "SCHEDULES.MOVIE_ID = MOVIES.ID AND SCHEDULES.SCREEN_ROOM_ID = SCREEN_ROOMS.ID AND CINEMAS.ID = SCREEN_ROOMS.CINEMA_ID AND SCHEDULES.SHOW_TIME_ID = SHOW_TIMES.ID";
         }
-        return select("S.ID AS ID, S.SHOW_DATE AS SHOW_DATE, ST.START_TIME AS START_TIME, M.TITLE AS MOVIE_TITLE, SR.NAME AS SCREEN_ROOM_NAME, C.NAME AS CINEMA_NAME", from, quantity, queryCondition, sortQuery, "SCHEDULES S, MOVIES M, SHOW_TIMES ST, SCREEN_ROOMS SR, CINEMAS C");
+        return select("SCHEDULES.ID AS 'SCHEDULES.ID', SCHEDULES.SHOW_DATE AS 'SCHEDULES.SHOW_DATE', SHOW_TIMES.START_TIME AS 'SHOW_TIMES.START_TIME', MOVIES.TITLE AS 'MOVIES.TITLE', SCREEN_ROOMS.NAME AS 'SCREEN_ROOMS.NAME', CINEMAS.NAME AS 'CINEMAS.NAME'", from, quantity, queryCondition, sortQuery, "SCHEDULES, MOVIES, SHOW_TIMES, SCREEN_ROOMS, CINEMAS");
     }
 }

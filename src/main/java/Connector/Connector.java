@@ -5,7 +5,6 @@ import Utils.Response;
 import Utils.StatusCode;
 import Utils.Utils;
 import org.json.JSONArray;
-import org.json.JSONMLParserConfiguration;
 import org.json.JSONObject;
 
 import java.net.URI;
@@ -13,6 +12,7 @@ import java.net.http.HttpClient;
 import java.net.http.HttpRequest;
 import java.net.http.HttpResponse;
 import java.util.ArrayList;
+import java.util.HashMap;
 
 public class Connector {
     private Config config;
@@ -72,6 +72,10 @@ public class Connector {
         JSONObject jsonResponse = new JSONObject(response.body());
         return jsonResponse;
     }
+    public HashMap<String, Double> HTTPSearchEngineRequest(JSONObject jsonData) throws Exception{
+        JSONObject requestResponse = HTTPGetRequest(this.config.get("API_SEARCH_ENGINE_ROUTE"), jsonData);
+        return Utils.sortMapByValue(Utils.jsonToMap(requestResponse));
+    }
     public JSONObject HTTPDeleteRequest(String route, JSONObject jsonData) throws Exception {
         String params = constructURLParamsFromJSONObject(jsonData);
         HttpClient client = HttpClient.newHttpClient();
@@ -93,16 +97,16 @@ public class Connector {
         JSONObject requestResponse = HTTPPostRequest(this.config.get("API_SIGN_UP_ROUTE"), jsonData);
         return new Response(requestResponse.get("error_message").toString(), StatusCode.getByValue(Integer.parseInt(requestResponse.get("status_code").toString())));
     }
-    public Response HTTPInsertRequest(JSONObject jsonData) throws Exception {
+    public Response HTTPInsertDataRequest(JSONObject jsonData) throws Exception {
         JSONObject requestResponse = HTTPPostRequest(this.config.get("API_INSERT_DATA_ROUTE"), jsonData);
         return new Response(requestResponse.get("error_message").toString(), StatusCode.getByValue(Integer.parseInt(requestResponse.get("status_code").toString())));
     }
-    public Response HTTPUpdateRequest(JSONObject jsonData) throws Exception {
+    public Response HTTPUpdateDataRequest(JSONObject jsonData) throws Exception {
         JSONObject requestResponse = HTTPPutRequest(this.config.get("API_UPDATE_DATA_ROUTE"), jsonData);
         return new Response(requestResponse.get("error_message").toString(), StatusCode.getByValue(Integer.parseInt(requestResponse.get("status_code").toString())));
     }
-    public Response HTTPDeleteRequest(JSONObject jsonData) throws Exception {
-        JSONObject requestResponse = HTTPPostRequest(this.config.get("API_DELETE_DATA_ROUTE"), jsonData);
+    public Response HTTPDeleteDataRequest(JSONObject jsonData) throws Exception {
+        JSONObject requestResponse = HTTPDeleteRequest(this.config.get("API_DELETE_DATA_ROUTE"), jsonData);
         return new Response(requestResponse.get("error_message").toString(), StatusCode.getByValue(Integer.parseInt(requestResponse.get("status_code").toString())));
     }
     public Response HTTPRollbackRequest() throws Exception {
@@ -125,7 +129,7 @@ public class Connector {
         }
         return dataFetcher;
     }
-    public Response HTTPSelectRequest(JSONObject jsonData) throws Exception {
+    public Response HTTPSelectDataRequest(JSONObject jsonData) throws Exception {
         JSONObject requestResponse = HTTPGetRequest(this.config.get("API_SELECT_DATA_ROUTE"), jsonData);
         return new Response(requestResponse.get("error_message").toString(), StatusCode.getByValue(Integer.parseInt(requestResponse.get("status_code").toString())), getDataFetcherFromJSONData((JSONObject) requestResponse.get("data")));
     }
@@ -140,7 +144,7 @@ public class Connector {
         params.put("sort_query", "DOB DESC");
         params.put("count", true);
 
-        Response response = connector.HTTPSelectRequest(params);
+        Response response = connector.HTTPSelectDataRequest(params);
         System.out.println(response.getStatusCode() + " " + response.getMessage());
         System.out.println(response.getData().get(2));
     }

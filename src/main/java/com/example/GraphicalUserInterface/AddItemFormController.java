@@ -67,8 +67,8 @@ public class AddItemFormController implements Initializable {
         itemInfo.put("NAME", nameField.getText());
         itemInfo.put("CATEGORY", categoryField.getValue().toString());
         itemInfo.put("PRICE", priceField.getText());
-        itemInfo.put("ID", main.getIdGenerator().generateId(main.getItemManagementProcessor().getDefaultDatabaseTable()));
-        Response response = main.getItemManagementProcessor().insertData(itemInfo, true);
+        itemInfo.put("ID", main.getIdGenerator().generateId(main.getProcessorManager().getItemManagementProcessor().getDefaultDatabaseTable()));
+        Response response = main.getProcessorManager().getItemManagementProcessor().insertData(itemInfo, true);
         StatusCode signupStatus = response.getStatusCode();
         if (signupStatus == StatusCode.OK) {
             Dialog<String> dialog = new Dialog<String>();

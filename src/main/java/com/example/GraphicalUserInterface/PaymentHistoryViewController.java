@@ -26,7 +26,7 @@ public class PaymentHistoryViewController implements Initializable {
         paymentHistoryViewGridInit();
     }
     public void paymentHistoryViewGridInit() {
-        paymentHistoryFetcher = main.getPaymentManagementProcessor().getData(0, -1, String.format("USERS.ID = '%s'", main.getSignedInUser().getId()), "PAYMENTS.PAYMENT_DATE DESC").getData();
+        paymentHistoryFetcher = main.getProcessorManager().getPaymentManagementProcessor().getData(0, -1, String.format("USERS.ID = '%s'", main.getSignedInUser().getId()), "PAYMENTS.PAYMENT_DATE DESC").getData();
 
         System.out.println(paymentHistoryFetcher);
         for (int i=2; i<paymentHistoryFetcher.size();++i) {

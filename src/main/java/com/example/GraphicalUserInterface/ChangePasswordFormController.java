@@ -43,7 +43,7 @@ public class ChangePasswordFormController implements Initializable {
                 HashMap<String, String> newPasswordInfo = new HashMap<String, String>();
                 newPasswordInfo.put("PASS", newPasswordField.getText());
                 if (Validator.validatePassword(newPasswordField.getText())) {
-                    Response response = main.getAuthenticationManagementProcessor().updateData(newPasswordInfo, String.format("USER_ID = '%s'", main.getSignedInUser().getId()), true);
+                    Response response = main.getProcessorManager().getAuthenticationManagementProcessor().updateData(newPasswordInfo, String.format("USER_ID = '%s'", main.getSignedInUser().getId()), true);
                     if (response.getStatusCode() == StatusCode.OK) {
                         Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
                         alert.setTitle("Confirmation");

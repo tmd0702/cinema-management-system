@@ -32,7 +32,7 @@ public class SignupFormController {
         signUpInfo.put("username", usernameField.getText());
         signUpInfo.put("password", passwordField.getText());
         signUpInfo.put("gender", ((RadioButton)gender.getSelectedToggle()).getText().substring(0, 1));
-        Response response = Main.getInstance().getAccountManagementProcessor().handleSignupAction(signUpInfo);
+        Response response = main.getProcessorManager().getAccountManagementProcessor().handleSignupAction(signUpInfo);
         StatusCode signupStatus = response.getStatusCode();
         if (signupStatus == StatusCode.OK) {
             Dialog<String> dialog = new Dialog<String>();

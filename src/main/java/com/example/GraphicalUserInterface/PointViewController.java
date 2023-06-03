@@ -34,7 +34,7 @@ public class PointViewController implements Initializable {
         pointViewLabelsInit();
     }
     public void pointStatusInit() {
-        ArrayList<ArrayList<String>> userCategoryFetcher = main.getUserCategoryManagementProcessor().getData(0, -1, "", "USER_CATEGORY.POINT_LOWERBOUND ASC").getData();
+        ArrayList<ArrayList<String>> userCategoryFetcher = main.getProcessorManager().getUserCategoryManagementProcessor().getData(0, -1, "", "USER_CATEGORY.POINT_LOWERBOUND ASC").getData();
         System.out.println(userCategoryFetcher);
         int userCategoryFetcherLength = userCategoryFetcher.size() - 2;
         for (int i=2; i < userCategoryFetcher.size();++i) {

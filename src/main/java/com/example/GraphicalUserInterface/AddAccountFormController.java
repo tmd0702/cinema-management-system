@@ -78,7 +78,7 @@ public class AddAccountFormController implements Initializable {
         signUpInfo.put("username", usernameField.getText());
         signUpInfo.put("password", passwordField.getText());
         signUpInfo.put("gender", genderField.getValue().toString().substring(0, 1));
-        Response response = main.getAccountManagementProcessor().handleSignupAction(signUpInfo);
+        Response response = main.getProcessorManager().getAccountManagementProcessor().handleSignupAction(signUpInfo);
         StatusCode signupStatus = response.getStatusCode();
         if (signupStatus == StatusCode.OK) {
             Dialog<String> dialog = new Dialog<String>();

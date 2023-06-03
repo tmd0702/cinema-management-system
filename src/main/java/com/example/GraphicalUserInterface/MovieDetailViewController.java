@@ -92,7 +92,7 @@ public class MovieDetailViewController implements Initializable {
         description.setText(movieOnDetail.getOverview());
         description.setDisable(true);
         System.out.println("parent: " + bookMovieBtn.getParent());
-        if (main.getMovieManagementProcessor().getMovieManager().getCurrentlyPlayingMovieList().contains(movieOnDetail)) {
+        if (main.getProcessorManager().getMovieManagementProcessor().getMovieManager().getCurrentlyPlayingMovieList().contains(movieOnDetail)) {
             bookMovieBtn.setOnMouseClicked(new EventHandler<MouseEvent>() {
                 @Override
                 public void handle(MouseEvent event) {
@@ -179,7 +179,7 @@ public class MovieDetailViewController implements Initializable {
         });
     }
     public void commentViewSectionInit() {
-        ArrayList<ArrayList<String>> reviewFetcher = main.getReviewManagementProcessor().getData(0, -1, String.format("M.ID = '%s'", main.getMovieOnDetail().getId()), "R.DATE DESC").getData();
+        ArrayList<ArrayList<String>> reviewFetcher = main.getProcessorManager().getReviewManagementProcessor().getData(0, -1, String.format("M.ID = '%s'", main.getMovieOnDetail().getId()), "R.DATE DESC").getData();
         System.out.println(reviewFetcher);
         for (int i=2; i < reviewFetcher.size(); ++i) {
             StackPane userCategoryView = new StackPane(new Label(Utils.getRowValueByColumnName(i, "CATEGORY", reviewFetcher)));
@@ -206,7 +206,7 @@ public class MovieDetailViewController implements Initializable {
             reviewInfo.put("RATING", String.valueOf(ratingScore));
             reviewInfo.put("COMMENT", String.valueOf(commentField.getText()));
             reviewInfo.put("DATE", new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").format(new Date()));
-            Response response = main.getReviewManagementProcessor().insertData(reviewInfo, true);
+            Response response = main.getProcessorManager().getReviewManagementProcessor().insertData(reviewInfo, true);
             StatusCode status = response.getStatusCode();
             if (status == status.OK) {
                 Alert alert = new Alert(Alert.AlertType.CONFIRMATION);

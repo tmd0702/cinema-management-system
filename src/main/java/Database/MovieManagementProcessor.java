@@ -116,11 +116,11 @@ public class MovieManagementProcessor extends Processor {
             throw new Exception("Error: Invalid duration");
         }
         Date movieShowDate = movie.getReleaseDate();
-        ArrayList<ArrayList<String>> showTimesFetcher = main.getShowTimeManagementProcessor().getData(0, -1, "", "SHOW_TIMES.START_TIME ASC").getData();
-        ArrayList<ArrayList<String>> cinemasFetcher = main.getTheaterManagementProcessor().getData(0, -1, "", "").getData();
+        ArrayList<ArrayList<String>> showTimesFetcher = main.getProcessorManager().getShowTimeManagementProcessor().getData(0, -1, "", "SHOW_TIMES.START_TIME ASC").getData();
+        ArrayList<ArrayList<String>> cinemasFetcher = main.getProcessorManager().getCinemaManagementProcessor().getData(0, -1, "", "").getData();
         for(int i = 2; i < cinemasFetcher.size();++i) {
             String cinemaId = Utils.getRowValueByColumnName(i, "CINEMAS.ID", cinemasFetcher);
-            ArrayList<ArrayList<String>> screenRoomsFetcher = main.getScreenRoomManagementProcessor().getData(0, -1, String.format("CINEMAS.ID = '%s'", Utils.getRowValueByColumnName(i, "CINEMAS.ID", cinemasFetcher )), "").getData();
+            ArrayList<ArrayList<String>> screenRoomsFetcher = main.getProcessorManager().getScreenRoomManagementProcessor().getData(0, -1, String.format("CINEMAS.ID = '%s'", Utils.getRowValueByColumnName(i, "CINEMAS.ID", cinemasFetcher )), "").getData();
             for (int j = 2; j < screenRoomsFetcher.size(); ++ j) {
                 String screenRoomId = Utils.getRowValueByColumnName(j, "SCREEN_ROOMS.ID", screenRoomsFetcher);
                 System.out.print(String.format("\nScheduling movie %s on cinema %s, screen room %s, release date ", movie.getId(), cinemaId, screenRoomId));
@@ -130,7 +130,7 @@ public class MovieManagementProcessor extends Processor {
                     for (int k = 2; k < showTimesFetcher.size(); ++k) {
                         String showTime = Utils.getRowValueByColumnName(k, "SHOW_TIMES.START_TIME", showTimesFetcher);
                         String showTimeId = Utils.getRowValueByColumnName(k, "SHOW_TIMES.ID", showTimesFetcher);
-                        if (main.getScheduleManagementProcessor().isMovieSchedulingAvailable(movie.getId(), showTime, screenRoomId, cinemaId, movieShowDateString)) {
+                        if (main.getProcessorManager().getScheduleManagementProcessor().isMovieSchedulingAvailable(movie.getId(), showTime, screenRoomId, cinemaId, movieShowDateString)) {
                             addFakeSchedules(showTimeId, movie.getId(), screenRoomId, movieShowDateString);
                         }
                     }

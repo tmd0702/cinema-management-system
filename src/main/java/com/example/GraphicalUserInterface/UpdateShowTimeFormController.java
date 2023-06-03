@@ -67,7 +67,7 @@ public class UpdateShowTimeFormController implements Initializable {
         HashMap<String, String> showTimeInfo = new HashMap<String, String>();
         showTimeInfo.put("START_TIME", startTimeField.getText());
 
-        Response response = main.getShowTimeManagementProcessor().updateData(showTimeInfo, String.format("ID = '%s'", idField.getText()), true);
+        Response response = main.getProcessorManager().getShowTimeManagementProcessor().updateData(showTimeInfo, String.format("ID = '%s'", idField.getText()), true);
         StatusCode status = response.getStatusCode();
         if (status == StatusCode.OK) {
             Dialog<String> dialog = new Dialog<String>();

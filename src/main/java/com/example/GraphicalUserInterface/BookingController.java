@@ -34,6 +34,7 @@ import Utils.*;
 
 
 public class BookingController {
+    private Main main;
     //page1
     @FXML
     private  AnchorPane pane1;
@@ -179,7 +180,8 @@ public class BookingController {
         bookingProcessor.getBookingInfor().addItems(itemPicked);
     }
     public BookingController(){
-     this.bookingProcessor = Main.getInstance().getBookingProcessor();
+        this.main = Main.getInstance();
+        this.bookingProcessor = main.getProcessorManager().getBookingProcessor();
     }
 
     public void ConstructItem(){
@@ -216,8 +218,8 @@ public class BookingController {
         }
     }
     public void ConstructPane(){
-        bookingProcessor.getBookingInfor().setIdMovie(Main.getInstance().getMovieOnBooking().getId());
-        bookingProcessor.getBookingInfor().setNameMovie(Main.getInstance().getMovieOnBooking().getTitle());
+        bookingProcessor.getBookingInfor().setIdMovie(main.getMovieOnBooking().getId());
+        bookingProcessor.getBookingInfor().setNameMovie(main.getMovieOnBooking().getTitle());
 //        changeNumberItemAnchorPane.getChildren().add(new Button());
         changeNumberItemAnchorPane.setStyle("-fx-background: #FFFFFF; -fx-background-radius: 19");
         changeNumberItemAnchorPane.setPrefSize(191, 46);
@@ -226,14 +228,14 @@ public class BookingController {
         listPane.add(pane2);
         listPane.add(pane3);
         listPane.add(pane4);
-        image1.setImage(Main.getInstance().getMovieOnBooking().getPosterImage());
-        image2.setImage(Main.getInstance().getMovieOnBooking().getPosterImage());
-        image3.setImage(Main.getInstance().getMovieOnBooking().getPosterImage());
-        image4.setImage(Main.getInstance().getMovieOnBooking().getPosterImage());
+        image1.setImage(main.getMovieOnBooking().getPosterImage());
+        image2.setImage(main.getMovieOnBooking().getPosterImage());
+        image3.setImage(main.getMovieOnBooking().getPosterImage());
+        image4.setImage(main.getMovieOnBooking().getPosterImage());
     }
 
      public void ConstructTicketInfor() {
-         nameMovieBooking.setText(Main.getInstance().getMovieOnBooking().getTitle());
+         nameMovieBooking.setText(main.getMovieOnBooking().getTitle());
          setScreenTicketInfor();
          price.setText("0");
          combo.setText("0");
@@ -266,7 +268,7 @@ public class BookingController {
         handleApplyPromotionRequest();
      }
      public void handleApplyPromotionRequest(){
-        Response response = Main.getInstance().getPromotionManagementProcessor().getData(0,-1, String.format("PROMOTIONS.ID = '%s'", bookingProcessor.getBookingInfor().getPromotionCode()),"");
+        Response response = main.getProcessorManager().getPromotionManagementProcessor().getData(0,-1, String.format("PROMOTIONS.ID = '%s'", bookingProcessor.getBookingInfor().getPromotionCode()),"");
         System.out.println(response.getData());
 
         if(Utils.getDataValuesByColumnName(response.getData(), "PROMOTIONS.ID").size() > 0){
@@ -767,7 +769,7 @@ public class BookingController {
                         dialog.getDialogPane().getButtonTypes().add(type);
                         dialog.show();
                         try {
-                            Main.getInstance().changeScene("booking-form.fxml");
+                            main.changeScene("booking-form.fxml");
                         } catch (IOException e) {
                             throw new RuntimeException(e);
                         }
@@ -874,7 +876,7 @@ public class BookingController {
                 dialog.getDialogPane().getButtonTypes().add(type);
                 dialog.show();
                 try {
-                    Main.getInstance().changeScene("main-outline.fxml");
+                    main.changeScene("main-outline.fxml");
                 } catch (IOException e) {
                     throw new RuntimeException(e);
                 }
@@ -887,7 +889,7 @@ public class BookingController {
                 dialog.getDialogPane().getButtonTypes().add(type);
                 dialog.show();
                 try {
-                    Main.getInstance().changeScene("booking-form.fxml");
+                    main.changeScene("booking-form.fxml");
                 } catch (IOException e) {
                     throw new RuntimeException(e);
                 }

@@ -66,7 +66,7 @@ public class ProfileViewController implements Initializable {
         userInfo.put("DOB", DateTimeFormatter.ofPattern("yyyy-MM-dd").format(dateOfBirthField.getValue()));
         userInfo.put("ADDRESS", addressField.getText());
         userInfo.put("GENDER", ((RadioButton)gender.getSelectedToggle()).getText().substring(0, 1));
-        Response response = main.getAccountManagementProcessor().updateData(userInfo, String.format("ID = '%s'", main.getSignedInUser().getId()), true);
+        Response response = main.getProcessorManager().getAccountManagementProcessor().updateData(userInfo, String.format("ID = '%s'", main.getSignedInUser().getId()), true);
         if (response.getStatusCode() == StatusCode.OK) {
             Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
             alert.setTitle("Confirmation");

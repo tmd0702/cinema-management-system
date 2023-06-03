@@ -87,9 +87,9 @@ public class AddShowTimeFormController implements Initializable {
     }
     public void handleInsertRecordRequest() {
         HashMap<String, String> showTimeInfo = new HashMap<String, String>();
-        showTimeInfo.put("ID", main.getIdGenerator().generateId(main.getShowTimeManagementProcessor().getDefaultDatabaseTable()));
+        showTimeInfo.put("ID", main.getIdGenerator().generateId(main.getProcessorManager().getShowTimeManagementProcessor().getDefaultDatabaseTable()));
         showTimeInfo.put("START_TIME", startTimeField.getText());
-        Response response = main.getShowTimeManagementProcessor().insertData(showTimeInfo, true);
+        Response response = main.getProcessorManager().getShowTimeManagementProcessor().insertData(showTimeInfo, true);
         StatusCode signupStatus = response.getStatusCode();
         if (signupStatus == StatusCode.OK) {
             Dialog<String> dialog = new Dialog<String>();

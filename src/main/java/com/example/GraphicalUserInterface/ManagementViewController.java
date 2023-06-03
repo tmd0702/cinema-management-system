@@ -969,48 +969,48 @@ public class ManagementViewController implements Initializable {
                 tabPanelOnClick = tabPanel;
                 activateBtn();
                 if (tabPanelOnClick == accountTabPanel) {
-                    activeProcessor = main.getAccountManagementProcessor();
+                    activeProcessor = main.getProcessorManager().getAccountManagementProcessor();
                     insertBtn.setDisable(true);
                     reRenderPage(true);
                 } else if (tabPanelOnClick == movieTabPanel) {
-                    activeProcessor = main.getMovieManagementProcessor();
+                    activeProcessor = main.getProcessorManager().getMovieManagementProcessor();
                     reRenderPage(true);
                 } else if (tabPanelOnClick == promotionTabPanel) {
-                    activeProcessor = main.getPromotionManagementProcessor();
+                    activeProcessor = main.getProcessorManager().getPromotionManagementProcessor();
                     reRenderPage(true);
                 } else if (tabPanelOnClick == theaterTabPanel) {
-                    activeProcessor = main.getTheaterManagementProcessor();
+                    activeProcessor = main.getProcessorManager().getCinemaManagementProcessor();
                     reRenderPage(true);
                 } else if (tabPanelOnClick == itemTabPanel) {
-                    activeProcessor = main.getItemManagementProcessor();
+                    activeProcessor = main.getProcessorManager().getItemManagementProcessor();
                     reRenderPage(true);
                 } else if (tabPanelOnClick == screenRoomTabPanel) {
-                    activeProcessor = main.getScreenRoomManagementProcessor();
+                    activeProcessor = main.getProcessorManager().getScreenRoomManagementProcessor();
                     reRenderPage(true);
                 } else if (tabPanelOnClick == showTimePanel) {
-                    activeProcessor = main.getShowTimeManagementProcessor();
+                    activeProcessor = main.getProcessorManager().getShowTimeManagementProcessor();
                     reRenderPage(true);
                 } else if (tabPanelOnClick == scheduleTabPanel) {
-                    activeProcessor = main.getScheduleManagementProcessor();
+                    activeProcessor = main.getProcessorManager().getScheduleManagementProcessor();
                     reRenderPage(true);
                 } else if (tabPanelOnClick == bookingSeatTabPanel) {
-                    activeProcessor = main.getBookingTicketManagementProcessor();
+                    activeProcessor = main.getProcessorManager().getBookingTicketManagementProcessor();
                     insertBtn.setDisable(true);
                     updateBtn.setDisable(true);
                     reRenderPage(true);
                 } else if (tabPanelOnClick == bookingItemTabPanel) {
-                    activeProcessor = main.getBookingItemManagementProcessor();
+                    activeProcessor = main.getProcessorManager().getBookingItemManagementProcessor();
                     insertBtn.setDisable(true);
                     updateBtn.setDisable(true);
                     reRenderPage(true);
                 } else if (tabPanelOnClick == paymentTabPanel) {
-                    activeProcessor = main.getPaymentManagementProcessor();
+                    activeProcessor = main.getProcessorManager().getPaymentManagementProcessor();
                     insertBtn.setDisable(true);
                     deleteBtn.setDisable(true);
                     updateBtn.setDisable(true);
                     reRenderPage(true);
                 } else {
-                    activeProcessor = main.getMovieManagementProcessor();
+                    activeProcessor = main.getProcessorManager().getMovieManagementProcessor();
                     reRenderPage(true);
                 }
             }

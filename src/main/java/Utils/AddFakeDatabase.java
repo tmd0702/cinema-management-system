@@ -9,7 +9,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 
 public class AddFakeDatabase {
-    Processor accountManagementProcessor, promotionManagementProcessor, theaterManagementProcessor, screenRoomManagementProcessor, userCategoryManagementProcessor, priceManagementProcessor;
+    Processor accountManagementProcessor, promotionManagementProcessor, cinemaManagementProcessor, screenRoomManagementProcessor, userCategoryManagementProcessor, priceManagementProcessor;
     Processor seatManagementProcessor, showTimeManagementProcessor, scheduleManagementProcessor, itemManagementProcessor, bookingTicketManagementProcessor, bookingItemMangementProcessor;
     Processor ticketManagementProcessor, paymentManagementProcessor, paymentMethodManagementProcessor;
     Processor seatCategoryManangementProcessor, itemCategoryManagementProcessor;
@@ -17,7 +17,7 @@ public class AddFakeDatabase {
     static MovieManagementProcessor movieManagementProcessor;
     Main main;
     public AddFakeDatabase() throws Exception {
-        theaterManagementProcessor = new TheaterManagementProcessor();
+        cinemaManagementProcessor = new CinemaManagementProcessor();
         this.userCategoryManagementProcessor = new UserCategoryManagementProcessor();
         this.promotionManagementProcessor = new PromotionManagementProcessor();
         this.accountManagementProcessor = new AccountManagementProcessor();
@@ -86,8 +86,8 @@ public class AddFakeDatabase {
         theater.put("CINE_AREA", "TPHCM");
         for (int i=0;i<2;++i) {
             theater.put("NAME", "4HB THU DUC"+ i);
-            theater.put("ID", idGenerator.generateId(theaterManagementProcessor.getDefaultDatabaseTable()));
-            Response response = theaterManagementProcessor.insertData(theater, true);
+            theater.put("ID", idGenerator.generateId(cinemaManagementProcessor.getDefaultDatabaseTable()));
+            Response response = cinemaManagementProcessor.insertData(theater, true);
             if (response.getStatusCode() == StatusCode.OK) {
                 System.out.println("insert 1 row success");
             } else {

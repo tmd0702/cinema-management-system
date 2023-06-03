@@ -49,7 +49,7 @@ public class AdminLoginFormController implements Initializable {
         HashMap<String, String> signinInfo = new HashMap<String, String>();
         signinInfo.put("username", this.usernameField.getText());
         signinInfo.put("password", this.passwordField.getText());
-        Response response = ManagementMain.getInstance().getAccountManagementProcessor().handleSigninAction(signinInfo);
+        Response response = managementMain.getProcessorManager().getAccountManagementProcessor().handleSigninAction(signinInfo);
         StatusCode signinStatus = response.getStatusCode();
         if (signinStatus == StatusCode.OK) {
             System.out.println("Sign in success");

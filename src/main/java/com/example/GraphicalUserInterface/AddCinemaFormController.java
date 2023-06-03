@@ -61,7 +61,7 @@ public class AddCinemaFormController implements Initializable {
         cinemaInfo.put("ADDRESS", addressField.getText());
         cinemaInfo.put("CINE_AREA", cineAreaField.getText());
 
-        Response response = main.getCinemaManagementProcessor().insertData(cinemaInfo, true);
+        Response response = main.getProcessorManager().getCinemaManagementProcessor().insertData(cinemaInfo, true);
         StatusCode status = response.getStatusCode();
         if (status == StatusCode.OK) {
             Dialog<String> dialog = new Dialog<String>();

@@ -150,7 +150,7 @@ public class IndexViewController implements Initializable {
         movieView.setOnMouseClicked(new EventHandler<MouseEvent>()  {
             @Override
             public void handle(MouseEvent mouseEvent) {
-                Main.getInstance().setMovieOnDetail(movie);
+                main.setMovieOnDetail(movie);
                 try {
                     System.out.println("change scene to movie detail view");
                     main.changeView("movie-detail-view.fxml");
@@ -179,7 +179,7 @@ public class IndexViewController implements Initializable {
         moviePreviewSectionScrollPane.setVbarPolicy(ScrollPane.ScrollBarPolicy.NEVER);
         int counter = 0;
         for (Movie movie : movieManager.getMovieList()) {
-            if (movie.getPosterImage() == main.getMovieManagementProcessor().getMovieManager().getImageNotFound()) continue;
+            if (movie.getPosterImage() == main.getProcessorManager().getMovieManagementProcessor().getMovieManager().getImageNotFound()) continue;
             counter += 1;
             if (counter == 15) break;
             // initialize booking button
@@ -244,7 +244,7 @@ public class IndexViewController implements Initializable {
     }
     public IndexViewController() throws Exception {
         main = Main.getInstance();
-        movieManager = main.getMovieManagementProcessor().getMovieManager();
+        movieManager = main.getProcessorManager().getMovieManagementProcessor().getMovieManager();
     }
     @FXML
     public void onSeeMoreCPBtnClick() throws IOException {

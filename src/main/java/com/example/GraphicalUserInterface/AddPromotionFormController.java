@@ -50,7 +50,7 @@ public class AddPromotionFormController implements Initializable {
         return id;
     }
     public void userCategoryNameFieldInit() {
-        userCategoryInfo = main.getUserCategoryManagementProcessor().getData(0, -1, "", "").getData();
+        userCategoryInfo = main.getProcessorManager().getUserCategoryManagementProcessor().getData(0, -1, "", "").getData();
         userCategoryCategories = Utils.getDataValuesByColumnName(userCategoryInfo, "CATEGORY");
         userCategoryNameField.setItems(FXCollections.observableArrayList(userCategoryCategories));
     }
@@ -91,7 +91,7 @@ public class AddPromotionFormController implements Initializable {
         promotionInfo.put("DESCRIPTION", descriptionField.getText());
         promotionInfo.put("DISCOUNT", discountField.getText());
         promotionInfo.put("USER_CATEGORY_ID", getUserCategoryObjectIDFromComboBox(userCategoryNameField.getValue()));
-        Response response = main.getPromotionManagementProcessor().insertData(promotionInfo, true);
+        Response response = main.getProcessorManager().getPromotionManagementProcessor().insertData(promotionInfo, true);
         StatusCode status = response.getStatusCode();
 
         if (status == StatusCode.OK) {

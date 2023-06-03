@@ -1,5 +1,6 @@
 package com.example.GraphicalUserInterface;
 
+import Configuration.Config;
 import Database.*;
 import ImageManager.ImageManager;
 import Utils.IdGenerator;
@@ -14,73 +15,23 @@ import java.io.IOException;
 public class ManagementMain extends Application {
     private static Stage stage;
     private Scene scene;
-    private PaymentManagementProcessor paymentManagementProcessor;
-    private BookingItemManagementProcessor bookingItemManagementProcessor;
-    private UserCategoryManagementProcessor userCategoryManagementProcessor;
-    private BookingTicketManagementProcessor bookingTicketManagementProcessor;
-    private Processor showTimeManagementProcessor, cinemaManagementProcessor, theaterManagementProcessor, promotionManagementProcessor, itemManagementProcessor, screenRoomManagementProcessor;
-    private MovieManagementProcessor movieManagementProcessor;
-    private AccountManagementProcessor accountManagementProcessor;
-    private ScheduleManagementProcessor scheduleManagementProcessor;
+    private Config config;
     private IdGenerator idGenerator;
     private ImageManager imageManager;
+    private ProcessorManager processorManager;
     private static ManagementMain managementMain;
     public ManagementMain() throws Exception {
         managementMain = this;
+        config = new Config();
         idGenerator = new IdGenerator();
-        userCategoryManagementProcessor = new UserCategoryManagementProcessor();
-        paymentManagementProcessor = new PaymentManagementProcessor();
-        bookingItemManagementProcessor = new BookingItemManagementProcessor();
-        bookingTicketManagementProcessor = new BookingTicketManagementProcessor();
-        scheduleManagementProcessor = new ScheduleManagementProcessor();
-        showTimeManagementProcessor = new ShowTimeManagementProcessor();
-        screenRoomManagementProcessor = new ScreenRoomManagementProcessor();
-        itemManagementProcessor = new ItemManagementProcessor();
-        cinemaManagementProcessor = new CinemaManagementProcessor();
-        theaterManagementProcessor = new TheaterManagementProcessor();
-        promotionManagementProcessor = new PromotionManagementProcessor();
-        accountManagementProcessor = new AccountManagementProcessor();
-        movieManagementProcessor = new MovieManagementProcessor();
+        processorManager = new ProcessorManager();
         imageManager = new ImageManager();
     }
-    public UserCategoryManagementProcessor getUserCategoryManagementProcessor() {
-        return this.userCategoryManagementProcessor;
-    }
-    public PaymentManagementProcessor getPaymentManagementProcessor() {
-        return this.paymentManagementProcessor;
-    }
-    public BookingItemManagementProcessor getBookingItemManagementProcessor() {
-        return this.bookingItemManagementProcessor;
-    }
-    public BookingTicketManagementProcessor getBookingTicketManagementProcessor() {
-        return this.bookingTicketManagementProcessor;
-    }
-    public ScheduleManagementProcessor getScheduleManagementProcessor() {
-        return this.scheduleManagementProcessor;
-    }
-    public Processor getShowTimeManagementProcessor() {
-        return this.showTimeManagementProcessor;
-    }
-    public Processor getItemManagementProcessor() {
-        return this.itemManagementProcessor;
+    public Config getConfig() {
+        return this.config;
     }
     public IdGenerator getIdGenerator() {
         return this.idGenerator;
-    }
-    public Processor getScreenRoomManagementProcessor() {
-        return this.screenRoomManagementProcessor;
-    }
-    public Processor getTheaterManagementProcessor() {
-        return this.theaterManagementProcessor;
-    }
-    public Processor getCinemaManagementProcessor() {
-        return this.cinemaManagementProcessor;
-    }
-    public MovieManagementProcessor getMovieManagementProcessor() {
-        return this.movieManagementProcessor;
-    }
-    public Processor getPromotionManagementProcessor() {
-        return this.promotionManagementProcessor;
     }
     public Node getNodeById(String id) {
         return stage.getScene().lookup(id);
@@ -98,9 +49,6 @@ public class ManagementMain extends Application {
     public ImageManager getImageManager() {
         return this.imageManager;
     }
-    public AccountManagementProcessor getAccountManagementProcessor() {
-        return this.accountManagementProcessor;
-    }
     public Scene getScene() {
         return this.scene;
     }
@@ -109,12 +57,13 @@ public class ManagementMain extends Application {
         stage = primaryStage;
         FXMLLoader fxmlLoader = new FXMLLoader(Main.class.getResource("admin-login-form.fxml"));
         scene = new Scene(fxmlLoader.load(), 920, 600);
-
-//        scene.getStylesheets().add(getClass().getResource("assets/css/index-style.css").toExternalForm());
         stage.setTitle("4HB Cinema Management System");
         stage.setScene(scene);
         stage.setResizable(false);
         stage.show();
+    }
+    public ProcessorManager getProcessorManager() {
+        return this.processorManager;
     }
 
     public void changeScene(String fxml) throws IOException {

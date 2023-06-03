@@ -42,8 +42,8 @@ public class SearchResultsViewController implements Initializable {
         choiceBoxesInit();
     }
     public void choiceBoxesInit() {
-        genreChoiceBox.setItems(FXCollections.observableArrayList(main.getFiltererProcessor().getGenres()));
-        languageChoiceBox.setItems(FXCollections.observableArrayList(main.getFiltererProcessor().getLanguages()));
+        genreChoiceBox.setItems(FXCollections.observableArrayList(main.getProcessorManager().getFiltererProcessor().getGenres()));
+        languageChoiceBox.setItems(FXCollections.observableArrayList(main.getProcessorManager().getFiltererProcessor().getLanguages()));
         ArrayList<String> sortingMethods = new ArrayList<String>();
         sortingMethods.add("Relevant");
 //        sortingMethods.add("By view count");
@@ -71,7 +71,7 @@ public class SearchResultsViewController implements Initializable {
     public void displaySearchResults() {
         resultsContainer.getChildren().clear();
         for (String key : searchResults.keySet()) {
-            Movie movie = main.getMovieManagementProcessor().getMovieManager().getMovieById(key);
+            Movie movie = main.getProcessorManager().getMovieManagementProcessor().getMovieManager().getMovieById(key);
             if (movie != null && movie.getGenres().toString().contains(filterGenre) && movie.getLanguage().contains(filterLanguage)) {
                 HBox movieContainer = new HBox();
                 movieContainer.setPrefHeight(220);
@@ -85,7 +85,7 @@ public class SearchResultsViewController implements Initializable {
                 if (movie.getPosterImage().getProgress() == 1 && !movie.getPosterImage().isError()) {
                     poster.setImage(movie.getPosterImage());
                 } else {
-                    poster.setImage(main.getMovieManagementProcessor().getMovieManager().getImageNotFound());
+                    poster.setImage(main.getProcessorManager().getMovieManagementProcessor().getMovieManager().getImageNotFound());
                 }
                 VBox movieContentInfo = new VBox();
                 movieContentInfo.setPadding(new Insets(20, 20, 20, 20));
@@ -108,10 +108,10 @@ public class SearchResultsViewController implements Initializable {
                 poster.setOnMouseClicked(new EventHandler<MouseEvent>()  {
                     @Override
                     public void handle(MouseEvent mouseEvent) {
-                        Main.getInstance().setMovieOnDetail(movie);
+                        main.setMovieOnDetail(movie);
                         //main.setMovieOnDetail(new Movie("MOV1000", "Toy Story", "Led by Woody, Andy's toys live happily in his room until Andy's birthday brings Buzz Lightyear onto the scene. Afraid of losing his place in Andy's heart, Woody plots against Buzz. But when circumstances separate Buzz and Woody from their owner, the duo eventually learns to put aside their differences.", "ASDS", 100, 90, new Date(), "https://image.tmdb.org/t/p/original/7G9915LfUQ2lVfwMEEhDsn3kT4B.jpg", "https://image.tmdb.org/t/p/original/9FBwqcd9IRruEDUrTdcaafOMKUq.jpg"));
                         try {
-                            Main.getInstance().changeView("movie-detail-view.fxml");
+                            main.changeView("movie-detail-view.fxml");
                         } catch (IOException e) {
                             System.out.println(e);
                         }

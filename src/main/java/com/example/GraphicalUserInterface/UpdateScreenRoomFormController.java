@@ -59,7 +59,7 @@ public class UpdateScreenRoomFormController implements Initializable {
         return cinemaNames;
     }
     public void cinemaNameFieldInit() {
-        cinemaInfo = main.getCinemaManagementProcessor().getData(0, -1, "", "").getData();
+        cinemaInfo = main.getProcessorManager().getCinemaManagementProcessor().getData(0, -1, "", "").getData();
         cinemaNames = getCinemaNames();
         cinemaNameField.setItems(FXCollections.observableArrayList(cinemaNames));
     }
@@ -80,7 +80,7 @@ public class UpdateScreenRoomFormController implements Initializable {
         screenRoomInfo.put("CAPACITY", capacityField.getText());
         screenRoomInfo.put("CINEMA_ID", getCinemaObjectIDFromComboBox(cinemaNameField.getValue()));
 
-        Response response = main.getScreenRoomManagementProcessor().updateData(screenRoomInfo, String.format("ID = '%s'", idField.getText()), true);
+        Response response = main.getProcessorManager().getScreenRoomManagementProcessor().updateData(screenRoomInfo, String.format("ID = '%s'", idField.getText()), true);
         StatusCode status = response.getStatusCode();
         if (status == StatusCode.OK) {
             Dialog<String> dialog = new Dialog<String>();

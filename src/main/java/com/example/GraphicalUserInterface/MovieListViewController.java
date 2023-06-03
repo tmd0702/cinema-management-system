@@ -74,7 +74,7 @@ public class   MovieListViewController implements Initializable {
         moviesContainer.setPrefWidth(903);
         moviesContainer.setPadding(new Insets(0, 63, 0, 63));
         tabContainer.getChildren().add(moviesContainer);
-        ArrayList<Movie> movieList = main.getMovieManagementProcessor().getMovieManager().getCurrentlyPlayingMovieList();
+        ArrayList<Movie> movieList = main.getProcessorManager().getMovieManagementProcessor().getMovieManager().getCurrentlyPlayingMovieList();
         HBox listView = new HBox();
         for (int i=0;i<movieList.size();++i) {
             Movie movie = movieList.get(i);
@@ -100,7 +100,7 @@ public class   MovieListViewController implements Initializable {
         moviesContainer.setPrefWidth(903);
         moviesContainer.setPadding(new Insets(0, 63, 0, 63));
         tabContainer.getChildren().add(moviesContainer);
-        ArrayList<Movie> movieList = main.getMovieManagementProcessor().getMovieManager().getComingSoonMovieList();
+        ArrayList<Movie> movieList = main.getProcessorManager().getMovieManagementProcessor().getMovieManager().getComingSoonMovieList();
         HBox listView = new HBox();
         for (int i=0;i<movieList.size();++i) {
             Movie movie = movieList.get(i);

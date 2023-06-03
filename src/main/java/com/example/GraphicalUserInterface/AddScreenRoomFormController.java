@@ -43,7 +43,7 @@ public class AddScreenRoomFormController implements Initializable {
         return cinemaNames;
     }
     public void cinemaNameFieldInit() {
-        cinemaInfo = main.getCinemaManagementProcessor().getData(0, -1, "", "").getData();
+        cinemaInfo = main.getProcessorManager().getCinemaManagementProcessor().getData(0, -1, "", "").getData();
         cinemaNames = getCinemaNames();
         cinemaNameField.setItems(FXCollections.observableArrayList(cinemaNames));
     }
@@ -86,11 +86,11 @@ public class AddScreenRoomFormController implements Initializable {
     }
     public void handleInsertRecordRequest() {
         HashMap<String, String> screenRoomInfo = new HashMap<String, String>();
-        screenRoomInfo.put("ID", main.getIdGenerator().generateId(main.getScreenRoomManagementProcessor().getDefaultDatabaseTable()));
+        screenRoomInfo.put("ID", main.getIdGenerator().generateId(main.getProcessorManager().getScreenRoomManagementProcessor().getDefaultDatabaseTable()));
         screenRoomInfo.put("NAME", nameField.getText());
         screenRoomInfo.put("CINEMA_ID", getCinemaObjectIDFromComboBox(cinemaNameField.getValue()));
         screenRoomInfo.put("CAPACITY", capacityField.getText());
-        Response response = main.getScreenRoomManagementProcessor().insertData(screenRoomInfo, true);
+        Response response = main.getProcessorManager().getScreenRoomManagementProcessor().insertData(screenRoomInfo, true);
         StatusCode signupStatus = response.getStatusCode();
         if (signupStatus == StatusCode.OK) {
             Dialog<String> dialog = new Dialog<String>();

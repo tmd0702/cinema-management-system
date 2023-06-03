@@ -72,7 +72,7 @@ public class UpdateMovieFormController implements Initializable {
         movieInfo.put("VOTE_COUNT", voteCountField.getText());
         movieInfo.put("VOTE_AVERAGE", voteAverageField.getText());
         movieInfo.put("STATUS", movieStatusField.getValue().toString());
-        Response response = main.getMovieManagementProcessor().updateData(movieInfo, String.format("ID = '%s'", idField.getText()), true);
+        Response response = main.getProcessorManager().getMovieManagementProcessor().updateData(movieInfo, String.format("ID = '%s'", idField.getText()), true);
         StatusCode status = response.getStatusCode();
         if (status == StatusCode.OK) {
             Dialog<String> dialog = new Dialog<String>();

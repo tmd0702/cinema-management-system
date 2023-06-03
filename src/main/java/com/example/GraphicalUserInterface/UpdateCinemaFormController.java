@@ -56,7 +56,7 @@ public class UpdateCinemaFormController implements Initializable {
         cinemaInfo.put("ADDRESS", addressField.getText());
         cinemaInfo.put("NAME", nameField.getText());
         cinemaInfo.put("CINE_AREA", cineAreaField.getText());
-        Response response = main.getCinemaManagementProcessor().updateData(cinemaInfo, String.format("ID = '%s'", idField.getText()), true);
+        Response response = main.getProcessorManager().getCinemaManagementProcessor().updateData(cinemaInfo, String.format("ID = '%s'", idField.getText()), true);
         StatusCode status = response.getStatusCode();
         if (status == StatusCode.OK) {
             Dialog<String> dialog = new Dialog<String>();

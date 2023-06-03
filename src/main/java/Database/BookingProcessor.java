@@ -12,9 +12,11 @@ import com.example.GraphicalUserInterface.Main;
 
 public class BookingProcessor extends Processor {
     private BookingInfor bookingInfor;
+    private Main main;
     private IdGenerator idGenerator;
     public BookingProcessor() throws Exception {
         super();
+        this.main = Main.getInstance();
         this.bookingInfor = new BookingInfor();
         this.idGenerator = new IdGenerator();
     }
@@ -57,7 +59,7 @@ public class BookingProcessor extends Processor {
     }
 
     public ArrayList<ArrayList<String>> getSeat() {
-        return Main.getInstance().getSeatManagementProcessor().getData(0, -1,String.format("SCREEN_ROOM_ID = \"%s\";", bookingInfor.getScreen()),"").getData();
+        return main.getProcessorManager().getSeatManagementProcessor().getData(0, -1,String.format("SCREEN_ROOM_ID = \"%s\";", bookingInfor.getScreen()),"").getData();
     }
 
     public ArrayList<ArrayList<String>> getTimeSlotList() {
@@ -74,21 +76,21 @@ public class BookingProcessor extends Processor {
         return data;
     }
     public ArrayList<ArrayList<String>> getItems(){
-        return Main.getInstance().getItemManagementProcessor().getData(0, -1, "", "").getData();
+        return main.getProcessorManager().getItemManagementProcessor().getData(0, -1, "", "").getData();
     }
     public String createPaymentRow(){
         LocalDateTime now = LocalDateTime.now();
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
         String formatDateTime = now.format(formatter);
         HashMap<String, String> payment = new HashMap<String, String>();
-        payment.put("ID", idGenerator.generateId(Main.getInstance().getPaymentManagementProcessor().getDefaultDatabaseTable()));
-        payment.put("USER_ID", Main.getInstance().getSignedInUser().getId());
+        payment.put("ID", idGenerator.generateId(main.getProcessorManager().getPaymentManagementProcessor().getDefaultDatabaseTable()));
+        payment.put("USER_ID", main.getSignedInUser().getId());
         payment.put("PAYMENT_DATE", formatDateTime);
         payment.put("PAYMENT_METHOD_ID", bookingInfor.getPaymentMethodId());
         payment.put("TOTAL_AMOUNT", Integer.toString(bookingInfor.getTotal()));
         payment.put("SCHEDULE_ID", bookingInfor.getScheduleId());
         payment.put("PROMOTION_ID", bookingInfor.getPromotionCode());
-        Response response = Main.getInstance().getPaymentManagementProcessor().insertData(payment, false);
+        Response response = main.getProcessorManager().getPaymentManagementProcessor().insertData(payment, false);
         if (response.getStatusCode() == StatusCode.OK) {
             System.out.println("insert 1 row success" + payment.get("ID"));
         } else {
@@ -100,10 +102,10 @@ public class BookingProcessor extends Processor {
         HashMap<String, String> seatTicket = new HashMap<String, String>();
         ArrayList<String> ticketId = new ArrayList<String>();
         for(String seatid : bookingInfor.getSeats()) {
-            seatTicket.put("ID", idGenerator.generateId(Main.getInstance().getTicketManagementProcessor().getDefaultDatabaseTable()));
+            seatTicket.put("ID", idGenerator.generateId(main.getProcessorManager().getTicketManagementProcessor().getDefaultDatabaseTable()));
             seatTicket.put("SEAT_ID", seatid);
             seatTicket.put("SCHEDULE_ID", bookingInfor.getScheduleId());
-            Response response = Main.getInstance().getTicketManagementProcessor().insertData(seatTicket, false);
+            Response response = main.getProcessorManager().getTicketManagementProcessor().insertData(seatTicket, false);
             if (response.getStatusCode() == StatusCode.OK) {
                 System.out.println("insert 1 row success" + seatTicket.get("ID"));
                 ticketId.add(seatTicket.get("ID"));
@@ -120,7 +122,7 @@ public class BookingProcessor extends Processor {
         for(String ticket : ticketSeats) {
             seatBooking.put("PAYMENT_ID", paymentId);
             seatBooking.put("TICKET_ID", ticket);
-            Response response = Main.getInstance().getBookingTicketManagementProcessor().insertData(seatBooking, false);
+            Response response = main.getProcessorManager().getBookingTicketManagementProcessor().insertData(seatBooking, false);
             if (response.getStatusCode() == StatusCode.OK) {
                 System.out.println("insert 1 row success");
             } else {
@@ -138,7 +140,7 @@ public class BookingProcessor extends Processor {
             itemBooking.put("PAYMENT_ID", paymentID);
             itemBooking.put("ITEM_ID", item.get(0));
             itemBooking.put("QUANTITY", item.get(1));
-            Response response = Main.getInstance().getBookingItemManagementProccessor().insertData(itemBooking, false);
+            Response response = main.getProcessorManager().getBookingItemManagementProccessor().insertData(itemBooking, false);
             if (response.getStatusCode() == StatusCode.OK) {
                 System.out.println("insert 1 row success" );
             } else {

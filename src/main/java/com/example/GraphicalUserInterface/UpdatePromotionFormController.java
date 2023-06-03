@@ -35,7 +35,7 @@ public class UpdatePromotionFormController implements Initializable {
         userCategoryNameFieldInit();
     }
     public void userCategoryNameFieldInit() {
-        userCategoryInfo = main.getUserCategoryManagementProcessor().getData(0, -1, "", "").getData();
+        userCategoryInfo = main.getProcessorManager().getUserCategoryManagementProcessor().getData(0, -1, "", "").getData();
         userCategoryCategories = Utils.getDataValuesByColumnName(userCategoryInfo, "CATEGORY");
         userCategoryNameField.setItems(FXCollections.observableArrayList(userCategoryCategories));
     }
@@ -79,7 +79,7 @@ public class UpdatePromotionFormController implements Initializable {
         promotionInfo.put("DISCOUNT", discountField.getText());
         promotionInfo.put("DESCRIPTION", descriptionField.getText());
         promotionInfo.put("USER_CATEGORY_ID", getUserCategoryObjectIDFromComboBox(userCategoryNameField.getValue()));
-        Response response = main.getPromotionManagementProcessor().updateData(promotionInfo, String.format("ID = '%s'", idField.getText()), true);
+        Response response = main.getProcessorManager().getPromotionManagementProcessor().updateData(promotionInfo, String.format("ID = '%s'", idField.getText()), true);
         StatusCode status = response.getStatusCode();
         if (status == StatusCode.OK) {
             Dialog<String> dialog = new Dialog<String>();

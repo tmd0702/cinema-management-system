@@ -53,7 +53,7 @@ public abstract class Processor {
             Statement st = getConnector().createStatement();
             st.execute(query);
             st.close();
-//            if (isCommit) commit();
+            if (isCommit) commit();
             return new Response("OK", StatusCode.OK);
         } catch (Exception e) {
             System.out.println(e);
@@ -85,7 +85,7 @@ public abstract class Processor {
             Statement st = getConnector().createStatement();
             st.execute(query);
             st.close();
-//            if (isCommit) commit();
+            if (isCommit) commit();
             return new Response("OK", StatusCode.OK);
         } catch (Exception e) {
             System.out.println(e);
@@ -100,7 +100,7 @@ public abstract class Processor {
         try {
             Statement st = getConnector().createStatement();
             st.execute(query);
-//            if (isCommit) commit();
+            if (isCommit) commit();
             st.close();
             return new Response("OK", StatusCode.OK);
         } catch (Exception e) {

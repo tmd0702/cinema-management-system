@@ -24,7 +24,7 @@ public class IdGenerator {
         for (String table : config.getProperty("TABLES_WITH_ID").split(",")) {
             this.sequence.put(table, -1);
         }
-        this.database = new Database();
+        this.database = Database.getInstance();
         this.con = this.database.getConnection();
     }
     public String generateIdFormat(String table) {

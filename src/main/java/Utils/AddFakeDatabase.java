@@ -342,7 +342,7 @@ public class AddFakeDatabase {
 //        addFakeDatabase.addFakeShowTimes();
 //        addFakeDatabase.addFakeItems();
 //        addFakeDatabase.addFakeTicket();
-        addFakeDatabase.addFakePaymentMethod();;
+//        addFakeDatabase.addFakePaymentMethod();;
 //        addFakeDatabase.addFakePayments();
 //        addFakeDatabase.addFakeBookingItems();
 //        addFakeDatabase.addFakeBookingSeats();

@@ -971,7 +971,6 @@ public class ManagementViewController implements Initializable {
                 if (tabPanelOnClick == accountTabPanel) {
                     activeProcessor = main.getAccountManagementProcessor();
                     insertBtn.setDisable(true);
-                    deleteBtn.setDisable(true);
                     reRenderPage(true);
                 } else if (tabPanelOnClick == movieTabPanel) {
                     activeProcessor = main.getMovieManagementProcessor();
@@ -996,9 +995,13 @@ public class ManagementViewController implements Initializable {
                     reRenderPage(true);
                 } else if (tabPanelOnClick == bookingSeatTabPanel) {
                     activeProcessor = main.getBookingTicketManagementProcessor();
+                    insertBtn.setDisable(true);
+                    updateBtn.setDisable(true);
                     reRenderPage(true);
                 } else if (tabPanelOnClick == bookingItemTabPanel) {
                     activeProcessor = main.getBookingItemManagementProcessor();
+                    insertBtn.setDisable(true);
+                    updateBtn.setDisable(true);
                     reRenderPage(true);
                 } else if (tabPanelOnClick == paymentTabPanel) {
                     activeProcessor = main.getPaymentManagementProcessor();

@@ -103,7 +103,6 @@ public class BookingProcessor extends Processor {
             seatTicket.put("ID", idGenerator.generateId(Main.getInstance().getTicketManagementProcessor().getDefaultDatabaseTable()));
             seatTicket.put("SEAT_ID", seatid);
             seatTicket.put("SCHEDULE_ID", bookingInfor.getScheduleId());
-            seatTicket.put("AMOUNT", "70000");
             Response response = Main.getInstance().getTicketManagementProcessor().insertData(seatTicket, false);
             if (response.getStatusCode() == StatusCode.OK) {
                 System.out.println("insert 1 row success" + seatTicket.get("ID"));

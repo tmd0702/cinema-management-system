@@ -61,7 +61,7 @@ public class Database {
             System.out.println("Successful Connection");
             Statement st = this.con.createStatement();
             st.execute("USE movie;");
-//            this.con.setAutoCommit(false);
+            this.con.setAutoCommit(false);
         } catch (ClassNotFoundException cnfe) {
             System.err.println(cnfe);
         } catch (SQLException sqle) {

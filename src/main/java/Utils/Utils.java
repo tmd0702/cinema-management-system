@@ -41,6 +41,13 @@ public class Utils {
 
         return keysValuesList;
     }
+    public static ArrayList<String> convertJSONArrayToArrayList(JSONArray ja) {
+        ArrayList<String> retArray = new ArrayList<String>();
+        for (int i = 0; i < ja.length(); ++i) {
+            retArray.add(ja.get(i).toString());
+        }
+        return retArray;
+    }
     public static String addDateByNDays(Date date, int nDays) {
         Calendar c = Calendar.getInstance();
         c.setTime(date);

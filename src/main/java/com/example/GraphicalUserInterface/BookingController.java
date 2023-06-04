@@ -279,7 +279,7 @@ public class BookingController {
             //Setting the title
             dialog.setTitle("Failed");
             ButtonType type = new ButtonType("Ok", ButtonBar.ButtonData.OK_DONE);
-            dialog.setContentText("wrong promotion code");
+            dialog.setContentText("Wrong promotion code");
             dialog.getDialogPane().getButtonTypes().add(type);
             dialog.showAndWait();
         }
@@ -298,7 +298,7 @@ public class BookingController {
         CinemaButton = new ArrayList<Button>();
         cinemaInfor = new ArrayList<ArrayList<String>>();
         cinemaSection = new HBox();
-        cinemaSection.setSpacing(5);
+        cinemaSection.setSpacing(3);
         cinemaSectionScrollPane.setVbarPolicy(ScrollPane.ScrollBarPolicy.NEVER);
         cinemaInfor = bookingProcessor.getTheaterList();
         System.out.println(cinemaInfor);
@@ -327,7 +327,7 @@ public class BookingController {
         TimeButton = new ArrayList<Button>();
         timeInfor = new ArrayList<ArrayList<String>>();
         timeSection = new HBox();
-        timeSection.setSpacing(5);
+        timeSection.setSpacing(3);
         timeSlotSecionScrollPane.setVbarPolicy(ScrollPane.ScrollBarPolicy.NEVER);
         timeInfor = bookingProcessor.getTimeSlotList();
          System.out.println(timeInfor);
@@ -348,8 +348,9 @@ public class BookingController {
             button.setText(timeSlot);
             button.setOnAction(e->handleDateButtonAction(e));
             TimeButton.add(button);
-            if(bookingProcessor.getBookingInfor().getDate().equals(today) && timeSlot.compareTo(nowTime) <= 0)
+            if(bookingProcessor.getBookingInfor().getDate().equals(today) && timeSlot.compareTo(nowTime) <= 0) {
                 continue;
+            }
             timeSection.getChildren().add(button);
         }
         timeSlotSecionScrollPane.setContent(timeSection);
@@ -412,7 +413,7 @@ public class BookingController {
                     //Setting the title
                     dialog.setTitle("Failed");
                     ButtonType type = new ButtonType("Ok", ButtonBar.ButtonData.OK_DONE);
-                    dialog.setContentText("wrong promotion code");
+                    dialog.setContentText("Have not chosen over 12 seats");
                     dialog.getDialogPane().getButtonTypes().add(type);
                     dialog.showAndWait();
                 }
@@ -546,12 +547,20 @@ public class BookingController {
         Button button = (Button) event.getSource();
         if(DateButton.contains(button)) {
             setClick(DateButton, button, isDateActive, showDate);
+            announceTime.setText("Please choose one cinema you would you like to watch in listed above");
         }
         else if (CinemaButton.contains(button)){
             setClick(CinemaButton, button, isCinemaActive, nameCinema);
+            if (timeSection.getChildren().isEmpty()) {
+                announceTime.setText("No showtime at now in this cinema");
+                announceTime.setVisible(true);
+            } else {
+                announceTime.setText("Please choose one cinema you would you like to watch in listed above");
+            }
         }
-        else
+        else {
             setClick(TimeButton, button, isTimeActive, showTime);
+        }
     }
 
     public void setClick(ArrayList<Button> ListButton, Button button, ArrayList<Boolean> ListActive, Label label){
@@ -591,6 +600,7 @@ public class BookingController {
             System.out.println(getIdFromIndex(cinemaInfor, CinemaButton.indexOf(button)));
             bookingProcessor.getBookingInfor().setNameCinema(getIdFromIndex(cinemaInfor, CinemaButton.indexOf(button)));
             ConstructTimeButton();
+
         }
         if(TimeButton.contains(button)){
 
@@ -638,6 +648,8 @@ public class BookingController {
         DateTimeFormatter dayOfWeekformater = DateTimeFormatter.ofPattern("EEEE", Locale.US);
         String Formateddate = now.format(dateFormater);
         String Formateddyaofweek  =now.format(dayOfWeekformater);
+        if(Formateddyaofweek.equals("Wednesday"))
+            Formateddyaofweek = "Wednes";
         b.setText(Formateddyaofweek + " " + Formateddate);
     }
 
@@ -702,7 +714,7 @@ public class BookingController {
                     //Setting the title
                     dialog.setTitle("Failed");
                     ButtonType type = new ButtonType("Ok", ButtonBar.ButtonData.OK_DONE);
-                    dialog.setContentText("wrong promotion code");
+                    dialog.setContentText("Please choose at least one seat");
                     dialog.getDialogPane().getButtonTypes().add(type);
                     dialog.showAndWait();
                     return;
@@ -765,7 +777,7 @@ public class BookingController {
                         //Setting the title
                         dialog.setTitle("Failed");
                         ButtonType type = new ButtonType("Ok", ButtonBar.ButtonData.OK_DONE);
-                        dialog.setContentText("wrong promotion code");
+                        dialog.setContentText("Over time booking");
                         dialog.getDialogPane().getButtonTypes().add(type);
                         dialog.show();
                         try {

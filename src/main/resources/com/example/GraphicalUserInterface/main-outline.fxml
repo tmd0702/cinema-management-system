@@ -21,12 +21,12 @@
             <VBox fx:id="mainOutlineContentView" prefHeight="200.0" prefWidth="900.0">
                <AnchorPane fx:id="headerBar" layoutX="10.0" layoutY="10.0" prefHeight="56.0" prefWidth="891.0" style="-fx-background-color: #D9D9D9; -fx-pref-height: 56;" AnchorPane.bottomAnchor="1552.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
                   <children>
-                     <ImageView fx:id="logoImageView" fitHeight="56.0" fitWidth="56.0" onMouseClicked="#logoImageViewOnClick" pickOnBounds="true" preserveRatio="true">
+                     <ImageView fx:id="logoImageView" fitHeight="54.0" fitWidth="90.0" onMouseClicked="#logoImageViewOnClick" pickOnBounds="true" preserveRatio="true">
                         <image>
                   </image>
                      </ImageView>
-                     <TextField fx:id="inputField" layoutX="263.0" layoutY="11.0" onAction="#onSearchFieldEnterKeyPress" prefHeight="25.0" prefWidth="359.0" promptText="Search" />
-                     <HBox layoutX="742.0" layoutY="11.0" spacing="10.0">
+                     <TextField fx:id="inputField" layoutX="263.0" layoutY="18.0" onAction="#onSearchFieldEnterKeyPress" prefHeight="25.0" prefWidth="359.0" promptText="Search" />
+                     <HBox layoutX="742.0" layoutY="15.0" spacing="10.0">
                         <children>
                            <Button fx:id="signInBtn" mnemonicParsing="false" onMouseClicked="#onSignInBtnClick" prefHeight="25.0" prefWidth="60.0" style="-fx-background-color: #AB0A10; -fx-font-weight: bold;" text="Sign in" textFill="WHITE" />
                            <Button fx:id="signUpBtn" mnemonicParsing="false" onMouseClicked="#onSignUpBtnClick" prefHeight="25.0" prefWidth="60.0" style="-fx-background-color: #AB0A10; -fx-font-weight: bold;" text="Sign up" textFill="WHITE" />

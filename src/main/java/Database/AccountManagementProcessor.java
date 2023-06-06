@@ -49,10 +49,10 @@ public class AccountManagementProcessor extends Processor {
             return new Response(e.toString(), StatusCode.BAD_REQUEST);
         }
     }
-    public void addAuthentication(String id, String password) {
+    public void addAuthentication(String id, String authId, String password) {
         try {
             Statement st = getConnector().createStatement();
-            String insertPasswordQuery = String.format("INSERT INTO AUTHENTICATION(ID, PASS) VALUES ('%s', '%s');", id, password);
+            String insertPasswordQuery = String.format("INSERT INTO AUTHENTICATION(ID, USER_ID, PASS) VALUES ('%s', '%s', '%s');", authId, id, password);
             System.out.println(insertPasswordQuery);
             st.execute(insertPasswordQuery);
             System.out.println("Success");
@@ -91,10 +91,13 @@ public class AccountManagementProcessor extends Processor {
                 throw new InvalidPasswordException("Password: " + signupInfo.get("password") + " is invalid!");
             }
             String id = ManagementMain.getInstance().getIdGenerator().generateId("USERS");
+            String authId = ManagementMain.getInstance().getIdGenerator().generateId("AUTHENTICATION");
             String insertUserQuery = String.format("INSERT INTO USERS(ID, USERNAME, FIRST_NAME, LAST_NAME, DOB, GENDER, ADDRESS, PHONE, EMAIL, USER_ROLE, SCORE) VALUES ('%s', '%s', '%s', '%s', '%s', '%s', '%s', '%s', '%s', '%s', %d);", id, signupInfo.get("username"), signupInfo.get("firstName"), signupInfo.get("lastName"), new Date(new SimpleDateFormat("yyyy-MM-dd").parse(signupInfo.get("dateOfBirth")).getTime()), signupInfo.get("gender"), signupInfo.get("address"), signupInfo.get("phone"), signupInfo.get("email"), "SUBSCRIBER", 0);
+            System.out.println(insertUserQuery);
             Statement st = getConnector().createStatement();
             st.execute(insertUserQuery);
-            addAuthentication(id, signupInfo.get("password"));
+            addAuthentication(id, authId, signupInfo.get("password"));
+            commit();
             st.close();
             return new Response("OK", StatusCode.OK);
         } catch (InvalidEmailException e) {

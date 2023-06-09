@@ -1,6 +1,7 @@
 package Database;
 
 import CinemaManager.Cinema;
+import MovieManager.MovieManager;
 
 public class ProcessorManager {
     private BookingProcessor bookingProcessor;

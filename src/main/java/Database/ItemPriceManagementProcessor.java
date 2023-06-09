@@ -4,10 +4,10 @@ import Utils.Response;
 
 import java.util.HashMap;
 
-public class PriceManagementProcessor extends Processor {
-    public PriceManagementProcessor(){
+public class ItemPriceManagementProcessor extends Processor {
+    public ItemPriceManagementProcessor(){
         super();
-        setDefaultDatabaseTable("PRICES");
+        setDefaultDatabaseTable("ITEM_PRICES");
     }
     public Response getData(int from, int quantity, String queryCondition, String sortQuery) {
         Response response = select("*", from, quantity, queryCondition, sortQuery, getDefaultDatabaseTable());

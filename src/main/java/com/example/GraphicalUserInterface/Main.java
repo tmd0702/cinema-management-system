@@ -43,7 +43,7 @@ public class Main extends Application {
         return this.processorManager;
     }
     public Stage getStage() {return this.stage;}
-
+    public void setProcessorManager(ProcessorManager processorManager){this.processorManager = processorManager;};
     public Node getNodeById(String id) {
         return stage.getScene().lookup(id);
     }

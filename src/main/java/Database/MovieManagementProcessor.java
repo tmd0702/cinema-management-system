@@ -22,6 +22,7 @@ public class MovieManagementProcessor extends Processor {
         super();
         setDefaultDatabaseTable("MOVIES");
         this.idGenerator = new IdGenerator();
+        this.movieManager = new MovieManager();
         this.scheduleManagementProcessor = new ScheduleManagementProcessor();
     }
     public MovieManager getMovieManager() {

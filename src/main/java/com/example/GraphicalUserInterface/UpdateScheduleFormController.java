@@ -146,7 +146,7 @@ public class UpdateScheduleFormController implements Initializable {
 
         for (int i=0; i<cinemaNames.size();++i) {
             if (cinemaNames.get(i).equals(value)) {
-                id = Utils.getRowValueByColumnName(2 + i, "ID", cinemaInfo);
+                id = Utils.getRowValueByColumnName(2 + i, "CINEMAS.ID", cinemaInfo);
                 break;
             }
         }
@@ -156,7 +156,7 @@ public class UpdateScheduleFormController implements Initializable {
         String id = null;
         for (int i=0; i<screenRoomNames.size();++i) {
             if (screenRoomNames.get(i).equals(value)) {
-                id = Utils.getRowValueByColumnName(2 + i, "ID", screenRoomInfo);
+                id = Utils.getRowValueByColumnName(2 + i, "SCREEN_ROOMS.ID", screenRoomInfo);
                 break;
             }
         }
@@ -166,7 +166,7 @@ public class UpdateScheduleFormController implements Initializable {
         String id = null;
         for (int i=0; i<startTimes.size();++i) {
             if (startTimes.get(i) == value) {
-                id = Utils.getRowValueByColumnName(2 + i, "ID", showTimeInfo);
+                id = Utils.getRowValueByColumnName(2 + i, "SHOW_TIMES.ID", showTimeInfo);
                 break;
             }
         }

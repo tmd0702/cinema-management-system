@@ -153,7 +153,7 @@ public class AddScheduleFormController implements Initializable {
         String id = null;
         for (int i=0; i<startTimes.size();++i) {
             if (startTimes.get(i) == value) {
-                id = Utils.getRowValueByColumnName(2 + i, "ID", showTimeInfo);
+                id = Utils.getRowValueByColumnName(2 + i, "SHOW_TIMES.ID", showTimeInfo);
                 break;
             }
         }

@@ -11,20 +11,20 @@ public class ItemManagementProcessor extends Processor {
     }
     public Response getData(int from, int quantity, String queryCondition, String sortQuery) {
         if (queryCondition.length() > 0) {
-            queryCondition = " AND ITEM_CATEGORY.ID = ITEMS.ITEM_CATEGORY_ID AND PRICES.COMPONENT_ID = ITEM_CATEGORY.ID";
+            queryCondition = " AND ITEM_CATEGORY.ID = ITEMS.ITEM_CATEGORY_ID AND ITEM_PRICES.ITEM_CATEGORY_ID = ITEM_CATEGORY.ID";
         } else {
-            queryCondition = "ITEM_CATEGORY.ID = ITEMS.ITEM_CATEGORY_ID AND PRICES.COMPONENT_ID = ITEM_CATEGORY.ID";
+            queryCondition = "ITEM_CATEGORY.ID = ITEMS.ITEM_CATEGORY_ID AND ITEM_PRICES.ITEM_CATEGORY_ID = ITEM_CATEGORY.ID";
         }
-        Response response = select("ITEMS.ID AS 'ITEMS.ID', ITEMS.NAME AS 'ITEMS.NAME', ITEM_CATEGORY.CATEGORY AS 'ITEM_CATEGORY.CATEGORY', PRICES.PRICE AS 'PRICES.PRICE', ITEMS.REVENUE AS 'ITEMS.REVENUE'", from, quantity, queryCondition, sortQuery, "ITEMS, ITEM_CATEGORY, PRICES");
+        Response response = select("ITEMS.ID AS 'ITEMS.ID', ITEMS.NAME AS 'ITEMS.NAME', ITEM_CATEGORY.CATEGORY AS 'ITEM_CATEGORY.CATEGORY', ITEM_PRICES.PRICE AS 'ITEM_PRICES.PRICE', ITEMS.REVENUE AS 'ITEMS.REVENUE'", from, quantity, queryCondition, sortQuery, "ITEMS, ITEM_CATEGORY, PRICES");
         return response;
     }
     public int countData(String queryCondition) {
         if (queryCondition.length() > 0) {
-            queryCondition = " AND ITEM_CATEGORY.ID = ITEMS.ITEM_CATEGORY_ID AND PRICES.COMPONENT_ID = ITEM_CATEGORY.ID";
+            queryCondition = " AND ITEM_CATEGORY.ID = ITEMS.ITEM_CATEGORY_ID AND ITEM_PRICES.ITEM_CATEGORY_ID = ITEM_CATEGORY.ID";
         } else {
-            queryCondition = "ITEM_CATEGORY.ID = ITEMS.ITEM_CATEGORY_ID AND PRICES.COMPONENT_ID = ITEM_CATEGORY.ID";
+            queryCondition = "ITEM_CATEGORY.ID = ITEMS.ITEM_CATEGORY_ID AND ITEM_PRICES.ITEM_CATEGORY_ID = ITEM_CATEGORY.ID";
         }
-        return count(queryCondition, "ITEMS, ITEM_CATEGORY, PRICES");
+        return count(queryCondition, "ITEMS, ITEM_CATEGORY, ITEM_PRICES");
     }
     public Response updateData(HashMap<String, String> columnValueMap, String queryCondition, boolean isCommit) {
         return update(columnValueMap, queryCondition, getDefaultDatabaseTable(), isCommit);

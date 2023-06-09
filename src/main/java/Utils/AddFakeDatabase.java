@@ -312,10 +312,10 @@ public class AddFakeDatabase {
         for(int i = 1; i < 8; i++){
             price.put("ID", idGenerator.generateId(priceManagementProcessor.getDefaultDatabaseTable()));
             if(i <= 4) {
-                price.put("COMPONENT_ID", "IC_" + String.format("%05d", i));
+                price.put("ITEM_CATEGORY_ID", "IC_" + String.format("%05d", i));
                 price.put("PRICE", "45000");
             }else {
-                price.put("COMPONENT_ID", "SC_" + String.format("%05d", i - 4));
+                price.put("SEAT_CATEGORY_ID", "SC_" + String.format("%05d", i - 4));
                 price.put("PRICE", Integer.toString(70000 + 10000* (i-4)));
             }
             price.put("DATE", "2023-06-03");

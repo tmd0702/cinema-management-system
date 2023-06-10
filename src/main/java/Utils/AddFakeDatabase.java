@@ -242,6 +242,7 @@ public class AddFakeDatabase {
             item.put("ITEM_CATEGORY_ID", "IC_00002");
             item.put("UNIT", "KG");
             item.put("QUANTITY", "100");
+            item.put("REVENUE", "0");
             if(j < 6)
             item.put("STATUS", "Active");
             else item.put("STATUS", "Close");
@@ -412,13 +413,13 @@ public class AddFakeDatabase {
 //        addFakeDatabase.addFakeShowTimes();
 //        addFakeDatabase.addFakeSchedule();
 //        addFakeDatabase.addFakeItemCategory();
-//        addFakeDatabase.addFakeItems();
+        addFakeDatabase.addFakeItems();
 //        addFakeDatabase.addFakeTicket();
 //        addFakeDatabase.addFakePaymentMethod();
 //        addFakeDatabase.addFakePrice();
 //        addFakeDatabase.addFakePayments();
 //        addFakeDatabase.addFakeBookingItems();
-        addFakeDatabase.addFakeBookingSeats();
+//        addFakeDatabase.addFakeBookingSeats();
     }
 }
 

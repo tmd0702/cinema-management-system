@@ -100,4 +100,8 @@ public class LoginFormController implements Initializable {
         ((AnchorPane)loginFormRoot.getParent()).getChildren().add(FXMLLoader.load(getClass().getResource("signup-form.fxml")));
         ((AnchorPane)loginFormRoot.getParent()).getChildren().remove(loginFormRoot);
     }
+    public void onForgotPasswordBtnClick() throws Exception {
+        ((AnchorPane)loginFormRoot.getParent()).getChildren().add(FXMLLoader.load(getClass().getResource("forgot-password-form.fxml")));
+        ((AnchorPane)loginFormRoot.getParent()).getChildren().remove(loginFormRoot);
+    }
 }

@@ -24,7 +24,7 @@
                   <PasswordField fx:id="passwordField" layoutX="149.0" layoutY="202.0" prefHeight="44.0" prefWidth="302.0" promptText="Password" />
                   <CheckBox fx:id="rememberAccountCheckBox" layoutX="149.0" layoutY="273.0" mnemonicParsing="false" text="Remember me" />
                   <Button fx:id="loginSubmitBtn" layoutX="149.0" layoutY="311.0" mnemonicParsing="false" onMouseClicked="#onLoginSubmitBtnClick" prefHeight="43.0" prefWidth="301.0" style="-fx-background-color: #810303;" text="Login" textFill="WHITE" />
-                  <Label layoutX="356.0" layoutY="273.0" text="Forgot password?" textFill="#9f1212" />
+                  <Label layoutX="356.0" layoutY="273.0" onMouseClicked="#onForgotPasswordBtnClick" text="Forgot password?" textFill="#9f1212" />
                   <Label layoutX="211.0" layoutY="368.0" text="Don't have an account?" />
                   <Label fx:id="signUpBtn" layoutX="348.0" layoutY="368.0" onMouseClicked="#onSignUpBtnClick" text="Sign up" textFill="#9f1212" />
                   <Label layoutX="182.0" layoutY="103.0" text="Sign in and start exploring more promotions" textFill="WHITE" />

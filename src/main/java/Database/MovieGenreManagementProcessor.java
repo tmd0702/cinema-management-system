@@ -4,18 +4,13 @@ import Utils.Response;
 
 import java.util.HashMap;
 
-public class SeatPriceManagementProcessor extends Processor {
-    public SeatPriceManagementProcessor(){
+public class MovieGenreManagementProcessor extends Processor {
+    public MovieGenreManagementProcessor() {
         super();
-        setDefaultDatabaseTable("SEAT_PRICES");
+        setDefaultDatabaseTable("GENRES");
     }
     public Response getData(int from, int quantity, String queryCondition, String sortQuery) {
-        if (queryCondition.length() > 0) {
-            queryCondition = queryCondition + " AND SEAT_PRICES.SEAT_CATEGORY_ID = SEAT_CATEGORY.ID";
-        } else {
-            queryCondition = "SEAT_PRICES.SEAT_CATEGORY_ID = SEAT_CATEGORY.ID";
-        }
-        Response response = select("SEAT_PRICES.ID AS 'SEAT_PRICES.ID', SEAT_PRICES.PRICE AS 'SEAT_PRICES.PRICE', SEAT_PRICES.DATE AS 'SEAT_PRICES.DATE', SEAT_CATEGORY.CATEGORY AS 'SEAT_CATEGORY.CATEGORY'", from, quantity, queryCondition, sortQuery, "SEAT_PRICES, SEAT_CATEGORY");
+        Response response = select("GENRES.ID AS 'GENRES.ID', GENRES.NAME AS 'GENRES.NAME'", from, quantity, queryCondition, sortQuery, getDefaultDatabaseTable());
         return response;
     }
     public Response updateData(HashMap<String, String> columnValueMap, String queryCondition, boolean isCommit) {

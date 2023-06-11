@@ -18,6 +18,7 @@ import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
 import javafx.geometry.Bounds;
 import javafx.geometry.Insets;
+import javafx.geometry.Pos;
 import javafx.scene.Node;
 import javafx.scene.control.*;
 import javafx.scene.image.Image;
@@ -43,6 +44,8 @@ public class ManagementViewController implements Initializable {
     private String queryCondition, sortQuery;
     private ArrayList<String> queryConditionFormatStrings;
     private ArrayList<String> queryConditionValues;
+    @FXML
+    private HBox subTabPanelHBox;
     private Node currentActiveDataViewHeader, currentActiveSortButton;
     private Label cellOnClick;
     private int cellOnClickRowIndex, cellOnClickColumnIndex, rowPerPageNum, totalPageNum, totalRowNum, currentPage;
@@ -51,9 +54,11 @@ public class ManagementViewController implements Initializable {
     @FXML
     private HBox menuBox;
     @FXML
-    private VBox accountManagementView;
+    private VBox managementContainerView;
     @FXML
     private AnchorPane managementPage;
+    @FXML
+    private StackPane managementContainerStackPane;
     @FXML
     private Button insertBtn;
     @FXML
@@ -70,14 +75,13 @@ public class ManagementViewController implements Initializable {
     private GridPane dataView = new GridPane();
     @FXML
     private Button signoutBtn = new Button("Sign out");
+    private Button subTabPanelOnClick;
     @FXML
-    private Button homeTabPanel = new Button("Home");
-    @FXML
-    private Button showTimePanel = new Button("Show Time");
+    private Button analyticsDashboardPanel = new Button("Dashboard");
     @FXML
     private Button itemTabPanel = new Button("Item");
     @FXML
-    private Button screenRoomTabPanel = new Button("Screen Room");
+    private Button seatTabPanel = new Button("Seat");
     @FXML
     private Button movieTabPanel = new Button("Movie");
     @FXML
@@ -89,9 +93,7 @@ public class ManagementViewController implements Initializable {
     @FXML
     private Button promotionTabPanel = new Button("Promotion");
     @FXML
-    private Button bookingSeatTabPanel = new Button("Booking Seat");
-    @FXML
-    private Button bookingItemTabPanel = new Button("Booking Item");
+    private Button bookingTabPanel = new Button("Booking");
     @FXML
     private Button scheduleTabPanel = new Button("Schedule");
     @FXML
@@ -126,16 +128,14 @@ public class ManagementViewController implements Initializable {
 
         tabPanels = new ArrayList<Button>();
         dataView = new GridPane();
-        tabPanels.add(homeTabPanel);
+        tabPanels.add(analyticsDashboardPanel);
         tabPanels.add(movieTabPanel);
         tabPanels.add(accountTabPanel);
         tabPanels.add(theaterTabPanel);
-        tabPanels.add(bookingSeatTabPanel);
-        tabPanels.add(bookingItemTabPanel);
+        tabPanels.add(bookingTabPanel);
         tabPanels.add(promotionTabPanel);
+        tabPanels.add(seatTabPanel);
         tabPanels.add(itemTabPanel);
-        tabPanels.add(screenRoomTabPanel);
-        tabPanels.add(showTimePanel);
         tabPanels.add(scheduleTabPanel);
         tabPanels.add(paymentTabPanel);
 
@@ -216,45 +216,57 @@ public class ManagementViewController implements Initializable {
         menuBoxButtonsStylingOnMouseEvent(backToHeadBtn);
     }
     public void changeSceneToInsertView() throws IOException {
-        accountManagementView.setVisible(false);
-        if (tabPanelOnClick == accountTabPanel) {
+        managementContainerStackPane.setVisible(false);
+        if (subTabPanelOnClick.getId().equals("userInfoSubTab")) {
             managementPage.getChildren().add(FXMLLoader.load(getClass().getResource("add-account-form.fxml")));
-        } else if (tabPanelOnClick == movieTabPanel) {
+        } else if (subTabPanelOnClick.getId().equals("movieInfoSubTab")) {
             managementPage.getChildren().add(FXMLLoader.load(getClass().getResource("add-movie-form.fxml")));
-        } else if (tabPanelOnClick == promotionTabPanel) {
+        } else if (subTabPanelOnClick.getId().equals("promotionInfoSubTab")) {
             managementPage.getChildren().add(FXMLLoader.load(getClass().getResource("add-promotion-form.fxml")));
-        } else if (tabPanelOnClick == theaterTabPanel) {
+        } else if (subTabPanelOnClick.getId().equals("cinemaInfoSubTab")) {
             managementPage.getChildren().add(FXMLLoader.load(getClass().getResource("add-cinema-form.fxml")));
-        } else if (tabPanelOnClick == itemTabPanel) {
+        } else if (subTabPanelOnClick.getId().equals("itemInfoSubTab")) {
             managementPage.getChildren().add(FXMLLoader.load(getClass().getResource("add-item-form.fxml")));
-        } else if (tabPanelOnClick == screenRoomTabPanel) {
+        } else if (subTabPanelOnClick.getId().equals("screenRoomInfoSubTab")) {
             managementPage.getChildren().add(FXMLLoader.load(getClass().getResource("add-screen-room-form.fxml")));
-        } else if (tabPanelOnClick == showTimePanel) {
+        } else if (subTabPanelOnClick.getId().equals("showTimeInfoSubTab")) {
             managementPage.getChildren().add(FXMLLoader.load(getClass().getResource("add-showtime-form.fxml")));
-        } else if (tabPanelOnClick == scheduleTabPanel) {
+        } else if (subTabPanelOnClick.getId().equals("scheduleInfoSubTab")) {
             managementPage.getChildren().add(FXMLLoader.load(getClass().getResource("add-schedule-form.fxml")));
+        } else if (subTabPanelOnClick.getId().equals("itemCategoryInfoSubTab")) {
+            managementPage.getChildren().add(FXMLLoader.load(getClass().getResource("add-item-category-form.fxml")));
+        } else if (subTabPanelOnClick.getId().equals("seatCategoryInfoSubTab")) {
+            managementPage.getChildren().add(FXMLLoader.load(getClass().getResource("add-seat-category-form.fxml")));
+        } else if (subTabPanelOnClick.getId().equals("userCategoryInfoSubTab")) {
+            managementPage.getChildren().add(FXMLLoader.load(getClass().getResource("add-user-category-form.fxml")));
         } else {
             managementPage.getChildren().add(FXMLLoader.load(getClass().getResource("add-account-form.fxml")));
         }
     }
     public void changeSceneToUpdateView() throws IOException {
-        accountManagementView.setVisible(false);
-        if (tabPanelOnClick == accountTabPanel) {
+        managementContainerStackPane.setVisible(false);
+        if (subTabPanelOnClick.getId().equals("userInfoSubTab")) {
             managementPage.getChildren().add(FXMLLoader.load(getClass().getResource("update-account-form.fxml")));
-        } else if (tabPanelOnClick == movieTabPanel) {
+        } else if (subTabPanelOnClick.getId().equals("movieInfoSubTab")) {
             managementPage.getChildren().add(FXMLLoader.load(getClass().getResource("update-movie-form.fxml")));
-        } else if (tabPanelOnClick == promotionTabPanel) {
+        } else if (subTabPanelOnClick.getId().equals("promotionInfoSubTab")) {
             managementPage.getChildren().add(FXMLLoader.load(getClass().getResource("update-promotion-form.fxml")));
-        } else if (tabPanelOnClick == theaterTabPanel) {
+        } else if (subTabPanelOnClick.getId().equals("cinemaInfoSubTab")) {
             managementPage.getChildren().add(FXMLLoader.load(getClass().getResource("update-cinema-form.fxml")));
-        } else if (tabPanelOnClick == itemTabPanel) {
+        } else if (subTabPanelOnClick.getId().equals("itemInfoSubTab")) {
             managementPage.getChildren().add(FXMLLoader.load(getClass().getResource("update-item-form.fxml")));
-        } else if (tabPanelOnClick == screenRoomTabPanel) {
+        } else if (subTabPanelOnClick.getId().equals("screenRoomInfoSubTab")) {
             managementPage.getChildren().add(FXMLLoader.load(getClass().getResource("update-screen-room-form.fxml")));
-        } else if (tabPanelOnClick == showTimePanel) {
+        } else if (subTabPanelOnClick.getId().equals("showTimeInfoSubTab")) {
             managementPage.getChildren().add(FXMLLoader.load(getClass().getResource("update-showtime-form.fxml")));
-        } else if (tabPanelOnClick == scheduleTabPanel) {
+        } else if (subTabPanelOnClick.getId().equals("scheduleInfoSubTab")) {
             managementPage.getChildren().add(FXMLLoader.load(getClass().getResource("update-schedule-form.fxml")));
+        } else if (subTabPanelOnClick.getId().equals("itemCategoryInfoSubTab")) {
+            managementPage.getChildren().add(FXMLLoader.load(getClass().getResource("update-item-category-form.fxml")));
+        } else if (subTabPanelOnClick.getId().equals("seatCategoryInfoSubTab")) {
+            managementPage.getChildren().add(FXMLLoader.load(getClass().getResource("update-seat-category-form.fxml")));
+        } else if (subTabPanelOnClick.getId().equals("userCategoryInfoSubTab")) {
+            managementPage.getChildren().add(FXMLLoader.load(getClass().getResource("update-user-category-form.fxml")));
         } else {
             managementPage.getChildren().add(FXMLLoader.load(getClass().getResource("update-account-form.fxml")));
         }
@@ -381,7 +393,11 @@ public class ManagementViewController implements Initializable {
     }
     public void handleDeleteRecordRequest() {
         String recordId = getRecordIdByRowIndex();
-        String queryCondition = String.format("ID = '%s'", recordId);
+        String idColumn = String.format("%s.ID", activeProcessor.getDefaultDatabaseTable());
+        if (subTabPanelOnClick.getId().equals("bookingTicketInfoSubTab") || subTabPanelOnClick.getId().equals("bookingItemInfoSubTab")) {
+            idColumn = "PAYMENT_ID";
+        }
+        String queryCondition = String.format("%s = '%s'", idColumn, recordId);
         Response response = activeProcessor.deleteData(queryCondition, true);
         StatusCode status = response.getStatusCode();
         if (status == StatusCode.OK) {
@@ -934,9 +950,6 @@ public class ManagementViewController implements Initializable {
         pageInputField.setText(Integer.toString(currentPage));
         reRenderPage(false);
     }
-    public void accountManagementViewInit() {
-        reRenderPage(true);
-    }
     public void managementTabPaneInit() {
         for (Button tabPanel : tabPanels) {
             tabPanel.setStyle("-fx-pref-width: 110; -fx-pref-height: 48; -fx-font-weight: bold; -fx-text-fill: white; -fx-background-color: transparent;");
@@ -945,6 +958,101 @@ public class ManagementViewController implements Initializable {
             tabPane.getChildren().add(tabPanel);
         }
 
+    }
+    public void setSubTabPanelStyle(Node subTabPanel) {
+
+        subTabPanel.setStyle("-fx-background-color: #dedede; -fx-font-weight: bold;-fx-pref-height: 40px;");
+        subTabPanel.setOnMouseClicked(new EventHandler<MouseEvent>() {
+            @Override
+            public void handle(MouseEvent mouseEvent) {
+                if (subTabPanelOnClick != null) {
+                    subTabPanelOnClick.setStyle("-fx-background-color: #dedede; -fx-font-weight: bold;-fx-pref-height: 40px;");
+                }
+                subTabPanel.setStyle("-fx-background-color: white; -fx-font-weight: bold;-fx-pref-height: 40px;");
+                subTabPanelOnClick = (Button)subTabPanel;
+                activateBtn();
+                if (subTabPanel.getId().equals("userInfoSubTab")) {
+                    activeProcessor = main.getProcessorManager().getAccountManagementProcessor();
+                    insertBtn.setDisable(true);
+                    reRenderPage(true);
+                } else if (subTabPanel.getId().equals("userCategoryInfoSubTab")) {
+                    activeProcessor = main.getProcessorManager().getUserCategoryManagementProcessor();
+                    reRenderPage(true);
+                } else if (subTabPanel.getId().equals("movieInfoSubTab")) {
+                    activeProcessor = main.getProcessorManager().getMovieManagementProcessor();
+                    reRenderPage(true);
+                } else if (subTabPanel.getId().equals("movieGenreInfoSubTab")) {
+                    activeProcessor = main.getProcessorManager().getMovieGenreManagementProcessor();
+                    reRenderPage(true);
+                } else if (subTabPanel.getId().equals("promotionInfoSubTab")) {
+                    activeProcessor = main.getProcessorManager().getPromotionManagementProcessor();
+                    reRenderPage(true);
+                } else if (subTabPanel.getId().equals("seatInfoSubTab")) {
+                    activeProcessor = main.getProcessorManager().getSeatManagementProcessor();
+                    reRenderPage(true);
+                } else if (subTabPanel.getId().equals("seatPriceInfoSubTab")) {
+                    activeProcessor = main.getProcessorManager().getSeatPriceManagementProcessor();
+                    insertBtn.setDisable(true);
+                    updateBtn.setDisable(true);
+                    deleteBtn.setDisable(true);
+                    reRenderPage(true);
+                } else if (subTabPanel.getId().equals("seatCategoryInfoSubTab")) {
+                    activeProcessor = main.getProcessorManager().getSeatCategoryManagementProcessor();
+                    reRenderPage(true);
+                } else if (subTabPanel.getId().equals("cinemaInfoSubTab")) {
+                    activeProcessor = main.getProcessorManager().getCinemaManagementProcessor();
+                    reRenderPage(true);
+                } else if (subTabPanel.getId().equals("screenRoomInfoSubTab")) {
+                    activeProcessor = main.getProcessorManager().getScreenRoomManagementProcessor();
+                    reRenderPage(true);
+                } else if (subTabPanel.getId().equals("itemInfoSubTab")) {
+                    activeProcessor = main.getProcessorManager().getItemManagementProcessor();
+                    reRenderPage(true);
+                } else if (subTabPanel.getId().equals("itemCategoryInfoSubTab")) {
+                    activeProcessor = main.getProcessorManager().getItemCategoryManagementProcessor();
+                    reRenderPage(true);
+                } else if (subTabPanel.getId().equals("itemPriceInfoSubTab")) {
+                    activeProcessor = main.getProcessorManager().getItemPriceManagementProcessor();
+                    insertBtn.setDisable(true);
+                    updateBtn.setDisable(true);
+                    deleteBtn.setDisable(true);
+                    reRenderPage(true);
+                } else if (subTabPanel.getId().equals("seatPriceInfoSubTab")) {
+                    activeProcessor = main.getProcessorManager().getSeatPriceManagementProcessor();
+                    reRenderPage(true);
+                } else if (subTabPanel.getId().equals("showTimeInfoSubTab")) {
+                    activeProcessor = main.getProcessorManager().getShowTimeManagementProcessor();
+                    reRenderPage(true);
+                } else if (subTabPanel.getId().equals("scheduleInfoSubTab")) {
+                    activeProcessor = main.getProcessorManager().getScheduleManagementProcessor();
+                    reRenderPage(true);
+                } else if (subTabPanel.getId().equals("bookingTicketInfoSubTab")) {
+                    activeProcessor = main.getProcessorManager().getBookingTicketManagementProcessor();
+                    insertBtn.setDisable(true);
+                    updateBtn.setDisable(true);
+                    reRenderPage(true);
+                } else if (subTabPanel.getId().equals("bookingItemInfoSubTab")) {
+                    activeProcessor = main.getProcessorManager().getBookingItemManagementProcessor();
+                    insertBtn.setDisable(true);
+                    updateBtn.setDisable(true);
+                    reRenderPage(true);
+                } else if (subTabPanel.getId().equals("paymentInfoSubTab")) {
+
+                    activeProcessor = main.getProcessorManager().getPaymentManagementProcessor();
+                    insertBtn.setDisable(true);
+                    deleteBtn.setDisable(true);
+                    updateBtn.setDisable(true);
+                    reRenderPage(true);
+                } else if (subTabPanel.getId().equals("paymentMethodInfoSubTab")) {
+                    activeProcessor = main.getProcessorManager().getPaymentMethodManagementProcessor();
+                    insertBtn.setDisable(true);
+                    deleteBtn.setDisable(true);
+                    updateBtn.setDisable(true);
+                    reRenderPage(true);
+                }
+
+            }
+        });
     }
     public void tabPanelMouseEventListener(Button tabPanel) {
         tabPanel.setOnMouseEntered(new EventHandler<MouseEvent>() {
@@ -966,53 +1074,96 @@ public class ManagementViewController implements Initializable {
                     tabPanelOnClick.setStyle("-fx-pref-width: 110; -fx-pref-height: 48; -fx-font-weight: bold; -fx-text-fill: white; -fx-background-color: transparent;");
                 }
                 tabPanel.setStyle("-fx-pref-width: 110; -fx-pref-height: 48; -fx-font-weight: bold; -fx-text-fill: white; -fx-background-color: rgba(0, 0, 255, 0.3);");
+                managementContainerView.getChildren().remove(subTabPanelHBox);
+                subTabPanelHBox = new HBox();
+                subTabPanelHBox.setStyle("-fx-background-color: #dddddd;-fx-pref-height: 60px;");
+                subTabPanelHBox.setAlignment(Pos.BOTTOM_LEFT);
+                managementContainerView.getChildren().add(0, subTabPanelHBox);
                 tabPanelOnClick = tabPanel;
-                activateBtn();
+
                 if (tabPanelOnClick == accountTabPanel) {
-                    activeProcessor = main.getProcessorManager().getAccountManagementProcessor();
-                    insertBtn.setDisable(true);
-                    reRenderPage(true);
+                    Button userInfoSubTab = new Button("User");
+                    userInfoSubTab.setId("userInfoSubTab");
+                    Button userCategoryInfoSubTab = new Button("User Category");
+                    userCategoryInfoSubTab.setId("userCategoryInfoSubTab");
+                    subTabPanelHBox.getChildren().add(userInfoSubTab);
+                    subTabPanelHBox.getChildren().add(userCategoryInfoSubTab);
+                } else if (tabPanelOnClick == analyticsDashboardPanel) {
+                    try {
+                        managementContainerStackPane.getChildren().add(FXMLLoader.load(getClass().getResource("analytics-dashboard.fxml")));
+                    } catch (Exception e) {
+                        System.out.println(e);
+                    }
                 } else if (tabPanelOnClick == movieTabPanel) {
-                    activeProcessor = main.getProcessorManager().getMovieManagementProcessor();
-                    reRenderPage(true);
+                    Button movieInfoSubTab = new Button("Movie");
+                    movieInfoSubTab.setId("movieInfoSubTab");
+                    Button movieGenreInfoSubTab = new Button("Movie Genre");
+                    movieGenreInfoSubTab.setId("movieGenreInfoSubTab");
+                    subTabPanelHBox.getChildren().add(movieInfoSubTab);
+                    subTabPanelHBox.getChildren().add(movieGenreInfoSubTab);
                 } else if (tabPanelOnClick == promotionTabPanel) {
-                    activeProcessor = main.getProcessorManager().getPromotionManagementProcessor();
-                    reRenderPage(true);
+                    Button promotionInfoSubTab = new Button("Promotion");
+                    promotionInfoSubTab.setId("promotionInfoSubTab");
+                    subTabPanelHBox.getChildren().add(promotionInfoSubTab);
                 } else if (tabPanelOnClick == theaterTabPanel) {
-                    activeProcessor = main.getProcessorManager().getCinemaManagementProcessor();
-                    reRenderPage(true);
+                    Button cinemaInfoSubTab = new Button("Cinema");
+                    cinemaInfoSubTab.setId("cinemaInfoSubTab");
+                    Button screenRoomInfoSubTab = new Button("Screen Room");
+                    screenRoomInfoSubTab.setId("screenRoomInfoSubTab");
+                    subTabPanelHBox.getChildren().add(cinemaInfoSubTab);
+                    subTabPanelHBox.getChildren().add(screenRoomInfoSubTab);
                 } else if (tabPanelOnClick == itemTabPanel) {
-                    activeProcessor = main.getProcessorManager().getItemManagementProcessor();
-                    reRenderPage(true);
-                } else if (tabPanelOnClick == screenRoomTabPanel) {
-                    activeProcessor = main.getProcessorManager().getScreenRoomManagementProcessor();
-                    reRenderPage(true);
-                } else if (tabPanelOnClick == showTimePanel) {
-                    activeProcessor = main.getProcessorManager().getShowTimeManagementProcessor();
-                    reRenderPage(true);
+                    Button itemInfoSubTab = new Button("Item");
+                    itemInfoSubTab.setId("itemInfoSubTab");
+                    Button itemCategoryInfoSubTab = new Button("Item Category");
+                    itemCategoryInfoSubTab.setId("itemCategoryInfoSubTab");
+                    Button itemPriceSubTab = new Button("Item price");
+                    itemPriceSubTab.setId("itemPriceInfoSubTab");
+                    subTabPanelHBox.getChildren().add(itemInfoSubTab);
+                    subTabPanelHBox.getChildren().add(itemCategoryInfoSubTab);
+                    subTabPanelHBox.getChildren().add(itemPriceSubTab);
+                } else if (tabPanelOnClick == seatTabPanel) {
+                    Button seatInfoSubTab = new Button("Seat");
+                    seatInfoSubTab.setId("seatInfoSubTab");
+                    Button seatCategoryInfoSubTab = new Button("Seat Category");
+                    seatCategoryInfoSubTab.setId("seatCategoryInfoSubTab");
+                    Button seatPriceInfoSubTab = new Button("Seat Price");
+                    seatPriceInfoSubTab.setId("seatPriceInfoSubTab");
+                    subTabPanelHBox.getChildren().add(seatInfoSubTab);
+                    subTabPanelHBox.getChildren().add(seatCategoryInfoSubTab);
+                    subTabPanelHBox.getChildren().add(seatPriceInfoSubTab);
                 } else if (tabPanelOnClick == scheduleTabPanel) {
-                    activeProcessor = main.getProcessorManager().getScheduleManagementProcessor();
-                    reRenderPage(true);
-                } else if (tabPanelOnClick == bookingSeatTabPanel) {
-                    activeProcessor = main.getProcessorManager().getBookingTicketManagementProcessor();
-                    insertBtn.setDisable(true);
-                    updateBtn.setDisable(true);
-                    reRenderPage(true);
-                } else if (tabPanelOnClick == bookingItemTabPanel) {
-                    activeProcessor = main.getProcessorManager().getBookingItemManagementProcessor();
-                    insertBtn.setDisable(true);
-                    updateBtn.setDisable(true);
-                    reRenderPage(true);
+                    Button scheduleInfoSubTab = new Button("Schedule");
+                    scheduleInfoSubTab.setId("scheduleInfoSubTab");
+                    Button showTimeInfoSubTab = new Button("Showtime");
+                    showTimeInfoSubTab.setId("showTimeInfoSubTab");
+                    subTabPanelHBox.getChildren().add(scheduleInfoSubTab);
+                    subTabPanelHBox.getChildren().add(showTimeInfoSubTab);
+                } else if (tabPanelOnClick == bookingTabPanel) {
+                    Button bookingTicketInfoSubTab = new Button("Booking Ticket");
+                    bookingTicketInfoSubTab.setId("bookingTicketInfoSubTab");
+                    Button bookingItemInfoSubTab = new Button("Booking Item");
+                    bookingItemInfoSubTab.setId("bookingItemInfoSubTab");
+                    subTabPanelHBox.getChildren().add(bookingTicketInfoSubTab);
+                    subTabPanelHBox.getChildren().add(bookingItemInfoSubTab);
                 } else if (tabPanelOnClick == paymentTabPanel) {
-                    activeProcessor = main.getProcessorManager().getPaymentManagementProcessor();
-                    insertBtn.setDisable(true);
-                    deleteBtn.setDisable(true);
-                    updateBtn.setDisable(true);
-                    reRenderPage(true);
-                } else {
-                    activeProcessor = main.getProcessorManager().getMovieManagementProcessor();
-                    reRenderPage(true);
+                    Button paymentInfoSubTab = new Button("Payment");
+                    paymentInfoSubTab.setId("paymentInfoSubTab");
+                    Button paymentMethodInfoSubTab = new Button("Payment Method");
+                    paymentMethodInfoSubTab.setId("paymentMethodInfoSubTab");
+                    subTabPanelHBox.getChildren().add(paymentInfoSubTab);
+                    subTabPanelHBox.getChildren().add(paymentMethodInfoSubTab);
                 }
+                for (Node subTab : subTabPanelHBox.getChildren()) {
+                    setSubTabPanelStyle(subTab);
+                }
+                Event.fireEvent(subTabPanelHBox.getChildren().get(0), new MouseEvent(MouseEvent.MOUSE_CLICKED, 0,
+                        0, 0, 0, MouseButton.PRIMARY, 1, true, true, true, true,
+                        true, true, true, true, true, true, null));
+//                else {
+//                    activeProcessor = main.getProcessorManager().getMovieManagementProcessor();
+//                    reRenderPage(true);
+//                }
             }
         });
     }

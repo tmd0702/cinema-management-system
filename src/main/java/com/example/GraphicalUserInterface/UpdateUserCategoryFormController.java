@@ -12,21 +12,23 @@ import javafx.scene.layout.VBox;
 
 import java.io.IOException;
 import java.net.URL;
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.Locale;
 import java.util.ResourceBundle;
+import java.util.concurrent.CompletableFuture;
+import java.util.concurrent.TimeUnit;
 
-public class UpdateItemFormController implements Initializable {
+public class UpdateUserCategoryFormController implements Initializable {
     private ManagementMain main;
     @FXML
-    private TextField idField, nameField, quantityField, unitField, revenueField;
+    private TextField idField, categoryField, pointLowerboundField;
     @FXML
-    private ComboBox itemCategoryCategoryField;
-    @FXML
-    private VBox updateItemForm;
-    ArrayList<ArrayList<String>> itemCategoryFetcher;
-    ArrayList<String> itemCategoryNames;
-    public UpdateItemFormController() {
+    private VBox updateUserCategoryForm;
+
+    public UpdateUserCategoryFormController() {
         main = ManagementMain.getInstance();
 
     }
@@ -34,29 +36,13 @@ public class UpdateItemFormController implements Initializable {
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
         idFieldInit();
-        categoryFieldInit();
     }
     public void idFieldInit() {
         idField.setDisable(true);
     }
     public void disableUpdateForm() {
-        ((AnchorPane)updateItemForm.getParent()).getChildren().get(0).setVisible(true);
-        ((AnchorPane)updateItemForm.getParent()).getChildren().remove(2);
-    }
-    public void categoryFieldInit() {
-        itemCategoryFetcher = main.getProcessorManager().getItemCategoryManagementProcessor().getData(0, -1, "", "").getData();
-        itemCategoryNames = Utils.getDataValuesByColumnName(itemCategoryFetcher, "ITEM_CATEGORY.CATEGORY");
-        itemCategoryCategoryField.setItems(FXCollections.observableArrayList(itemCategoryNames));
-    }
-    public String getItemCategoryObjectIDFromComBoBox(Object value) {
-        String id = null;
-        for (int i=0; i<itemCategoryNames.size();++i) {
-            if (itemCategoryNames.get(i).equals(value)) {
-                id = Utils.getRowValueByColumnName(2 + i, "ITEM_CATEGORY.ID", itemCategoryFetcher);
-                break;
-            }
-        }
-        return id;
+        ((AnchorPane)updateUserCategoryForm.getParent()).getChildren().get(0).setVisible(true);
+        ((AnchorPane)updateUserCategoryForm.getParent()).getChildren().remove(2);
     }
     @FXML
     public void saveUpdateBtnOnClick() throws IOException {
@@ -71,14 +57,10 @@ public class UpdateItemFormController implements Initializable {
         disableUpdateForm();
     }
     public void handleUpdateRecordRequest() {
-        HashMap<String, String> itemInfo = new HashMap<String, String>();
-        itemInfo.put("NAME", nameField.getText());
-        itemInfo.put("REVENUE", revenueField.getText());
-        itemInfo.put("UNIT", unitField.getText());
-        itemInfo.put("QUANTITY", quantityField.getText());
-        itemInfo.put("ITEM_CATEGORY_ID", getItemCategoryObjectIDFromComBoBox(itemCategoryCategoryField.getValue()));
-
-        Response response = main.getProcessorManager().getItemManagementProcessor().updateData(itemInfo, String.format("ID = '%s'", idField.getText()), true);
+        HashMap<String, String> userInfo = new HashMap<String, String>();
+        userInfo.put("CATEGORY", categoryField.getText());
+        userInfo.put("POINT_LOWERBOUND", pointLowerboundField.getText());
+        Response response = main.getProcessorManager().getUserCategoryManagementProcessor().updateData(userInfo, String.format("ID = '%s'", idField.getText()), true);
         StatusCode status = response.getStatusCode();
         if (status == StatusCode.OK) {
             Dialog<String> dialog = new Dialog<String>();

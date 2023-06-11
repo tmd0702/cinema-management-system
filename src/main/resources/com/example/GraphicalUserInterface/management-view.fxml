@@ -12,12 +12,13 @@
 <?import javafx.scene.layout.StackPane?>
 <?import javafx.scene.layout.VBox?>
 
-<AnchorPane fx:id="managementPage" prefHeight="400.0" prefWidth="600.0" style="-fx-pref-height: 600; -fx-pref-width: 900;" xmlns="http://javafx.com/javafx/19" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.example.GraphicalUserInterface.ManagementViewController">
+<AnchorPane fx:id="managementPage" prefHeight="700.0" prefWidth="900.0" style="-fx-pref-height: 660; -fx-pref-width: 900;" xmlns="http://javafx.com/javafx/19" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.example.GraphicalUserInterface.ManagementViewController">
    <children>
-      <StackPane fx:id="managementContainerStackPane" layoutX="110.0">
+      <StackPane fx:id="managementContainerStackPane" layoutX="110.0" prefHeight="660.0">
          <children>
-            <VBox fx:id="managementContainerView" prefHeight="600.0" prefWidth="790.0">
+            <VBox fx:id="managementContainerView" prefHeight="660.0" prefWidth="790.0">
                <children>
+                  <HBox fx:id="subTabPanelHBox" prefHeight="60.0" prefWidth="790.0" style="-fx-background-color: #dddddd;" />
                   <HBox fx:id="menuBox" prefHeight="46.0" prefWidth="790.0">
                      <children>
                         <Button fx:id="insertBtn" mnemonicParsing="false" prefHeight="46.0" prefWidth="46.0" style="-fx-background-color: transparent;">
@@ -80,7 +81,7 @@
             </VBox>
          </children>
       </StackPane>
-      <VBox fx:id="tabPane" prefHeight="225.0" prefWidth="143.0" style="-fx-pref-width: 110; -fx-pref-height: 600; -fx-background-color: #333333;">
+      <VBox fx:id="tabPane" prefHeight="700.0" prefWidth="143.0" style="-fx-pref-width: 110; -fx-pref-height: 660; -fx-background-color: #333333;">
          <children>
             <ImageView fx:id="logoImageView" fitHeight="76.0" fitWidth="110.0" pickOnBounds="true" preserveRatio="true">
                <VBox.margin>

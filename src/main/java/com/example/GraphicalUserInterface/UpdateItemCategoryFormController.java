@@ -12,21 +12,24 @@ import javafx.scene.layout.VBox;
 
 import java.io.IOException;
 import java.net.URL;
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.Locale;
 import java.util.ResourceBundle;
+import java.util.concurrent.CompletableFuture;
+import java.util.concurrent.TimeUnit;
 
-public class UpdateItemFormController implements Initializable {
+public class UpdateItemCategoryFormController implements Initializable {
     private ManagementMain main;
+    private String oldPrice;
     @FXML
-    private TextField idField, nameField, quantityField, unitField, revenueField;
+    private TextField idField, categoryField, itemPricePriceField;
     @FXML
-    private ComboBox itemCategoryCategoryField;
-    @FXML
-    private VBox updateItemForm;
-    ArrayList<ArrayList<String>> itemCategoryFetcher;
-    ArrayList<String> itemCategoryNames;
-    public UpdateItemFormController() {
+    private VBox updateItemCategoryForm;
+
+    public UpdateItemCategoryFormController() {
         main = ManagementMain.getInstance();
 
     }
@@ -34,29 +37,19 @@ public class UpdateItemFormController implements Initializable {
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
         idFieldInit();
-        categoryFieldInit();
+        priceFieldInit();
+    }
+    public void priceFieldInit() {
+        CompletableFuture.delayedExecutor(300, TimeUnit.MILLISECONDS).execute(() -> {
+            oldPrice = itemPricePriceField.getText();
+        });
     }
     public void idFieldInit() {
         idField.setDisable(true);
     }
     public void disableUpdateForm() {
-        ((AnchorPane)updateItemForm.getParent()).getChildren().get(0).setVisible(true);
-        ((AnchorPane)updateItemForm.getParent()).getChildren().remove(2);
-    }
-    public void categoryFieldInit() {
-        itemCategoryFetcher = main.getProcessorManager().getItemCategoryManagementProcessor().getData(0, -1, "", "").getData();
-        itemCategoryNames = Utils.getDataValuesByColumnName(itemCategoryFetcher, "ITEM_CATEGORY.CATEGORY");
-        itemCategoryCategoryField.setItems(FXCollections.observableArrayList(itemCategoryNames));
-    }
-    public String getItemCategoryObjectIDFromComBoBox(Object value) {
-        String id = null;
-        for (int i=0; i<itemCategoryNames.size();++i) {
-            if (itemCategoryNames.get(i).equals(value)) {
-                id = Utils.getRowValueByColumnName(2 + i, "ITEM_CATEGORY.ID", itemCategoryFetcher);
-                break;
-            }
-        }
-        return id;
+        ((AnchorPane)updateItemCategoryForm.getParent()).getChildren().get(0).setVisible(true);
+        ((AnchorPane)updateItemCategoryForm.getParent()).getChildren().remove(2);
     }
     @FXML
     public void saveUpdateBtnOnClick() throws IOException {
@@ -72,14 +65,20 @@ public class UpdateItemFormController implements Initializable {
     }
     public void handleUpdateRecordRequest() {
         HashMap<String, String> itemInfo = new HashMap<String, String>();
-        itemInfo.put("NAME", nameField.getText());
-        itemInfo.put("REVENUE", revenueField.getText());
-        itemInfo.put("UNIT", unitField.getText());
-        itemInfo.put("QUANTITY", quantityField.getText());
-        itemInfo.put("ITEM_CATEGORY_ID", getItemCategoryObjectIDFromComBoBox(itemCategoryCategoryField.getValue()));
-
-        Response response = main.getProcessorManager().getItemManagementProcessor().updateData(itemInfo, String.format("ID = '%s'", idField.getText()), true);
+        itemInfo.put("CATEGORY", categoryField.getText());
+        Response response = main.getProcessorManager().getItemCategoryManagementProcessor().updateData(itemInfo, String.format("ID = '%s'", idField.getText()), true);
         StatusCode status = response.getStatusCode();
+        if (itemPricePriceField.getText() != oldPrice) {
+            HashMap<String, String> itemCategoryPriceInfo = new HashMap<String, String>();
+            itemCategoryPriceInfo.put("ITEM_CATEGORY_ID", idField.getText());
+            itemCategoryPriceInfo.put("ID", main.getIdGenerator().generateId(main.getProcessorManager().getItemPriceManagementProcessor().getDefaultDatabaseTable()));
+            itemCategoryPriceInfo.put("PRICE", itemPricePriceField.getText());
+            LocalDateTime now = LocalDateTime.now();
+            DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
+            String formatDateTime = now.format(formatter);
+            itemCategoryPriceInfo.put("DATE", formatDateTime);
+            main.getProcessorManager().getItemPriceManagementProcessor().insertData(itemCategoryPriceInfo, true);
+        }
         if (status == StatusCode.OK) {
             Dialog<String> dialog = new Dialog<String>();
             //Setting the title

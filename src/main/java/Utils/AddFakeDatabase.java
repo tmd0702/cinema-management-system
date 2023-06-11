@@ -37,10 +37,10 @@ public class AddFakeDatabase {
         this.itemCategoryManagementProcessor = new ItemCategoryManagementProcessor();
         this.seatPriceManagementProcessor = new SeatPriceManagementProcessor();
         this.itemPriceManagementProcessor = new ItemPriceManagementProcessor();
-        this.movieManagementProcessor = new MovieManagementProcessor();
+//        this.movieManagementProcessor = new MovieManagementProcessor();
         this.idGenerator = new IdGenerator();
         this.main = Main.getInstance();
-        main.setProcessorManager(new ProcessorManager());
+//        main.setProcessorManager(new ProcessorManager());
     }
     public void addFakeAccounts() throws Exception {
 
@@ -412,14 +412,14 @@ public class AddFakeDatabase {
 //        addFakeDatabase.addFakeSeats();
 //        addFakeDatabase.addFakeShowTimes();
 //        addFakeDatabase.addFakeSchedule();
-//        addFakeDatabase.addFakeItemCategory();
+        addFakeDatabase.addFakeItemCategory();
         addFakeDatabase.addFakeItems();
-//        addFakeDatabase.addFakeTicket();
-//        addFakeDatabase.addFakePaymentMethod();
-//        addFakeDatabase.addFakePrice();
-//        addFakeDatabase.addFakePayments();
-//        addFakeDatabase.addFakeBookingItems();
-//        addFakeDatabase.addFakeBookingSeats();
+        addFakeDatabase.addFakeTicket();
+        addFakeDatabase.addFakePaymentMethod();
+        addFakeDatabase.addFakePrice();
+        addFakeDatabase.addFakePayments();
+        addFakeDatabase.addFakeBookingItems();
+        addFakeDatabase.addFakeBookingSeats();
     }
 }
 

@@ -56,7 +56,7 @@ public class ManagementMain extends Application {
     public void start(Stage primaryStage) throws IOException {
         stage = primaryStage;
         FXMLLoader fxmlLoader = new FXMLLoader(Main.class.getResource("admin-login-form.fxml"));
-        scene = new Scene(fxmlLoader.load(), 920, 600);
+        scene = new Scene(fxmlLoader.load(), 920, 660);
         stage.setTitle("4HB Cinema Management System");
         stage.setScene(scene);
         stage.setResizable(false);

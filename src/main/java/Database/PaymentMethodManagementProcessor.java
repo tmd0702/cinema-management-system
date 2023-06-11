@@ -10,7 +10,7 @@ public class PaymentMethodManagementProcessor  extends Processor{
         setDefaultDatabaseTable("PAYMENT_METHODS");
     }
     public Response getData(int from, int quantity, String queryCondition, String sortQuery) {
-        Response response = select("*", from, quantity, queryCondition, sortQuery, getDefaultDatabaseTable());
+        Response response = select("PAYMENT_METHODS.ID AS 'PAYMENT_METHODS.ID', PAYMENT_METHODS.NAME AS 'PAYMENT_METHODS.NAME', PAYMENT_METHODS.STATUS AS 'PAYMENT_METHODS.STATUS'", from, quantity, queryCondition, sortQuery, getDefaultDatabaseTable());
         return response;
     }
     public Response updateData(HashMap<String, String> columnValueMap, String queryCondition, boolean isCommit) {

@@ -51,6 +51,7 @@ public class MovieManager {
     }
     public Movie getMovieById(String id) {
         Movie movie = null;
+
         for (Movie m : this.movieList) {
             if (m.getId().equals(id)) {
                 movie = m;

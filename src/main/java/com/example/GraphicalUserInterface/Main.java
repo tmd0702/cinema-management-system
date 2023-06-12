@@ -1,5 +1,6 @@
 package com.example.GraphicalUserInterface;
 import Configuration.Config;
+import Connector.Connector;
 import Database.*;
 
 import MovieManager.Movie;
@@ -22,6 +23,7 @@ public class Main extends Application {
     private static Stage stage;
     private User signedInUser;
     private SearchEngine searchEngine;
+    private Connector connector;
     private boolean nowShowingMoviesTabActive, comingSoonMoviesTabActive;
     private Movie movieOnDetail;
     private Movie movieOnBooking;
@@ -34,10 +36,14 @@ public class Main extends Application {
         main = this;
         this.processorManager = new ProcessorManager();
         this.config = new Config();
+        this.connector = new Connector(this.config);
         this.queryOnSearching = "";
         nowShowingMoviesTabActive = false;
         comingSoonMoviesTabActive = false;
         searchEngine = new SearchEngine();
+    }
+    public Connector getConnector() {
+        return this.connector;
     }
     public ProcessorManager getProcessorManager() {
         return this.processorManager;

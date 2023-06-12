@@ -13,6 +13,7 @@ import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
+import org.json.JSONObject;
 
 import java.io.IOException;
 import java.net.URL;
@@ -123,10 +124,16 @@ public class SearchResultsViewController implements Initializable {
         }
     }
     public void searchResultsInit() {
-        searchResults = main.getSearchEngine().getSearchResults(((TextField) main.getNodeById("#inputField")).getText(), "search_engine");//"semantic_searching");
+//        searchResults = main.getSearchEngine().getSearchResults(((TextField) main.getNodeById("#inputField")).getText(), "search_engine");//"semantic_searching");
+//        System.out.println("results " + searchResults);
+//        resultsContainer.setSpacing(20);
+//        displaySearchResults();
+//        resultsContainer.setPrefHeight(pageContainer.getPrefHeight());
+        JSONObject jsonData = new JSONObject();
+        jsonData.put("input", ((TextField) main.getNodeById("#inputField")).getText());
+        searchResults = main.getConnector().HTTPSearchEngineRequest(jsonData);
         System.out.println("results " + searchResults);
         resultsContainer.setSpacing(20);
         displaySearchResults();
-//        resultsContainer.setPrefHeight(pageContainer.getPrefHeight());
     }
 }

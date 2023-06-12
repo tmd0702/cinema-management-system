@@ -72,10 +72,6 @@ public class Connector {
         JSONObject jsonResponse = new JSONObject(response.body());
         return jsonResponse;
     }
-    public HashMap<String, Double> HTTPSearchEngineRequest(JSONObject jsonData) throws Exception{
-        JSONObject requestResponse = HTTPGetRequest(this.config.get("API_SEARCH_ENGINE_ROUTE"), jsonData);
-        return Utils.sortMapByValue(Utils.jsonToMap(requestResponse));
-    }
     public JSONObject HTTPDeleteRequest(String route, JSONObject jsonData) throws Exception {
         String params = constructURLParamsFromJSONObject(jsonData);
         HttpClient client = HttpClient.newHttpClient();
@@ -89,33 +85,72 @@ public class Connector {
         JSONObject jsonResponse = new JSONObject(response.body());
         return jsonResponse;
     }
-    public Response HTTPSignInRequest(JSONObject jsonData) throws Exception {
-        JSONObject requestResponse = HTTPPostRequest(this.config.get("API_SIGN_IN_ROUTE"), jsonData);
-        return new Response(requestResponse.get("error_message").toString(), StatusCode.getByValue(Integer.parseInt(requestResponse.get("status_code").toString())));
+    public HashMap<String, Double> HTTPSearchEngineRequest(JSONObject jsonData) {
+        try {
+            JSONObject requestResponse = HTTPGetRequest(this.config.get("API_SEARCH_ENGINE_ROUTE"), jsonData);
+            return Utils.sortMapByValue(Utils.jsonToMap(requestResponse));
+        } catch (Exception e){
+            System.out.println(e);
+            return new HashMap<String, Double>();
+        }
     }
-    public Response HTTPSignUpRequest(JSONObject jsonData) throws Exception {
-        JSONObject requestResponse = HTTPPostRequest(this.config.get("API_SIGN_UP_ROUTE"), jsonData);
-        return new Response(requestResponse.get("error_message").toString(), StatusCode.getByValue(Integer.parseInt(requestResponse.get("status_code").toString())));
+
+    public Response HTTPSignInRequest(JSONObject jsonData) {
+        try {
+            JSONObject requestResponse = HTTPPostRequest(this.config.get("API_SIGN_IN_ROUTE"), jsonData);
+            return new Response(requestResponse.get("error_message").toString(), StatusCode.getByValue(Integer.parseInt(requestResponse.get("status_code").toString())));
+        } catch (Exception e){
+            return new Response(e.toString(), StatusCode.BAD_REQUEST);
+        }
+
     }
-    public Response HTTPInsertDataRequest(JSONObject jsonData) throws Exception {
-        JSONObject requestResponse = HTTPPostRequest(this.config.get("API_INSERT_DATA_ROUTE"), jsonData);
-        return new Response(requestResponse.get("error_message").toString(), StatusCode.getByValue(Integer.parseInt(requestResponse.get("status_code").toString())));
+    public Response HTTPSignUpRequest(JSONObject jsonData) {
+        try {
+            JSONObject requestResponse = HTTPPostRequest(this.config.get("API_SIGN_UP_ROUTE"), jsonData);
+            return new Response(requestResponse.get("error_message").toString(), StatusCode.getByValue(Integer.parseInt(requestResponse.get("status_code").toString())));
+        } catch (Exception e){
+            return new Response(e.toString(), StatusCode.BAD_REQUEST);
+        }
     }
-    public Response HTTPUpdateDataRequest(JSONObject jsonData) throws Exception {
-        JSONObject requestResponse = HTTPPutRequest(this.config.get("API_UPDATE_DATA_ROUTE"), jsonData);
-        return new Response(requestResponse.get("error_message").toString(), StatusCode.getByValue(Integer.parseInt(requestResponse.get("status_code").toString())));
+    public Response HTTPInsertDataRequest(JSONObject jsonData) {
+        try {
+            JSONObject requestResponse = HTTPPostRequest(this.config.get("API_INSERT_DATA_ROUTE"), jsonData);
+            return new Response(requestResponse.get("error_message").toString(), StatusCode.getByValue(Integer.parseInt(requestResponse.get("status_code").toString())));
+        } catch (Exception e){
+            return new Response(e.toString(), StatusCode.BAD_REQUEST);
+        }
     }
-    public Response HTTPDeleteDataRequest(JSONObject jsonData) throws Exception {
-        JSONObject requestResponse = HTTPDeleteRequest(this.config.get("API_DELETE_DATA_ROUTE"), jsonData);
-        return new Response(requestResponse.get("error_message").toString(), StatusCode.getByValue(Integer.parseInt(requestResponse.get("status_code").toString())));
+    public Response HTTPUpdateDataRequest(JSONObject jsonData) {
+        try {
+            JSONObject requestResponse = HTTPPutRequest(this.config.get("API_UPDATE_DATA_ROUTE"), jsonData);
+            return new Response(requestResponse.get("error_message").toString(), StatusCode.getByValue(Integer.parseInt(requestResponse.get("status_code").toString())));
+        } catch (Exception e){
+            return new Response(e.toString(), StatusCode.BAD_REQUEST);
+        }
     }
-    public Response HTTPRollbackRequest() throws Exception {
-        JSONObject requestResponse = HTTPPostRequest(this.config.get("API_ROLLBACK_ROUTE"), new JSONObject());
-        return new Response(requestResponse.get("error_message").toString(), StatusCode.getByValue(Integer.parseInt(requestResponse.get("status_code").toString())));
+    public Response HTTPDeleteDataRequest(JSONObject jsonData) {
+        try {
+            JSONObject requestResponse = HTTPDeleteRequest(this.config.get("API_DELETE_DATA_ROUTE"), jsonData);
+            return new Response(requestResponse.get("error_message").toString(), StatusCode.getByValue(Integer.parseInt(requestResponse.get("status_code").toString())));
+        } catch (Exception e){
+            return new Response(e.toString(), StatusCode.BAD_REQUEST);
+        }
     }
-    public Response HTTPCommitRequest() throws Exception {
-        JSONObject requestResponse = HTTPPostRequest(this.config.get("API_COMMIT_ROUTE"), new JSONObject());
-        return new Response(requestResponse.get("error_message").toString(), StatusCode.getByValue(Integer.parseInt(requestResponse.get("status_code").toString())));
+    public Response HTTPRollbackRequest() {
+        try {
+            JSONObject requestResponse = HTTPPostRequest(this.config.get("API_ROLLBACK_ROUTE"), new JSONObject());
+            return new Response(requestResponse.get("error_message").toString(), StatusCode.getByValue(Integer.parseInt(requestResponse.get("status_code").toString())));
+        } catch (Exception e){
+            return new Response(e.toString(), StatusCode.BAD_REQUEST);
+        }
+    }
+    public Response HTTPCommitRequest() {
+        try {
+            JSONObject requestResponse = HTTPPostRequest(this.config.get("API_COMMIT_ROUTE"), new JSONObject());
+            return new Response(requestResponse.get("error_message").toString(), StatusCode.getByValue(Integer.parseInt(requestResponse.get("status_code").toString())));
+        } catch (Exception e){
+            return new Response(e.toString(), StatusCode.BAD_REQUEST);
+        }
     }
     public ArrayList<ArrayList<String>> getDataFetcherFromJSONData(JSONObject jsonData) {
         ArrayList<ArrayList<String>> dataFetcher = new ArrayList<ArrayList<String>>();
@@ -129,23 +164,12 @@ public class Connector {
         }
         return dataFetcher;
     }
-    public Response HTTPSelectDataRequest(JSONObject jsonData) throws Exception {
-        JSONObject requestResponse = HTTPGetRequest(this.config.get("API_SELECT_DATA_ROUTE"), jsonData);
-        return new Response(requestResponse.get("error_message").toString(), StatusCode.getByValue(Integer.parseInt(requestResponse.get("status_code").toString())), getDataFetcherFromJSONData((JSONObject) requestResponse.get("data")));
-    }
-    public static void main(String[] args) throws Exception {
-        Connector connector = new Connector(new Config());
-        JSONObject params = new JSONObject();
-
-        params.put("processor", "USERS");
-        params.put("start_index", "0");
-        params.put("quantity", "-1");
-        params.put("query_condition", "");
-        params.put("sort_query", "DOB DESC");
-        params.put("count", true);
-
-        Response response = connector.HTTPSelectDataRequest(params);
-        System.out.println(response.getStatusCode() + " " + response.getMessage());
-        System.out.println(response.getData().get(2));
+    public Response HTTPSelectDataRequest(JSONObject jsonData) {
+        try {
+            JSONObject requestResponse = HTTPGetRequest(this.config.get("API_SELECT_DATA_ROUTE"), jsonData);
+            return new Response(requestResponse.get("error_message").toString(), StatusCode.getByValue(Integer.parseInt(requestResponse.get("status_code").toString())), getDataFetcherFromJSONData((JSONObject) requestResponse.get("data")));
+        } catch (Exception e){
+            return new Response(e.toString(), StatusCode.BAD_REQUEST);
+        }
     }
 }

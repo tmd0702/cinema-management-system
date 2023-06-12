@@ -20,6 +20,7 @@ public class ProcessorManager {
     private MovieGenreManagementProcessor movieGenreManagementProcessor;
     private ItemManagementProcessor itemManagementProcessor;
     private AuthenticationManagementProcessor authenticationManagementProcessor;
+    private AnalyticsProcessor analyticsProcessor;
     private TicketManagementProcessor ticketManagementProcessor;
     private BookingTicketManagementProcessor bookingTicketManagementProcessor;
     private BookingItemManagementProcessor bookingItemManagementProccessor;
@@ -29,6 +30,7 @@ public class ProcessorManager {
     private SeatPriceManagementProcessor seatPriceManagementProcessor;
     private SeatCategoryManagementProcessor seatCategoryManagementProcessor;
     public ProcessorManager() throws Exception {
+        this.analyticsProcessor = new AnalyticsProcessor();
         this.seatCategoryManagementProcessor = new SeatCategoryManagementProcessor();
         this.itemPriceManagementProcessor = new ItemPriceManagementProcessor();
         this.seatPriceManagementProcessor = new SeatPriceManagementProcessor();
@@ -53,6 +55,9 @@ public class ProcessorManager {
         this.ticketManagementProcessor = new TicketManagementProcessor();
         this.bookingTicketManagementProcessor = new BookingTicketManagementProcessor();
         this.bookingItemManagementProccessor = new BookingItemManagementProcessor();
+    }
+    public AnalyticsProcessor getAnalyticsProcessor() {
+        return this.analyticsProcessor;
     }
     public SeatPriceManagementProcessor getSeatPriceManagementProcessor() {
         return this.seatPriceManagementProcessor;

@@ -44,6 +44,7 @@ public class ManagementViewController implements Initializable {
     private String queryCondition, sortQuery;
     private ArrayList<String> queryConditionFormatStrings;
     private ArrayList<String> queryConditionValues;
+
     @FXML
     private HBox subTabPanelHBox;
     private Node currentActiveDataViewHeader, currentActiveSortButton;
@@ -156,7 +157,7 @@ public class ManagementViewController implements Initializable {
         pagingToolbarInit();
 //        accountManagementViewInit();
         menuBoxInit();
-        Event.fireEvent(accountTabPanel, new MouseEvent(MouseEvent.MOUSE_CLICKED, 0,
+        Event.fireEvent(analyticsDashboardPanel, new MouseEvent(MouseEvent.MOUSE_CLICKED, 0,
                 0, 0, 0, MouseButton.PRIMARY, 1, true, true, true, true,
                 true, true, true, true, true, true, null));
     }
@@ -1080,7 +1081,9 @@ public class ManagementViewController implements Initializable {
                 subTabPanelHBox.setAlignment(Pos.BOTTOM_LEFT);
                 managementContainerView.getChildren().add(0, subTabPanelHBox);
                 tabPanelOnClick = tabPanel;
-
+                if (tabPanelOnClick != analyticsDashboardPanel) {
+                    managementContainerStackPane.getChildren().remove(main.getNodeById("#analyticsDashboardScrollPane"));
+                }
                 if (tabPanelOnClick == accountTabPanel) {
                     Button userInfoSubTab = new Button("User");
                     userInfoSubTab.setId("userInfoSubTab");
@@ -1157,9 +1160,11 @@ public class ManagementViewController implements Initializable {
                 for (Node subTab : subTabPanelHBox.getChildren()) {
                     setSubTabPanelStyle(subTab);
                 }
-                Event.fireEvent(subTabPanelHBox.getChildren().get(0), new MouseEvent(MouseEvent.MOUSE_CLICKED, 0,
-                        0, 0, 0, MouseButton.PRIMARY, 1, true, true, true, true,
-                        true, true, true, true, true, true, null));
+                if (tabPanelOnClick != analyticsDashboardPanel) {
+                    Event.fireEvent(subTabPanelHBox.getChildren().get(0), new MouseEvent(MouseEvent.MOUSE_CLICKED, 0,
+                            0, 0, 0, MouseButton.PRIMARY, 1, true, true, true, true,
+                            true, true, true, true, true, true, null));
+                }
 //                else {
 //                    activeProcessor = main.getProcessorManager().getMovieManagementProcessor();
 //                    reRenderPage(true);

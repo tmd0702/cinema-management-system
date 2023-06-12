@@ -23,7 +23,7 @@ public class Connector {
         String urlParams = "";
         ArrayList<String> keys = new ArrayList<String>(jsonData.keySet());
         for (int i=0; i<jsonData.length();++i) {
-            urlParams += keys.get(i) + "=" + jsonData.get(keys.get(i)).toString().replace(" ", "%20");
+            urlParams += keys.get(i) + "=" + jsonData.get(keys.get(i)).toString().replace("%", "%25").replace(" ", "%20");
             if (i < jsonData.length() - 1) {
                 urlParams += "&";
             }

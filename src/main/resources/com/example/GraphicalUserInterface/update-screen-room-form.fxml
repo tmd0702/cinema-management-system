@@ -11,12 +11,18 @@
 <?import javafx.scene.text.Font?>
 <?import javafx.scene.text.Text?>
 
-<VBox fx:id="updateScreenRoomForm" layoutX="110.0" prefHeight="600.0" prefWidth="790.0" xmlns="http://javafx.com/javafx/19" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.example.GraphicalUserInterface.UpdateScreenRoomFormController">
+<VBox fx:id="updateScreenRoomForm" layoutX="110.0" prefHeight="600.0" prefWidth="790.0" style="-fx-background-color: #000000;" xmlns="http://javafx.com/javafx/19" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.example.GraphicalUserInterface.UpdateScreenRoomFormController">
    <children>
       <HBox prefHeight="46.0" prefWidth="200.0" spacing="10.0" style="-fx-alignment: CENTER_LEFT;">
          <children>
-            <Button fx:id="cancelInsertBtn" mnemonicParsing="false" onMouseClicked="#cancelUpdateBtnOnClick" text="Cancel" />
-            <Button fx:id="saveInsertBtn" mnemonicParsing="false" onMouseClicked="#saveUpdateBtnOnClick" text="Save" />
+            <Button fx:id="cancelInsertBtn" mnemonicParsing="false" onMouseClicked="#cancelUpdateBtnOnClick" text="Cancel">
+               <font>
+                  <Font name="Georgia Bold" size="13.0" />
+               </font></Button>
+            <Button fx:id="saveInsertBtn" mnemonicParsing="false" onMouseClicked="#saveUpdateBtnOnClick" style="-fx-background-color: #A10000;" text="Save">
+               <font>
+                  <Font name="Georgia Bold" size="13.0" />
+               </font></Button>
          </children>
          <padding>
             <Insets left="10.0" right="10.0" />
@@ -24,19 +30,44 @@
       </HBox>
       <AnchorPane prefHeight="500.0" prefWidth="580.0">
          <children>
-            <Text layoutX="167.0" layoutY="57.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Update Screen Room">
+            <AnchorPane layoutX="131.0" layoutY="29.0" prefHeight="60.0" prefWidth="512.0" style="-fx-background-color: #AAAAAA;">
+               <children>
+                  <Text layoutX="32.0" layoutY="44.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Update Screen Room" wrappingWidth="448.80859375">
+                     <font>
+                        <Font name="Georgia Bold" size="40.0" />
+                     </font>
+                  </Text>
+               </children>
+            </AnchorPane>
+            <TextField fx:id="nameField" layoutX="178.0" layoutY="138.0">
                <font>
-                  <Font size="40.0" />
-               </font>
-            </Text>
-            <TextField fx:id="nameField" layoutX="178.0" layoutY="138.0" />
-            <TextField fx:id="capacityField" layoutX="178.0" layoutY="172.0" />
-            <Label layoutX="136.0" layoutY="142.0" prefHeight="17.0" prefWidth="33.0" text="Name" />
-            <Label layoutX="92.0" layoutY="210.0" text="Cinema Name" />
-            <Label layoutX="121.0" layoutY="176.0" text="Capacity" />
-            <ComboBox fx:id="cinemaNameField" layoutX="178.0" layoutY="206.0" prefWidth="150.0" />
-            <TextField fx:id="idField" layoutX="178.0" layoutY="104.0" />
-            <Label layoutX="153.0" layoutY="108.0" prefHeight="17.0" prefWidth="16.0" text="ID" />
+                  <Font name="Georgia" size="13.0" />
+               </font></TextField>
+            <TextField fx:id="capacityField" layoutX="178.0" layoutY="172.0">
+               <font>
+                  <Font name="Georgia" size="13.0" />
+               </font></TextField>
+            <Label layoutX="124.0" layoutY="142.0" prefHeight="17.0" prefWidth="45.0" text="Name" textFill="WHITE">
+               <font>
+                  <Font name="Georgia Bold" size="13.0" />
+               </font></Label>
+            <Label layoutX="81.0" layoutY="210.0" prefHeight="15.0" prefWidth="105.0" text="Cinema Name" textFill="WHITE">
+               <font>
+                  <Font name="Georgia Bold" size="13.0" />
+               </font></Label>
+            <Label layoutX="118.0" layoutY="178.0" text="Capacity" textFill="WHITE">
+               <font>
+                  <Font name="Georgia Bold" size="13.0" />
+               </font></Label>
+            <ComboBox fx:id="cinemaNameField" layoutX="178.0" layoutY="206.0" prefHeight="26.0" prefWidth="168.0" />
+            <TextField fx:id="idField" layoutX="178.0" layoutY="104.0">
+               <font>
+                  <Font name="Georgia" size="13.0" />
+               </font></TextField>
+            <Label layoutX="149.0" layoutY="108.0" prefHeight="17.0" prefWidth="20.0" text="ID" textFill="WHITE">
+               <font>
+                  <Font name="Georgia Bold" size="13.0" />
+               </font></Label>
          </children>
       </AnchorPane>
    </children>

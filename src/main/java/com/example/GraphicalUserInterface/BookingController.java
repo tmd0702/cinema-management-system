@@ -192,28 +192,30 @@ public class BookingController {
         itemsControllerInit(itemFetcher);
     }
     public void ConstructPaymentMethodButton(){
-        ArrayList<ArrayList<String>> paymentMethodData = bookingProcessor.getPaymentMethod();
-        ArrayList<String> namePaymentMethod = Utils.getDataValuesByColumnName(paymentMethodData, "NAME");
-        System.out.println(namePaymentMethod);
-        ToggleGroup toggleGroup = new ToggleGroup();
-        paymentMethodVbox.setSpacing(20);
-        HBox hbox = new HBox();
-        for(int i = 0; i < namePaymentMethod.size(); i++){
-            if(i%2==0){
-                hbox = new HBox();
-            }
-            hbox.setSpacing(100);
-            RadioButton radioButton = new RadioButton(namePaymentMethod.get(i));
-            radioButton.setToggleGroup(toggleGroup);
-            radioButton.setTextFill(Color.WHITE);
-            radioButton.setOnAction(event ->{
-                bookingProcessor.getBookingInfor().setPaymentMethodId(getIdFromIndex(paymentMethodData, radioButtonList.indexOf(radioButton)));
-                System.out.println(bookingProcessor.getBookingInfor().getPaymentMethodId());
-            });
-            hbox.getChildren().addAll(radioButton);
-            radioButtonList.add(radioButton);
-            if(i%2 != 0 || i == namePaymentMethod.size()-1){
-                paymentMethodVbox.getChildren().add(hbox);
+        if(paymentMethodVbox.getChildren().isEmpty()) {
+            ArrayList<ArrayList<String>> paymentMethodData = bookingProcessor.getPaymentMethod();
+            ArrayList<String> namePaymentMethod = Utils.getDataValuesByColumnName(paymentMethodData, "NAME");
+            System.out.println(namePaymentMethod);
+            ToggleGroup toggleGroup = new ToggleGroup();
+            paymentMethodVbox.setSpacing(20);
+            HBox hbox = new HBox();
+            for (int i = 0; i < namePaymentMethod.size(); i++) {
+                if (i % 2 == 0) {
+                    hbox = new HBox();
+                }
+                hbox.setSpacing(100);
+                RadioButton radioButton = new RadioButton(namePaymentMethod.get(i));
+                radioButton.setToggleGroup(toggleGroup);
+                radioButton.setTextFill(Color.WHITE);
+                radioButton.setOnAction(event -> {
+                    bookingProcessor.getBookingInfor().setPaymentMethodId(getIdFromIndex(paymentMethodData, radioButtonList.indexOf(radioButton)));
+                    System.out.println(bookingProcessor.getBookingInfor().getPaymentMethodId());
+                });
+                hbox.getChildren().addAll(radioButton);
+                radioButtonList.add(radioButton);
+                if (i % 3 != 0 || i == namePaymentMethod.size() - 1) {
+                    paymentMethodVbox.getChildren().add(hbox);
+                }
             }
         }
     }
@@ -781,7 +783,7 @@ public class BookingController {
                         dialog.getDialogPane().getButtonTypes().add(type);
                         dialog.show();
                         try {
-                            main.changeScene("booking-form.fxml");
+                            main.changeView("booking-form.fxml");
                         } catch (IOException e) {
                             throw new RuntimeException(e);
                         }
@@ -888,7 +890,7 @@ public class BookingController {
                 dialog.getDialogPane().getButtonTypes().add(type);
                 dialog.show();
                 try {
-                    main.changeScene("main-outline.fxml");
+                    main.changeView("index-view.fxml");
                 } catch (IOException e) {
                     throw new RuntimeException(e);
                 }
@@ -901,11 +903,10 @@ public class BookingController {
                 dialog.getDialogPane().getButtonTypes().add(type);
                 dialog.show();
                 try {
-                    main.changeScene("booking-form.fxml");
+                    main.changeView("booking-form.fxml");
                 } catch (IOException e) {
                     throw new RuntimeException(e);
                 }
-//                bookingProcessor.getConnector().setAutoCommit(true);
             }
         }
     }

@@ -10,30 +10,58 @@
 <?import javafx.scene.text.Font?>
 <?import javafx.scene.text.Text?>
 
-<VBox fx:id="updateUserCategoryForm" layoutX="110.0" prefHeight="600.0" prefWidth="790.0" xmlns="http://javafx.com/javafx/19" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.example.GraphicalUserInterface.UpdateUserCategoryFormController">
+<VBox fx:id="updateUserCategoryForm" layoutX="110.0" prefHeight="600.0" prefWidth="790.0" style="-fx-background-color: #000000;" xmlns="http://javafx.com/javafx/19" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.example.GraphicalUserInterface.UpdateUserCategoryFormController">
     <children>
-        <HBox prefHeight="46.0" prefWidth="200.0" spacing="10.0" style="-fx-alignment: CENTER_LEFT;">
+        <HBox prefHeight="46.0" prefWidth="200.0" spacing="10.0" style="-fx-alignment: CENTER_LEFT; -fx-background-color: #000000;">
             <children>
-                <Button fx:id="cancelUpdateBtn" mnemonicParsing="false" onMouseClicked="#cancelUpdateBtnOnClick" text="Cancel" />
-                <Button fx:id="saveUpdateBtn" mnemonicParsing="false" onMouseClicked="#saveUpdateBtnOnClick" text="Save" />
+                <Button fx:id="cancelUpdateBtn" mnemonicParsing="false" onMouseClicked="#cancelUpdateBtnOnClick" text="Cancel">
+               <font>
+                  <Font name="Georgia Bold" size="13.0" />
+               </font></Button>
+                <Button fx:id="saveUpdateBtn" mnemonicParsing="false" onMouseClicked="#saveUpdateBtnOnClick" style="-fx-background-color: #A10000;" text="Save">
+               <font>
+                  <Font name="Georgia Bold" size="13.0" />
+               </font></Button>
             </children>
             <padding>
                 <Insets left="10.0" right="10.0" />
             </padding>
         </HBox>
-        <AnchorPane prefHeight="500.0" prefWidth="580.0">
+        <AnchorPane prefHeight="500.0" prefWidth="580.0" style="-fx-background-color: #000000;">
             <children>
-                <Text layoutX="233.0" layoutY="64.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Update User Category">
-                    <font>
-                        <Font size="40.0" />
-                    </font>
-                </Text>
-                <TextField fx:id="categoryField" layoutX="177.0" layoutY="159.0" />
-                <Label layoutX="81.0" layoutY="163.0" prefHeight="17.0" prefWidth="87.0" text="Category name" />
-                <TextField fx:id="pointLowerboundField" layoutX="455.0" layoutY="104.0" />
-                <Label layoutX="336.0" layoutY="108.0" prefHeight="17.0" prefWidth="111.0" text="Point Lowerbound" />
-                <TextField fx:id="idField" layoutX="177.0" layoutY="104.0" />
-                <Label layoutX="141.0" layoutY="108.0" prefHeight="17.0" prefWidth="27.0" text="ID" />
+            <AnchorPane layoutX="162.0" layoutY="27.0" prefHeight="58.0" prefWidth="493.0" style="-fx-background-color: #AAAAAA;">
+               <children>
+                      <Text layoutX="12.0" layoutY="43.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Update User Category">
+                          <font>
+                              <Font name="Georgia Bold" size="40.0" />
+                          </font>
+                      </Text>
+               </children>
+            </AnchorPane>
+                <TextField fx:id="categoryField" layoutX="177.0" layoutY="159.0">
+               <font>
+                  <Font name="Georgia" size="13.0" />
+               </font></TextField>
+                <Label layoutX="65.0" layoutY="163.0" prefHeight="17.0" prefWidth="103.0" text="Category name" textFill="WHITE">
+               <font>
+                  <Font name="Georgia Bold" size="13.0" />
+               </font></Label>
+                <TextField fx:id="pointLowerboundField" layoutX="494.0" layoutY="104.0">
+               <font>
+                  <Font name="Georgia" size="13.0" />
+               </font></TextField>
+                <Label layoutX="354.0" layoutY="109.0" prefHeight="17.0" prefWidth="129.0" text="Point Lowerbound" textFill="WHITE">
+               <font>
+                  <Font name="Georgia Bold" size="13.0" />
+               </font></Label>
+                <TextField fx:id="idField" layoutX="177.0" layoutY="104.0">
+               <font>
+                  <Font name="Georgia" size="13.0" />
+               </font></TextField>
+                <Label layoutX="141.0" layoutY="108.0" prefHeight="17.0" prefWidth="27.0" text="ID" textFill="WHITE">
+               <font>
+                  <Font name="Georgia" size="13.0" />
+               </font></Label>
             </children>
         </AnchorPane>
     </children>

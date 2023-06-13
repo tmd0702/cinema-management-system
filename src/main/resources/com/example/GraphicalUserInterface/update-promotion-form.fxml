@@ -12,12 +12,18 @@
 <?import javafx.scene.text.Font?>
 <?import javafx.scene.text.Text?>
 
-<VBox fx:id="updatePromotionForm" layoutX="110.0" prefHeight="600.0" prefWidth="790.0" xmlns="http://javafx.com/javafx/19" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.example.GraphicalUserInterface.UpdatePromotionFormController">
+<VBox fx:id="updatePromotionForm" layoutX="110.0" prefHeight="600.0" prefWidth="790.0" style="-fx-background-color: #000000;" xmlns="http://javafx.com/javafx/19" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.example.GraphicalUserInterface.UpdatePromotionFormController">
     <children>
         <HBox prefHeight="46.0" prefWidth="200.0" spacing="10.0" style="-fx-alignment: CENTER_LEFT;">
             <children>
-                <Button fx:id="cancelInsertBtn" mnemonicParsing="false" onMouseClicked="#cancelUpdateBtnOnClick" text="Cancel" />
-                <Button fx:id="saveInsertBtn" mnemonicParsing="false" onMouseClicked="#saveUpdateBtnOnClick" text="Save" />
+                <Button fx:id="cancelInsertBtn" mnemonicParsing="false" onMouseClicked="#cancelUpdateBtnOnClick" text="Cancel">
+               <font>
+                  <Font name="Georgia Bold" size="13.0" />
+               </font></Button>
+                <Button fx:id="saveInsertBtn" mnemonicParsing="false" onMouseClicked="#saveUpdateBtnOnClick" style="-fx-background-color: #A10000;" text="Save">
+               <font>
+                  <Font name="Georgia Bold" size="13.0" />
+               </font></Button>
             </children>
             <padding>
                 <Insets left="10.0" right="10.0" />
@@ -25,25 +31,59 @@
         </HBox>
         <AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="600.0">
             <children>
-                <Label layoutX="68.0" layoutY="155.0" text="Name" />
-                <Label layoutX="363.0" layoutY="160.0" text="Start date" />
-                <Label layoutX="45.0" layoutY="192.0" text="Description" />
-                <Label layoutX="60.0" layoutY="232.0" text="Discount" />
-                <DatePicker fx:id="endDateField" layoutX="418.0" layoutY="193.0" prefHeight="25.0" prefWidth="149.0" />
-                <TextField fx:id="nameField" layoutX="112.0" layoutY="151.0" />
-                <TextField fx:id="descriptionField" layoutX="112.0" layoutY="188.0" />
-                <TextField fx:id="discountField" layoutX="111.0" layoutY="228.0" />
-                <Text layoutX="180.0" layoutY="66.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Update Promotion">
+            <AnchorPane layoutX="136.0" layoutY="32.0" prefHeight="47.0" prefWidth="402.0" style="-fx-background-color: #AAAAAA;" />
+                <Label layoutX="68.0" layoutY="155.0" text="Name" textFill="WHITE">
+               <font>
+                  <Font name="Georgia Bold" size="13.0" />
+               </font></Label>
+                <Label layoutX="357.0" layoutY="162.0" text="Start date" textFill="WHITE">
+               <font>
+                  <Font name="Georgia Bold" size="13.0" />
+               </font></Label>
+                <Label layoutX="26.0" layoutY="193.0" prefHeight="15.0" prefWidth="85.0" text="Description" textFill="WHITE">
+               <font>
+                  <Font name="Georgia Bold" size="13.0" />
+               </font></Label>
+                <Label layoutX="47.0" layoutY="234.0" text="Discount" textFill="WHITE">
+               <font>
+                  <Font name="Georgia Bold" size="13.0" />
+               </font></Label>
+                <DatePicker fx:id="endDateField" editable="false" layoutX="437.0" layoutY="195.0" prefHeight="25.0" prefWidth="149.0" />
+                <TextField fx:id="nameField" layoutX="112.0" layoutY="151.0">
+               <font>
+                  <Font name="Georgia" size="13.0" />
+               </font></TextField>
+                <TextField fx:id="descriptionField" layoutX="112.0" layoutY="188.0">
+               <font>
+                  <Font name="Georgia" size="13.0" />
+               </font></TextField>
+                <TextField fx:id="discountField" layoutX="111.0" layoutY="228.0">
+               <font>
+                  <Font name="Georgia" size="13.0" />
+               </font></TextField>
+                <Text layoutX="148.0" layoutY="69.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Update Promotion">
                     <font>
-                        <Font size="40.0" />
+                        <Font name="Georgia Bold" size="40.0" />
                     </font>
                 </Text>
-                <Label layoutX="366.0" layoutY="197.0" text="End date" />
-                <DatePicker fx:id="startDateField" layoutX="418.0" layoutY="156.0" prefHeight="25.0" prefWidth="149.0" />
-            <Label layoutX="94.0" layoutY="121.0" text="ID" />
-            <TextField fx:id="idField" layoutX="112.0" layoutY="114.0" />
-            <Label layoutX="306.0" layoutY="118.0" text="User category name" />
-            <ComboBox fx:id="userCategoryCategoryField" layoutX="418.0" layoutY="114.0" prefWidth="150.0" />
+                <Label layoutX="366.0" layoutY="197.0" text="End date" textFill="WHITE">
+               <font>
+                  <Font name="Georgia Bold" size="13.0" />
+               </font></Label>
+                <DatePicker fx:id="startDateField" editable="false" layoutX="436.0" layoutY="156.0" prefHeight="26.0" prefWidth="150.0" />
+            <Label layoutX="94.0" layoutY="121.0" text="ID" textFill="WHITE">
+               <font>
+                  <Font name="Georgia Bold" size="13.0" />
+               </font></Label>
+            <TextField fx:id="idField" layoutX="112.0" layoutY="114.0">
+               <font>
+                  <Font name="Georgia" size="13.0" />
+               </font></TextField>
+            <Label layoutX="297.0" layoutY="119.0" text="User category name" textFill="WHITE">
+               <font>
+                  <Font name="Georgia Bold" size="13.0" />
+               </font></Label>
+            <ComboBox fx:id="userCategoryCategoryField" layoutX="436.0" layoutY="114.0" prefWidth="150.0" />
             </children>
         </AnchorPane>
     </children>

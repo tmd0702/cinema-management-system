@@ -27,6 +27,8 @@ public class ProfileViewController implements Initializable {
     @FXML
     private ToggleGroup gender;
     @FXML
+    public AnchorPane containerAnchor;
+    @FXML
     private HBox genderContainerField;
     @FXML
     private RadioButton maleRadioBtn, femaleRadioBtn;
@@ -55,6 +57,7 @@ public class ProfileViewController implements Initializable {
     @FXML
     public void changePasswordBtnOnClick() throws IOException {
         profileViewContainer.getChildren().add(FXMLLoader.load(getClass().getResource("change-password-form.fxml")));
+        containerAnchor.setVisible(true);
     }
     @FXML
     public void saveProfileBtnOnClick() {

@@ -11,12 +11,18 @@
 <?import javafx.scene.text.Font?>
 <?import javafx.scene.text.Text?>
 
-<VBox fx:id="addScheduleForm" layoutX="110.0" prefHeight="600.0" prefWidth="790.0" xmlns="http://javafx.com/javafx/19" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.example.GraphicalUserInterface.AddScheduleFormController">
+<VBox fx:id="addScheduleForm" layoutX="110.0" prefHeight="600.0" prefWidth="790.0" style="-fx-background-color: #000000;" xmlns="http://javafx.com/javafx/19" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.example.GraphicalUserInterface.AddScheduleFormController">
     <children>
         <HBox prefHeight="46.0" prefWidth="200.0" spacing="10.0" style="-fx-alignment: CENTER_LEFT;">
             <children>
-                <Button fx:id="cancelInsertBtn" mnemonicParsing="false" onMouseClicked="#cancelInsertBtnOnClick" text="Cancel" />
-                <Button fx:id="saveInsertBtn" mnemonicParsing="false" onMouseClicked="#saveInsertBtnOnClick" text="Save" />
+                <Button fx:id="cancelInsertBtn" mnemonicParsing="false" onMouseClicked="#cancelInsertBtnOnClick" text="Cancel">
+               <font>
+                  <Font name="Georgia Bold" size="13.0" />
+               </font></Button>
+                <Button fx:id="saveInsertBtn" mnemonicParsing="false" onMouseClicked="#saveInsertBtnOnClick" style="-fx-background-color: #A10000;" text="Save">
+               <font>
+                  <Font name="Georgia Bold" size="13.0" />
+               </font></Button>
             </children>
             <padding>
                 <Insets left="10.0" right="10.0" />
@@ -24,20 +30,36 @@
         </HBox>
         <AnchorPane prefHeight="500.0" prefWidth="580.0">
             <children>
+            <AnchorPane layoutX="160.0" layoutY="35.0" prefHeight="44.0" prefWidth="371.0" style="-fx-background-color: #AAAAAA;" />
                 <Text layoutX="186.0" layoutY="70.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Insert Schedule">
                     <font>
-                        <Font size="40.0" />
+                        <Font name="Georgia Bold" size="39.0" />
                     </font>
                 </Text>
-                <Label layoutX="117.0" layoutY="108.0" prefHeight="17.0" prefWidth="52.0" text="Start time" />
-                <Label layoutX="364.0" layoutY="109.0" text="Screen room name" />
-                <Label layoutX="115.0" layoutY="142.0" text="Show date" />
+                <Label layoutX="90.0" layoutY="108.0" prefHeight="17.0" prefWidth="70.0" text="Start time" textFill="WHITE">
+               <font>
+                  <Font name="Georgia Bold" size="13.0" />
+               </font></Label>
+                <Label layoutX="337.0" layoutY="109.0" text="Screen room name" textFill="WHITE">
+               <font>
+                  <Font name="Georgia Bold" size="13.0" />
+               </font></Label>
+                <Label layoutX="88.0" layoutY="142.0" text="Show date" textFill="WHITE">
+               <font>
+                  <Font name="Georgia Bold" size="13.0" />
+               </font></Label>
                 <ComboBox fx:id="screenRoomNameField" layoutX="469.0" layoutY="105.0" prefWidth="150.0" />
-                <Label layoutX="379.0" layoutY="143.0" text="Cinema name" />
+                <Label layoutX="352.0" layoutY="143.0" text="Cinema name" textFill="WHITE">
+               <font>
+                  <Font name="Georgia Bold" size="13.0" />
+               </font></Label>
                 <ComboBox fx:id="cinemaNameField" layoutX="469.0" layoutY="139.0" prefWidth="150.0" />
-                <DatePicker fx:id="showDateField" layoutX="178.0" layoutY="138.0" prefHeight="25.0" prefWidth="149.0" />
+                <DatePicker fx:id="showDateField" editable="false" layoutX="178.0" layoutY="138.0" prefHeight="25.0" prefWidth="149.0" />
             <ComboBox fx:id="showTimeStartTimeField" layoutX="178.0" layoutY="104.0" prefWidth="150.0" />
-            <Label layoutX="88.0" layoutY="180.0" text="Movie title" />
+            <Label layoutX="85.0" layoutY="180.0" text="Movie title" textFill="WHITE">
+               <font>
+                  <Font name="Georgia Bold" size="13.0" />
+               </font></Label>
             <ComboBox fx:id="movieTitleField" layoutX="178.0" layoutY="176.0" prefWidth="150.0" />
             </children>
         </AnchorPane>

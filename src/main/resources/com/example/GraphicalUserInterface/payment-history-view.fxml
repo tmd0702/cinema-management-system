@@ -14,19 +14,19 @@
          <children>
             <Label layoutX="238.0" layoutY="7.0" text="Payment History">
                <font>
-                  <Font name="System Bold" size="16.0" />
+                  <Font name="Georgia Bold" size="16.0" />
                </font>
             </Label>
          </children>
       </AnchorPane>
       <ScrollPane fx:id="paymentHistoryViewScrollPane" hbarPolicy="NEVER" layoutX="85.0" layoutY="99.0" prefHeight="414.0" prefWidth="604.0" style="-fx-background: black; -fx-border-color: black;">
          <content>
-            <GridPane fx:id="paymentHistoryViewGrid" prefHeight="25.0" prefWidth="602.0" style="-fx-background-color: black;">
+            <GridPane fx:id="paymentHistoryViewGrid" hgap="10.0" prefHeight="30.0" prefWidth="602.0" style="-fx-background-color: black;">
               <columnConstraints>
-                <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
-                <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
-                <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
-                <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+                <ColumnConstraints halignment="CENTER" hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+                <ColumnConstraints halignment="CENTER" hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+                <ColumnConstraints halignment="CENTER" hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+                <ColumnConstraints halignment="CENTER" hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
               </columnConstraints>
               <rowConstraints>
                 <RowConstraints minHeight="10.0" prefHeight="10.0" vgrow="SOMETIMES" />
@@ -34,22 +34,22 @@
                <children>
                   <Label text="Movie" textFill="WHITE" GridPane.halignment="CENTER" GridPane.valignment="CENTER">
                      <font>
-                        <Font name="System Bold" size="14.0" />
+                        <Font name="Georgia Bold" size="14.0" />
                      </font>
                   </Label>
                   <Label text="Cinema" textFill="WHITE" GridPane.columnIndex="1" GridPane.halignment="CENTER" GridPane.valignment="CENTER">
                      <font>
-                        <Font name="System Bold" size="14.0" />
+                        <Font name="Georgia Bold" size="14.0" />
                      </font>
                   </Label>
-                  <Label style="-fx-font-weight: bold;" text="Payment Date" textFill="WHITE" GridPane.columnIndex="2" GridPane.halignment="CENTER" GridPane.valignment="CENTER">
+                  <Label alignment="CENTER" contentDisplay="CENTER" prefHeight="15.0" prefWidth="104.0" text="Payment date" textAlignment="CENTER" GridPane.columnIndex="2">
                      <font>
-                        <Font size="14.0" />
+                        <Font name="Georgia Bold" size="13.0" />
                      </font>
                   </Label>
                   <Label text="Cost" textFill="WHITE" GridPane.columnIndex="3" GridPane.halignment="CENTER" GridPane.valignment="CENTER">
                      <font>
-                        <Font name="System Bold" size="14.0" />
+                        <Font name="Georgia Bold" size="14.0" />
                      </font>
                   </Label>
                </children>

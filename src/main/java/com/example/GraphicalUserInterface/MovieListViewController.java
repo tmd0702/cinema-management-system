@@ -59,10 +59,10 @@ public class   MovieListViewController implements Initializable {
         }
     }
     public void activateTabBtn(Button btn) {
-        btn.setStyle("-fx-background-color: #740505; -fx-text-fill: white; -fx-font-weight: bold;");
+        btn.setStyle("-fx-background-color: #740505; -fx-text-fill: white;");
     }
     public void deactivateTabBtn(Button btn) {
-        btn.setStyle("-fx-background-color: #323231; -fx-text-fill: white; -fx-font-weight: bold;");
+        btn.setStyle("-fx-background-color: #323231; -fx-text-fill: white;");
     }
     public void nowShowingMoviesTabInit() {
         double listSpacing = 10;

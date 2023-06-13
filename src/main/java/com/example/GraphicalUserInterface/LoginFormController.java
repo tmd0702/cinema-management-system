@@ -18,6 +18,7 @@ import java.text.SimpleDateFormat;
 import java.time.format.DateTimeFormatter;
 import java.util.*;
 import Utils.StatusCode;
+import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.AnchorPane;
 
 public class LoginFormController implements Initializable {
@@ -81,7 +82,7 @@ public class LoginFormController implements Initializable {
             System.out.println("Sign in success");
             System.out.println(userInfo);
             main.setSignedInUser(new Manager(Utils.getRowValueByColumnName(2, "USERS.USERNAME", userInfo), Utils.getRowValueByColumnName(2, "USERS.ID", userInfo), Utils.getRowValueByColumnName(2, "USERS.FIRST_NAME", userInfo), Utils.getRowValueByColumnName(2, "USERS.LAST_NAME", userInfo), new Date(new SimpleDateFormat("yyyy-MM-dd").parse(Utils.getRowValueByColumnName(2, "USERS.DOB", userInfo)).getTime()), Utils.getRowValueByColumnName(2, "USERS.PHONE", userInfo), Utils.getRowValueByColumnName(2, "USERS.EMAIL", userInfo), Utils.getRowValueByColumnName(2, "USERS.GENDER", userInfo), Utils.getRowValueByColumnName(2, "USERS.ADDRESS", userInfo), Utils.getRowValueByColumnName(2, "USERS.USER_CATEGORY_CATEGORY", userInfo)));
-            Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
+            Alert alert = new Alert(Alert.AlertType.CONFIRMATION,"", ButtonType.OK);
             alert.setTitle("Confirmation");
             alert.setContentText("Sign in success");
             Optional<ButtonType> result = alert.showAndWait();
@@ -94,6 +95,13 @@ public class LoginFormController implements Initializable {
 
         } else {
             System.out.println("Sign in failed");
+            Alert alert = new Alert(Alert.AlertType.ERROR);
+            alert.setTitle("Error Sign in");
+            alert.setContentText("Sign in failed");
+            Optional<ButtonType> result = alert.showAndWait();
+            if (result.get() == ButtonType.OK) {
+                System.out.println("ok");
+            }
         }
     }
     public void onSignUpBtnClick() throws Exception {
@@ -102,6 +110,11 @@ public class LoginFormController implements Initializable {
     }
     public void onForgotPasswordBtnClick() throws Exception {
         ((AnchorPane)loginFormRoot.getParent()).getChildren().add(FXMLLoader.load(getClass().getResource("forgot-password-form.fxml")));
+        ((AnchorPane)loginFormRoot.getParent()).getChildren().remove(loginFormRoot);
+    }
+    @FXML
+    public void onXmarkBtnClick(MouseEvent event){
+        main.getNodeById("#mainOutlineContentView").setDisable(false);
         ((AnchorPane)loginFormRoot.getParent()).getChildren().remove(loginFormRoot);
     }
 }

@@ -13,6 +13,8 @@ import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
+import javafx.scene.text.Font;
+import javafx.scene.text.FontWeight;
 import org.json.JSONObject;
 
 import java.io.IOException;
@@ -92,14 +94,17 @@ public class SearchResultsViewController implements Initializable {
                 movieContentInfo.setPadding(new Insets(20, 20, 20, 20));
                 movieContentInfo.setPrefHeight(movieContainer.getPrefHeight());
                 Label title = new Label(movie.getTitle());
+                title.setFont(Font.font("Georgia", FontWeight.BOLD,24));
                 Label overview = new Label("Overview: " + movie.getOverview());
                 Label releaseDate = new Label("Release date: " + movie.getReleaseDate().toString());
                 Label duration = new Label("Duration: " + movie.getDuration() + " minutes");
-                title.setStyle("-fx-text-fill: white; -fx-font-size: 24px; -fx-font-weight: bold;");
+                title.setStyle("-fx-text-fill: white; -fx-font-size: 24px;");
                 overview.setStyle("-fx-text-fill: white; -fx-font-size: 14px;");
+                overview.setFont(Font.font("Georgia"));
                 releaseDate.setStyle("-fx-text-fill: white; -fx-font-size: 14px;");
+                releaseDate.setFont(Font.font("Georgia"));
                 duration.setStyle("-fx-text-fill: white; -fx-font-size: 14px;");
-
+                duration.setFont(Font.font("Georgia"));
                 movieContentInfo.getChildren().add(title);
                 movieContentInfo.getChildren().add(releaseDate);
                 movieContentInfo.getChildren().add(duration);
@@ -135,5 +140,6 @@ public class SearchResultsViewController implements Initializable {
         System.out.println("results " + searchResults);
         resultsContainer.setSpacing(20);
         displaySearchResults();
+//        resultsContainer.setPrefHeight(pageContainer.getPrefHeight());
     }
 }

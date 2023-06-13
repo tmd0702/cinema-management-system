@@ -36,6 +36,8 @@ import javafx.scene.paint.LinearGradient;
 import javafx.scene.paint.Stop;
 import javafx.scene.shape.*;
 import javafx.scene.input.MouseEvent;
+import javafx.scene.text.Font;
+import javafx.scene.text.FontWeight;
 import javafx.util.Duration;
 import org.controlsfx.glyphfont.FontAwesome;
 
@@ -113,11 +115,10 @@ public class IndexViewController implements Initializable {
         });
     }
     public void movieListViewSectionInit(HBox listView, ArrayList<Movie> movieList) {
-        double listSpacing = 10;
         int counter = 1;
-        listView.setSpacing(listSpacing);
+        listView.setSpacing(10);
         for (Movie movie : movieList) {
-            StackPane movieView = getMovieView(listView, listSpacing, movie);
+            StackPane movieView = getMovieView(listView, 10, movie);
             listView.getChildren().add(movieView);
             counter += 1;
             if (counter > 4) break;
@@ -125,15 +126,16 @@ public class IndexViewController implements Initializable {
     }
     public static StackPane getMovieView(HBox listView, double listSpacing, Movie movie) {
         StackPane movieView = new StackPane();
-//            movieView.setPadding(new Insets(20, 20, 20, 20));
-//            movieView.setId(movie.getId() + "CurrentlyPlayingList");
         movieView.setPrefWidth((listView.getPrefWidth() - listSpacing * 3) / 4);
         movieView.setPrefHeight(listView.getPrefHeight());
         VBox movieInfoSection = new VBox();
         Label movieTitle = new Label(movie.getTitle());
-        movieTitle.setStyle("-fx-font-weight: bold;-fx-font-size: 14px;-fx-text-fill:white;");
+        movieTitle.setStyle("-fx-text-fill:white;");
+        movieTitle.setFont(Font.font("Georgia", FontWeight.BOLD, 13));
+        movieTitle.setWrapText(true);
         Label movieReleaseDate = new Label(Utils.getDateStringWithFormat("dd MMMM", movie.getReleaseDate()));
-        movieReleaseDate.setStyle("-fx-font-size:11px;-fx-text-fill:white;");
+        movieReleaseDate.setStyle("-fx-text-fill:white;");
+        movieReleaseDate.setFont(Font.font("Georgia", FontWeight.BOLD, 11));
         movieInfoSection.getChildren().add(movieTitle);
         movieInfoSection.getChildren().add(movieReleaseDate);
         movieInfoSection.setPadding(new Insets(20, 20, 20, 20));
@@ -187,7 +189,8 @@ public class IndexViewController implements Initializable {
             bookingBtn.setId(movie.getId() + "BookingBtn");
             bookingBtn.setPrefWidth(50 * 1.8);
             bookingBtn.setPrefHeight(20 * 1.8);
-            bookingBtn.setStyle("-fx-background-color: #AB0A10;-fx-text-fill: white;-fx-font-weight: bold;-fx-font-size:8px;");
+            bookingBtn.setStyle("-fx-background-color: #AB0A10;-fx-text-fill: white;");
+            bookingBtn.setFont(Font.font("Georgia", FontWeight.BOLD, 8));
             bookingBtn.setText("Book Now");
             bookingBtn.setOpacity(0);
             bookingBtn.setVisible(false);

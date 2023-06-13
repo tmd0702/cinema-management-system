@@ -37,10 +37,10 @@ public class AddFakeDatabase {
         this.itemCategoryManagementProcessor = new ItemCategoryManagementProcessor();
         this.seatPriceManagementProcessor = new SeatPriceManagementProcessor();
         this.itemPriceManagementProcessor = new ItemPriceManagementProcessor();
-//        this.movieManagementProcessor = new MovieManagementProcessor();
+        this.movieManagementProcessor = new MovieManagementProcessor();
         this.idGenerator = new IdGenerator();
         this.main = Main.getInstance();
-//        main.setProcessorManager(new ProcessorManager());
+        main.setProcessorManager(new ProcessorManager());
     }
     public void addFakeAccounts() throws Exception {
 
@@ -236,13 +236,13 @@ public class AddFakeDatabase {
     }
     public void addFakeItems(){
         HashMap<String, String> item = new HashMap<String, String>();
+        item.put("REVENUE", "0");
         for(int j = 1; j <= 6; j++) {
             item.put("ID", idGenerator.generateId(itemManagementProcessor.getDefaultDatabaseTable()));
             item.put("NAME", "Popcorn" + j);
             item.put("ITEM_CATEGORY_ID", "IC_00002");
             item.put("UNIT", "KG");
             item.put("QUANTITY", "100");
-            item.put("REVENUE", "0");
             if(j < 6)
             item.put("STATUS", "Active");
             else item.put("STATUS", "Close");
@@ -378,7 +378,7 @@ public class AddFakeDatabase {
         }
     }
     public void addFakeSchedule(){
-        String query = "SELECT * FROM MOVIES LIMIT 30";// LIMIT 30";
+        String query = "SELECT * FROM MOVIES LIMIT 100";// LIMIT 100";
         ArrayList<Movie> tmpList = new ArrayList<Movie>();
         try {
             Statement st = movieManagementProcessor.getConnector().createStatement();
@@ -411,15 +411,15 @@ public class AddFakeDatabase {
 //        addFakeDatabase.addFakeSeatCategory();
 //        addFakeDatabase.addFakeSeats();
 //        addFakeDatabase.addFakeShowTimes();
-//        addFakeDatabase.addFakeSchedule();
-        addFakeDatabase.addFakeItemCategory();
-        addFakeDatabase.addFakeItems();
-        addFakeDatabase.addFakeTicket();
-        addFakeDatabase.addFakePaymentMethod();
-        addFakeDatabase.addFakePrice();
-        addFakeDatabase.addFakePayments();
-        addFakeDatabase.addFakeBookingItems();
-        addFakeDatabase.addFakeBookingSeats();
+        addFakeDatabase.addFakeSchedule();
+//        addFakeDatabase.addFakeItemCategory();
+//        addFakeDatabase.addFakeItems();
+//        addFakeDatabase.addFakeTicket();
+//        addFakeDatabase.addFakePaymentMethod();
+//        addFakeDatabase.addFakePrice();
+//        addFakeDatabase.addFakePayments();
+//        addFakeDatabase.addFakeBookingItems();
+//        addFakeDatabase.addFakeBookingSeats();
     }
 }
 

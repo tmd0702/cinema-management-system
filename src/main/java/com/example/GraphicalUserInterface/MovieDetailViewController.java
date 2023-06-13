@@ -22,7 +22,11 @@ import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.StackPane;
 import javafx.scene.layout.VBox;
+import javafx.scene.paint.Color;
+import javafx.scene.paint.Paint;
 import javafx.scene.shape.Line;
+import javafx.scene.text.Font;
+import javafx.scene.text.FontWeight;
 
 import java.io.IOException;
 import java.net.URL;
@@ -90,7 +94,7 @@ public class MovieDetailViewController implements Initializable {
         VBox.setMargin(separator, new Insets(20, 0, 20, 0));
         description.setWrapText(true);
         description.setText(movieOnDetail.getOverview());
-        description.setDisable(true);
+//        description.setDisable(true);
         System.out.println("parent: " + bookMovieBtn.getParent());
         if (main.getProcessorManager().getMovieManagementProcessor().getMovieManager().getCurrentlyPlayingMovieList().contains(movieOnDetail)) {
             bookMovieBtn.setOnMouseClicked(new EventHandler<MouseEvent>() {
@@ -182,17 +186,28 @@ public class MovieDetailViewController implements Initializable {
         ArrayList<ArrayList<String>> reviewFetcher = main.getProcessorManager().getReviewManagementProcessor().getData(0, -1, String.format("M.ID = '%s'", main.getMovieOnDetail().getId()), "R.DATE DESC").getData();
         System.out.println(reviewFetcher);
         for (int i=2; i < reviewFetcher.size(); ++i) {
-            StackPane userCategoryView = new StackPane(new Label(Utils.getRowValueByColumnName(i, "CATEGORY", reviewFetcher)));
+            Label userCategoryView = new Label(Utils.getRowValueByColumnName(i, "CATEGORY", reviewFetcher));
+            userCategoryView.setStyle("-fx-background-color: #8A8A8A; -fx-text-fill: #ffffff");
+            userCategoryView.setFont(Font.font("Georgia", FontWeight.BOLD, 11));
             HBox ratingView = new HBox();
             for (int j=0; j<5; ++j) {
                 FontAwesomeIconView fullStar = new FontAwesomeIconView(FontAwesomeIcon.STAR);
+                fullStar.setStroke(Color.WHITE);
                 fullStar.setStyle("-fx-font-family: FontAwesome; -fx-font-size: 20.0;");
                 ratingView.getChildren().add(fullStar);
             }
             Label usernameView = new Label(Utils.getRowValueByColumnName(i, "USERNAME", reviewFetcher));
+            usernameView.setFont(Font.font("Georgia", FontWeight.BOLD, 11));
+            usernameView.setStyle("-fx-background-color: #8A8A8A; -fx-text-fill: #ffffff");
             HBox commentViewHeader = new HBox(userCategoryView, ratingView, usernameView);
+            commentViewHeader.setSpacing(5);
             Line separator = new Line();
+            separator.setStroke(Color.WHITE);
+            separator.setStartX(-120.5);
+            separator.setEndX(735);
             TextField commentView = new TextField(Utils.getRowValueByColumnName(i, "COMMENT", reviewFetcher));
+            commentView.setStyle("-fx-background-color: #000000; -fx-text-fill: #ffffff;");
+            commentView.setFont(Font.font("Georgia", FontWeight.BOLD,13));
             VBox commentViewContainer = new VBox(commentViewHeader, commentView, separator);
             commentViewSection.getChildren().add(commentViewContainer);
         }

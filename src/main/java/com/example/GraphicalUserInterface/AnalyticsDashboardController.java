@@ -11,6 +11,7 @@ import javafx.scene.chart.PieChart;
 import javafx.scene.chart.XYChart;
 import javafx.scene.control.Label;
 import javafx.scene.control.ScrollPane;
+import javafx.scene.text.Font;
 
 import java.net.URL;
 import java.text.DateFormatSymbols;
@@ -51,9 +52,13 @@ public class AnalyticsDashboardController implements Initializable {
         String thisMonthStartDate = String.format("%s-%s-01", year, month);
 
         todayRevenueField.setText(Utils.getRowValueByColumnName(2, "OVERALL_REVENUE", main.getProcessorManager().getAnalyticsProcessor().getOverallRevenue(String.format("PAYMENT_DATE = '%s'", getTodayDate())).getData()));
+        todayRevenueField.setFont(Font.font("Georgia"));
         thisMonthRevenueField.setText(Utils.getRowValueByColumnName(2, "OVERALL_REVENUE", main.getProcessorManager().getAnalyticsProcessor().getOverallRevenue(String.format("PAYMENT_DATE >= '%s' AND PAYMENT_DATE <= '%s'", thisMonthStartDate, getTodayDate())).getData()));
+        thisMonthRevenueField.setFont(Font.font("Georgia"));
         thisYearRevenueField.setText(Utils.getRowValueByColumnName(2, "OVERALL_REVENUE", main.getProcessorManager().getAnalyticsProcessor().getOverallRevenue(String.format("PAYMENT_DATE >= '%s' AND PAYMENT_DATE <= '%s'", thisYearStartDate, getTodayDate())).getData()));
+        thisYearRevenueField.setFont(Font.font("Georgia"));
         customerCountField.setText(Integer.toString(main.getProcessorManager().getAccountManagementProcessor().countData("USERS.USER_ROLE = 'admin'")));
+        customerCountField.setFont(Font.font("Georgia"));
     }
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
@@ -75,7 +80,7 @@ public class AnalyticsDashboardController implements Initializable {
                         new PieChart.Data("Items", itemRevenue/totalRevenue * 100));
         ticketItemComparisonPieChart.setData(pieChartData);
         ticketItemComparisonPieChart.setLegendVisible(true);
-        ticketItemComparisonPieChart.setStyle("-fx-font-size: 10px; -fx-font-weight: bold;");
+        ticketItemComparisonPieChart.setStyle("-fx-font-size: 10px; -fx-font-weight: bold;-fx-font-family: Georgia");
         ticketItemComparisonPieChart.setTitle("Comparison between Tickets/Items Revenue");
     }
     public void itemRevenueComparisonBarChartInit() {
@@ -86,7 +91,7 @@ public class AnalyticsDashboardController implements Initializable {
         System.out.println(itemNames.size());
         System.out.println(itemNames);
         XYChart.Series series = new XYChart.Series();
-        itemRevenueComparisonBarChart.setStyle("-fx-font-size: 10px; -fx-font-weight: bold;");
+        itemRevenueComparisonBarChart.setStyle("-fx-font-size: 10px; -fx-font-weight: bold;-fx-font-family: Georgia");
         itemRevenueComparisonBarChart.setTitle("Item revenue");
         itemRevenueComparisonBarChart.setLegendVisible(false);
         for (int i=0;i<itemNames.size();++i) {
@@ -105,7 +110,7 @@ public class AnalyticsDashboardController implements Initializable {
         for (int i=0;i<itemCategoryRevenue.size();++i){
             pieChartData.add(new PieChart.Data(itemCategoryNames.get(i), Double.parseDouble(itemCategoryRevenue.get(i))));
         }
-        itemCategoryRevenueComparisonPieChart.setStyle("-fx-font-size: 10px; -fx-font-weight: bold;");
+        itemCategoryRevenueComparisonPieChart.setStyle("-fx-font-size: 10px; -fx-font-weight: bold;-fx-font-family: Georgia");
         itemCategoryRevenueComparisonPieChart.setData(pieChartData);
         itemCategoryRevenueComparisonPieChart.setLegendVisible(true);
         itemCategoryRevenueComparisonPieChart.setTitle("Comparison between item categories revenue");
@@ -117,7 +122,7 @@ public class AnalyticsDashboardController implements Initializable {
         ArrayList<String> top10MovieRevenue = Utils.getDataValuesByColumnName(top10MoviesInfoFetcher, "REVENUE");
 
         XYChart.Series series = new XYChart.Series();
-        top10MoviesRevenueBarChart.setStyle("-fx-font-size: 10px; -fx-font-weight: bold;");
+        top10MoviesRevenueBarChart.setStyle("-fx-font-size: 10px; -fx-font-weight: bold;-fx-font-family: Georgia");
         top10MoviesRevenueBarChart.setTitle("Top 10 movies revenue");
         top10MoviesRevenueBarChart.setLegendVisible(false);
         for (int i=0;i<top10MovieTitles.size();++i) {
@@ -141,7 +146,7 @@ public class AnalyticsDashboardController implements Initializable {
        }
         movieGenreRevenuePieChart.setData(pieChartData);
         movieGenreRevenuePieChart.setLegendVisible(true);
-        movieGenreRevenuePieChart.setStyle("-fx-font-size: 10px; -fx-font-weight: bold;");
+        movieGenreRevenuePieChart.setStyle("-fx-font-size: 10px; -fx-font-weight: bold;-fx-font-family: Georgia");
         movieGenreRevenuePieChart.setTitle("Comparison between Movie Genres Revenue");
     }
     public void overallRevenueLineChartInit() {
@@ -170,7 +175,7 @@ public class AnalyticsDashboardController implements Initializable {
             overallRevenueSeries.getData().add(new XYChart.Data(new DateFormatSymbols().getMonths()[month-1], overallRevenue));
 
         }
-        overallRevenueLineChart.setStyle("-fx-font-size: 10px; -fx-font-weight: bold;");
+        overallRevenueLineChart.setStyle("-fx-font-size: 10px; -fx-font-weight: bold;-fx-font-family: Georgia");
         overallRevenueLineChart.getData().addAll(ticketRevenueSeries, itemRevenueSeries, overallRevenueSeries);
         overallRevenueLineChart.setTitle(String.format("%s revenue", year));
     }

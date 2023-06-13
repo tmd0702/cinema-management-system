@@ -15,24 +15,24 @@
 
 <ScrollPane fx:id="analyticsDashboardScrollPane" hbarPolicy="NEVER" maxWidth="790.0" xmlns="http://javafx.com/javafx/19" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.example.GraphicalUserInterface.AnalyticsDashboardController">
    <content>
-      <AnchorPane prefHeight="1750.0" prefWidth="790.0" style="-fx-background-color: #eeeeee;">
+      <AnchorPane prefHeight="1750.0" prefWidth="790.0" style="-fx-background-color: #000000;">
          <children>
-            <AnchorPane layoutX="105.0" layoutY="16.0" prefHeight="46.0" prefWidth="602.0" style="-fx-background-color: #ffffff;">
+            <AnchorPane layoutX="105.0" layoutY="16.0" prefHeight="46.0" prefWidth="602.0" style="-fx-background-color: #AAAAAA;">
                <children>
                   <Label layoutX="241.0" layoutY="9.0" prefHeight="30.0" prefWidth="145.0" text="DASHBOARD" textAlignment="CENTER" AnchorPane.bottomAnchor="10.0">
                      <font>
-                        <Font name="System Bold" size="20.0" />
+                        <Font name="Georgia Bold" size="20.0" />
                      </font>
                   </Label>
                </children>
             </AnchorPane>
             <HBox alignment="CENTER" layoutX="38.0" layoutY="83.0" prefHeight="78.0" prefWidth="712.0" spacing="10.0">
                <children>
-                  <Pane fx:id="todayRevenuePane" prefHeight="100.0" prefWidth="116.0" style="-fx-background-color: #FFFFFF; -fx-background-radius: 20px;">
+                  <Pane fx:id="todayRevenuePane" prefHeight="78.0" prefWidth="132.0" style="-fx-background-color: #FFFFFF; -fx-background-radius: 20px;">
                      <children>
-                        <Label alignment="CENTER" layoutX="15.0" layoutY="6.0" style="-fx-font-weight: bold;" text="Today Revenue">
+                        <Label alignment="CENTER" layoutX="15.0" layoutY="6.0" text="Today Revenue">
                            <font>
-                              <Font name="System Bold" size="12.0" />
+                              <Font name="Georgia Bold" size="11.0" />
                            </font>
                         </Label>
                         <Label fx:id="todayRevenueField" alignment="CENTER" contentDisplay="CENTER" layoutX="15.0" layoutY="21.0" prefHeight="36.0" prefWidth="86.0" textAlignment="CENTER" wrapText="true">
@@ -42,16 +42,16 @@
                         </Label>
                         <Label layoutX="39.0" layoutY="52.0" text="VND">
                            <font>
-                              <Font size="18.0" />
+                              <Font name="Georgia Bold" size="18.0" />
                            </font>
                         </Label>
                      </children>
                   </Pane>
-                  <Pane fx:id="thisMonthRevenuePane" prefHeight="100.0" prefWidth="116.0" style="-fx-background-color: #FFFFFF; -fx-background-radius: 20;">
+                  <Pane fx:id="thisMonthRevenuePane" prefHeight="78.0" prefWidth="124.0" style="-fx-background-color: #FFFFFF; -fx-background-radius: 20;">
                      <children>
-                        <Label layoutY="6.0" style="-fx-font-weight: bold;" text="This Month Revenue">
+                        <Label layoutX="9.0" layoutY="6.0" text="This Month Revenue">
                            <font>
-                              <Font size="12.0" />
+                              <Font name="Georgia Bold" size="10.0" />
                            </font>
                         </Label>
                         <Label fx:id="thisMonthRevenueField" alignment="CENTER" contentDisplay="CENTER" layoutX="6.0" layoutY="24.0" prefHeight="30.0" prefWidth="103.0" textAlignment="CENTER" wrapText="true">
@@ -61,16 +61,16 @@
                         </Label>
                         <Label layoutX="39.0" layoutY="51.0" text="VND">
                            <font>
-                              <Font size="18.0" />
+                              <Font name="Georgia Bold" size="18.0" />
                            </font>
                         </Label>
                      </children>
                   </Pane>
-                  <Pane fx:id="thisYearRevenuePane" prefHeight="100.0" prefWidth="116.0" style="-fx-background-color: #FFFFFF; -fx-background-radius: 20;">
+                  <Pane fx:id="thisYearRevenuePane" prefHeight="78.0" prefWidth="125.0" style="-fx-background-color: #FFFFFF; -fx-background-radius: 20;">
                      <children>
-                        <Label layoutX="7.0" layoutY="6.0" style="-fx-font-weight: bold;" text="This Year Revenue">
+                        <Label layoutX="9.0" layoutY="6.0" text="This Year Revenue">
                            <font>
-                              <Font size="12.0" />
+                              <Font name="Georgia Bold" size="11.0" />
                            </font>
                         </Label>
                         <Label fx:id="thisYearRevenueField" alignment="CENTER" contentDisplay="CENTER" layoutX="10.0" layoutY="24.0" prefHeight="30.0" prefWidth="96.0" textAlignment="CENTER" wrapText="true">
@@ -80,16 +80,16 @@
                         </Label>
                         <Label layoutX="39.0" layoutY="51.0" text="VND">
                            <font>
-                              <Font size="18.0" />
+                              <Font name="Georgia Bold" size="18.0" />
                            </font>
                         </Label>
                      </children>
                   </Pane>
-                  <Pane fx:id="customerCountPane" prefHeight="100.0" prefWidth="116.0" style="-fx-background-color: #FFFFFF; -fx-background-radius: 20;">
+                  <Pane fx:id="customerCountPane" prefHeight="78.0" prefWidth="124.0" style="-fx-background-color: #FFFFFF; -fx-background-radius: 20;">
                      <children>
-                        <Label layoutX="31.0" layoutY="6.0" style="-fx-font-weight: bold;" text="Customer">
+                        <Label layoutX="35.0" layoutY="6.0" text="Customer">
                            <font>
-                              <Font size="12.0" />
+                              <Font name="Georgia Bold" size="11.0" />
                            </font>
                         </Label>
                         <Label fx:id="customerCountField" alignment="CENTER" contentDisplay="CENTER" layoutX="10.0" layoutY="23.0" prefHeight="35.0" prefWidth="96.0" textAlignment="CENTER" wrapText="true">
@@ -152,17 +152,17 @@
             </HBox>
             <Label layoutX="314.0" layoutY="241.0" text="Overall Revenue">
                <font>
-                  <Font name="System Bold" size="24.0" />
+                  <Font name="Georgia Bold" size="24.0" />
                </font>
             </Label>
             <Label layoutX="313.0" layoutY="688.0" text="Items Revenue">
                <font>
-                  <Font name="System Bold" size="24.0" />
+                  <Font name="Georgia Bold" size="24.0" />
                </font>
             </Label>
             <Label layoutX="304.0" layoutY="1101.0" text="Movies Revenue">
                <font>
-                  <Font name="System Bold" size="24.0" />
+                  <Font name="Georgia Bold" size="24.0" />
                </font>
             </Label>
          </children>

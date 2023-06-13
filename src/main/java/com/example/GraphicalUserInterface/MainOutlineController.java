@@ -90,6 +90,7 @@ public class MainOutlineController implements Initializable {
     @FXML
     public void viewUserProfileBtnOnClick() throws Exception {
         main.changeView("user-profile-view.fxml");
+        userNavigator.setVisible(!userNavigator.isVisible());
     }
     @FXML
     public void userProfileBtnOnClick() throws Exception {
@@ -123,7 +124,7 @@ public class MainOutlineController implements Initializable {
     }
     @FXML
     public void signOutBtnOnClick() throws Exception {
-        main.setSignedInUser(new Customer());
+        main.setSignedInUser(null);
         Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
         alert.setTitle("Confirmation");
         alert.setContentText("Sign out success");

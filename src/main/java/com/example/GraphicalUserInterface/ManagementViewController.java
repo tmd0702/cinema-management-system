@@ -874,8 +874,6 @@ public class ManagementViewController implements Initializable {
                 }
             }
         }
-//        dataView.setVgap(10);
-//        dataView.setHgap(10);
         for (int i=2;i<data.size(); ++i) {
             for (int j=0;j<=columnNames.size();++j) {
                 Label label = new Label();
@@ -957,7 +955,7 @@ public class ManagementViewController implements Initializable {
     }
     public void managementTabPaneInit() {
         for (Button tabPanel : tabPanels) {
-            tabPanel.setStyle("-fx-pref-width: 110; -fx-pref-height: 48; -fx-font-weight: bold; -fx-text-fill: white; -fx-background-color: transparent;");
+            tabPanel.setStyle("-fx-pref-width: 110; -fx-pref-height: 48; -fx-font-weight: bold; -fx-text-fill: white; -fx-background-color: transparent;-fx-font-family: Georgia");
             tabPanelMouseEventListener(tabPanel);
 
             tabPane.getChildren().add(tabPanel);
@@ -1060,22 +1058,22 @@ public class ManagementViewController implements Initializable {
         tabPanel.setOnMouseEntered(new EventHandler<MouseEvent>() {
             @Override
             public void handle(MouseEvent mouseEvent) {
-                if (tabPanel != tabPanelOnClick) tabPanel.setStyle("-fx-pref-width: 110; -fx-pref-height: 48; -fx-font-weight: bold; -fx-text-fill: white; -fx-background-color: #293263;");
+                if (tabPanel != tabPanelOnClick) tabPanel.setStyle("-fx-pref-width: 110; -fx-pref-height: 48; -fx-font-weight: bold; -fx-text-fill: white; -fx-background-color: #293263;-fx-font-family: Georgia");
             }
         });
         tabPanel.setOnMouseExited(new EventHandler<MouseEvent>() {
             @Override
             public void handle(MouseEvent mouseEvent) {
-                if (tabPanel != tabPanelOnClick) tabPanel.setStyle("-fx-pref-width: 110; -fx-pref-height: 48; -fx-font-weight: bold; -fx-text-fill: white; -fx-background-color: transparent;");
+                if (tabPanel != tabPanelOnClick) tabPanel.setStyle("-fx-pref-width: 110; -fx-pref-height: 48; -fx-font-weight: bold; -fx-text-fill: white; -fx-background-color: transparent;-fx-font-family: Georgia");
             }
         });
         tabPanel.setOnMouseClicked(new EventHandler<MouseEvent>() {
             @Override
             public void handle(MouseEvent mouseEvent) {
                 if (tabPanelOnClick != null) {
-                    tabPanelOnClick.setStyle("-fx-pref-width: 110; -fx-pref-height: 48; -fx-font-weight: bold; -fx-text-fill: white; -fx-background-color: transparent;");
+                    tabPanelOnClick.setStyle("-fx-pref-width: 110; -fx-pref-height: 48; -fx-font-weight: bold; -fx-text-fill: white; -fx-background-color: transparent;-fx-font-family: Georgia");
                 }
-                tabPanel.setStyle("-fx-pref-width: 110; -fx-pref-height: 48; -fx-font-weight: bold; -fx-text-fill: white; -fx-background-color: rgba(0, 0, 255, 0.3);");
+                tabPanel.setStyle("-fx-pref-width: 110; -fx-pref-height: 48; -fx-font-weight: bold; -fx-text-fill: white; -fx-background-color: rgba(0, 0, 255, 0.3);-fx-font-family: Georgia");
                 managementContainerView.getChildren().remove(subTabPanelHBox);
                 subTabPanelHBox = new HBox();
                 subTabPanelHBox.setStyle("-fx-background-color: #dddddd;-fx-pref-height: 60px;");

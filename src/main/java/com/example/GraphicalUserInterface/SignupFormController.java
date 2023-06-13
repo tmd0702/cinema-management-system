@@ -4,7 +4,9 @@ import Utils.StatusCode;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.control.*;
+import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.AnchorPane;
+import com.example.GraphicalUserInterface.MainOutlineController;
 
 import java.time.format.DateTimeFormatter;
 import java.util.*;
@@ -27,19 +29,35 @@ public class SignupFormController {
         signUpInfo.put("lastName", lastNameField.getText());
         signUpInfo.put("email", emailField.getText());
         signUpInfo.put("phone", phoneField.getText());
-        signUpInfo.put("dateOfBirth", DateTimeFormatter.ofPattern("dd-MM-yyyy").format(dateOfBirthField.getValue()));
+
         signUpInfo.put("address", addressField.getText());
         signUpInfo.put("username", usernameField.getText());
         signUpInfo.put("password", passwordField.getText());
+
+        Set key = signUpInfo.keySet();
+        for(Object s : key){
+            if(signUpInfo.get(s) == null ||dateOfBirthField.getValue() == null || gender.getSelectedToggle() == null) {
+                Dialog<String> dialog = new Dialog<String>();
+                //Setting the title
+                dialog.setTitle("Dialog");
+                ButtonType type = new ButtonType("Ok", ButtonBar.ButtonData.OK_DONE);
+                dialog.setContentText("Have not been enough information for signing up");
+                dialog.getDialogPane().getButtonTypes().add(type);
+                dialog.showAndWait();
+                return;
+            }
+
+        }
         signUpInfo.put("gender", ((RadioButton)gender.getSelectedToggle()).getText().substring(0, 1));
+        signUpInfo.put("dateOfBirth", DateTimeFormatter.ofPattern("dd-MM-yyyy").format(dateOfBirthField.getValue()));
         Response response = main.getProcessorManager().getAccountManagementProcessor().handleSignupAction(signUpInfo);
         StatusCode signupStatus = response.getStatusCode();
         if (signupStatus == StatusCode.OK) {
             Dialog<String> dialog = new Dialog<String>();
             //Setting the title
-            dialog.setTitle("Dialog");
+            dialog.setTitle("ERROR");
             ButtonType type = new ButtonType("Ok", ButtonBar.ButtonData.OK_DONE);
-            dialog.setContentText("Sign up done!");
+            dialog.setContentText("Sign up success");
             dialog.getDialogPane().getButtonTypes().add(type);
             dialog.showAndWait();
             disableForm();
@@ -60,5 +78,11 @@ public class SignupFormController {
     public void onSignInBtnClick() throws Exception {
         ((AnchorPane)signupFormRoot.getParent()).getChildren().add(FXMLLoader.load(getClass().getResource("login-form.fxml")));
         ((AnchorPane)signupFormRoot.getParent()).getChildren().remove(signupFormRoot);
+    }
+    @FXML
+    public void onXmarkBtnClick(MouseEvent event){
+        main.getNodeById("#mainOutlineContentView").setDisable(false);
+        ((AnchorPane)signupFormRoot.getParent()).getChildren().remove(signupFormRoot);
+
     }
 }

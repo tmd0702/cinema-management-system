@@ -88,6 +88,6 @@ public class ChangePasswordFormController implements Initializable {
     }
     @FXML
     public void closeBtnOnClick() {
-
+        profileViewContainer.getChildren().remove(changePasswordFormContainer);
     }
 }

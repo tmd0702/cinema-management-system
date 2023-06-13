@@ -24,137 +24,248 @@
    <children>
       <AnchorPane fx:id="pane4" prefHeight="600.0" prefWidth="900.0" style="-fx-background-color: #121212;">
          <children>
-            <Label layoutX="604.0" layoutY="38.0" text="ORDER" textFill="WHITE">
+            <AnchorPane layoutX="546.0" layoutY="35.0" prefHeight="39.0" prefWidth="217.0" style="-fx-background-color: #AAAAAA;" />
+            <Label layoutX="604.0" layoutY="38.0" text="ORDER" textFill="#021cff">
                <font>
-                  <Font size="25.0" />
+                  <Font name="Georgia Bold" size="25.0" />
                </font>
             </Label>
             <ImageView fx:id="image4" fitHeight="560.0" fitWidth="356.0" pickOnBounds="true" preserveRatio="true" />
             <AnchorPane layoutX="371.0" layoutY="86.0" maxHeight="513.0" maxWidth="526.0" minHeight="394.0" minWidth="266.0" prefHeight="513.0" prefWidth="526.0" style="-fx-background-color: #121212;">
                <children>
-                  <Label layoutX="179.0" layoutY="481.0" prefHeight="16.0" prefWidth="105.0" text="Time left to purchase: " textFill="#eeeeee">
+                  <Label layoutX="157.0" layoutY="481.0" prefHeight="16.0" prefWidth="127.0" text="Time left to purchase: " textFill="#eeeeee">
                      <font>
-                        <Font size="11.0" />
+                        <Font name="Georgia Bold" size="11.0" />
                      </font>
                   </Label>
                   <Line endX="368.971435546875" endY="-1.52587890625E-5" layoutX="132.0" layoutY="62.0" startX="-100.0" stroke="#f2f2f2" />
-                  <Label layoutX="32.0" layoutY="81.0" text="Theater:" textFill="#fcfcfc" />
-                  <Label layoutX="279.0" layoutY="120.0" text="Seats:" textFill="#fcfcfc" wrapText="true" />
-                  <Label layoutX="31.0" layoutY="120.0" text="Showtime:" textFill="#fcfcfc" />
-                  <Label layoutX="276.0" layoutY="81.0" text="Screen:" textFill="#fcfcfc" />
+                  <Label layoutX="32.0" layoutY="81.0" text="Theater:" textFill="#fcfcfc">
+                     <font>
+                        <Font name="Georgia" size="13.0" />
+                     </font></Label>
+                  <Label layoutX="279.0" layoutY="120.0" text="Seats:" textFill="#fcfcfc" wrapText="true">
+                     <font>
+                        <Font name="Georgia" size="13.0" />
+                     </font></Label>
+                  <Label layoutX="31.0" layoutY="120.0" text="Showtime:" textFill="#fcfcfc">
+                     <font>
+                        <Font name="Georgia" size="13.0" />
+                     </font></Label>
+                  <Label layoutX="276.0" layoutY="81.0" text="Screen:" textFill="#fcfcfc">
+                     <font>
+                        <Font name="Georgia" size="13.0" />
+                     </font></Label>
                   <Line endX="362.83099365234375" layoutX="137.0" layoutY="216.0" startX="-100.0" stroke="#f2f2f2" />
-                  <Label layoutX="39.0" layoutY="185.0" text="Ticket price:" textFill="#fcfcfc" />
+                  <Label layoutX="39.0" layoutY="185.0" text="Ticket price:" textFill="#fcfcfc">
+                     <font>
+                        <Font name="Georgia" size="13.0" />
+                     </font></Label>
                   <Label layoutX="279.0" layoutY="183.0" text="Combo:" textFill="#fcfcfc" />
                   <Line endX="356.971435546875" layoutX="140.0" layoutY="162.0" startX="-100.0" stroke="#f2f2f2" />
-                  <Label layoutX="41.0" layoutY="236.0" text="Total:" textFill="#fcfcfc" />
+                  <Label layoutX="41.0" layoutY="236.0" text="Total:" textFill="#fcfcfc">
+                     <font>
+                        <Font name="Georgia Bold" size="13.0" />
+                     </font></Label>
                   <Label fx:id="nameMovieBookingFinal" layoutX="47.0" layoutY="3.0" maxWidth="448.0" prefHeight="49.0" prefWidth="448.0" text="Label" textFill="WHITE" wrapText="true">
                      <font>
-                        <Font name="System Bold" size="17.0" />
+                        <Font name="Georgia Bold Italic" size="17.0" />
                      </font>
                   </Label>
-                  <Label fx:id="nameCinemaFinal" layoutX="97.0" layoutY="81.0" maxWidth="134.0" prefHeight="17.0" prefWidth="134.0" text="Theater" textFill="#fcfcfc" />
-                  <Label fx:id="showTimeFinal" layoutX="108.0" layoutY="120.0" text="time" textFill="#fcfcfc" />
-                  <Label fx:id="screenNameFinal" layoutX="336.0" layoutY="81.0" maxWidth="134.0" prefHeight="17.0" prefWidth="134.0" text="ScreenID" textFill="#fcfcfc" />
-                  <Label fx:id="seatIDFinal" layoutX="328.0" layoutY="111.0" maxWidth="176.0" prefHeight="36.0" prefWidth="176.0" text="SeatsID" textFill="#fcfcfc" wrapText="true" />
-                  <Label fx:id="priceFinal" layoutX="125.0" layoutY="184.0" maxWidth="134.0" prefHeight="17.0" prefWidth="134.0" text="Price" textFill="#fcfcfc" />
-                  <Label fx:id="comboFinal" layoutX="340.0" layoutY="184.0" maxWidth="134.0" prefHeight="17.0" prefWidth="134.0" text="Comboi" textFill="#fcfcfc" />
-                  <Label fx:id="totalFinal" layoutX="92.0" layoutY="237.0" maxWidth="134.0" prefHeight="17.0" prefWidth="134.0" text="total" textFill="#fcfcfc" />
+                  <Label fx:id="nameCinemaFinal" layoutX="97.0" layoutY="81.0" maxWidth="134.0" prefHeight="17.0" prefWidth="134.0" text="Theater" textFill="#fcfcfc">
+                     <font>
+                        <Font name="Georgia" size="13.0" />
+                     </font></Label>
+                  <Label fx:id="showTimeFinal" layoutX="108.0" layoutY="120.0" text="time" textFill="#fcfcfc">
+                     <font>
+                        <Font name="Georgia" size="13.0" />
+                     </font></Label>
+                  <Label fx:id="screenNameFinal" layoutX="336.0" layoutY="81.0" maxWidth="134.0" prefHeight="17.0" prefWidth="134.0" text="ScreenID" textFill="#fcfcfc">
+                     <font>
+                        <Font name="Georgia" size="13.0" />
+                     </font></Label>
+                  <Label fx:id="seatIDFinal" layoutX="328.0" layoutY="111.0" maxWidth="176.0" prefHeight="36.0" prefWidth="176.0" text="SeatsID" textFill="#fcfcfc" wrapText="true">
+                     <font>
+                        <Font name="Georgia" size="13.0" />
+                     </font></Label>
+                  <Label fx:id="priceFinal" layoutX="125.0" layoutY="184.0" maxWidth="134.0" prefHeight="17.0" prefWidth="134.0" text="Price" textFill="#fcfcfc">
+                     <font>
+                        <Font name="Georgia" size="13.0" />
+                     </font></Label>
+                  <Label fx:id="comboFinal" layoutX="340.0" layoutY="184.0" maxWidth="134.0" prefHeight="17.0" prefWidth="134.0" text="Comboi" textFill="#fcfcfc">
+                     <font>
+                        <Font name="Georgia" size="13.0" />
+                     </font></Label>
+                  <Label fx:id="totalFinal" layoutX="92.0" layoutY="237.0" maxWidth="134.0" prefHeight="17.0" prefWidth="134.0" text="total" textFill="#fcfcfc">
+                     <font>
+                        <Font name="Georgia Bold" size="13.0" />
+                     </font></Label>
                   <Label fx:id="countdownLabel1" layoutX="290.0" layoutY="481.0" prefHeight="16.0" prefWidth="57.0" text="clock" textFill="#eeeeee">
                      <font>
-                        <Font size="11.0" />
+                        <Font name="Georgia Bold" size="11.0" />
                      </font>
                   </Label>
                   <Button layoutX="195.0" layoutY="436.0" mnemonicParsing="false" onAction="#onPurchaseButtonClicked" prefHeight="35.0" prefWidth="105.0" style="-fx-background-color: #8D090D;" text="Pucharse" textFill="WHITE">
                      <font>
-                        <Font size="18.0" />
+                        <Font name="Georgia Bold" size="17.0" />
                      </font>
                   </Button>
                   <Label layoutX="42.0" layoutY="270.0" prefHeight="56.0" prefWidth="117.0" text="Please enter promotion code" textFill="WHITE" wrapText="true">
                      <font>
-                        <Font name="System Bold" size="15.0" />
+                        <Font name="Georgia Italic" size="15.0" />
                      </font>
                   </Label>
-                  <TextField fx:id="promotionField" layoutX="167.0" layoutY="284.0" />
-                  <Label layoutX="283.0" layoutY="237.0" text="Discount:" textFill="#fcfcfc" />
-                  <Label fx:id="discount" layoutX="348.0" layoutY="237.0" maxWidth="134.0" prefHeight="17.0" prefWidth="134.0" text="Price" textFill="#fcfcfc" />
-                  <Button layoutX="348.0" layoutY="280.0" mnemonicParsing="false" onMouseClicked="#applyPromotionOnClick" prefHeight="29.0" prefWidth="75.0" style="-fx-background-color: #8D090D;" text="Apply" textFill="WHITE">
+                  <TextField fx:id="promotionField" layoutX="167.0" layoutY="284.0">
                      <font>
-                        <Font size="18.0" />
+                        <Font name="Georgia" size="13.0" />
+                     </font></TextField>
+                  <Label layoutX="283.0" layoutY="237.0" text="Discount:" textFill="#fcfcfc">
+                     <font>
+                        <Font name="Georgia" size="13.0" />
+                     </font></Label>
+                  <Label fx:id="discount" layoutX="348.0" layoutY="237.0" maxWidth="134.0" prefHeight="17.0" prefWidth="134.0" text="Price" textFill="#fcfcfc">
+                     <font>
+                        <Font name="Georgia" size="13.0" />
+                     </font></Label>
+                  <Button layoutX="348.0" layoutY="280.0" mnemonicParsing="false" onMouseClicked="#applyPromotionOnClick" prefHeight="26.0" prefWidth="85.0" style="-fx-background-color: #8D090D;" text="Apply" textFill="WHITE">
+                     <font>
+                        <Font name="Georgia Bold" size="18.0" />
                      </font>
                   </Button>
                   <VBox fx:id="paymentMethodVbox" layoutX="25.0" layoutY="330.0" prefHeight="89.0" prefWidth="472.0" />
                </children>
             </AnchorPane>
-            <Button layoutX="70.0" layoutY="550.0" mnemonicParsing="false" onAction="#handleSwitchToPageBefore" onMouseClicked="#onButtonClicked" prefHeight="29.0" prefWidth="75.0" style="-fx-background-radius: 19; -fx-background-color: #3a94b2;" text="Back" textFill="WHITE" />
+            <Button layoutX="70.0" layoutY="550.0" mnemonicParsing="false" onAction="#handleSwitchToPageBefore" onMouseClicked="#onButtonClicked" prefHeight="29.0" prefWidth="75.0" style="-fx-background-radius: 19; -fx-background-color: #3a94b2;" text="Back" textFill="WHITE">
+               <font>
+                  <Font name="Georgia Bold Italic" size="13.0" />
+               </font></Button>
          </children>
       </AnchorPane>
       <AnchorPane fx:id="pane3" prefHeight="600.0" prefWidth="900.0" style="-fx-background-color: #121212;">
          <children>
+            <AnchorPane layoutX="507.0" layoutY="38.0" prefHeight="49.0" prefWidth="277.0" style="-fx-background-color: #AAAAAA;" />
             <ImageView fx:id="image3" fitHeight="560.0" fitWidth="356.0" pickOnBounds="true" preserveRatio="true" />
-            <Button layoutX="822.0" layoutY="555.0" mnemonicParsing="false" onAction="#handleSwitchPageAfter" onMouseClicked="#onButtonClicked" prefHeight="29.0" prefWidth="75.0" style="-fx-background-radius: 19; -fx-background-color: #760404;" text="Next" textFill="WHITE" />
-            <Label layoutX="573.0" layoutY="51.0" text="BUY ITEMS" textFill="WHITE">
+            <Button layoutX="822.0" layoutY="555.0" mnemonicParsing="false" onAction="#handleSwitchPageAfter" onMouseClicked="#onButtonClicked" prefHeight="29.0" prefWidth="75.0" style="-fx-background-radius: 19; -fx-background-color: #760404;" text="Next" textFill="WHITE">
                <font>
-                  <Font name="System Bold" size="32.0" />
+                  <Font name="Georgia Bold Italic" size="13.0" />
+               </font></Button>
+            <Label layoutX="573.0" layoutY="51.0" text="BUY ITEMS" textFill="#021cff">
+               <font>
+                  <Font name="Georgia Bold" size="26.0" />
                </font>
             </Label>
-            <Line endX="215.3753662109375" endY="-1.52587890625E-5" layoutX="663.0" layoutY="107.0" startX="-204.70748901367188" startY="-1.52587890625E-5" stroke="WHITE" />
+            <Line endX="215.3753662109375" endY="-1.52587890625E-5" layoutX="663.0" layoutY="107.0" startX="-280.5" stroke="WHITE" />
             <ScrollPane fx:id="itemControllerScrollPane" hbarPolicy="NEVER" layoutX="458.0" layoutY="134.0" prefHeight="394.0" prefWidth="421.0" style="-fx-background-color: transparent;">
                <content>
                   <VBox fx:id="itemControllerContainer" prefHeight="394.0" prefWidth="406.0" style="-fx-background-color: #121212; -fx-border-color: transparent;" />
                </content>
             </ScrollPane>
-            <Button layoutX="70.0" layoutY="550.0" mnemonicParsing="false" onAction="#handleSwitchToPageBefore" onMouseClicked="#onButtonClicked" prefHeight="29.0" prefWidth="75.0" style="-fx-background-radius: 19; -fx-background-color: #3a94b2;" text="Back" textFill="WHITE" />
+            <Button layoutX="70.0" layoutY="550.0" mnemonicParsing="false" onAction="#handleSwitchToPageBefore" onMouseClicked="#onButtonClicked" prefHeight="29.0" prefWidth="75.0" style="-fx-background-radius: 19; -fx-background-color: #3a94b2;" text="Back" textFill="WHITE">
+               <font>
+                  <Font name="Georgia Bold Italic" size="13.0" />
+               </font></Button>
          </children>
       </AnchorPane>
       <AnchorPane fx:id="pane2" maxHeight="600.0" maxWidth="900.0" prefHeight="600.0" prefWidth="900.0" style="-fx-background-color: #121212;">
          <children>
+            <AnchorPane layoutX="460.0" layoutY="62.0" prefHeight="36.0" prefWidth="292.0" style="-fx-background-color: #AAAAAA;" />
             <ImageView fx:id="image2" fitHeight="560.0" fitWidth="356.0" pickOnBounds="true" preserveRatio="true" />
             <AnchorPane fx:id="ticketInfor" layoutX="47.0" layoutY="72.0" maxHeight="394.0" maxWidth="266.0" minHeight="394.0" minWidth="266.0" prefHeight="394.0" prefWidth="266.0" style="-fx-background-color: #121212;">
                <children>
-                  <Label layoutX="73.0" layoutY="32.0" text="TICKET INFORMATION" textFill="#d45353">
+                  <Label layoutX="61.0" layoutY="32.0" text="TICKET INFORMATION" textFill="#d45353">
                      <font>
-                        <Font name="System Bold" size="13.0" />
+                        <Font name="Georgia Bold" size="13.0" />
                      </font>
                   </Label>
-                  <Label layoutX="77.0" layoutY="366.0" prefHeight="16.0" prefWidth="105.0" text="Time left to purchase: " textFill="#eeeeee">
+                  <Label layoutX="65.0" layoutY="366.0" prefHeight="16.0" prefWidth="117.0" text="Time left to purchase: " textFill="#eeeeee">
                      <font>
-                        <Font size="11.0" />
+                        <Font name="Georgia" size="11.0" />
                      </font>
                   </Label>
                   <Line endX="100.0" layoutX="132.0" layoutY="113.0" startX="-100.0" stroke="#f2f2f2" />
-                  <Label layoutX="35.0" layoutY="128.0" text="Theater:" textFill="#fcfcfc" />
-                  <Label layoutX="46.0" layoutY="209.0" text="Seats:" textFill="#fcfcfc" wrapText="true" />
-                  <Label layoutX="23.0" layoutY="154.0" text="Showtime:" textFill="#fcfcfc" />
-                  <Label layoutX="39.0" layoutY="179.0" text="Screen:" textFill="#fcfcfc" />
+                  <Label layoutX="35.0" layoutY="128.0" text="Theater:" textFill="#fcfcfc">
+                     <font>
+                        <Font name="Georgia" size="13.0" />
+                     </font></Label>
                   <Line endX="100.0" layoutX="140.0" layoutY="250.0" startX="-100.0" stroke="#f2f2f2" />
-                  <Label layoutX="17.0" layoutY="261.0" text="Ticket price:" textFill="#fcfcfc" />
-                  <Label layoutX="40.0" layoutY="286.0" text="Combo:" textFill="#fcfcfc" />
+                  <Label layoutX="17.0" layoutY="261.0" text="Ticket price:" textFill="#fcfcfc">
+                     <font>
+                        <Font name="Georgia" size="13.0" />
+                     </font></Label>
+                  <Label layoutX="40.0" layoutY="286.0" text="Combo:" textFill="#fcfcfc">
+                     <font>
+                        <Font name="Georgia" size="13.0" />
+                     </font></Label>
                   <Line endX="100.0" layoutX="136.0" layoutY="316.0" startX="-100.0" stroke="#f2f2f2" />
-                  <Label layoutX="49.0" layoutY="334.0" text="Total:" textFill="#fcfcfc" />
+                  <Label layoutX="49.0" layoutY="334.0" text="Total:" textFill="#fcfcfc">
+                     <font>
+                        <Font name="Georgia" size="13.0" />
+                     </font></Label>
                   <Label fx:id="nameMovieBooking" layoutX="42.0" layoutY="32.0" maxWidth="191.0" prefHeight="90.0" prefWidth="191.0" text="Label" textFill="WHITE" wrapText="true">
                      <font>
-                        <Font name="System Bold" size="17.0" />
+                        <Font name="Georgia Bold" size="17.0" />
                      </font>
                   </Label>
-                  <Label fx:id="nameCinema" layoutX="100.0" layoutY="128.0" maxWidth="134.0" prefHeight="17.0" prefWidth="134.0" text="Theater" textFill="#fcfcfc" />
-                  <Label fx:id="showTime" layoutX="100.0" layoutY="154.0" text="time" textFill="#fcfcfc" />
-                  <Label fx:id="screenName" layoutX="99.0" layoutY="179.0" maxWidth="134.0" prefHeight="17.0" prefWidth="134.0" text="ScreenID" textFill="#fcfcfc" />
-                  <Label fx:id="seatID" layoutX="95.0" layoutY="200.0" maxWidth="147.0" prefHeight="36.0" prefWidth="145.0" text="SeatsID" textFill="#fcfcfc" wrapText="true" />
-                  <Label fx:id="price" layoutX="103.0" layoutY="260.0" maxWidth="134.0" prefHeight="17.0" prefWidth="134.0" text="Price" textFill="#fcfcfc" />
-                  <Label fx:id="combo" layoutX="101.0" layoutY="287.0" maxWidth="134.0" prefHeight="17.0" prefWidth="134.0" text="Comboi" textFill="#fcfcfc" />
-                  <Label fx:id="total" layoutX="100.0" layoutY="335.0" maxWidth="134.0" prefHeight="17.0" prefWidth="134.0" text="total" textFill="#fcfcfc" />
-                  <Label fx:id="showDate" layoutX="137.0" layoutY="154.0" text="date" textFill="#fcfcfc" />
-                  <Label fx:id="countdownLabel" layoutX="188.0" layoutY="366.0" prefHeight="16.0" prefWidth="57.0" text="time" textFill="#eeeeee">
+                  <Label fx:id="nameCinema" layoutX="100.0" layoutY="128.0" maxWidth="134.0" prefHeight="17.0" prefWidth="134.0" text="Theater" textFill="WHITE">
                      <font>
-                        <Font size="11.0" />
+                        <Font name="Georgia" size="13.0" />
+                     </font></Label>
+                  <Label fx:id="showTime" layoutX="100.0" layoutY="154.0" text="time" textFill="WHITE">
+                     <font>
+                        <Font name="Georgia" size="13.0" />
+                     </font></Label>
+                  <Label fx:id="screenName" layoutX="99.0" layoutY="179.0" maxWidth="134.0" prefHeight="17.0" prefWidth="134.0" text="ScreenID" textFill="WHITE">
+                     <font>
+                        <Font name="Georgia" size="13.0" />
+                     </font></Label>
+                  <Label fx:id="seatID" layoutX="95.0" layoutY="200.0" maxWidth="147.0" prefHeight="36.0" prefWidth="145.0" text="SeatsID" textFill="WHITE" wrapText="true">
+                     <font>
+                        <Font name="Georgia" size="13.0" />
+                     </font></Label>
+                  <Label fx:id="price" layoutX="103.0" layoutY="260.0" maxWidth="134.0" prefHeight="17.0" prefWidth="134.0" text="Price" textFill="#fcfcfc">
+                     <font>
+                        <Font name="Georgia" size="13.0" />
+                     </font></Label>
+                  <Label fx:id="combo" layoutX="101.0" layoutY="287.0" maxWidth="134.0" prefHeight="17.0" prefWidth="134.0" text="Comboi" textFill="#fcfcfc">
+                     <font>
+                        <Font name="Georgia" size="13.0" />
+                     </font></Label>
+                  <Label fx:id="total" layoutX="100.0" layoutY="335.0" maxWidth="134.0" prefHeight="17.0" prefWidth="134.0" text="total" textFill="#fcfcfc">
+                     <font>
+                        <Font name="Georgia" size="13.0" />
+                     </font></Label>
+                  <Label fx:id="showDate" layoutX="137.0" layoutY="154.0" text="date" textFill="WHITE">
+                     <font>
+                        <Font name="Georgia" size="13.0" />
+                     </font></Label>
+                  <Label fx:id="countdownLabel" layoutX="188.0" layoutY="366.0" prefHeight="16.0" prefWidth="57.0" text="time" textFill="WHITE">
+                     <font>
+                        <Font name="Georgia" size="11.0" />
+                     </font>
+                  </Label>
+                  <Label layoutX="21.0" layoutY="155.0" text="Showtime:" textFill="#fcfcfc">
+                     <font>
+                        <Font name="Georgia" size="13.0" />
+                     </font>
+                  </Label>
+                  <Label layoutX="42.0" layoutY="180.0" text="Room:" textFill="#fcfcfc">
+                     <font>
+                        <Font name="Georgia" size="13.0" />
+                     </font>
+                  </Label>
+                  <Label layoutX="47.0" layoutY="211.0" text="Seats:" textFill="#fcfcfc">
+                     <font>
+                        <Font name="Georgia" size="13.0" />
                      </font>
                   </Label>
                </children>
             </AnchorPane>
-            <Button layoutX="822.0" layoutY="555.0" mnemonicParsing="false" onAction="#handleSwitchPageAfter" onMouseClicked="#onButtonClicked" prefHeight="29.0" prefWidth="75.0" style="-fx-background-radius: 19; -fx-background-color: #760404;" text="Next" textFill="WHITE" />
-            <Label layoutX="546.0" layoutY="60.0" prefHeight="39.0" prefWidth="86.0" text="SCREEN" textFill="WHITE">
+            <Button layoutX="822.0" layoutY="555.0" mnemonicParsing="false" onAction="#handleSwitchPageAfter" onMouseClicked="#onButtonClicked" prefHeight="29.0" prefWidth="75.0" style="-fx-background-radius: 19; -fx-background-color: #760404;" text="Next" textFill="WHITE">
                <font>
-                  <Font size="18.0" />
+                  <Font name="Georgia Bold Italic" size="13.0" />
+               </font></Button>
+            <Label layoutX="515.0" layoutY="60.0" prefHeight="39.0" prefWidth="191.0" text="SCREENING ROOM" textFill="#021cff">
+               <font>
+                  <Font name="Georgia Bold" size="18.0" />
                </font>
             </Label>
             <Line endX="213.95904541015625" endY="7.62939453125E-6" layoutX="626.0" layoutY="113.0" startX="-211.13540649414062" startY="7.62939453125E-6" stroke="WHITE" />
@@ -197,10 +308,19 @@
             <Label layoutX="642.0" layoutY="546.0" prefHeight="26.0" prefWidth="18.0" style="-fx-background-color: #A4A4A4; -fx-background-radius: 3;" />
             <Label layoutX="556.0" layoutY="545.0" prefHeight="26.0" prefWidth="18.0" style="-fx-background-color: #393939; -fx-background-radius: 3;" textFill="#a4a4a4" />
             <Label layoutX="448.0" layoutY="545.0" prefHeight="26.0" prefWidth="18.0" style="-fx-background-color: #8D090D; -fx-background-radius: 3;" textFill="#a4a4a4" />
-            <Label layoutX="668.0" layoutY="547.0" text="Available" textFill="WHITE" />
-            <Label layoutX="578.0" layoutY="547.0" text="Booking" textFill="WHITE" />
-            <Label layoutX="478.0" layoutY="550.0" text="Selected" textFill="WHITE" />
-            <GridPane fx:id="SeatGrid" layoutX="385.0" layoutY="234.0" prefHeight="298.0" prefWidth="507.0">
+            <Label layoutX="668.0" layoutY="547.0" text="Available" textFill="WHITE">
+               <font>
+                  <Font name="Georgia Bold" size="13.0" />
+               </font></Label>
+            <Label layoutX="578.0" layoutY="547.0" text="Booking" textFill="WHITE">
+               <font>
+                  <Font name="Georgia Bold" size="13.0" />
+               </font></Label>
+            <Label layoutX="478.0" layoutY="550.0" text="Selected" textFill="WHITE">
+               <font>
+                  <Font name="Georgia Bold" size="13.0" />
+               </font></Label>
+            <GridPane fx:id="SeatGrid" layoutX="392.0" layoutY="234.0" prefHeight="298.0" prefWidth="507.0">
                <rowConstraints>
                   <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
                   <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
@@ -211,15 +331,21 @@
                   <ColumnConstraints />
                </columnConstraints>
             </GridPane>
-            <Button layoutX="70.0" layoutY="550.0" mnemonicParsing="false" onAction="#handleSwitchToPageBefore" onMouseClicked="#onButtonClicked" prefHeight="29.0" prefWidth="75.0" style="-fx-background-radius: 19; -fx-background-color: #3a94b2;" text="Back" textFill="WHITE" />
+            <Button layoutX="70.0" layoutY="550.0" mnemonicParsing="false" onAction="#handleSwitchToPageBefore" onMouseClicked="#onButtonClicked" prefHeight="29.0" prefWidth="75.0" style="-fx-background-radius: 19; -fx-background-color: #3a94b2;" text="Back" textFill="WHITE">
+               <font>
+                  <Font name="Georgia Bold Italic" size="13.0" />
+               </font></Button>
          </children>
       </AnchorPane>
       <AnchorPane fx:id="pane1" maxHeight="600.0" maxWidth="900.0" prefHeight="600.0" prefWidth="900.0" style="-fx-background-color: #121212;">
          <children>
+            <AnchorPane layoutX="497.0" layoutY="389.0" prefHeight="26.0" prefWidth="217.0" style="-fx-background-color: #AAAAAA;" />
+            <AnchorPane layoutX="490.0" layoutY="200.0" prefHeight="26.0" prefWidth="217.0" style="-fx-background-color: #AAAAAA;" />
             <ImageView fx:id="image1" fitHeight="560.0" fitWidth="356.0" pickOnBounds="true" preserveRatio="true" />
-            <Label layoutX="560.0" layoutY="24.0" prefHeight="30.0" prefWidth="60.0" text="Date" textFill="WHITE">
+            <AnchorPane layoutX="480.0" layoutY="32.0" prefHeight="26.0" prefWidth="217.0" style="-fx-background-color: #AAAAAA;" />
+            <Label layoutX="560.0" layoutY="29.0" prefHeight="25.0" prefWidth="60.0" text="Date" textFill="#bc2f2f">
                <font>
-                  <Font size="25.0" />
+                  <Font name="Georgia Bold" size="25.0" />
                </font>
             </Label>
             <AnchorPane fx:id="AnchorDateButton" layoutX="345.0" layoutY="78.0" prefHeight="72.0" prefWidth="548.0">
@@ -261,18 +387,22 @@
                   </Button>
                </children>
             </AnchorPane>
-            <Label layoutX="540.0" layoutY="198.0" prefHeight="30.0" prefWidth="98.0" text="Cinemas" textFill="WHITE">
+            <Label layoutX="540.0" layoutY="198.0" prefHeight="30.0" prefWidth="117.0" text="Cinemas" textFill="#bc2f2f">
                <font>
-                  <Font size="25.0" />
+                  <Font name="Georgia Bold" size="25.0" />
                </font>
             </Label>
             <Line endX="637.038330078125" endY="41.425697326660156" layoutX="246.0" layoutY="33.0" startX="117.99996948242188" startY="41.42571258544922" stroke="WHITE" />
-            <Label layoutX="572.0" layoutY="387.0" prefHeight="30.0" prefWidth="60.0" text="Time" textFill="WHITE">
+            <Label layoutX="572.0" layoutY="387.0" prefHeight="30.0" prefWidth="67.0" text="Time" textFill="#bc2f2f">
                <font>
-                  <Font size="25.0" />
+                  <Font name="Georgia Bold" size="25.0" />
                </font>
             </Label>
-            <Button layoutX="782.0" layoutY="564.0" mnemonicParsing="false" onAction="#handleSwitchPageAfter" onMouseClicked="#onButtonClicked" prefHeight="29.0" prefWidth="75.0" style="-fx-background-radius: 19; -fx-background-color: #760404;" text="Next" textFill="WHITE" />
+            <Button layoutX="782.0" layoutY="564.0" mnemonicParsing="false" onAction="#handleSwitchPageAfter" onMouseClicked="#onButtonClicked" prefHeight="29.0" prefWidth="75.0" style="-fx-background-radius: 19; -fx-background-color: #760404;" text="Next" textFill="WHITE">
+               <font>
+                  <Font name="Georgia Bold Italic" size="13.0" />
+               </font>
+            </Button>
             <Line endX="819.6775512695312" endY="262.03076171875" layoutX="73.0" layoutY="-79.0" startX="290.9999694824219" startY="262.03076171875" stroke="WHITE" />
             <Line endX="1244.0" endY="484.7898254394531" layoutX="-348.0" layoutY="-109.0" startX="712.0" startY="484.7898254394531" stroke="WHITE" />
             <AnchorPane layoutX="359.0" layoutY="432.0" prefHeight="128.0" prefWidth="540.0">
@@ -284,7 +414,11 @@
                   </ScrollPane>
                   <FontAwesomeIconView fx:id="timeSlotScrollLeftBtn" fill="#00bbff" glyphName="ANGLE_DOUBLE_LEFT" layoutX="60.0" layoutY="109.0" onMouseClicked="#scrollLeftBtnOnClick" opacity="0.3" size="25" text="" visible="false" wrappingWidth="18.0" />
                   <FontAwesomeIconView fx:id="timeSlotScrollRightBtn" fill="#00bbff" glyphName="ANGLE_DOUBLE_RIGHT" layoutX="470.0" layoutY="109.0" onMouseClicked="#scrollRightBtnOnClick" opacity="0.3" size="25" text="" visible="false" wrappingWidth="17.0" />
-                  <Label fx:id="announceTime" text="Please choose one cinema you would you like to watch in listed above" textFill="WHITE" />
+                  <Label fx:id="announceTime" text="Please choose one cinema you would you like to watch in listed above" textFill="WHITE">
+                     <font>
+                        <Font name="Georgia Bold Italic" size="13.0" />
+                     </font>
+                  </Label>
                </children>
             </AnchorPane>
             <AnchorPane layoutX="359.0" layoutY="238.0" prefHeight="112.0" prefWidth="540.0">
@@ -296,7 +430,11 @@
                   </ScrollPane>
                   <FontAwesomeIconView fx:id="cineScrollLeftBtn" fill="#00bbff" glyphName="ANGLE_DOUBLE_LEFT" layoutX="60.0" layoutY="107.0" onMouseClicked="#scrollLeftBtnOnClick" opacity="0.3" size="25" text="" visible="false" wrappingWidth="17.0" />
                   <FontAwesomeIconView fx:id="cineScrollRightBtn" fill="#00bbff" glyphName="ANGLE_DOUBLE_RIGHT" layoutX="470.0" layoutY="107.0" onMouseClicked="#scrollRightBtnOnClick" opacity="0.3" size="25" visible="false" />
-                  <Label fx:id="announceCinema" text="Please choose one date the movie is being showed" textFill="WHITE" />
+                  <Label fx:id="announceCinema" text="Please choose one date the movie is being showed" textFill="WHITE">
+                     <font>
+                        <Font name="Georgia Bold Italic" size="13.0" />
+                     </font>
+                  </Label>
                </children>
             </AnchorPane>
          </children>

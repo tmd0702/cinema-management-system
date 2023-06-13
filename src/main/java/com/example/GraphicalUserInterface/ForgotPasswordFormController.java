@@ -9,6 +9,7 @@ import javafx.scene.control.Alert;
 import javafx.scene.control.ButtonType;
 import javafx.scene.control.PasswordField;
 import javafx.scene.control.TextField;
+import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.StackPane;
 import Exception.InvalidPasswordException;
@@ -121,5 +122,10 @@ public class ForgotPasswordFormController implements Initializable {
                 System.out.println("cancel");
             }
         }
+    }
+    @FXML
+    public void onXmarkBtnClick(MouseEvent event){
+        main.getNodeById("#mainOutlineContentView").setDisable(false);
+        ((AnchorPane)forgotPasswordFormRoot.getParent()).getChildren().remove(forgotPasswordFormRoot);
     }
 }

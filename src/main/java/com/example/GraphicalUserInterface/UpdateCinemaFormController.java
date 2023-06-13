@@ -2,31 +2,30 @@ package com.example.GraphicalUserInterface;
 
 import Utils.Response;
 import Utils.StatusCode;
+import com.example.GraphicalUserInterface.ManagementMain;
 import javafx.collections.FXCollections;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
-import javafx.scene.control.ButtonBar;
-import javafx.scene.control.ButtonType;
-import javafx.scene.control.Dialog;
-import javafx.scene.control.TextField;
+import javafx.scene.control.*;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.VBox;
 
 import java.io.IOException;
 import java.net.URL;
-import java.time.format.DateTimeFormatter;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.ResourceBundle;
 
 public class UpdateCinemaFormController implements Initializable {
     private ManagementMain main;
     @FXML
-    private TextField nameField, cineAreaField, addressField, idField;
+    private TextField nameField, addressField, idField;
     @FXML
     private VBox updateCinemaForm;
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
         idFieldInit();
+        statusFieldInit();
     }
     public void idFieldInit() {
         idField.setDisable(true);
@@ -38,7 +37,15 @@ public class UpdateCinemaFormController implements Initializable {
         ((AnchorPane)updateCinemaForm.getParent()).getChildren().get(0).setVisible(true);
         ((AnchorPane)updateCinemaForm.getParent()).getChildren().remove(2);
     }
-
+    @FXML
+    private ComboBox statusField;
+    public void statusFieldInit() {
+        ArrayList<String> statusList = new ArrayList<String>();
+        statusList.add("AVAILABLE");
+        statusList.add("SUSPEND");
+        statusList.add("CLOSED");
+        statusField.setItems(FXCollections.observableArrayList(statusList));
+    }
     @FXML
     public void saveUpdateBtnOnClick() throws IOException {
         System.out.println("save");
@@ -55,7 +62,7 @@ public class UpdateCinemaFormController implements Initializable {
         HashMap<String, String> cinemaInfo = new HashMap<String, String>();
         cinemaInfo.put("ADDRESS", addressField.getText());
         cinemaInfo.put("NAME", nameField.getText());
-        cinemaInfo.put("CINE_AREA", cineAreaField.getText());
+        cinemaInfo.put("STATUS", statusField.getValue().toString());
         Response response = main.getProcessorManager().getCinemaManagementProcessor().updateData(cinemaInfo, String.format("ID = '%s'", idField.getText()), true);
         StatusCode status = response.getStatusCode();
         if (status == StatusCode.OK) {

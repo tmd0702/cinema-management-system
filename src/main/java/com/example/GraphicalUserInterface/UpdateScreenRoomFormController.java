@@ -3,6 +3,7 @@ package com.example.GraphicalUserInterface;
 import Utils.Response;
 import Utils.StatusCode;
 import Utils.Utils;
+import com.example.GraphicalUserInterface.ManagementMain;
 import javafx.collections.FXCollections;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
@@ -26,6 +27,15 @@ public class UpdateScreenRoomFormController implements Initializable {
     private ComboBox cinemaNameField;
     @FXML
     private VBox updateScreenRoomForm;
+    @FXML
+    private ComboBox statusField;
+    public void statusFieldInit() {
+        ArrayList<String> statusList = new ArrayList<String>();
+        statusList.add("AVAILABLE");
+        statusList.add("SUSPEND");
+        statusList.add("CLOSED");
+        statusField.setItems(FXCollections.observableArrayList(statusList));
+    }
     public UpdateScreenRoomFormController() {
         main = ManagementMain.getInstance();
     }
@@ -34,6 +44,7 @@ public class UpdateScreenRoomFormController implements Initializable {
     public void initialize(URL url, ResourceBundle resourceBundle) {
         idFieldInit();
         cinemaNameFieldInit();
+        statusFieldInit();
     }
     public void idFieldInit() {
         idField.setDisable(true);
@@ -79,7 +90,7 @@ public class UpdateScreenRoomFormController implements Initializable {
         screenRoomInfo.put("NAME", nameField.getText());
         screenRoomInfo.put("CAPACITY", capacityField.getText());
         screenRoomInfo.put("CINEMA_ID", getCinemaObjectIDFromComboBox(cinemaNameField.getValue()));
-
+        screenRoomInfo.put("STATUS", statusField.getValue().toString());
         Response response = main.getProcessorManager().getScreenRoomManagementProcessor().updateData(screenRoomInfo, String.format("ID = '%s'", idField.getText()), true);
         StatusCode status = response.getStatusCode();
         if (status == StatusCode.OK) {

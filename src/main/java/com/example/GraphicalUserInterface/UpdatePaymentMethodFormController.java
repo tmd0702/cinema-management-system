@@ -2,7 +2,7 @@ package com.example.GraphicalUserInterface;
 
 import Utils.Response;
 import Utils.StatusCode;
-import Utils.Utils;
+import com.example.GraphicalUserInterface.ManagementMain;
 import javafx.collections.FXCollections;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
@@ -19,10 +19,18 @@ import java.util.ResourceBundle;
 public class UpdatePaymentMethodFormController implements Initializable {
     private ManagementMain main;
     @FXML
-    private TextField idField, nameField, statusField;
+    private TextField idField, nameField;
     @FXML
     private VBox updatePaymentMethodForm;
-
+    @FXML
+    private ComboBox statusField;
+    public void statusFieldInit() {
+        ArrayList<String> statusList = new ArrayList<String>();
+        statusList.add("AVAILABLE");
+        statusList.add("SUSPEND");
+        statusList.add("CLOSED");
+        statusField.setItems(FXCollections.observableArrayList(statusList));
+    }
     public UpdatePaymentMethodFormController() {
         main = ManagementMain.getInstance();
 
@@ -55,7 +63,7 @@ public class UpdatePaymentMethodFormController implements Initializable {
     public void handleUpdateRecordRequest() {
         HashMap<String, String> paymentMethodInfo = new HashMap<String, String>();
         paymentMethodInfo.put("NAME", nameField.getText());
-        paymentMethodInfo.put("STATUS", statusField.getText());
+        paymentMethodInfo.put("STATUS", statusField.getValue().toString());
 
         Response response = main.getProcessorManager().getPaymentMethodManagementProcessor().updateData(paymentMethodInfo, String.format("ID = '%s'", idField.getText()), true);
         StatusCode status = response.getStatusCode();

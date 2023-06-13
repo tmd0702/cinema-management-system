@@ -3,6 +3,7 @@ package com.example.GraphicalUserInterface;
 import MovieManager.Movie;
 import Utils.Response;
 import Utils.StatusCode;
+import com.example.GraphicalUserInterface.ManagementMain;
 import javafx.collections.FXCollections;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
@@ -88,7 +89,7 @@ public class AddMovieFormController implements Initializable {
         Response response = main.getProcessorManager().getMovieManagementProcessor().insertData(movieInfo, true);
         StatusCode status = response.getStatusCode();
         if (status == StatusCode.OK) {
-            main.getProcessorManager().getMovieManagementProcessor().scheduleMovie(new Movie(id, titleField.getText(), overviewField.getText(), movieStatusField.getValue().toString(), Integer.parseInt(durationField.getText()), Integer.parseInt(viewCountField.getText()), new Date(DateTimeFormatter.ofPattern("yyyy-MM-dd").format(releaseDateField.getValue())), posterPathField.getText(), backdropPathField.getText(), languageField.getText()));
+            main.getProcessorManager().getMovieManagementProcessor().scheduleMovie(new Movie(id, titleField.getText(), overviewField.getText(), movieStatusField.getValue().toString(), Integer.parseInt(durationField.getText()), Integer.parseInt(viewCountField.getText()), new Date(DateTimeFormatter.ofPattern("yyyy-MM-dd").format(releaseDateField.getValue())), posterPathField.getText(), backdropPathField.getText(), languageField.getText(), Float.parseFloat(voteAverageField.getText())));
             Dialog<String> dialog = new Dialog<String>();
             //Setting the title
             dialog.setTitle("Success");

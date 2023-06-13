@@ -2,6 +2,7 @@ package com.example.GraphicalUserInterface;
 
 import Utils.Response;
 import Utils.StatusCode;
+import com.example.GraphicalUserInterface.ManagementMain;
 import javafx.collections.FXCollections;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
@@ -28,10 +29,19 @@ public class UpdateShowTimeFormController implements Initializable {
     public UpdateShowTimeFormController() {
         main = ManagementMain.getInstance();
     }
-
+    @FXML
+    private ComboBox statusField;
+    public void statusFieldInit() {
+        ArrayList<String> statusList = new ArrayList<String>();
+        statusList.add("AVAILABLE");
+        statusList.add("SUSPEND");
+        statusList.add("CLOSED");
+        statusField.setItems(FXCollections.observableArrayList(statusList));
+    }
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
         idFieldInit();
+        statusFieldInit();
     }
     public void idFieldInit() {
         idField.setDisable(true);
@@ -66,7 +76,7 @@ public class UpdateShowTimeFormController implements Initializable {
     public void handleUpdateRecordRequest() {
         HashMap<String, String> showTimeInfo = new HashMap<String, String>();
         showTimeInfo.put("START_TIME", startTimeField.getText());
-
+        showTimeInfo.put("STATUS", statusField.getValue().toString());
         Response response = main.getProcessorManager().getShowTimeManagementProcessor().updateData(showTimeInfo, String.format("ID = '%s'", idField.getText()), true);
         StatusCode status = response.getStatusCode();
         if (status == StatusCode.OK) {

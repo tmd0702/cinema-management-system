@@ -4,17 +4,16 @@ import MovieManager.Movie;
 import Utils.Response;
 import Utils.StatusCode;
 import Utils.Utils;
+import com.example.GraphicalUserInterface.Main;
 import de.jensd.fx.glyphs.fontawesome.FontAwesomeIcon;
 import de.jensd.fx.glyphs.fontawesome.FontAwesomeIconView;
 import javafx.event.Event;
 import javafx.event.EventHandler;
 import javafx.fxml.FXML;
-import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
 import javafx.geometry.Insets;
 import javafx.scene.Node;
 import javafx.scene.control.*;
-import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.MouseButton;
 import javafx.scene.input.MouseEvent;
@@ -23,7 +22,6 @@ import javafx.scene.layout.HBox;
 import javafx.scene.layout.StackPane;
 import javafx.scene.layout.VBox;
 import javafx.scene.paint.Color;
-import javafx.scene.paint.Paint;
 import javafx.scene.shape.Line;
 import javafx.scene.text.Font;
 import javafx.scene.text.FontWeight;
@@ -65,6 +63,8 @@ public class MovieDetailViewController implements Initializable {
     @FXML
     private Label language;
     @FXML
+    private HBox ratingSection;
+    @FXML
     private VBox movieDetailSection;
     @FXML
     private Label description;
@@ -82,19 +82,54 @@ public class MovieDetailViewController implements Initializable {
         movieDetailSectionInit();
         ratingFieldInit();
         commentViewSectionInit();
+        oldReviewInit();
+    }
+    public void oldReviewInit() {
+
+        if (main.getSignedInUser() != null) {
+            ArrayList<ArrayList<String>> reviewFetcher = main.getProcessorManager().getReviewManagementProcessor().getData(0, -1, String.format("R.USER_ID = '%s' AND R.MOVIE_ID = '%s'", main.getSignedInUser().getId(), main.getMovieOnDetail().getId()), "").getData();
+            if (reviewFetcher.size() > 2) {
+                commentField.setText(Utils.getRowValueByColumnName(2, "COMMENT", reviewFetcher));
+                Double rating = Double.parseDouble(Utils.getRowValueByColumnName(2, "RATING", reviewFetcher));
+                for (int i = 0; i < 5; ++i) {
+                    if (i == Math.round(rating) - 1) {
+                        if (i == rating - 1) {
+                            activateRatingStar(i, "FULL");
+                        } else {
+                            activateRatingStar(i, "HALF");
+                        }
+                        isRated = true;
+                    }
+                }
+            }
+        }
     }
     public void movieDetailSectionInit() {
-        movieDetailSection.setSpacing(10);
-        System.out.println(movieOnDetail.getPosterPath());
+        movieDetailSection.setSpacing(15);
         moviePosterSection.setImage(movieOnDetail.getPosterImage());
         title.setText(movieOnDetail.getTitle());
-        genre.setText(genre.getText() + movieOnDetail.getGenres().toString().replace("[", "").replace("]", ""));
+        genre.setText(genre.getText() + movieOnDetail.getGenresString());
         releaseDate.setText(releaseDate.getText() + movieOnDetail.getReleaseDate().toString());
-        duration.setText(duration.getText() + Integer.toString(movieOnDetail.getDuration()));
+        duration.setText(duration.getText() + Integer.toString(movieOnDetail.getDuration()) + " minutes");
         VBox.setMargin(separator, new Insets(20, 0, 20, 0));
         description.setWrapText(true);
         description.setText(movieOnDetail.getOverview());
-//        description.setDisable(true);
+        language.setText(language.getText() + movieOnDetail.getLanguage());
+        float voteAverage = movieOnDetail.getVoteAverage() / 2;
+        for (int j=0; j<5; ++j) {
+            if (j < Math.floor(voteAverage)) {
+                FontAwesomeIconView fullStar = new FontAwesomeIconView(FontAwesomeIcon.STAR);
+                fullStar.setStroke(Color.WHITE);
+                fullStar.setStyle("-fx-font-family: FontAwesome; -fx-font-size: 15.0; -fx-fill: #FDC500;");
+                ratingSection.getChildren().add(fullStar);
+            } else if (j < voteAverage) {
+                FontAwesomeIconView halfStar = new FontAwesomeIconView(FontAwesomeIcon.STAR_HALF);
+                halfStar.setStroke(Color.WHITE);
+                halfStar.setStyle("-fx-font-family: FontAwesome; -fx-font-size: 15.0; -fx-fill: #FDC500;");
+                ratingSection.getChildren().add(halfStar);
+                break;
+            }
+        }
         System.out.println("parent: " + bookMovieBtn.getParent());
         if (main.getProcessorManager().getMovieManagementProcessor().getMovieManager().getCurrentlyPlayingMovieList().contains(movieOnDetail)) {
             bookMovieBtn.setOnMouseClicked(new EventHandler<MouseEvent>() {
@@ -108,10 +143,10 @@ public class MovieDetailViewController implements Initializable {
                             System.out.println(e);
                         }
 
-                    }else {
+                    } else {
                         Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
                         alert.setTitle("Failed");
-                        alert.setContentText("Please sign in to comment!");
+                        alert.setContentText("Please sign in to book ticket!");
                         Optional<ButtonType> result = alert.showAndWait();
                         if (result.get() == ButtonType.OK) {
                             Event.fireEvent(main.getNodeById("#signInBtn"), new MouseEvent(MouseEvent.MOUSE_CLICKED, 0,
@@ -133,7 +168,9 @@ public class MovieDetailViewController implements Initializable {
             StackPane starHolder = (StackPane) ratingField.getChildren().get(i);
             ratingStarMouseEventListener(starHolder.getChildren().get(1), i, "HALF");
             ratingStarMouseEventListener(starHolder.getChildren().get(0), i, "FULL");
+
         }
+
     }
     public void activateRatingStar(int starHolderIndex, String type) {
         for (int i=0; i <= starHolderIndex;++i) {
@@ -175,6 +212,7 @@ public class MovieDetailViewController implements Initializable {
             public void handle(MouseEvent mouseEvent) {
                 if (isRated) {
                     isRated = false;
+                    ratingScore = 0;
                 } else {
                     isRated = true;
                     ratingScore = starHolderIndex + 1 - 0.5 * (type == "HALF" ? 1 : 0);
@@ -183,18 +221,27 @@ public class MovieDetailViewController implements Initializable {
         });
     }
     public void commentViewSectionInit() {
+        commentViewSection.getChildren().clear();
         ArrayList<ArrayList<String>> reviewFetcher = main.getProcessorManager().getReviewManagementProcessor().getData(0, -1, String.format("M.ID = '%s'", main.getMovieOnDetail().getId()), "R.DATE DESC").getData();
-        System.out.println(reviewFetcher);
         for (int i=2; i < reviewFetcher.size(); ++i) {
+            Double rating = Double.parseDouble(Utils.getRowValueByColumnName(i, "RATING", reviewFetcher));
             Label userCategoryView = new Label(Utils.getRowValueByColumnName(i, "CATEGORY", reviewFetcher));
-            userCategoryView.setStyle("-fx-background-color: #8A8A8A; -fx-text-fill: #ffffff");
+            userCategoryView.setStyle("-fx-background-color: #8A8A8A; -fx-text-fill: #ffffff;");
             userCategoryView.setFont(Font.font("Georgia", FontWeight.BOLD, 11));
             HBox ratingView = new HBox();
             for (int j=0; j<5; ++j) {
-                FontAwesomeIconView fullStar = new FontAwesomeIconView(FontAwesomeIcon.STAR);
-                fullStar.setStroke(Color.WHITE);
-                fullStar.setStyle("-fx-font-family: FontAwesome; -fx-font-size: 20.0;");
-                ratingView.getChildren().add(fullStar);
+                if (j < Math.floor(rating)) {
+                    FontAwesomeIconView fullStar = new FontAwesomeIconView(FontAwesomeIcon.STAR);
+                    fullStar.setStroke(Color.WHITE);
+                    fullStar.setStyle("-fx-font-family: FontAwesome; -fx-font-size: 20.0; -fx-fill: #FDC500;");
+                    ratingView.getChildren().add(fullStar);
+                } else if (j < rating){
+                    FontAwesomeIconView halfStar = new FontAwesomeIconView(FontAwesomeIcon.STAR_HALF);
+                    halfStar.setStroke(Color.WHITE);
+                    halfStar.setStyle("-fx-font-family: FontAwesome; -fx-font-size: 20.0; -fx-fill: #FDC500;");
+                    ratingView.getChildren().add(halfStar);
+                    break;
+                }
             }
             Label usernameView = new Label(Utils.getRowValueByColumnName(i, "USERNAME", reviewFetcher));
             usernameView.setFont(Font.font("Georgia", FontWeight.BOLD, 11));
@@ -205,7 +252,7 @@ public class MovieDetailViewController implements Initializable {
             separator.setStroke(Color.WHITE);
             separator.setStartX(-120.5);
             separator.setEndX(735);
-            TextField commentView = new TextField(Utils.getRowValueByColumnName(i, "COMMENT", reviewFetcher));
+            Label commentView = new Label(Utils.getRowValueByColumnName(i, "COMMENT", reviewFetcher));
             commentView.setStyle("-fx-background-color: #000000; -fx-text-fill: #ffffff;");
             commentView.setFont(Font.font("Georgia", FontWeight.BOLD,13));
             VBox commentViewContainer = new VBox(commentViewHeader, commentView, separator);
@@ -226,22 +273,35 @@ public class MovieDetailViewController implements Initializable {
             if (status == status.OK) {
                 Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
                 alert.setTitle("Confirmation");
-                alert.setContentText(response.getMessage());
+                alert.setContentText("Your review is uploaded!");
                 Optional<ButtonType> result = alert.showAndWait();
                 if (result.get() == ButtonType.OK) {
-
+                    commentViewSectionInit();
                 } else {
 
                 }
             } else {
-                Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
-                alert.setTitle("Failed");
-                alert.setContentText(response.getMessage());
-                Optional<ButtonType> result = alert.showAndWait();
-                if (result.get() == ButtonType.OK) {
+                response = main.getProcessorManager().getReviewManagementProcessor().updateData(reviewInfo, String.format("MOVIE_ID = '%s' AND USER_ID = '%s'", movieOnDetail.getId(), main.getSignedInUser().getId()), true);
+                if (response.getStatusCode() == status.OK) {
+                    Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
+                    alert.setTitle("Confirmation");
+                    alert.setContentText("Your review is updated!");
+                    Optional<ButtonType> result = alert.showAndWait();
+                    if (result.get() == ButtonType.OK) {
+                        commentViewSectionInit();
+                    } else {
 
+                    }
                 } else {
+                    Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
+                    alert.setTitle("Confirmation");
+                    alert.setContentText(response.getMessage());
+                    Optional<ButtonType> result = alert.showAndWait();
+                    if (result.get() == ButtonType.OK) {
 
+                    } else {
+
+                    }
                 }
             }
         } else {
@@ -253,6 +313,7 @@ public class MovieDetailViewController implements Initializable {
                 Event.fireEvent(main.getNodeById("#signInBtn"), new MouseEvent(MouseEvent.MOUSE_CLICKED, 0,
                         0, 0, 0, MouseButton.PRIMARY, 1, true, true, true, true,
                         true, true, true, true, true, true, null));
+                oldReviewInit();
             } else {
 
             }

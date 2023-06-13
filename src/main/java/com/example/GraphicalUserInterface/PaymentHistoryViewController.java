@@ -1,12 +1,11 @@
 package com.example.GraphicalUserInterface;
 
-import Database.PaymentManagementProcessor;
 import Utils.Utils;
+import com.example.GraphicalUserInterface.Main;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.Label;
 import javafx.scene.layout.GridPane;
-import javafx.scene.layout.RowConstraints;
 
 import java.net.URL;
 import java.util.ArrayList;
@@ -32,12 +31,10 @@ public class PaymentHistoryViewController implements Initializable {
 
         System.out.println(paymentHistoryFetcher);
         for (int i=2; i<paymentHistoryFetcher.size();++i) {
-            ArrayList<String> paymentHistoryInfo = paymentHistoryFetcher.get(i);
-            RowConstraints rowConstraints = new RowConstraints();
             Label paymentDateLabel = new Label(Utils.getRowValueByColumnName(i, "PAYMENTS.PAYMENT_DATE", paymentHistoryFetcher));
             Label totalAmountLabel = new Label(Utils.getRowValueByColumnName(i, "PAYMENTS.TOTAL_AMOUNT", paymentHistoryFetcher));
-            Label movieTitleLabel = new Label("test1");
-            Label cinemaNameLabel = new Label("test2");
+            Label movieTitleLabel = new Label(Utils.getRowValueByColumnName(i, "MOVIES.TITLE", paymentHistoryFetcher));
+            Label cinemaNameLabel = new Label(Utils.getRowValueByColumnName(i, "CINEMAS.NAME", paymentHistoryFetcher));
             setStyleForGridViewLabel(paymentDateLabel);
             setStyleForGridViewLabel(totalAmountLabel);
             setStyleForGridViewLabel(movieTitleLabel);

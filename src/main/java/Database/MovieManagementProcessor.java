@@ -55,14 +55,14 @@ public class MovieManagementProcessor extends Processor {
         return response;
     }
     public void getMovies() {
-        String query = "SELECT * FROM MOVIES LIMIT 100";// LIMIT 30";
+        String query = "SELECT * FROM MOVIES WHERE STATUS = 'Released' LIMIT 30";// LIMIT 30";
         ArrayList<Movie> tmpList = new ArrayList<Movie>();
         try {
             Statement st = getConnector().createStatement();
             ResultSet rs = st.executeQuery(query);
 
             while (rs.next()) {
-                Movie movie = new Movie(rs.getString("ID"), rs.getString("TITLE"), rs.getString("OVERVIEW"), rs.getString("STATUS"), rs.getInt("DURATION"), rs.getInt("VIEW_COUNT"), rs.getDate("RELEASE_DATE"), rs.getString("POSTER_PATH"), rs.getString("BACKDROP_PATH"), rs.getString("LANGUAGE"));
+                Movie movie = new Movie(rs.getString("ID"), rs.getString("TITLE"), rs.getString("OVERVIEW"), rs.getString("STATUS"), rs.getInt("DURATION"), rs.getInt("VIEW_COUNT"), rs.getDate("RELEASE_DATE"), rs.getString("POSTER_PATH"), rs.getString("BACKDROP_PATH"), rs.getString("LANGUAGE"), Float.parseFloat(rs.getString("VOTE_AVERAGE")));
                 tmpList.add(movie);
             }
             ExecutorService service = Executors.newCachedThreadPool();

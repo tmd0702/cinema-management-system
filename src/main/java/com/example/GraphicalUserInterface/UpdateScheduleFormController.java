@@ -3,6 +3,7 @@ package com.example.GraphicalUserInterface;
 import Utils.Response;
 import Utils.StatusCode;
 import Utils.Utils;
+import com.example.GraphicalUserInterface.ManagementMain;
 import javafx.animation.KeyFrame;
 import javafx.animation.Timeline;
 import javafx.collections.FXCollections;
@@ -33,6 +34,15 @@ public class UpdateScheduleFormController implements Initializable {
     private ComboBox screenRoomNameField, cinemaNameField;
     @FXML
     private VBox updateScheduleForm;
+    @FXML
+    private ComboBox statusField;
+    public void statusFieldInit() {
+        ArrayList<String> statusList = new ArrayList<String>();
+        statusList.add("AVAILABLE");
+        statusList.add("SUSPEND");
+        statusList.add("CLOSED");
+        statusField.setItems(FXCollections.observableArrayList(statusList));
+    }
     private ManagementMain main;
     private ArrayList<ArrayList<String>> cinemaInfo, screenRoomInfo, movieInfo, showTimeInfo;
     private ArrayList<String> cinemaNames, screenRoomNames, movieTitles, startTimes;
@@ -43,6 +53,7 @@ public class UpdateScheduleFormController implements Initializable {
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
         idFieldInit();
+        statusFieldInit();
         Timeline timeline = new Timeline(new KeyFrame(Duration.seconds(0.1), ae -> {
             cinemaNameFieldInit();
             showDateFieldInit();
@@ -188,6 +199,7 @@ public class UpdateScheduleFormController implements Initializable {
         scheduleInfo.put("SHOW_DATE", showDateField.getValue().toString());
         scheduleInfo.put("MOVIE_ID", getMovieObjectIDFromComBoBox(movieTitleField.getValue()));
         scheduleInfo.put("SCREEN_ROOM_ID", getScreenRoomObjectIDFromComboBox(screenRoomNameField.getValue()));
+        scheduleInfo.put("STATUS", statusField.getValue().toString());
         Response response = main.getProcessorManager().getScheduleManagementProcessor().updateData(scheduleInfo, String.format("ID = '%s'", idField.getText()), true);
         StatusCode status = response.getStatusCode();
         if (status == StatusCode.OK) {

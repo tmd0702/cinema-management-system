@@ -1,22 +1,16 @@
 package com.example.GraphicalUserInterface;
 import MovieManager.MovieManager;
-import UserManager.Customer;
-import UserManager.User;
 import Utils.Utils;
+import com.example.GraphicalUserInterface.Main;
 import javafx.animation.*;
 import javafx.beans.property.DoubleProperty;
 import javafx.event.Event;
 import javafx.event.EventHandler;
 import javafx.fxml.FXML;
-import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
-import de.jensd.fx.glyphs.fontawesome.FontAwesomeIconView;
 import javafx.geometry.Insets;
-import javafx.geometry.Pos;
-import javafx.scene.Group;
 import javafx.scene.Node;
 import javafx.scene.effect.BlendMode;
-import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.MouseButton;
 import javafx.scene.layout.*;
@@ -39,7 +33,6 @@ import javafx.scene.input.MouseEvent;
 import javafx.scene.text.Font;
 import javafx.scene.text.FontWeight;
 import javafx.util.Duration;
-import org.controlsfx.glyphfont.FontAwesome;
 
 public class IndexViewController implements Initializable {
     private MovieManager movieManager;

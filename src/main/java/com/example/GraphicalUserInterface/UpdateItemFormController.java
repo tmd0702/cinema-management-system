@@ -3,6 +3,7 @@ package com.example.GraphicalUserInterface;
 import Utils.Response;
 import Utils.StatusCode;
 import Utils.Utils;
+import com.example.GraphicalUserInterface.ManagementMain;
 import javafx.collections.FXCollections;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
@@ -30,11 +31,20 @@ public class UpdateItemFormController implements Initializable {
         main = ManagementMain.getInstance();
 
     }
-
+    @FXML
+    private ComboBox statusField;
+    public void statusFieldInit() {
+        ArrayList<String> statusList = new ArrayList<String>();
+        statusList.add("AVAILABLE");
+        statusList.add("SUSPEND");
+        statusList.add("CLOSED");
+        statusField.setItems(FXCollections.observableArrayList(statusList));
+    }
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
         idFieldInit();
         categoryFieldInit();
+        statusFieldInit();
     }
     public void idFieldInit() {
         idField.setDisable(true);
@@ -77,7 +87,7 @@ public class UpdateItemFormController implements Initializable {
         itemInfo.put("UNIT", unitField.getText());
         itemInfo.put("QUANTITY", quantityField.getText());
         itemInfo.put("ITEM_CATEGORY_ID", getItemCategoryObjectIDFromComBoBox(itemCategoryCategoryField.getValue()));
-
+        itemInfo.put("STATUS", statusField.getValue().toString());
         Response response = main.getProcessorManager().getItemManagementProcessor().updateData(itemInfo, String.format("ID = '%s'", idField.getText()), true);
         StatusCode status = response.getStatusCode();
         if (status == StatusCode.OK) {

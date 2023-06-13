@@ -43,7 +43,7 @@
                <font>
                   <Font name="Georgia" size="13.0" />
                </font></TextField>
-            <TextField fx:id="capacityField" layoutX="178.0" layoutY="172.0">
+            <TextField fx:id="capacityField" layoutX="465.0" layoutY="102.0">
                <font>
                   <Font name="Georgia" size="13.0" />
                </font></TextField>
@@ -51,15 +51,15 @@
                <font>
                   <Font name="Georgia Bold" size="13.0" />
                </font></Label>
-            <Label layoutX="81.0" layoutY="210.0" prefHeight="15.0" prefWidth="105.0" text="Cinema Name" textFill="WHITE">
+            <Label layoutX="368.0" layoutY="140.0" prefHeight="15.0" prefWidth="105.0" text="Cinema Name" textFill="WHITE">
                <font>
                   <Font name="Georgia Bold" size="13.0" />
                </font></Label>
-            <Label layoutX="118.0" layoutY="178.0" text="Capacity" textFill="WHITE">
+            <Label layoutX="405.0" layoutY="108.0" text="Capacity" textFill="WHITE">
                <font>
                   <Font name="Georgia Bold" size="13.0" />
                </font></Label>
-            <ComboBox fx:id="cinemaNameField" layoutX="178.0" layoutY="206.0" prefHeight="26.0" prefWidth="168.0" />
+            <ComboBox fx:id="cinemaNameField" layoutX="465.0" layoutY="136.0" prefHeight="26.0" prefWidth="168.0" />
             <TextField fx:id="idField" layoutX="178.0" layoutY="104.0">
                <font>
                   <Font name="Georgia" size="13.0" />
@@ -68,6 +68,12 @@
                <font>
                   <Font name="Georgia Bold" size="13.0" />
                </font></Label>
+            <ComboBox fx:id="statusField" layoutX="178.0" layoutY="173.0" prefHeight="26.0" prefWidth="168.0" />
+            <Label layoutX="116.0" layoutY="178.0" prefHeight="15.0" prefWidth="49.0" text="Status" textFill="WHITE">
+               <font>
+                  <Font name="Georgia Bold" size="13.0" />
+               </font>
+            </Label>
          </children>
       </AnchorPane>
    </children>

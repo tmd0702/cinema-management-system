@@ -1,21 +1,19 @@
 package com.example.GraphicalUserInterface;
 import UserManager.Customer;
-import UserManager.Manager;
 import Utils.Response;
 import Utils.Utils;
+import com.example.GraphicalUserInterface.Main;
+import com.example.GraphicalUserInterface.ManagementMain;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
-import javafx.scene.Group;
 import javafx.scene.control.*;
 
 import java.io.IOException;
 import java.io.InputStream;
 import java.net.URL;
 import java.sql.Date;
-import java.text.ParseException;
 import java.text.SimpleDateFormat;
-import java.time.format.DateTimeFormatter;
 import java.util.*;
 import Utils.StatusCode;
 import javafx.scene.input.MouseEvent;
@@ -56,10 +54,12 @@ public class LoginFormController implements Initializable {
     }
 
     public void modifyHeaderUI() {
-        main.getNodeById("#signInBtn").setVisible(false);
-        main.getNodeById("#signUpBtn").setVisible(false);
-        main.getNodeById("#userProfileBtn").setVisible(true);
-        ((Label)main.getNodeById("#userFullNameDisplayField")).setText(main.getSignedInUser().getFirstName() + " " + main.getSignedInUser().getLastName());
+        if (main.getSignedInUser() != null) {
+            main.getNodeById("#signInBtn").setVisible(false);
+            main.getNodeById("#signUpBtn").setVisible(false);
+            main.getNodeById("#userProfileBtn").setVisible(true);
+            ((Label) main.getNodeById("#userFullNameDisplayField")).setText(main.getSignedInUser().getFirstName() + " " + main.getSignedInUser().getLastName());
+        }
     }
     public void disableForm() {
         modifyHeaderUI();
@@ -79,25 +79,36 @@ public class LoginFormController implements Initializable {
             } else {
                 Utils.writeProperties(this.prop, "", "", filePath);
             }
-            System.out.println("Sign in success");
-            System.out.println(userInfo);
-            main.setSignedInUser(new Manager(Utils.getRowValueByColumnName(2, "USERS.USERNAME", userInfo), Utils.getRowValueByColumnName(2, "USERS.ID", userInfo), Utils.getRowValueByColumnName(2, "USERS.FIRST_NAME", userInfo), Utils.getRowValueByColumnName(2, "USERS.LAST_NAME", userInfo), new Date(new SimpleDateFormat("yyyy-MM-dd").parse(Utils.getRowValueByColumnName(2, "USERS.DOB", userInfo)).getTime()), Utils.getRowValueByColumnName(2, "USERS.PHONE", userInfo), Utils.getRowValueByColumnName(2, "USERS.EMAIL", userInfo), Utils.getRowValueByColumnName(2, "USERS.GENDER", userInfo), Utils.getRowValueByColumnName(2, "USERS.ADDRESS", userInfo), Utils.getRowValueByColumnName(2, "USERS.USER_CATEGORY_CATEGORY", userInfo)));
-            Alert alert = new Alert(Alert.AlertType.CONFIRMATION,"", ButtonType.OK);
-            alert.setTitle("Confirmation");
-            alert.setContentText("Sign in success");
-            Optional<ButtonType> result = alert.showAndWait();
-            if (result.get() == ButtonType.OK) {
-                System.out.println("ok");
+            String userStatus = Utils.getRowValueByColumnName(2, "USERS.STATUS", userInfo);
+            if (userStatus.equals("AVAILABLE")) {
+                main.setSignedInUser(new Customer(Utils.getRowValueByColumnName(2, "USERS.USERNAME", userInfo), Utils.getRowValueByColumnName(2, "USERS.ID", userInfo), Utils.getRowValueByColumnName(2, "USERS.FIRST_NAME", userInfo), Utils.getRowValueByColumnName(2, "USERS.LAST_NAME", userInfo), new Date(new SimpleDateFormat("yyyy-MM-dd").parse(Utils.getRowValueByColumnName(2, "USERS.DOB", userInfo)).getTime()), Utils.getRowValueByColumnName(2, "USERS.PHONE", userInfo), Utils.getRowValueByColumnName(2, "USERS.EMAIL", userInfo), Utils.getRowValueByColumnName(2, "USERS.GENDER", userInfo), Utils.getRowValueByColumnName(2, "USERS.ADDRESS", userInfo), Integer.parseInt(Utils.getRowValueByColumnName(2, "USERS.SCORE", userInfo)), Utils.getRowValueByColumnName(2, "USERS.USER_CATEGORY_CATEGORY", userInfo)));
+                Alert alert = new Alert(Alert.AlertType.CONFIRMATION, "", ButtonType.OK);
+                alert.setTitle("Confirmation");
+                alert.setContentText("Sign in success");
+                Optional<ButtonType> result = alert.showAndWait();
+                if (result.get() == ButtonType.OK) {
+                    System.out.println("ok");
+                    disableForm();
+                } else {
+                    System.out.println("cancel");
+                }
             } else {
-                System.out.println("cancel");
+                Alert alert = new Alert(Alert.AlertType.CONFIRMATION, "", ButtonType.OK);
+                alert.setTitle("Confirmation");
+                alert.setContentText("Error: Your account has been banned!");
+                Optional<ButtonType> result = alert.showAndWait();
+                if (result.get() == ButtonType.OK) {
+                    System.out.println("ok");
+                    disableForm();
+                } else {
+                    System.out.println("cancel");
+                }
             }
-            disableForm();
 
         } else {
-            System.out.println("Sign in failed");
             Alert alert = new Alert(Alert.AlertType.ERROR);
             alert.setTitle("Error Sign in");
-            alert.setContentText("Sign in failed");
+            alert.setContentText("Error: Wrong username or password!");
             Optional<ButtonType> result = alert.showAndWait();
             if (result.get() == ButtonType.OK) {
                 System.out.println("ok");
@@ -105,11 +116,11 @@ public class LoginFormController implements Initializable {
         }
     }
     public void onSignUpBtnClick() throws Exception {
-        ((AnchorPane)loginFormRoot.getParent()).getChildren().add(FXMLLoader.load(getClass().getResource("signup-form.fxml")));
+        ((AnchorPane)loginFormRoot.getParent()).getChildren().add(FXMLLoader.load(getClass().getResource("AuthFormController/signup-form.fxml")));
         ((AnchorPane)loginFormRoot.getParent()).getChildren().remove(loginFormRoot);
     }
     public void onForgotPasswordBtnClick() throws Exception {
-        ((AnchorPane)loginFormRoot.getParent()).getChildren().add(FXMLLoader.load(getClass().getResource("forgot-password-form.fxml")));
+        ((AnchorPane)loginFormRoot.getParent()).getChildren().add(FXMLLoader.load(getClass().getResource("AuthFormController/forgot-password-form.fxml")));
         ((AnchorPane)loginFormRoot.getParent()).getChildren().remove(loginFormRoot);
     }
     @FXML

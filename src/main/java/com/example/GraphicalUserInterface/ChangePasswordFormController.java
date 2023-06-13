@@ -2,16 +2,16 @@ package com.example.GraphicalUserInterface;
 
 import Utils.Response;
 import Utils.StatusCode;
+import Utils.Utils;
 import Utils.Validator;
+import com.example.GraphicalUserInterface.Main;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.Alert;
 import javafx.scene.control.ButtonType;
 import javafx.scene.control.PasswordField;
-import javafx.scene.control.TextField;
 import javafx.scene.layout.AnchorPane;
 import Exception.InvalidPasswordException;
-import org.w3c.dom.Text;
 
 import java.net.URL;
 import java.util.HashMap;
@@ -39,39 +39,44 @@ public class ChangePasswordFormController implements Initializable {
     @FXML
     public void changePasswordConfirmBtnOnClick() {
         try {
-            if (newPasswordField.getText().equals(confirmPasswordField.getText())) {
-                HashMap<String, String> newPasswordInfo = new HashMap<String, String>();
-                newPasswordInfo.put("PASS", newPasswordField.getText());
-                if (Validator.validatePassword(newPasswordField.getText())) {
-                    Response response = main.getProcessorManager().getAuthenticationManagementProcessor().updateData(newPasswordInfo, String.format("USER_ID = '%s'", main.getSignedInUser().getId()), true);
-                    if (response.getStatusCode() == StatusCode.OK) {
-                        Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
-                        alert.setTitle("Confirmation");
-                        alert.setContentText("Password changed!");
-                        Optional<ButtonType> result = alert.showAndWait();
-                        if (result.get() == ButtonType.OK) {
-                            System.out.println("ok");
-                            disableForm();
+            if (oldPasswordField.getText().equals(Utils.getRowValueByColumnName(2, "PASS", main.getProcessorManager().getAuthenticationManagementProcessor().getData(0, 1, String.format("USER_ID = %s", main.getSignedInUser().getId()), "").getData()))) {
+                if (newPasswordField.getText().equals(confirmPasswordField.getText())) {
+                    HashMap<String, String> newPasswordInfo = new HashMap<String, String>();
+                    newPasswordInfo.put("PASS", newPasswordField.getText());
+                    if (Validator.validatePassword(newPasswordField.getText())) {
+                        Response response = main.getProcessorManager().getAuthenticationManagementProcessor().updateData(newPasswordInfo, String.format("USER_ID = '%s'", main.getSignedInUser().getId()), true);
+                        if (response.getStatusCode() == StatusCode.OK) {
+                            Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
+                            alert.setTitle("Confirmation");
+                            alert.setContentText("Password changed!");
+                            Optional<ButtonType> result = alert.showAndWait();
+                            if (result.get() == ButtonType.OK) {
+                                System.out.println("ok");
+                                disableForm();
+                            } else {
+                                System.out.println("cancel");
+                            }
                         } else {
-                            System.out.println("cancel");
+                            Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
+                            alert.setTitle("Confirmation");
+                            alert.setContentText(response.getMessage());
+                            Optional<ButtonType> result = alert.showAndWait();
+                            if (result.get() == ButtonType.OK) {
+                                System.out.println("ok");
+                            } else {
+                                System.out.println("cancel");
+                            }
                         }
                     } else {
-                        Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
-                        alert.setTitle("Confirmation");
-                        alert.setContentText(response.getMessage());
-                        Optional<ButtonType> result = alert.showAndWait();
-                        if (result.get() == ButtonType.OK) {
-                            System.out.println("ok");
-                        } else {
-                            System.out.println("cancel");
-                        }
+                        throw new InvalidPasswordException("Password: " + newPasswordInfo.get("PASS") + " is invalid!");
                     }
                 } else {
-                    throw new InvalidPasswordException("Password: " + newPasswordInfo.get("PASS") + " is invalid!");
+                    throw new Exception("Error: Confirmation password must match new password!");
                 }
             } else {
-                throw new Exception("Error: Confirmation password must match new password!");
+                throw new Exception("Error: Old password is not matched!");
             }
+
         }
         catch(Exception e) {
             Alert alert = new Alert(Alert.AlertType.CONFIRMATION);

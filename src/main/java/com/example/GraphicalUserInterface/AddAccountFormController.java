@@ -2,12 +2,15 @@ package com.example.GraphicalUserInterface;
 
 import Utils.Response;
 import Utils.StatusCode;
+import com.example.GraphicalUserInterface.ManagementMain;
 import javafx.collections.FXCollections;
 import javafx.fxml.FXML;
 
 import java.io.IOException;
 import java.net.URL;
+import java.text.SimpleDateFormat;
 import java.time.format.DateTimeFormatter;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.Optional;
 import java.util.ResourceBundle;
@@ -78,6 +81,7 @@ public class AddAccountFormController implements Initializable {
         signUpInfo.put("username", usernameField.getText());
         signUpInfo.put("password", passwordField.getText());
         signUpInfo.put("gender", genderField.getValue().toString().substring(0, 1));
+        signUpInfo.put("regisDate", new SimpleDateFormat("yyyy-MM-dd").format(new Date()));
         Response response = main.getProcessorManager().getAccountManagementProcessor().handleSignupAction(signUpInfo);
         StatusCode signupStatus = response.getStatusCode();
         if (signupStatus == StatusCode.OK) {

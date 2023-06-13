@@ -1,6 +1,6 @@
 package com.example.GraphicalUserInterface;
 
-import UserManager.Customer;
+import com.example.GraphicalUserInterface.Main;
 import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;

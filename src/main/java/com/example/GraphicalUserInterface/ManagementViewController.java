@@ -6,6 +6,7 @@ import java.lang.Math;
 import Utils.ColumnType;
 import Utils.Response;
 import Utils.StatusCode;
+import com.example.GraphicalUserInterface.ManagementMain;
 import javafx.animation.KeyFrame;
 import javafx.animation.Timeline;
 import javafx.beans.value.ChangeListener;
@@ -356,7 +357,7 @@ public class ManagementViewController implements Initializable {
             @Override
             public void handle(MouseEvent mouseEvent)  {
                 try {
-                    main.changeScene("admin-login-form.fxml");
+                    main.changeScene("AuthFormController/admin-login-form.fxml");
                 } catch (IOException e) {
                     System.out.println(e);
                 }

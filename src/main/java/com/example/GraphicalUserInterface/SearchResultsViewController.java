@@ -1,20 +1,22 @@
 package com.example.GraphicalUserInterface;
 
 import MovieManager.Movie;
+import com.example.GraphicalUserInterface.Main;
+import de.jensd.fx.glyphs.fontawesome.FontAwesomeIcon;
+import de.jensd.fx.glyphs.fontawesome.FontAwesomeIconView;
 import javafx.collections.FXCollections;
 import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.geometry.Insets;
+import javafx.scene.Node;
 import javafx.scene.control.*;
-import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.MouseEvent;
-import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
+import javafx.scene.paint.Color;
 import javafx.scene.text.Font;
-import javafx.scene.text.FontWeight;
 import org.json.JSONObject;
 
 import java.io.IOException;
@@ -84,31 +86,56 @@ public class SearchResultsViewController implements Initializable {
                 poster.setPreserveRatio(true);
                 poster.setFitWidth(resultsContainer.getPrefWidth() / 3.2);
                 poster.setFitHeight(movieContainer.getPrefHeight());
-//                System.out.println(movie.getTitle() + " " + movie.getPosterPath());
                 if (movie.getPosterImage().getProgress() == 1 && !movie.getPosterImage().isError()) {
                     poster.setImage(movie.getPosterImage());
                 } else {
                     poster.setImage(main.getProcessorManager().getMovieManagementProcessor().getMovieManager().getImageNotFound());
                 }
                 VBox movieContentInfo = new VBox();
-                movieContentInfo.setPadding(new Insets(20, 20, 20, 20));
+                movieContentInfo.setPadding(new Insets(0, 20, 20, 20));
+                movieContentInfo.setSpacing(10);
                 movieContentInfo.setPrefHeight(movieContainer.getPrefHeight());
                 Label title = new Label(movie.getTitle());
-                title.setFont(Font.font("Georgia", FontWeight.BOLD,24));
                 Label overview = new Label("Overview: " + movie.getOverview());
                 Label releaseDate = new Label("Release date: " + movie.getReleaseDate().toString());
                 Label duration = new Label("Duration: " + movie.getDuration() + " minutes");
-                title.setStyle("-fx-text-fill: white; -fx-font-size: 24px;");
-                overview.setStyle("-fx-text-fill: white; -fx-font-size: 14px;");
-                overview.setFont(Font.font("Georgia"));
-                releaseDate.setStyle("-fx-text-fill: white; -fx-font-size: 14px;");
-                releaseDate.setFont(Font.font("Georgia"));
-                duration.setStyle("-fx-text-fill: white; -fx-font-size: 14px;");
-                duration.setFont(Font.font("Georgia"));
+                Label rating = new Label("Rate:");
+                HBox ratingStarSection = new HBox();
+                float voteAverage = movie.getVoteAverage() / 2;
+                for (int j=0; j<5; ++j) {
+                    if (j < Math.floor(voteAverage)) {
+                        FontAwesomeIconView fullStar = new FontAwesomeIconView(FontAwesomeIcon.STAR);
+                        fullStar.setStroke(Color.WHITE);
+                        fullStar.setStyle("-fx-font-family: FontAwesome; -fx-font-size: 20.0; -fx-fill: #FDC500;");
+                        ratingStarSection.getChildren().add(fullStar);
+                    } else if (j < voteAverage) {
+                        FontAwesomeIconView halfStar = new FontAwesomeIconView(FontAwesomeIcon.STAR_HALF);
+                        halfStar.setStroke(Color.WHITE);
+                        halfStar.setStyle("-fx-font-family: FontAwesome; -fx-font-size: 20.0; -fx-fill: #FDC500;");
+                        ratingStarSection.getChildren().add(halfStar);
+                        break;
+                    }
+                }
+                HBox movieRatingView = new HBox(rating, ratingStarSection);
+                movieRatingView.setSpacing(10);
+                Label language = new Label("Language: " + movie.getLanguage());
+                Label genres = new Label("Genres: " + movie.getGenresString());
+
                 movieContentInfo.getChildren().add(title);
                 movieContentInfo.getChildren().add(releaseDate);
                 movieContentInfo.getChildren().add(duration);
                 movieContentInfo.getChildren().add(overview);
+                movieContentInfo.getChildren().add(movieRatingView);
+                movieContentInfo.getChildren().add(language);
+                movieContentInfo.getChildren().add(genres);
+
+                for (Node movieContent : movieContentInfo.getChildren()) {
+                    if (movieContent instanceof Label) {
+                        movieContent.setStyle("-fx-text-fill: white; -fx-font-size: 14px;");
+                        ((Label) movieContent).setFont(Font.font("Georgia"));
+                    }
+                }
+                title.setStyle("-fx-text-fill: white; -fx-font-size: 24px; -fx-font-weight: bold;");
                 movieContainer.getChildren().add(poster);
                 movieContainer.getChildren().add(movieContentInfo);
                 poster.setOnMouseClicked(new EventHandler<MouseEvent>()  {

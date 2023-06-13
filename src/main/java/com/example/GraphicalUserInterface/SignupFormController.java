@@ -1,13 +1,14 @@
 package com.example.GraphicalUserInterface;
 import Utils.Response;
 import Utils.StatusCode;
+import com.example.GraphicalUserInterface.Main;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.control.*;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.AnchorPane;
-import com.example.GraphicalUserInterface.MainOutlineController;
 
+import java.text.SimpleDateFormat;
 import java.time.format.DateTimeFormatter;
 import java.util.*;
 public class SignupFormController {
@@ -49,7 +50,8 @@ public class SignupFormController {
 
         }
         signUpInfo.put("gender", ((RadioButton)gender.getSelectedToggle()).getText().substring(0, 1));
-        signUpInfo.put("dateOfBirth", DateTimeFormatter.ofPattern("dd-MM-yyyy").format(dateOfBirthField.getValue()));
+        signUpInfo.put("dateOfBirth", DateTimeFormatter.ofPattern("yyyy-MM-dd").format(dateOfBirthField.getValue()));
+        signUpInfo.put("regisDate", new SimpleDateFormat("yyyy-MM-dd").format(new Date()));
         Response response = main.getProcessorManager().getAccountManagementProcessor().handleSignupAction(signUpInfo);
         StatusCode signupStatus = response.getStatusCode();
         if (signupStatus == StatusCode.OK) {
@@ -66,7 +68,10 @@ public class SignupFormController {
             //Setting the title
             dialog.setTitle("Dialog");
             ButtonType type = new ButtonType("Ok", ButtonBar.ButtonData.OK_DONE);
-            dialog.setContentText(response.getMessage());
+            Label errorMessage = new Label(response.getMessage());
+            errorMessage.setWrapText(true);
+            dialog.getDialogPane().setContent(errorMessage);
+//            dialog.setContentText();
             dialog.getDialogPane().getButtonTypes().add(type);
             dialog.showAndWait();
         }

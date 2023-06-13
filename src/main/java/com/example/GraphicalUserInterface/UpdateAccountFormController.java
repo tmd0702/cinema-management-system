@@ -2,6 +2,7 @@ package com.example.GraphicalUserInterface;
 
 import Utils.Response;
 import Utils.StatusCode;
+import com.example.GraphicalUserInterface.ManagementMain;
 import javafx.collections.FXCollections;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
@@ -12,6 +13,7 @@ import javafx.scene.layout.VBox;
 import java.io.IOException;
 import java.net.URL;
 import java.time.format.DateTimeFormatter;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.ResourceBundle;
 
@@ -25,8 +27,18 @@ public class UpdateAccountFormController implements Initializable {
     private TextField idField, firstNameField, lastNameField, emailField, usernameField, phoneField, addressField;
     @FXML
     private DatePicker dobField;
+    @FXML
+    private ComboBox statusField;
+    public void statusFieldInit() {
+        ArrayList<String> statusList = new ArrayList<String>();
+        statusList.add("AVAILABLE");
+        statusList.add("SUSPEND");
+        statusList.add("CLOSED");
+        statusField.setItems(FXCollections.observableArrayList(statusList));
+    }
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
+        statusFieldInit();
         genderInputFieldInit();
         idFieldInit();
     }
@@ -66,6 +78,7 @@ public class UpdateAccountFormController implements Initializable {
         signUpInfo.put("ADDRESS", addressField.getText());
         signUpInfo.put("USERNAME", usernameField.getText());
         signUpInfo.put("GENDER", genderField.getValue().toString().substring(0, 1));
+        signUpInfo.put("STATUS", statusField.getValue().toString());
         Response response = main.getProcessorManager().getAccountManagementProcessor().updateData(signUpInfo, String.format("ID = '%s'", idField.getText()), true);
         StatusCode signupStatus = response.getStatusCode();
         if (signupStatus == StatusCode.OK) {

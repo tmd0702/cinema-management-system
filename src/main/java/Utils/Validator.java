@@ -12,6 +12,13 @@ public class Validator {
                 .matcher(text)
                 .matches();
     }
+    public static boolean validatePhoneNumber(String phoneNumber) {
+        if (phoneNumber.length() != 10) {
+            return false;
+        }
+        String regex = "\\d+";
+        return patternMatches(phoneNumber, regex);
+    }
     public static boolean validatePassword(String password) {
 //        min length is 8 and max length is 25
 //        at least include a digit number,

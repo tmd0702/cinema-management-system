@@ -15,7 +15,7 @@ public class ScreenRoomManagementProcessor extends Processor {
         } else {
             queryCondition = "SCREEN_ROOMS.CINEMA_ID = CINEMAS.ID";
         }
-        Response response = select("SCREEN_ROOMS.ID AS 'SCREEN_ROOMS.ID', SCREEN_ROOMS.NAME AS 'SCREEN_ROOMS.NAME', SCREEN_ROOMS.CAPACITY AS 'SCREEN_ROOMS.CAPACITY', CINEMAS.NAME AS 'CINEMAS.NAME'", from, quantity, queryCondition, sortQuery, String.format("%s, CINEMAS", getDefaultDatabaseTable()));
+        Response response = select("SCREEN_ROOMS.ID AS 'SCREEN_ROOMS.ID', SCREEN_ROOMS.STATUS AS 'SCREEN_ROOMS.STATUS', SCREEN_ROOMS.NAME AS 'SCREEN_ROOMS.NAME', SCREEN_ROOMS.CAPACITY AS 'SCREEN_ROOMS.CAPACITY', CINEMAS.NAME AS 'CINEMAS.NAME'", from, quantity, queryCondition, sortQuery, String.format("%s, CINEMAS", getDefaultDatabaseTable()));
         return response;
     }
     public int countData(String queryCondition) {

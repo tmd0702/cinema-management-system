@@ -76,7 +76,7 @@ public class AccountManagementProcessor extends Processor {
         } else {
             queryCondition = queryCondition + " AND USERS.USER_CATEGORY_ID = USER_CATEGORY.ID";
         }
-        Response response = select("USERS.ID AS 'USERS.ID', USERS.USERNAME AS 'USERS.USERNAME', USERS.FIRST_NAME AS 'USERS.FIRST_NAME', USERS.LAST_NAME AS 'USERS.LAST_NAME', USERS.DOB AS 'USERS.DOB', USERS.GENDER AS 'USERS.GENDER', USERS.ADDRESS AS 'USERS.ADDRESS', USERS.PHONE AS 'USERS.PHONE', USERS.EMAIL AS 'USERS.EMAIL', USERS.USER_ROLE AS 'USERS.USER_ROLE', USERS.SCORE AS 'USERS.SCORE', USER_CATEGORY.CATEGORY AS 'USER_CATEGORY.CATEGORY'", from, quantity, queryCondition, sortQuery, "USERS, USER_CATEGORY");
+        Response response = select("USERS.ID AS 'USERS.ID', USERS.STATUS AS 'USERS.STATUS', USERS.USERNAME AS 'USERS.USERNAME', USERS.FIRST_NAME AS 'USERS.FIRST_NAME', USERS.LAST_NAME AS 'USERS.LAST_NAME', USERS.DOB AS 'USERS.DOB', USERS.GENDER AS 'USERS.GENDER', USERS.ADDRESS AS 'USERS.ADDRESS', USERS.PHONE AS 'USERS.PHONE', USERS.EMAIL AS 'USERS.EMAIL', USERS.USER_ROLE AS 'USERS.USER_ROLE', USERS.SCORE AS 'USERS.SCORE', USER_CATEGORY.CATEGORY AS 'USER_CATEGORY.CATEGORY'", from, quantity, queryCondition, sortQuery, "USERS, USER_CATEGORY");
         return response;
     }
     public Response handleSignupAction(HashMap<String, String> signupInfo) {
@@ -84,15 +84,18 @@ public class AccountManagementProcessor extends Processor {
             if (!Validator.validateEmail(signupInfo.get("email"))) {
                 throw new InvalidEmailException("Email: " + signupInfo.get("email") + " is invalid!");
             }
+            if (!Validator.validatePhoneNumber(signupInfo.get("phone"))) {
+                throw new InvalidPhoneNumberException("Phone number length must be 10 and contains only digit numbers");
+            }
             if (!Validator.validateUsername(signupInfo.get("username"))) {
-                throw new InvalidUsernameException("Username: " + signupInfo.get("username") + " is invalid!");
+                throw new InvalidUsernameException("Username must consists of alphanumeric characters (a-zA-Z0-9), lowercase, or uppercase");
             }
             if (!Validator.validatePassword(signupInfo.get("password"))) {
-                throw new InvalidPasswordException("Password: " + signupInfo.get("password") + " is invalid!");
+                throw new InvalidPasswordException("Password length must be in range [8, 25]; at least include a digit number, an upper/lower case letter, a special character");
             }
             String id = ManagementMain.getInstance().getIdGenerator().generateId("USERS");
             String authId = ManagementMain.getInstance().getIdGenerator().generateId("AUTHENTICATION");
-            String insertUserQuery = String.format("INSERT INTO USERS(ID, USERNAME, FIRST_NAME, LAST_NAME, DOB, GENDER, ADDRESS, PHONE, EMAIL, USER_ROLE, SCORE) VALUES ('%s', '%s', '%s', '%s', '%s', '%s', '%s', '%s', '%s', '%s', %d);", id, signupInfo.get("username"), signupInfo.get("firstName"), signupInfo.get("lastName"), new Date(new SimpleDateFormat("yyyy-MM-dd").parse(signupInfo.get("dateOfBirth")).getTime()), signupInfo.get("gender"), signupInfo.get("address"), signupInfo.get("phone"), signupInfo.get("email"), "SUBSCRIBER", 0);
+            String insertUserQuery = String.format("INSERT INTO USERS(ID, USERNAME, FIRST_NAME, LAST_NAME, DOB, GENDER, ADDRESS, PHONE, EMAIL, USER_ROLE, SCORE, REGIS_DATE) VALUES ('%s', '%s', '%s', '%s', '%s', '%s', '%s', '%s', '%s', '%s', %d, '%s');", id, signupInfo.get("username"), signupInfo.get("firstName"), signupInfo.get("lastName"), new Date(new SimpleDateFormat("yyyy-MM-dd").parse(signupInfo.get("dateOfBirth")).getTime()), signupInfo.get("gender"), signupInfo.get("address"), signupInfo.get("phone"), signupInfo.get("email"), "SUBSCRIBER", 0, signupInfo.get("regisDate"));
             System.out.println(insertUserQuery);
             Statement st = getConnector().createStatement();
             st.execute(insertUserQuery);

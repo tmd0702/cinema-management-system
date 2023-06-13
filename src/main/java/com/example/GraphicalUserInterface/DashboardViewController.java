@@ -1,14 +1,13 @@
 package com.example.GraphicalUserInterface;
 
+import com.example.GraphicalUserInterface.Main;
 import javafx.event.Event;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.Label;
-import javafx.scene.control.TextField;
 import javafx.scene.control.ToggleGroup;
 import javafx.scene.input.MouseButton;
 import javafx.scene.input.MouseEvent;
-import org.w3c.dom.Text;
 
 import java.net.URL;
 import java.util.ResourceBundle;

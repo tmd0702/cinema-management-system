@@ -81,6 +81,12 @@
                <font>
                   <Font name="Georgia Bold" size="13.0" />
                </font></Label>
+            <ComboBox fx:id="statusField" layoutX="177.0" layoutY="208.0" prefHeight="25.0" prefWidth="167.0" />
+            <Label layoutX="125.0" layoutY="213.0" text="Status" textFill="WHITE">
+               <font>
+                  <Font name="Georgia Bold" size="13.0" />
+               </font>
+            </Label>
          </children>
       </AnchorPane>
    </children>

@@ -8,8 +8,8 @@ public class Manager extends User{
         super();
         setRole(Role.MANAGER.getValue());
     }
-    public Manager(String username, String id, String firstName, String lastName, Date dateOfBirth, String phone, String email, String gender, String address, String userCategory) {
-        super(username, id, firstName, lastName, dateOfBirth, phone, email, gender, address, 1899, userCategory);
+    public Manager(String username, String id, String firstName, String lastName, Date dateOfBirth, String phone, String email, String gender, String address, int score, String userCategory) {
+        super(username, id, firstName, lastName, dateOfBirth, phone, email, gender, address, score, userCategory);
         setRole(Role.MANAGER.getValue());
     }
 

@@ -34,19 +34,22 @@ public class Movie {
         this.viewCount = 0;
         this.releaseDate = new Date();
     }
+    public float getVoteAverage() {
+        return this.voteAverage;
+    }
     public Image getPosterImage() {
         return this.posterImage;
     }
     public String getLanguage() {
         return this.language;
     }
-    public Movie(String id, String title, String overview, String movieStatus, int duration, int viewCount, Date releaseDate, String posterPath, String backdropPath, String language) {
+    public Movie(String id, String title, String overview, String movieStatus, int duration, int viewCount, Date releaseDate, String posterPath, String backdropPath, String language, float voteAverage) {
         this.language = language;
         this.id = id;
         this.backdropPath = backdropPath;
         this.genres = new ArrayList<String>();
         this.posterPath = posterPath;
-        System.out.println(this.getPosterPath() + " " + title);
+        this.voteAverage = voteAverage;
         this.title = title;
         this.overview = overview;
         this.movieStatus = movieStatus;
@@ -65,6 +68,9 @@ public class Movie {
     }
     public ArrayList<String> getGenres() {
         return this.genres;
+    }
+    public String getGenresString() {
+        return this.genres.toString().replace("[", "").replace("]", "");
     }
     public void setBackdropImage(Image backdropImage) {
         this.backdropImage = backdropImage;

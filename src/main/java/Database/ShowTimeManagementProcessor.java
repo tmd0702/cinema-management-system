@@ -11,7 +11,7 @@ public class ShowTimeManagementProcessor extends Processor{
         setDefaultDatabaseTable("SHOW_TIMES");
     }
     public Response getData(int from, int quantity, String queryCondition, String sortQuery) {
-        Response response = select("SHOW_TIMES.ID AS 'SHOW_TIMES.ID', SHOW_TIMES.START_TIME AS 'SHOW_TIMES.START_TIME'", from, quantity, queryCondition, sortQuery, String.format("%s", getDefaultDatabaseTable()));
+        Response response = select("SHOW_TIMES.ID AS 'SHOW_TIMES.ID', SHOW_TIMES.STATUS AS 'SHOW_TIMES.STATUS', SHOW_TIMES.START_TIME AS 'SHOW_TIMES.START_TIME'", from, quantity, queryCondition, sortQuery, String.format("%s", getDefaultDatabaseTable()));
         return response;
     }
     public Response updateData(HashMap<String, String> columnValueMap, String queryCondition, boolean isCommit) {

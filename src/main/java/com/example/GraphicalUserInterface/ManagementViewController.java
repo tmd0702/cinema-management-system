@@ -240,6 +240,8 @@ public class ManagementViewController implements Initializable {
             managementPage.getChildren().add(FXMLLoader.load(getClass().getResource("add-seat-category-form.fxml")));
         } else if (subTabPanelOnClick.getId().equals("userCategoryInfoSubTab")) {
             managementPage.getChildren().add(FXMLLoader.load(getClass().getResource("add-user-category-form.fxml")));
+        } else if (subTabPanelOnClick.getId().equals("paymentMethodInfoSubTab")) {
+            managementPage.getChildren().add(FXMLLoader.load(getClass().getResource("add-payment-method-form.fxml")));
         } else {
             managementPage.getChildren().add(FXMLLoader.load(getClass().getResource("add-account-form.fxml")));
         }
@@ -268,6 +270,8 @@ public class ManagementViewController implements Initializable {
             managementPage.getChildren().add(FXMLLoader.load(getClass().getResource("update-seat-category-form.fxml")));
         } else if (subTabPanelOnClick.getId().equals("userCategoryInfoSubTab")) {
             managementPage.getChildren().add(FXMLLoader.load(getClass().getResource("update-user-category-form.fxml")));
+        } else if (subTabPanelOnClick.getId().equals("paymentMethodInfoSubTab")) {
+            managementPage.getChildren().add(FXMLLoader.load(getClass().getResource("update-payment-method-form.fxml")));
         } else {
             managementPage.getChildren().add(FXMLLoader.load(getClass().getResource("update-account-form.fxml")));
         }
@@ -1046,9 +1050,6 @@ public class ManagementViewController implements Initializable {
                     reRenderPage(true);
                 } else if (subTabPanel.getId().equals("paymentMethodInfoSubTab")) {
                     activeProcessor = main.getProcessorManager().getPaymentMethodManagementProcessor();
-                    insertBtn.setDisable(true);
-                    deleteBtn.setDisable(true);
-                    updateBtn.setDisable(true);
                     reRenderPage(true);
                 }
 

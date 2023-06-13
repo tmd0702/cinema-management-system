@@ -43,8 +43,8 @@ public class DashboardViewController implements Initializable {
                 true, true, true, true, true, true, null));
     }
     @FXML
-    public void viewPointBtnOnClick() {
-        Event.fireEvent(main.getNodeById("#pointTabPanel"), new MouseEvent(MouseEvent.MOUSE_CLICKED, 0,
+    public void viewPaymentHistoryBtnOnClick() {
+        Event.fireEvent(main.getNodeById("#paymentHistoryTabPanel"), new MouseEvent(MouseEvent.MOUSE_CLICKED, 0,
                 0, 0, 0, MouseButton.PRIMARY, 1, true, true, true, true,
                 true, true, true, true, true, true, null));
     }

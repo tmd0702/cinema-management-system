@@ -156,7 +156,7 @@ public class AddFakeDatabase {
     }
     public void addFakeSeats() throws Exception {
         HashMap<String, String> seat = new HashMap<String, String>();
-        seat.put("SEAT_CATEGORY_ID", "SC_00001");
+
         int sr_id = 0;
         for (int i = 0; i < 2; ++i) { // i: cinema counter
             for (int j = 1; j <= 6; j++) { // j: screen room counter per cinema
@@ -172,6 +172,11 @@ public class AddFakeDatabase {
                         if(k == 6 && (h == 11 || h == 10))
                             seat.put("STATUS", "Close");
                         else seat.put("STATUS", "Active");
+                        if(k < 4) {
+                            seat.put("SEAT_CATEGORY_ID", "SC_00001");
+                        }else if(k < 6)
+                            seat.put("SEAT_CATEGORY_ID", "SC_00002");
+                        else seat.put("SEAT_CATEGORY_ID", "SC_00003");
                         Response response = seatManagementProcessor.insertData(seat, true);
                         if (response.getStatusCode() == StatusCode.OK) {
                             System.out.println("insert 1 row success" + seat.get("ID"));
@@ -403,23 +408,23 @@ public class AddFakeDatabase {
 
     public static void main(String[] args) throws Exception {
         AddFakeDatabase addFakeDatabase = new AddFakeDatabase();
-//        addFakeDatabase.addFakeUserCategory();
-//        addFakeDatabase.addFakeAccounts();
-//        addFakeDatabase.addFakePromotions();
-//        addFakeDatabase.addFakeTheaters();
-//        addFakeDatabase.addFakeScreenRooms();
-//        addFakeDatabase.addFakeSeatCategory();
-//        addFakeDatabase.addFakeSeats();
-//        addFakeDatabase.addFakeShowTimes();
+        addFakeDatabase.addFakeUserCategory();
+        addFakeDatabase.addFakeAccounts();
+        addFakeDatabase.addFakePromotions();
+        addFakeDatabase.addFakeTheaters();
+        addFakeDatabase.addFakeScreenRooms();
+        addFakeDatabase.addFakeSeatCategory();
+        addFakeDatabase.addFakeSeats();
+        addFakeDatabase.addFakeShowTimes();
         addFakeDatabase.addFakeSchedule();
-//        addFakeDatabase.addFakeItemCategory();
-//        addFakeDatabase.addFakeItems();
-//        addFakeDatabase.addFakeTicket();
-//        addFakeDatabase.addFakePaymentMethod();
-//        addFakeDatabase.addFakePrice();
-//        addFakeDatabase.addFakePayments();
-//        addFakeDatabase.addFakeBookingItems();
-//        addFakeDatabase.addFakeBookingSeats();
+        addFakeDatabase.addFakeItemCategory();
+        addFakeDatabase.addFakeItems();
+        addFakeDatabase.addFakeTicket();
+        addFakeDatabase.addFakePaymentMethod();
+        addFakeDatabase.addFakePrice();
+        addFakeDatabase.addFakePayments();
+        addFakeDatabase.addFakeBookingItems();
+        addFakeDatabase.addFakeBookingSeats();
     }
 }
 

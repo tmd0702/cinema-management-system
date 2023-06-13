@@ -1,4 +1,5 @@
 package com.example.GraphicalUserInterface;
+import BookingManager.BookingInfor;
 import de.jensd.fx.glyphs.fontawesome.FontAwesomeIconView;
 import javafx.application.Platform;
 import javafx.beans.property.DoubleProperty;
@@ -112,8 +113,9 @@ public class BookingController {
     private BookingProcessor bookingProcessor;
 
     @FXML
-     public void initialize() throws SQLException {
+     public void initialize() throws Exception {
 //        bookingProcessor.getConnector().setAutoCommit(false);
+        bookingProcessor = new BookingProcessor();
         ConstructPane();
         //page1
         ConstructDateButton();
@@ -124,12 +126,14 @@ public class BookingController {
 
     }
     public void itemsControllerInit(ArrayList<ArrayList<String>> itemFetcher) {
-//        ArrayList<ArrayList<String>> itemFetcher = bookingProcessor.getItems();
         ArrayList<String> itemNames = Utils.getDataValuesByColumnName(itemFetcher, "ITEMS.NAME");
-        ArrayList<String> priceItems = Utils.getDataValuesByColumnName(itemFetcher, "PRICES.PRICE");
+        ArrayList<String> priceItems = Utils.getDataValuesByColumnName(itemFetcher, "ITEM_PRICES.PRICE");
+        int i = 0;
         for (String itemName : itemNames) {
+            if(!bookingProcessor.checkActive(Utils.getDataValuesByColumnName(itemFetcher, "ITEMS.STATUS").get(i)))
+                continue;
             Label itemLabel = new Label(itemName);
-            itemLabel.setStyle("-fx-text-fill: white; -fx-font-weight: bold; -fx-font-size: 16px");
+            itemLabel.setStyle("-fx-text-fill: white; -fx-font-family: Georgia; -fx-font-size: 16px");
             itemLabel.setPrefSize(120, Region.USE_COMPUTED_SIZE);
             itemLabel.setTextAlignment(TextAlignment.RIGHT);
             itemLabel.setWrapText(true);
@@ -171,6 +175,7 @@ public class BookingController {
             itemControllerContainer.setSpacing(20);
             itemControllerContainer.setAlignment(Pos.CENTER_LEFT);
             itemControllerContainer.getChildren().add(itemControllerInstance);
+            i++;
         }
     }
     public void getIdItems(ArrayList<ArrayList<String>> itemFetcher, int index){
@@ -185,11 +190,13 @@ public class BookingController {
     }
 
     public void ConstructItem(){
-        ArrayList<ArrayList<String>> itemFetcher = bookingProcessor.getItems();
-        ArrayList<String> itemNames = Utils.getDataValuesByColumnName(itemFetcher, "ITEMS.NAME");
-        for(int i = 0; i < itemNames.size(); i++)
-        numberOfitems.add(0);
-        itemsControllerInit(itemFetcher);
+        if(itemControllerContainer.getChildren().isEmpty()) {
+            ArrayList<ArrayList<String>> itemFetcher = bookingProcessor.getItems();
+            ArrayList<String> itemNames = Utils.getDataValuesByColumnName(itemFetcher, "ITEMS.NAME");
+            for (int i = 0; i < itemNames.size(); i++)
+                numberOfitems.add(0);
+            itemsControllerInit(itemFetcher);
+        }
     }
     public void ConstructPaymentMethodButton(){
         if(paymentMethodVbox.getChildren().isEmpty()) {
@@ -205,6 +212,7 @@ public class BookingController {
                 }
                 hbox.setSpacing(100);
                 RadioButton radioButton = new RadioButton(namePaymentMethod.get(i));
+                radioButton.setFont(Font.font("Georgia"));
                 radioButton.setToggleGroup(toggleGroup);
                 radioButton.setTextFill(Color.WHITE);
                 radioButton.setOnAction(event -> {
@@ -312,6 +320,7 @@ public class BookingController {
             //button.setPrefSize(134,48);
             button.setMinSize(134, 48);
             button.setStyle("-fx-background-color: #2B2B2B");
+            button.setFont(Font.font("Georgia"));
             button.setTextFill(Color.WHITE);
             button.setText(cinema);
             button.setOnAction(e->handleDateButtonAction(e));
@@ -346,6 +355,7 @@ public class BookingController {
             //button.setPrefSize(134,48);
             button.setMinSize(75, 48);
             button.setStyle("-fx-background-color: #2B2B2B");
+            button.setFont(Font.font("Georgia"));
             button.setTextFill(Color.WHITE);
             button.setText(timeSlot);
             button.setOnAction(e->handleDateButtonAction(e));
@@ -359,17 +369,17 @@ public class BookingController {
         ConstructActiveList(TimeButton, isTimeActive);
      }
      public void ConstructSeatGrid(){
+        SeatId = new ArrayList<String>();
         SeatGrid.setPrefSize(507, 298);
-        SeatGrid.setLayoutX(385);
-        SeatGrid.setLayoutY(234);
+        SeatGrid.setLayoutX(408);
+        SeatGrid.setLayoutY(210);
         SeatGrid.setHgap(10);
         SeatGrid.setVgap(10);
         if(!pane2.getChildren().contains(SeatGrid))
             pane2.getChildren().add(SeatGrid);
         ArrayList<ArrayList<String>> SeatInfor = bookingProcessor.getSeat();
         ArrayList<String> SeatList = Utils.getDataValuesByColumnName(SeatInfor, "NAME");
-        System.out.println(SeatList);
-        System.out.println(SeatInfor.size());
+        System.out.println(SeatInfor);
         for(int i = 0; i < SeatList.size(); i++){
             String s = SeatList.get(i);
             int rowIndex = s.charAt(0) - 'A';
@@ -379,26 +389,39 @@ public class BookingController {
             button.setPrefSize(25,34);
             button.setFont(Font.font(7.5));
             button.setWrapText(true);
+            if(!bookingProcessor.checkActive(Utils.getDataValuesByColumnName(SeatInfor, "STATUS").get(i))){
+                button.setStyle("-fx-background-color: #ffffff;");
+                button.setText("X");
+                SeatGrid.add(button, columnIndex, rowIndex);
+                continue;
+            }
             boolean occupied = bookingProcessor.checkStatusSeat(getIdFromIndex(bookingProcessor.getSeat(), i), bookingProcessor.getBookingInfor().getScheduleId());
-            System.out.println(occupied);
+            String category = Utils.getDataValuesByColumnName(SeatInfor, "SEAT_CATEGORY_ID").get(i);
             if(!occupied){
                 button.setStyle("-fx-background-color: #393939;");
-//                button.setDisable(true);
                 SeatGrid.add(button, columnIndex, rowIndex);
                 continue;
             }else{
-                button.setStyle("-fx-background-color: #A4A4A4");
+                if(category.equals("SC_00001"))
+                    button.setStyle("-fx-background-color: #A4A4A4");
+                else if (category.equals("SC_00002"))
+                    button.setStyle("-fx-background-color: #A4A4A4;-fx-border-color: yellow");
+                else button.setStyle("-fx-background-color:  #FF00D6");
             }
             SeatGrid.add(button, columnIndex, rowIndex);
             button.setOnAction(event->{
                 if(SeatName.size() < 12) {
-                    if (button.getStyle() == "-fx-background-color: #A4A4A4") {
+                    if (button.getStyle() != "-fx-background-color: #8D090D") {
                         button.setStyle("-fx-background-color: #8D090D");
                         SeatName.add(button.getText());
                         SeatId.add(getIdFromIndex(SeatInfor, SeatList.indexOf(s)));
                         displaySeatInfor();
                     } else {
-                        button.setStyle("-fx-background-color: #A4A4A4");
+                        if(category.equals("SC_00001"))
+                            button.setStyle("-fx-background-color: #A4A4A4");
+                        else if (category.equals("SC_00002"))
+                            button.setStyle("-fx-background-color: #A4A4A4;-fx-border-color: yellow");
+                        else button.setStyle("-fx-background-color:  #FF00D6");
                         SeatName.remove(button.getText());
                         SeatId.remove(getIdFromIndex(SeatInfor, SeatList.indexOf(s)));
                         displaySeatInfor();
@@ -406,7 +429,11 @@ public class BookingController {
                     SeatGrid.requestFocus();
                 }
                 else if(button.getStyle() == "-fx-background-color: #8D090D"){
-                    button.setStyle("-fx-background-color: #A4A4A4");
+                    if(category.equals("SC_00001"))
+                        button.setStyle("-fx-background-color: #A4A4A4");
+                    else if (category.equals("SC_00002"))
+                        button.setStyle("-fx-background-color: #A4A4A4;-fx-border-color: yellow");
+                    else button.setStyle("-fx-background-color:  #FF00D6");
                     SeatName.remove(button.getText());
                     SeatId.remove(getIdFromIndex(SeatInfor, SeatList.indexOf(s)));
                     displaySeatInfor();
@@ -422,6 +449,7 @@ public class BookingController {
             });
         }
 
+
      }
      public void displayAnnounce(){
         if(showDate.getText() == ""){
@@ -430,16 +458,29 @@ public class BookingController {
             announceCinema.setVisible(true);
             announceTime.setVisible(true);
         }else {
-            VisibleScrollpane(cinemaSection, cineScrollLeftBtn, cineScrollRightBtn);
-            if (nameCinema.getText() == "") {
-                InvisibleScrollpane(timeSection, timeSlotScrollLeftBtn, timeSlotScrollRightBtn);
-                announceCinema.setVisible(false);
-                announceTime.setVisible(true);
-            } else {
-                VisibleScrollpane(timeSection, timeSlotScrollLeftBtn, timeSlotScrollRightBtn);
-                announceCinema.setVisible(false);
-                announceTime.setVisible(false);
+            if(cinemaSection.getChildren().isEmpty()) {
+                announceCinema.setVisible(true);
+                announceCinema.setText("No cinema shows this movie on this day");
+            }
+            else {
+                announceCinema.setText("Please choose one date the movie is being showed");
+                VisibleScrollpane(cinemaSection, cineScrollLeftBtn, cineScrollRightBtn);
+                if (nameCinema.getText() == "") {
+                    InvisibleScrollpane(timeSection, timeSlotScrollLeftBtn, timeSlotScrollRightBtn);
+                    announceCinema.setVisible(false);
+                    announceTime.setVisible(true);
+                } else {
+                    if(timeSection.getChildren().isEmpty()){
+                        announceTime.setVisible(true);
+                        announceTime.setText("No rooms shows this movie on this time");
+                    }else {
+                        announceTime.setText("Please choose one cinema you would you like to watch in listed above");
+                        VisibleScrollpane(timeSection, timeSlotScrollLeftBtn, timeSlotScrollRightBtn);
+                        announceCinema.setVisible(false);
+                        announceTime.setVisible(false);
+                    }
 
+                }
             }
         }
      }
@@ -470,19 +511,7 @@ public class BookingController {
          c = maxNum;
 
      }
-//     public void handleComboButton(ActionEvent event){
-//            Button b = (Button) event.getSource();
-//            if(CaraButton.contains(b))
-//                changeNumberOfItems(numberOfCara, b, CaraButton);
-//            else if(CheeseButton.contains(b))
-//                changeNumberOfItems(numberOfCheese, b, CheeseButton);
-//            else if(CokeButton.contains(b))
-//                changeNumberOfItems(numberOfCoke, b, CokeButton);
-//            else if (ComboButton.contains(b))
-//                changeNumberOfItems(numberOfCombo, b, ComboButton);
-//            calculateTotal();
-//
-//     }
+
      public void changeNumberOfItems(Label label, Button b, int index, ArrayList<String> priceList){
         int i = Integer.parseInt(label.getText());
             if(b.getText().equals("-")){
@@ -526,9 +555,13 @@ public class BookingController {
 
      }
      public void calculatePrice(){
-         int Price = SeatName.size() * 70000;
+        int Price = 0 ;
+        System.out.println(SeatId);
+        for(String id : SeatId) {
+            Price += bookingProcessor.getSeatPrice(id);
+            //priceFinal.setText(price.getText());
+        }
          price.setText(Integer.toString(Price));
-         //priceFinal.setText(price.getText());
      }
      public void calculateTotal(){
          total.setText(Integer.toString(Integer.parseInt(price.getText()) + Integer.parseInt(combo.getText())));

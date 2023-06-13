@@ -40,7 +40,7 @@
             <Font name="Georgia Bold" size="12.0" />
          </font>
       </Label>
-      <Button fx:id="viewPointBtn" layoutX="270.0" layoutY="439.0" mnemonicParsing="false" onMouseClicked="#viewPointBtnOnClick" prefHeight="30.0" prefWidth="73.0" style="-fx-background-color: #ab0a10;" text="View" textFill="WHITE">
+      <Button fx:id="viewPointBtn" layoutX="270.0" layoutY="439.0" mnemonicParsing="false" onMouseClicked="#viewPaymentHistoryBtnOnClick" prefHeight="30.0" prefWidth="73.0" style="-fx-background-color: #ab0a10;" text="View" textFill="WHITE">
          <font>
             <Font name="Georgia Bold" size="12.0" />
          </font></Button>

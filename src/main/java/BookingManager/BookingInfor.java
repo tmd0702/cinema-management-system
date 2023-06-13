@@ -23,7 +23,7 @@ public class BookingInfor {
         this.time = "";
         this.screen = "";
         this.discount = 0;
-        this.promotionCode = "";
+        this.promotionCode = null;
         this.paymentMethodId = "";
         this.seats = new ArrayList<>();
         this.items = new ArrayList<>();

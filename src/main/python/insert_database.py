@@ -4,7 +4,8 @@ import mysql.connector
 import requests
 import os
 import json
-from datetime import date
+from datetime import date, timedelta
+
 
 class Database:
     def __init__(self):
@@ -30,7 +31,7 @@ class Database:
             print("error, skip")
 
     def update_releasedate_movie(self):
-        today = date.today()
+        today = date.today() - timedelta(days=1)
         sql = "UPDATE MOVIES SET RELEASE_DATE = DATE_FORMAT(RELEASE_DATE ,'{today}');".format(today=today)
         try:
             self.cursor.execute(sql)

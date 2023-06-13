@@ -25,7 +25,9 @@ public class AddAccountFormController implements Initializable {
     @FXML
     private ComboBox genderField;
     @FXML
-    private TextField firstNameField, lastNameField, emailField, usernameField, passwordField, phoneField, addressField;
+    private PasswordField passwordField;
+    @FXML
+    private TextField firstNameField, lastNameField, emailField, usernameField, phoneField, addressField;
     @FXML
     private DatePicker dobField;
     @FXML
@@ -68,7 +70,6 @@ public class AddAccountFormController implements Initializable {
     public void saveInsertBtnOnClick() throws IOException {
         System.out.println("save");
         handleInsertRecordRequest();
-        disableInsertForm();
     }
     public void handleInsertRecordRequest() {
         HashMap<String, String> signUpInfo = new HashMap<String, String>();
@@ -76,7 +77,7 @@ public class AddAccountFormController implements Initializable {
         signUpInfo.put("lastName", lastNameField.getText());
         signUpInfo.put("email", emailField.getText());
         signUpInfo.put("phone", phoneField.getText());
-        signUpInfo.put("dateOfBirth", DateTimeFormatter.ofPattern("dd-MM-yyyy").format(dobField.getValue()));
+        signUpInfo.put("dateOfBirth", DateTimeFormatter.ofPattern("yyyy-MM-dd").format(dobField.getValue()));
         signUpInfo.put("address", addressField.getText());
         signUpInfo.put("username", usernameField.getText());
         signUpInfo.put("password", passwordField.getText());
@@ -92,8 +93,15 @@ public class AddAccountFormController implements Initializable {
             dialog.setContentText("The record has been added successfully");
             dialog.getDialogPane().getButtonTypes().add(type);
             dialog.showAndWait();
+            disableInsertForm();
         } else {
-
+            Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
+            alert.setTitle("Confirmation");
+            alert.setContentText(response.getMessage());
+            Optional<ButtonType> result = alert.showAndWait();
+            if (result.get() == ButtonType.OK) {
+                System.out.println("ok");
+            }
         }
     }
 }

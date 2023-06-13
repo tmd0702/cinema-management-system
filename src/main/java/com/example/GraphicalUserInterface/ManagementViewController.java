@@ -977,7 +977,7 @@ public class ManagementViewController implements Initializable {
                 activateBtn();
                 if (subTabPanel.getId().equals("userInfoSubTab")) {
                     activeProcessor = main.getProcessorManager().getAccountManagementProcessor();
-                    insertBtn.setDisable(true);
+//                    insertBtn.setDisable(true);
                     reRenderPage(true);
                 } else if (subTabPanel.getId().equals("userCategoryInfoSubTab")) {
                     activeProcessor = main.getProcessorManager().getUserCategoryManagementProcessor();

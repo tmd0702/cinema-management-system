@@ -3,7 +3,6 @@ package com.example.GraphicalUserInterface;
 import Utils.Response;
 import Utils.StatusCode;
 import Utils.Utils;
-import com.example.GraphicalUserInterface.ManagementMain;
 import javafx.collections.FXCollections;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
@@ -24,7 +23,7 @@ public class AddPromotionFormController implements Initializable {
     ArrayList<ArrayList<String>> userCategoryInfo;
     ArrayList<String> userCategoryCategories;
     @FXML
-    private ComboBox userCategoryNameField;
+    private ComboBox userCategoryCategoryField;
     @FXML
     private TextField nameField, descriptionField, discountField;
     @FXML
@@ -52,8 +51,8 @@ public class AddPromotionFormController implements Initializable {
     }
     public void userCategoryNameFieldInit() {
         userCategoryInfo = main.getProcessorManager().getUserCategoryManagementProcessor().getData(0, -1, "", "").getData();
-        userCategoryCategories = Utils.getDataValuesByColumnName(userCategoryInfo, "CATEGORY");
-        userCategoryNameField.setItems(FXCollections.observableArrayList(userCategoryCategories));
+        userCategoryCategories = Utils.getDataValuesByColumnName(userCategoryInfo, "USER_CATEGORY.CATEGORY");
+        userCategoryCategoryField.setItems(FXCollections.observableArrayList(userCategoryCategories));
     }
     @FXML
     public void cancelInsertBtnOnClick() {
@@ -91,7 +90,7 @@ public class AddPromotionFormController implements Initializable {
         promotionInfo.put("END_DATE", DateTimeFormatter.ofPattern("yyyy-MM-dd").format(endDateField.getValue()));
         promotionInfo.put("DESCRIPTION", descriptionField.getText());
         promotionInfo.put("DISCOUNT", discountField.getText());
-        promotionInfo.put("USER_CATEGORY_ID", getUserCategoryObjectIDFromComboBox(userCategoryNameField.getValue()));
+        promotionInfo.put("USER_CATEGORY_ID", getUserCategoryObjectIDFromComboBox(userCategoryCategoryField.getValue()));
         Response response = main.getProcessorManager().getPromotionManagementProcessor().insertData(promotionInfo, true);
         StatusCode status = response.getStatusCode();
 

@@ -61,17 +61,17 @@ public class BookingProcessor extends Processor {
     public ArrayList<ArrayList<String>> getSeat() {
         return main.getProcessorManager().getSeatManagementProcessor().getData(0, -1,String.format("SCREEN_ROOM_ID = \"%s\";", bookingInfor.getScreen()),"").getData();
     }
-    public boolean checkActive(String seatStatus){
-        if(seatStatus.equals("Active"))
+    public boolean checkActive(String status){
+        if(status.equals("AVAILABLE"))
             return true;
         else return false;
     }
     public ArrayList<ArrayList<String>> getTimeSlotList() {
-        return select("DISTINCT(ST.ID), DATE_FORMAT(START_TIME, '%H:%i') AS TIME_SLOT, SCH.ID AS SCHEDULE_ID ",0, -1, String.format("SCH.SHOW_TIME_ID = ST.ID AND SCH.SCREEN_ROOM_ID = SR.ID AND SCH.MOVIE_ID = \"%s\" AND SCH.SHOW_DATE = \"%s\" AND SR.CINEMA_ID = \"%s\" ORDER BY TIME_SLOT ASC;", bookingInfor.getIdMovie(), bookingInfor.getDate(), bookingInfor.getNameCinema()),"","SCHEDULES SCH, SHOW_TIMES ST, SCREEN_ROOMS SR").getData();
+        return select("DISTINCT(ST.ID), DATE_FORMAT(START_TIME, '%H:%i') AS TIME_SLOT, SCH.ID AS SCHEDULE_ID, ST.STATUS ",0, -1, String.format("SCH.SHOW_TIME_ID = ST.ID AND SCH.SCREEN_ROOM_ID = SR.ID AND SCH.MOVIE_ID = \"%s\" AND SCH.SHOW_DATE = \"%s\" AND SR.CINEMA_ID = \"%s\" ORDER BY TIME_SLOT ASC;", bookingInfor.getIdMovie(), bookingInfor.getDate(), bookingInfor.getNameCinema()),"","SCHEDULES SCH, SHOW_TIMES ST, SCREEN_ROOMS SR").getData();
     }
 
     public ArrayList<ArrayList<String>> getTheaterList() {
-        return select("DISTINCT(CIN.ID), CIN.NAME ", 0, -1, String.format("SCH.SCREEN_ROOM_ID = SR.ID AND SR.CINEMA_ID = CIN.ID AND MOVIE_ID = \"%s\" AND SCH.SHOW_DATE = \"%s\";", bookingInfor.getIdMovie(), bookingInfor.getDate()), "","SCHEDULES SCH, SCREEN_ROOMS SR, CINEMAS CIN " ).getData();
+        return select("DISTINCT(CIN.ID), CIN.NAME, CIN.STATUS ", 0, -1, String.format("SCH.SCREEN_ROOM_ID = SR.ID AND SR.CINEMA_ID = CIN.ID AND MOVIE_ID = \"%s\" AND SCH.SHOW_DATE = \"%s\";", bookingInfor.getIdMovie(), bookingInfor.getDate()), "","SCHEDULES SCH, SCREEN_ROOMS SR, CINEMAS CIN " ).getData();
     }
 
     public ArrayList<ArrayList<String>> getPaymentMethod() {
@@ -144,14 +144,18 @@ public class BookingProcessor extends Processor {
             createBookingItemRow(paymentId);
         }
     }
+//    public  String getItemPriceId(String id){
+//
+//    }
     public void createBookingItemRow(String paymentID){
         HashMap<String, String> itemBooking = new HashMap<String, String>();
         ArrayList<ArrayList<String>> items= bookingInfor.getItems();
-        System.out.println(bookingInfor.getItems());
+        System.out.println("\n\n\n"+ bookingInfor.getItems());
         for(ArrayList<String> item : items) {
             itemBooking.put("PAYMENT_ID", paymentID);
             itemBooking.put("ITEM_ID", item.get(0));
             itemBooking.put("QUANTITY", item.get(1));
+            itemBooking.put("ITEM_PRICE_ID", item.get(2));
             Response response = main.getProcessorManager().getBookingItemManagementProccessor().insertData(itemBooking, false);
             if (response.getStatusCode() == StatusCode.OK) {
                 System.out.println("insert 1 row success" );

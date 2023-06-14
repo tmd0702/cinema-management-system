@@ -54,7 +54,7 @@ public class AddFakeDatabase {
         account.put("ADDRESS", "test");
         account.put("GENDER", "M");
         account.put("USER_ROLE", "admin");
-        account.put("STATUS", "Active");
+        account.put("STATUS", "AVAILABLE");
         for (int i=0;i<200;++i) {
             account.put("ID", idGenerator.generateId(accountManagementProcessor.getDefaultDatabaseTable()));
             account.put("USERNAME", "admin" + (i + 1));
@@ -75,13 +75,13 @@ public class AddFakeDatabase {
             if(i <= 100){
                 promotion.put("START_DATE", "2023-05-03");
                 promotion.put("END_DATE", "2023-05-15");
-                promotion.put("STATUS", "Close");
+                promotion.put("STATUS", "CLOSED");
                 promotion.put("USER_CATEGORY_ID", "UC_00001");
             }
             else{
                 promotion.put("START_DATE", "2023-06-09");
                 promotion.put("END_DATE", "2023-12-01");
-                promotion.put("STATUS", "Active");
+                promotion.put("STATUS", "AVAILABLE");
                 if(i < 150)
                     promotion.put("USER_CATEGORY_ID", "UC_00002");
                 else
@@ -104,9 +104,9 @@ public class AddFakeDatabase {
             theater.put("NAME", "4HB THU DUC "+ (i+1));
             theater.put("ID", idGenerator.generateId(cinemaManagementProcessor.getDefaultDatabaseTable()));
             if(i<8)
-                theater.put("STATUS", "Active");
+                theater.put("STATUS", "AVAILABLE");
             else
-                theater.put("STATUS", "Close");
+                theater.put("STATUS", "CLOSED");
             Response response = cinemaManagementProcessor.insertData(theater, true);
             if (response.getStatusCode() == StatusCode.OK) {
                 System.out.println("insert 1 row success");
@@ -125,9 +125,9 @@ public class AddFakeDatabase {
                 room.put("NAME", "ROOM_" + j);
                 room.put("CINEMA_ID", "CIN_" + String.format("%05d", (i + 1)));
                 if(j < 6)
-                    room.put("STATUS" , "Active");
+                    room.put("STATUS" , "AVAILABLE");
                 else
-                    room.put("STATUS", "Close");
+                    room.put("STATUS", "CLOSED");
                 Response response = screenRoomManagementProcessor.insertData(room, true);
                 if (response.getStatusCode() == StatusCode.OK) {
                     System.out.println("insert 1 row success" + room.get("CINEMA_ID"));
@@ -170,8 +170,8 @@ public class AddFakeDatabase {
                         seat.put("NAME", String.valueOf((char)('A' + k)) + t);
                         seat.put("SCREEN_ROOM_ID", "SR_" + String.format("%05d", (sr_id)));
                         if(k == 6 && (h == 11 || h == 10))
-                            seat.put("STATUS", "Close");
-                        else seat.put("STATUS", "Active");
+                            seat.put("STATUS", "CLOSED");
+                        else seat.put("STATUS", "AVAILABLE");
                         if(k < 4) {
                             seat.put("SEAT_CATEGORY_ID", "SC_00001");
                         }else if(k < 6)
@@ -194,7 +194,7 @@ public class AddFakeDatabase {
         HashMap<String, String> time = new HashMap<String, String>();
         DateTimeFormatter dateTimeFormatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
         LocalTime localTime = LocalTime.of(12,40);
-        time.put("STATUS", "Active");
+        time.put("STATUS", "AVAILABLE");
         for (int t = 0; t < 15; t++) {
             time.put("ID", idGenerator.generateId(showTimeManagementProcessor.getDefaultDatabaseTable()));
             time.put("START_TIME", localTime.toString());
@@ -249,8 +249,8 @@ public class AddFakeDatabase {
             item.put("UNIT", "KG");
             item.put("QUANTITY", "100");
             if(j < 6)
-            item.put("STATUS", "Active");
-            else item.put("STATUS", "Close");
+            item.put("STATUS", "AVAILABLE");
+            else item.put("STATUS", "CLOSED");
             Response response = itemManagementProcessor.insertData(item, true);
             if (response.getStatusCode() == StatusCode.OK) {
                 System.out.println("insert 1 row success" + item.get("ID"));

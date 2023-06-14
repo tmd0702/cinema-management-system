@@ -100,6 +100,7 @@ public class SearchResultsViewController implements Initializable {
                 Label releaseDate = new Label("Release date: " + movie.getReleaseDate().toString());
                 Label duration = new Label("Duration: " + movie.getDuration() + " minutes");
                 Label rating = new Label("Rate:");
+                rating.setStyle("-fx-text-fill: white; -fx-font-size: 14px;");
                 HBox ratingStarSection = new HBox();
                 float voteAverage = movie.getVoteAverage() / 2;
                 for (int j=0; j<5; ++j) {

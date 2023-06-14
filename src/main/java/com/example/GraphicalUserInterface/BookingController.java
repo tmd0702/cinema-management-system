@@ -182,6 +182,7 @@ public class BookingController {
         ArrayList<String> itemPicked = new ArrayList<>();
         itemPicked.add(getIdFromIndex(itemFetcher, index));
         itemPicked.add(Integer.toString(numberOfitems.get(index)));
+        itemPicked.add(Utils.getDataValuesByColumnName(itemFetcher, "ITEM_PRICES.ID").get(2));
         bookingProcessor.getBookingInfor().addItems(itemPicked);
     }
     public BookingController(){
@@ -313,7 +314,10 @@ public class BookingController {
         cinemaInfor = bookingProcessor.getTheaterList();
         System.out.println(cinemaInfor);
         cinemaName = Utils.getDataValuesByColumnName(cinemaInfor, "NAME");
+        int i = 0;
         for(String cinema : cinemaName){
+            if(!bookingProcessor.checkActive(Utils.getDataValuesByColumnName(cinemaInfor, "STATUS").get(i)))
+                continue;
             Button button = new Button();
             button.setWrapText(true);
             button.setTextAlignment(TextAlignment.CENTER);
@@ -326,9 +330,11 @@ public class BookingController {
             button.setOnAction(e->handleDateButtonAction(e));
             CinemaButton.add(button);
             cinemaSection.getChildren().add(button);
+            i++;
         }
         cinemaSectionScrollPane.setContent(cinemaSection);
         ConstructActiveList(CinemaButton, isCinemaActive);
+
      }
     public String getIdFromIndex(ArrayList<ArrayList<String>> infor, int index ) {
         String id = infor.get(2 + index).get(0);
@@ -348,7 +354,10 @@ public class BookingController {
          String today = now.format(todayFormatter);
          DateTimeFormatter timeFormatter = DateTimeFormatter.ofPattern("HH:mm");
          String nowTime = now.format(timeFormatter);
+         int i = 0;
         for(String timeSlot : timeSlotList){
+            if(!bookingProcessor.checkActive(Utils.getDataValuesByColumnName(timeInfor, "STATUS").get(i)))
+                continue;
             Button button = new Button();
             button.setWrapText(true);
             button.setTextAlignment(TextAlignment.CENTER);
@@ -360,10 +369,12 @@ public class BookingController {
             button.setText(timeSlot);
             button.setOnAction(e->handleDateButtonAction(e));
             TimeButton.add(button);
+            i++;
             if(bookingProcessor.getBookingInfor().getDate().equals(today) && timeSlot.compareTo(nowTime) <= 0) {
                 continue;
             }
             timeSection.getChildren().add(button);
+
         }
         timeSlotSecionScrollPane.setContent(timeSection);
         ConstructActiveList(TimeButton, isTimeActive);
@@ -942,5 +953,6 @@ public class BookingController {
                 }
             }
         }
+
     }
 }

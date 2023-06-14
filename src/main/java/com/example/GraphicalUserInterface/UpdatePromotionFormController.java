@@ -3,7 +3,6 @@ package com.example.GraphicalUserInterface;
 import Utils.Response;
 import Utils.StatusCode;
 import Utils.Utils;
-import com.example.GraphicalUserInterface.ManagementMain;
 import javafx.collections.FXCollections;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
@@ -29,7 +28,7 @@ public class UpdatePromotionFormController implements Initializable {
     @FXML
     private VBox updatePromotionForm;
     @FXML
-    private ComboBox userCategoryNameField;
+    private ComboBox userCategoryCategoryField;
     @FXML
     private ComboBox statusField;
     public void statusFieldInit() {
@@ -47,8 +46,8 @@ public class UpdatePromotionFormController implements Initializable {
     }
     public void userCategoryNameFieldInit() {
         userCategoryInfo = main.getProcessorManager().getUserCategoryManagementProcessor().getData(0, -1, "", "").getData();
-        userCategoryCategories = Utils.getDataValuesByColumnName(userCategoryInfo, "CATEGORY");
-        userCategoryNameField.setItems(FXCollections.observableArrayList(userCategoryCategories));
+        userCategoryCategories = Utils.getDataValuesByColumnName(userCategoryInfo, "USER_CATEGORY.CATEGORY");
+        userCategoryCategoryField.setItems(FXCollections.observableArrayList(userCategoryCategories));
     }
     public void idFieldInit() {
         idField.setDisable(true);
@@ -89,7 +88,7 @@ public class UpdatePromotionFormController implements Initializable {
         promotionInfo.put("END_DATE", DateTimeFormatter.ofPattern("yyyy-MM-dd").format(endDateField.getValue()));
         promotionInfo.put("DISCOUNT", discountField.getText());
         promotionInfo.put("DESCRIPTION", descriptionField.getText());
-        promotionInfo.put("USER_CATEGORY_ID", getUserCategoryObjectIDFromComboBox(userCategoryNameField.getValue()));
+        promotionInfo.put("USER_CATEGORY_ID", getUserCategoryObjectIDFromComboBox(userCategoryCategoryField.getValue()));
         promotionInfo.put("STATUS", statusField.getValue().toString());
         Response response = main.getProcessorManager().getPromotionManagementProcessor().updateData(promotionInfo, String.format("ID = '%s'", idField.getText()), true);
         StatusCode status = response.getStatusCode();

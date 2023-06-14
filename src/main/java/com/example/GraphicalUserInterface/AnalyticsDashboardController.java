@@ -50,6 +50,7 @@ public class AnalyticsDashboardController implements Initializable {
         DateTimeFormatter dtf = DateTimeFormatter.ofPattern("yyyy-MM-dd");
         LocalDateTime now = LocalDateTime.now();
         String todayDate = dtf.format(now);
+
         return todayDate;
     }
     public void searchFieldInit() {
@@ -82,6 +83,9 @@ public class AnalyticsDashboardController implements Initializable {
         itemRevenueField.setText(String.format("Item revenue: %s", itemRevenue));
     }
     public void headerSectionInit() {
+        DateTimeFormatter dtf = DateTimeFormatter.ofPattern("yyyy-MM-dd");
+        LocalDateTime now = LocalDateTime.now();
+        String todayDate = dtf.format(now);
         String[] todayDateSplitted = this.getTodayDate().split("-");
         String year = todayDateSplitted[0];
         String month = todayDateSplitted[1];
@@ -89,7 +93,7 @@ public class AnalyticsDashboardController implements Initializable {
         String thisYearStartDate = String.format("%s-01-01", year);
         String thisMonthStartDate = String.format("%s-%s-01", year, month);
 
-        todayRevenueField.setText(Utils.getRowValueByColumnName(2, "OVERALL_REVENUE", main.getProcessorManager().getAnalyticsProcessor().getOverallRevenue(String.format("PAYMENT_DATE = '%s'", getTodayDate())).getData()));
+        todayRevenueField.setText(Utils.getRowValueByColumnName(2, "OVERALL_REVENUE", main.getProcessorManager().getAnalyticsProcessor().getOverallRevenue(String.format("PAYMENT_DATE = '%s'", todayDate)).getData()));
         todayRevenueField.setFont(Font.font("Georgia"));
         thisMonthRevenueField.setText(Utils.getRowValueByColumnName(2, "OVERALL_REVENUE", main.getProcessorManager().getAnalyticsProcessor().getOverallRevenue(String.format("PAYMENT_DATE >= '%s' AND PAYMENT_DATE <= '%s'", thisMonthStartDate, getTodayDate())).getData()));
         thisMonthRevenueField.setFont(Font.font("Georgia"));

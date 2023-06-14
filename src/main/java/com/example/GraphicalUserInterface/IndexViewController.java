@@ -202,7 +202,7 @@ public class IndexViewController implements Initializable {
                     } else {
                     Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
                     alert.setTitle("Failed");
-                    alert.setContentText("Please sign in to comment!");
+                    alert.setContentText("Please sign in to book ticket!");
                     Optional<ButtonType> result = alert.showAndWait();
                     if (result.get() == ButtonType.OK) {
                         Event.fireEvent(main.getNodeById("#signInBtn"), new MouseEvent(MouseEvent.MOUSE_CLICKED, 0,

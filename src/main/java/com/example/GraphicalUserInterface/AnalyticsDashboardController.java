@@ -1,5 +1,6 @@
 package com.example.GraphicalUserInterface;
 
+import MovieManager.Movie;
 import Utils.Utils;
 import com.example.GraphicalUserInterface.ManagementMain;
 import javafx.collections.FXCollections;
@@ -10,6 +11,8 @@ import javafx.scene.chart.BarChart;
 import javafx.scene.chart.LineChart;
 import javafx.scene.chart.PieChart;
 import javafx.scene.chart.XYChart;
+import javafx.scene.control.ComboBox;
+import javafx.scene.control.DatePicker;
 import javafx.scene.control.Label;
 import javafx.scene.control.ScrollPane;
 import javafx.scene.text.Font;
@@ -30,7 +33,13 @@ public class AnalyticsDashboardController implements Initializable {
     @FXML
     private LineChart overallRevenueLineChart;
     @FXML
+    private ComboBox movieNamesComboBox, itemNamesComboBox;
+    @FXML
+    private DatePicker bookingTicketStartDateField, bookingTicketEndDateField, bookingItemStartDateField, bookingItemEndDateField;
+    @FXML
     private PieChart ticketItemComparisonPieChart, itemCategoryRevenueComparisonPieChart, movieGenreRevenuePieChart;
+    @FXML
+    private Label ticketQuantityField, ticketRevenueField, itemRevenueField, itemQuantityField;
     private ManagementMain main;
     public AnalyticsDashboardController() {
         main = ManagementMain.getInstance();
@@ -42,6 +51,35 @@ public class AnalyticsDashboardController implements Initializable {
         LocalDateTime now = LocalDateTime.now();
         String todayDate = dtf.format(now);
         return todayDate;
+    }
+    public void searchFieldInit() {
+        ArrayList<ArrayList<String>> movieInfoFetcher = main.getProcessorManager().getMovieManagementProcessor().getData(0, -1, "", "").getData();
+        ArrayList<String> movieNames = Utils.getDataValuesByColumnName(movieInfoFetcher, "TITLE");
+        for (Movie movie : main.getProcessorManager().getMovieManagementProcessor().getMovieManager().getMovieList()) {
+            movieNames.add(movie.getTitle());
+        }
+        movieNamesComboBox.setItems(FXCollections.observableArrayList(movieNames));
+        ArrayList<String> itemNames = Utils.getDataValuesByColumnName(main.getProcessorManager().getItemManagementProcessor().getData(0, -1, "", "").getData(), "ITEMS.NAME");
+        itemNamesComboBox.setItems(FXCollections.observableArrayList(itemNames));
+    }
+    @FXML
+    public void searchTicketAnalysisBtnOnClick() {
+        ArrayList<ArrayList<String>> ticketCountFetcher = main.getProcessorManager().getAnalyticsProcessor().getTicketCount(String.format("MOVIES.TITLE = '%s'", movieNamesComboBox.getValue().toString())).getData();
+        ArrayList<ArrayList<String>> ticketRevenueFetcher = main.getProcessorManager().getAnalyticsProcessor().getTicketRevenue(String.format("MOVIES.TITLE = '%s'", movieNamesComboBox.getValue().toString())).getData();
+        Double ticketRevenue = Double.parseDouble(Utils.getRowValueByColumnName(2, "TICKET_REVENUE", ticketRevenueFetcher));
+        int ticketQuantity = Integer.parseInt(Utils.getRowValueByColumnName(2, "TICKET_QUANTITY", ticketCountFetcher));
+        ticketQuantityField.setText(String.format("Ticket quantity: %s", ticketQuantity));
+        ticketRevenueField.setText(String.format("Ticket revenue: %s", ticketRevenue));
+
+    }
+    @FXML
+    public void searchItemAnalysisBtnOnClick() {
+        ArrayList<ArrayList<String>> itemCountFetcher = main.getProcessorManager().getAnalyticsProcessor().getItemCount(String.format("ITEMS.NAME = '%s'", itemNamesComboBox.getValue().toString())).getData();
+        ArrayList<ArrayList<String>> itemRevenueFetcher = main.getProcessorManager().getAnalyticsProcessor().getItemRevenue(String.format("ITEMS.NAME = '%s'", itemNamesComboBox.getValue().toString())).getData();
+        Double itemRevenue = Double.parseDouble(Utils.getRowValueByColumnName(2, "ITEM_REVENUE", itemRevenueFetcher));
+        int itemQuantity = Integer.parseInt(Utils.getRowValueByColumnName(2, "ITEM_QUANTITY", itemCountFetcher));
+        itemQuantityField.setText(String.format("Item quantity: %s", itemQuantity));
+        itemRevenueField.setText(String.format("Item revenue: %s", itemRevenue));
     }
     public void headerSectionInit() {
         String[] todayDateSplitted = this.getTodayDate().split("-");
@@ -69,6 +107,7 @@ public class AnalyticsDashboardController implements Initializable {
         overallRevenueLineChartInit();
         itemRevenueComparisonBarChartInit();
         movieGenreRevenuePieChartInit();
+        searchFieldInit();
     }
     public void ticketItemComparisonPieChartInit() {
         double ticketRevenue = Double.valueOf(Utils.getRowValueByColumnName(2, "TICKET_REVENUE", main.getProcessorManager().getAnalyticsProcessor().getTicketRevenue("").getData()));

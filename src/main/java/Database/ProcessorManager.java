@@ -31,6 +31,7 @@ public class ProcessorManager {
     private SeatCategoryManagementProcessor seatCategoryManagementProcessor;
     public ProcessorManager() throws Exception {
         this.analyticsProcessor = new AnalyticsProcessor();
+        this.movieManagementProcessor = new MovieManagementProcessor();
         this.seatCategoryManagementProcessor = new SeatCategoryManagementProcessor();
         this.itemPriceManagementProcessor = new ItemPriceManagementProcessor();
         this.seatPriceManagementProcessor = new SeatPriceManagementProcessor();
@@ -47,7 +48,6 @@ public class ProcessorManager {
         this.seatManagementProcessor = new SeatManagementProcessor();
         this.cinemaManagementProcessor = new CinemaManagementProcessor();
         this.showTimeManagementProcessor = new ShowTimeManagementProcessor();
-        this.movieManagementProcessor = new MovieManagementProcessor();
         this.bookingProcessor = new BookingProcessor();
         this.itemCategoryManagementProcessor = new ItemCategoryManagementProcessor();
         this.filtererProcessor = new FiltererProcessor();

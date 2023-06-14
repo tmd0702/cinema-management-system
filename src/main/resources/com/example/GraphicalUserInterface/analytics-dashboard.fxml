@@ -6,6 +6,9 @@
 <?import javafx.scene.chart.LineChart?>
 <?import javafx.scene.chart.NumberAxis?>
 <?import javafx.scene.chart.PieChart?>
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.ComboBox?>
+<?import javafx.scene.control.DatePicker?>
 <?import javafx.scene.control.Label?>
 <?import javafx.scene.control.ScrollPane?>
 <?import javafx.scene.layout.AnchorPane?>
@@ -15,7 +18,7 @@
 
 <ScrollPane fx:id="analyticsDashboardScrollPane" hbarPolicy="NEVER" maxWidth="790.0" xmlns="http://javafx.com/javafx/19" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.example.GraphicalUserInterface.AnalyticsDashboardController">
    <content>
-      <AnchorPane prefHeight="1750.0" prefWidth="790.0" style="-fx-background-color: #000000;">
+      <AnchorPane prefHeight="2500.0" prefWidth="790.0" style="-fx-background-color: #000000;">
          <children>
             <AnchorPane layoutX="105.0" layoutY="16.0" prefHeight="46.0" prefWidth="602.0" style="-fx-background-color: #AAAAAA;">
                <children>
@@ -165,6 +168,24 @@
                   <Font name="Georgia Bold" size="24.0" />
                </font>
             </Label>
+            <ComboBox fx:id="movieNamesComboBox" layoutX="51.0" layoutY="1718.0" prefWidth="150.0" />
+            <Label layoutX="51.0" layoutY="1678.0" prefHeight="45.0" prefWidth="84.0" style="-fx-font-weight: bold; -fx-text-fill: white;" text="Movie names" />
+            <DatePicker fx:id="bookingTicketStartDateField" layoutX="302.0" layoutY="1718.0" />
+            <DatePicker fx:id="bookingTicketEndDateField" layoutX="575.0" layoutY="1718.0" />
+            <Label layoutX="302.0" layoutY="1678.0" prefHeight="45.0" prefWidth="84.0" style="-fx-font-weight: bold; -fx-text-fill: white;" text="Start date" />
+            <Label layoutX="575.0" layoutY="1678.0" prefHeight="45.0" prefWidth="84.0" style="-fx-font-weight: bold; -fx-text-fill: white;" text="End date" />
+            <ComboBox fx:id="itemNamesComboBox" layoutX="55.0" layoutY="1931.0" prefWidth="150.0" />
+            <Label layoutX="55.0" layoutY="1891.0" prefHeight="45.0" prefWidth="84.0" style="-fx-font-weight: bold; -fx-text-fill: white;" text="Item names" />
+            <DatePicker fx:id="bookingItemStartDateField" layoutX="306.0" layoutY="1931.0" />
+            <DatePicker fx:id="bookingItemEndDateField" layoutX="579.0" layoutY="1931.0" />
+            <Label layoutX="306.0" layoutY="1891.0" prefHeight="45.0" prefWidth="84.0" style="-fx-font-weight: bold; -fx-text-fill: white;" text="Start date" />
+            <Label layoutX="579.0" layoutY="1891.0" prefHeight="45.0" prefWidth="84.0" style="-fx-font-weight: bold; -fx-text-fill: white;" text="End date" />
+            <Label fx:id="ticketQuantityField" layoutX="139.0" layoutY="1806.0" style="-fx-text-fill: white; -fx-font-weight: bold; -fx-font-size: 24;" text="Ticket quantity: 0" />
+            <Label fx:id="ticketRevenueField" layoutX="447.0" layoutY="1806.0" style="-fx-text-fill: white; -fx-font-weight: bold; -fx-font-size: 24;" text="Total revenue: 0" />
+            <Label fx:id="itemQuantityField" layoutX="139.0" layoutY="2028.0" style="-fx-text-fill: white; -fx-font-weight: bold; -fx-font-size: 24;" text="Item quantity:" />
+            <Label fx:id="itemRevenueField" layoutX="447.0" layoutY="2029.0" style="-fx-text-fill: white; -fx-font-weight: bold; -fx-font-size: 24;" text="Total revenue:" />
+            <Button fx:id="searchTicketAnalysisBtn" layoutX="575.0" layoutY="1754.0" mnemonicParsing="false" onMouseClicked="#searchTicketAnalysisBtnOnClick" text="Filter" />
+            <Button fx:id="searchItemAnalysisBtn" layoutX="579.0" layoutY="1969.0" mnemonicParsing="false" onMouseClicked="#searchItemAnalysisBtnOnClick" text="Filter" />
          </children>
       </AnchorPane>
    </content>

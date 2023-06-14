@@ -55,7 +55,7 @@ public class MovieManagementProcessor extends Processor {
         return response;
     }
     public void getMovies() {
-        String query = "SELECT * FROM MOVIES WHERE STATUS = 'Released' LIMIT 30";// LIMIT 30";
+        String query = "SELECT * FROM MOVIES WHERE STATUS = 'Released' LIMIT 100";// LIMIT 30";
         ArrayList<Movie> tmpList = new ArrayList<Movie>();
         try {
             Statement st = getConnector().createStatement();
@@ -96,9 +96,9 @@ public class MovieManagementProcessor extends Processor {
             System.out.println("Start creating schedule");
             Collections.sort(tmpList, Comparator.comparingInt(Movie::getDuration));
             System.out.println(tmpList.size());
-//            for(Movie movie : tmpList) {
-//                scheduleMovie(movie);
-//            }
+            for(Movie movie : tmpList) {
+                scheduleMovie(movie);
+            }
             this.movieManager.setMovieList(tmpList);
             rs.close();
             st.close();

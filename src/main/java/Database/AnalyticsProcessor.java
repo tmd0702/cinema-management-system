@@ -33,12 +33,30 @@ public class AnalyticsProcessor extends Processor {
     }
     public Response getTicketRevenue(String queryCondition) {
         if (queryCondition.length() == 0) {
-            queryCondition = "PAYMENTS.ID = BOOKING_TICKETS.PAYMENT_ID AND BOOKING_TICKETS.TICKET_ID = TICKETS.ID AND TICKETS.SEAT_ID = SEATS.ID AND SEATS.SEAT_CATEGORY_ID = SEAT_PRICES.SEAT_CATEGORY_ID";
+            queryCondition = "PAYMENTS.ID = BOOKING_TICKETS.PAYMENT_ID AND BOOKING_TICKETS.TICKET_ID = TICKETS.ID AND TICKETS.SEAT_ID = SEATS.ID AND SEATS.SEAT_CATEGORY_ID = SEAT_PRICES.SEAT_CATEGORY_ID AND SCHEDULES.ID = PAYMENTS.SCHEDULE_ID AND SCHEDULES.MOVIE_ID = MOVIES.ID";
         } else {
-            queryCondition += " AND PAYMENTS.ID = BOOKING_TICKETS.PAYMENT_ID AND BOOKING_TICKETS.TICKET_ID = TICKETS.ID AND TICKETS.SEAT_ID = SEATS.ID AND SEATS.SEAT_CATEGORY_ID = SEAT_PRICES.SEAT_CATEGORY_ID";
+            queryCondition += " AND PAYMENTS.ID = BOOKING_TICKETS.PAYMENT_ID AND BOOKING_TICKETS.TICKET_ID = TICKETS.ID AND TICKETS.SEAT_ID = SEATS.ID AND SEATS.SEAT_CATEGORY_ID = SEAT_PRICES.SEAT_CATEGORY_ID AND SCHEDULES.ID = PAYMENTS.SCHEDULE_ID AND SCHEDULES.MOVIE_ID = MOVIES.ID";
         }
-        Response response = select("COALESCE(SUM(SEAT_PRICES.PRICE), 0) AS TICKET_REVENUE", 0, 1, queryCondition, "", "PAYMENTS, BOOKING_TICKETS, TICKETS, SEATS, SEAT_PRICES");
+        Response response = select("COALESCE(SUM(SEAT_PRICES.PRICE), 0) AS TICKET_REVENUE", 0, 1, queryCondition, "", "PAYMENTS, BOOKING_TICKETS, TICKETS, SEATS, SEAT_PRICES, SCHEDULES, MOVIES");
         return response;
+    }
+    public Response getItemCount(String queryCondition) {
+        if (queryCondition.length() == 0) {
+            queryCondition = "PAYMENTS.ID = BOOKING_ITEMS.PAYMENT_ID AND ITEMS.ID = BOOKING_ITEMS.ITEM_ID";
+        } else {
+            queryCondition += " AND PAYMENTS.ID = BOOKING_ITEMS.PAYMENT_ID AND ITEMS.ID = BOOKING_ITEMS.ITEM_ID";
+        }
+        Response response = select("COALESCE(SUM(BOOKING_ITEMS.QUANTITY), 0) AS 'ITEM_QUANTITY'", 0, 1, queryCondition, "", "BOOKING_ITEMS, PAYMENTS, ITEMS");
+        return response;
+    }
+    public Response getTicketCount(String queryCondition) {
+        if (queryCondition.length() == 0) {
+            queryCondition = "PAYMENTS.ID = BOOKING_TICKETS.PAYMENT_ID AND SCHEDULES.ID = PAYMENTS.SCHEDULE_ID AND SCHEDULES.MOVIE_ID = MOVIES.ID";
+        } else {
+            queryCondition += " AND PAYMENTS.ID = BOOKING_TICKETS.PAYMENT_ID AND SCHEDULES.ID = PAYMENTS.SCHEDULE_ID AND SCHEDULES.MOVIE_ID = MOVIES.ID";
+        }
+        Response response = select("COALESCE(COUNT(BOOKING_TICKETS.TICKET_ID), 0) AS 'TICKET_QUANTITY'", 0, 1, queryCondition, "", "BOOKING_TICKETS, PAYMENTS, SCHEDULES, MOVIES");
+                return response;
     }
     public Response getItemRevenue(String queryCondition) {
         if (queryCondition.length() == 0) {

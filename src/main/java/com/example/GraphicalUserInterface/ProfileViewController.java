@@ -57,7 +57,7 @@ public class ProfileViewController implements Initializable {
     }
     @FXML
     public void changePasswordBtnOnClick() throws IOException {
-        profileViewContainer.getChildren().add(FXMLLoader.load(getClass().getResource("AuthFormController/change-password-form.fxml")));
+        profileViewContainer.getChildren().add(FXMLLoader.load(getClass().getResource("change-password-form.fxml")));
         containerAnchor.setVisible(true);
     }
     @FXML

@@ -357,7 +357,7 @@ public class ManagementViewController implements Initializable {
             @Override
             public void handle(MouseEvent mouseEvent)  {
                 try {
-                    main.changeScene("AuthFormController/admin-login-form.fxml");
+                    main.changeScene("admin-login-form.fxml");
                 } catch (IOException e) {
                     System.out.println(e);
                 }

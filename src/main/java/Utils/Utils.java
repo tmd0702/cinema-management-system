@@ -1,10 +1,13 @@
 package Utils;
 
 import com.example.GraphicalUserInterface.ManagementMain;
+import javafx.scene.control.DateCell;
+import javafx.scene.control.DatePicker;
+import javafx.util.Callback;
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
-
+import java.time.LocalDate;
 import java.io.File;
 import java.io.FileOutputStream;
 import java.io.InputStream;
@@ -22,7 +25,7 @@ import java.util.stream.Collectors;
 
 public class Utils {
     public static ArrayList<ArrayList<String>> getKeysValuesFromMap(HashMap<String, String> map) {
-        ArrayList keysValuesList = new ArrayList <String>(2);
+        ArrayList keysValuesList = new ArrayList<String>(2);
         Set<String> keySet = map.keySet();
 
         // Creating an ArrayList of keys
@@ -41,6 +44,7 @@ public class Utils {
 
         return keysValuesList;
     }
+
     public static ArrayList<String> convertJSONArrayToArrayList(JSONArray ja) {
         ArrayList<String> retArray = new ArrayList<String>();
         for (int i = 0; i < ja.length(); ++i) {
@@ -48,6 +52,7 @@ public class Utils {
         }
         return retArray;
     }
+
     public static String addDateByNDays(Date date, int nDays) {
         Calendar c = Calendar.getInstance();
         c.setTime(date);
@@ -55,15 +60,17 @@ public class Utils {
         date = c.getTime();
         return new SimpleDateFormat("yyyy-MM-dd").format(date);
     }
+
     public static ArrayList<ArrayList<String>> concat2dArray(ArrayList<ArrayList<String>> firstArray, ArrayList<ArrayList<String>> secondArray) {
-        for (int i = 0; i < secondArray.size();++i) {
-            for (int j=0; j<secondArray.get(i).size();++j) {
+        for (int i = 0; i < secondArray.size(); ++i) {
+            for (int j = 0; j < secondArray.get(i).size(); ++j) {
                 firstArray.get(i).add(secondArray.get(i).get(j));
 
             }
         }
         return firstArray;
     }
+
     public static long getDiffBetweenDates(Date date1, Date date2) {
         long diff;
         LocalDate localDate1 = new Date(date1.getTime()).toInstant().atZone(ZoneId.systemDefault()).toLocalDate();
@@ -71,22 +78,25 @@ public class Utils {
         diff = ChronoUnit.DAYS.between(localDate1, localDate2);
         return diff;
     }
+
     public static String getDateStringWithFormat(String pattern, Date date) {
         DateFormat df = new SimpleDateFormat(pattern);
         String dateAsString = df.format(date);
         return dateAsString;
     }
+
     public static HashMap<String, Double> jsonToMap(JSONObject json) throws JSONException {
         HashMap<String, Object> retMap = new HashMap<String, Object>();
-        if(json != JSONObject.NULL) {
+        if (json != JSONObject.NULL) {
             retMap = toMap(json);
         }
         HashMap<String, Double> doubleRetMap = new HashMap<String, Double>();
         for (String key : retMap.keySet()) {
-            doubleRetMap.put(key, ((BigDecimal)retMap.get(key)).doubleValue());
+            doubleRetMap.put(key, ((BigDecimal) retMap.get(key)).doubleValue());
         }
         return doubleRetMap;
     }
+
     public static HashMap<String, Double> sortMapByValue(HashMap<String, Double> hm) {
         HashMap<String, Double> result =
                 hm.entrySet()
@@ -103,21 +113,20 @@ public class Utils {
         HashMap<String, Object> map = new HashMap<String, Object>();
 
         Iterator<String> keysItr = object.keys();
-        while(keysItr.hasNext()) {
+        while (keysItr.hasNext()) {
             String key = keysItr.next();
             Object value = object.get(key);
 
-            if(value instanceof JSONArray) {
+            if (value instanceof JSONArray) {
                 value = toList((JSONArray) value);
-            }
-
-            else if(value instanceof JSONObject) {
+            } else if (value instanceof JSONObject) {
                 value = toMap((JSONObject) value);
             }
             map.put(key, value);
         }
         return map;
     }
+
     public static String toCamelCase(String text) {
         String[] words = text.split("[\\W_]+");
         String result = "";
@@ -132,15 +141,14 @@ public class Utils {
         }
         return result;
     }
+
     public static List<Object> toList(JSONArray array) throws JSONException {
         List<Object> list = new ArrayList<Object>();
-        for(int i = 0; i < array.length(); i++) {
+        for (int i = 0; i < array.length(); i++) {
             Object value = array.get(i);
-            if(value instanceof JSONArray) {
+            if (value instanceof JSONArray) {
                 value = toList((JSONArray) value);
-            }
-
-            else if(value instanceof JSONObject) {
+            } else if (value instanceof JSONObject) {
                 value = toMap((JSONObject) value);
             }
             list.add(value);
@@ -148,13 +156,14 @@ public class Utils {
         return list;
     }
 
-    public static void writeProperties(Properties prop,String username, String password, String filePath) throws Exception{
+    public static void writeProperties(Properties prop, String username, String password, String filePath) throws Exception {
         System.out.println(filePath + "123");
         FileOutputStream is = new FileOutputStream("/" + filePath);
         prop.setProperty("USERNAME", username);
         prop.setProperty("PASSWORD", password);
-        prop.store(is,null);
+        prop.store(is, null);
     }
+
     public static String getRowValueByColumnName(int index, String columnName, ArrayList<ArrayList<String>> data) {
         String ret = null;
         try {
@@ -169,6 +178,7 @@ public class Utils {
         }
         return ret;
     }
+
     public static ArrayList<String> getDataValuesByColumnName(ArrayList<ArrayList<String>> data, String columnName) {
         ArrayList<String> ret = new ArrayList<String>();
         int index = -1;
@@ -183,10 +193,30 @@ public class Utils {
         } else if (data.size() < 3) {
             System.out.println("Warning: Empty data");
         } else {
-            for (int i=2; i<data.size(); ++i) {
+            for (int i = 2; i < data.size(); ++i) {
                 ret.add(data.get(i).get(index));
             }
         }
         return ret;
     }
+
+    public static Callback<DatePicker, DateCell> getDatePicker(boolean isBefore) {
+        final Callback<DatePicker, DateCell> dayCellFactory = new Callback<>() {
+            @Override
+            public DateCell call(final DatePicker datePicker) {
+                return new DateCell() {
+                    @Override
+                    public void updateItem(LocalDate date, boolean empty) {
+                        super.updateItem(date, empty);
+                        if(isBefore == true)
+                            setDisable(date.isBefore(LocalDate.now()));
+                        else
+                            setDisable(date.isAfter(LocalDate.now()));
+                    }
+                };
+            }
+        };
+        return dayCellFactory;
+    }
+
 }

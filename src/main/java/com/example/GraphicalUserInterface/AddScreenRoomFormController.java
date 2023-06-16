@@ -2,6 +2,7 @@ package com.example.GraphicalUserInterface;
 
 import Utils.Response;
 import Utils.StatusCode;
+import Utils.Utils;
 import com.example.GraphicalUserInterface.ManagementMain;
 import javafx.collections.FXCollections;
 import javafx.fxml.FXML;
@@ -39,7 +40,7 @@ public class AddScreenRoomFormController implements Initializable {
     public ArrayList<String> getCinemaNames() {
         cinemaNames = new ArrayList<String>();
         for (int i=2; i<cinemaInfo.size();++i) {
-            cinemaNames.add(cinemaInfo.get(i).get(1));
+            cinemaNames.add(Utils.getRowValueByColumnName(i, "CINEMAS.NAME", cinemaInfo));
         }
         return cinemaNames;
     }

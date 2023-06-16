@@ -42,30 +42,40 @@
                   <Label layoutX="32.0" layoutY="81.0" text="Theater:" textFill="#fcfcfc">
                      <font>
                         <Font name="Georgia" size="13.0" />
-                     </font></Label>
+                     </font>
+                  </Label>
                   <Label layoutX="279.0" layoutY="120.0" text="Seats:" textFill="#fcfcfc" wrapText="true">
                      <font>
                         <Font name="Georgia" size="13.0" />
-                     </font></Label>
+                     </font>
+                  </Label>
                   <Label layoutX="31.0" layoutY="120.0" text="Showtime:" textFill="#fcfcfc">
                      <font>
                         <Font name="Georgia" size="13.0" />
-                     </font></Label>
+                     </font>
+                  </Label>
                   <Label layoutX="276.0" layoutY="81.0" text="Screen:" textFill="#fcfcfc">
                      <font>
                         <Font name="Georgia" size="13.0" />
-                     </font></Label>
+                     </font>
+                  </Label>
                   <Line endX="362.83099365234375" layoutX="137.0" layoutY="216.0" startX="-100.0" stroke="#f2f2f2" />
                   <Label layoutX="39.0" layoutY="185.0" text="Ticket price:" textFill="#fcfcfc">
                      <font>
                         <Font name="Georgia" size="13.0" />
-                     </font></Label>
-                  <Label layoutX="279.0" layoutY="183.0" text="Combo:" textFill="#fcfcfc" />
+                     </font>
+                  </Label>
+                  <Label layoutX="279.0" layoutY="183.0" text="Combo:" textFill="#fcfcfc">
+                     <font>
+                        <Font name="Georgia" size="13.0" />
+                     </font>
+                  </Label>
                   <Line endX="356.971435546875" layoutX="140.0" layoutY="162.0" startX="-100.0" stroke="#f2f2f2" />
                   <Label layoutX="41.0" layoutY="236.0" text="Total:" textFill="#fcfcfc">
                      <font>
                         <Font name="Georgia Bold" size="13.0" />
-                     </font></Label>
+                     </font>
+                  </Label>
                   <Label fx:id="nameMovieBookingFinal" layoutX="47.0" layoutY="3.0" maxWidth="448.0" prefHeight="49.0" prefWidth="448.0" text="Label" textFill="WHITE" wrapText="true">
                      <font>
                         <Font name="Georgia Bold Italic" size="17.0" />
@@ -74,31 +84,38 @@
                   <Label fx:id="nameCinemaFinal" layoutX="97.0" layoutY="81.0" maxWidth="134.0" prefHeight="17.0" prefWidth="134.0" text="Theater" textFill="#fcfcfc">
                      <font>
                         <Font name="Georgia" size="13.0" />
-                     </font></Label>
+                     </font>
+                  </Label>
                   <Label fx:id="showTimeFinal" layoutX="108.0" layoutY="120.0" text="time" textFill="#fcfcfc">
                      <font>
                         <Font name="Georgia" size="13.0" />
-                     </font></Label>
+                     </font>
+                  </Label>
                   <Label fx:id="screenNameFinal" layoutX="336.0" layoutY="81.0" maxWidth="134.0" prefHeight="17.0" prefWidth="134.0" text="ScreenID" textFill="#fcfcfc">
                      <font>
                         <Font name="Georgia" size="13.0" />
-                     </font></Label>
+                     </font>
+                  </Label>
                   <Label fx:id="seatIDFinal" layoutX="328.0" layoutY="111.0" maxWidth="176.0" prefHeight="36.0" prefWidth="176.0" text="SeatsID" textFill="#fcfcfc" wrapText="true">
                      <font>
                         <Font name="Georgia" size="13.0" />
-                     </font></Label>
+                     </font>
+                  </Label>
                   <Label fx:id="priceFinal" layoutX="125.0" layoutY="184.0" maxWidth="134.0" prefHeight="17.0" prefWidth="134.0" text="Price" textFill="#fcfcfc">
                      <font>
                         <Font name="Georgia" size="13.0" />
-                     </font></Label>
+                     </font>
+                  </Label>
                   <Label fx:id="comboFinal" layoutX="340.0" layoutY="184.0" maxWidth="134.0" prefHeight="17.0" prefWidth="134.0" text="Comboi" textFill="#fcfcfc">
                      <font>
                         <Font name="Georgia" size="13.0" />
-                     </font></Label>
+                     </font>
+                  </Label>
                   <Label fx:id="totalFinal" layoutX="92.0" layoutY="237.0" maxWidth="134.0" prefHeight="17.0" prefWidth="134.0" text="total" textFill="#fcfcfc">
                      <font>
                         <Font name="Georgia Bold" size="13.0" />
-                     </font></Label>
+                     </font>
+                  </Label>
                   <Label fx:id="countdownLabel1" layoutX="290.0" layoutY="481.0" prefHeight="16.0" prefWidth="57.0" text="clock" textFill="#eeeeee">
                      <font>
                         <Font name="Georgia Bold" size="11.0" />
@@ -117,15 +134,18 @@
                   <TextField fx:id="promotionField" layoutX="167.0" layoutY="284.0">
                      <font>
                         <Font name="Georgia" size="13.0" />
-                     </font></TextField>
+                     </font>
+                  </TextField>
                   <Label layoutX="283.0" layoutY="237.0" text="Discount:" textFill="#fcfcfc">
                      <font>
                         <Font name="Georgia" size="13.0" />
-                     </font></Label>
+                     </font>
+                  </Label>
                   <Label fx:id="discount" layoutX="348.0" layoutY="237.0" maxWidth="134.0" prefHeight="17.0" prefWidth="134.0" text="Price" textFill="#fcfcfc">
                      <font>
                         <Font name="Georgia" size="13.0" />
-                     </font></Label>
+                     </font>
+                  </Label>
                   <Button layoutX="348.0" layoutY="280.0" mnemonicParsing="false" onMouseClicked="#applyPromotionOnClick" prefHeight="26.0" prefWidth="85.0" style="-fx-background-color: #8D090D;" text="Apply" textFill="WHITE">
                      <font>
                         <Font name="Georgia Bold" size="18.0" />
@@ -137,7 +157,8 @@
             <Button layoutX="70.0" layoutY="550.0" mnemonicParsing="false" onAction="#handleSwitchToPageBefore" onMouseClicked="#onButtonClicked" prefHeight="29.0" prefWidth="75.0" style="-fx-background-radius: 19; -fx-background-color: #3a94b2;" text="Back" textFill="WHITE">
                <font>
                   <Font name="Georgia Bold Italic" size="13.0" />
-               </font></Button>
+               </font>
+            </Button>
          </children>
       </AnchorPane>
       <AnchorPane fx:id="pane3" prefHeight="600.0" prefWidth="900.0" style="-fx-background-color: #121212;">

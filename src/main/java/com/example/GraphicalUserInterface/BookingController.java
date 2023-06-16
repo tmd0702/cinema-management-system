@@ -265,7 +265,7 @@ public class BookingController {
         priceFinal.setText(price.getText());
         comboFinal.setText(combo.getText());
         totalFinal.setText(total.getText());
-        discount.setText("0");
+        discount.setText("-0");
          ConstructPaymentMethodButton();
 
 //        countdownLabel1.setText(countdownLabel.getText());
@@ -275,16 +275,15 @@ public class BookingController {
      @FXML
      public void applyPromotionOnClick() throws IOException{
         System.out.println("apply");
-        bookingProcessor.getBookingInfor().setPromotionCode(promotionField.getText());
         handleApplyPromotionRequest();
      }
      public void handleApplyPromotionRequest(){
-        Response response = main.getProcessorManager().getPromotionManagementProcessor().getData(0,-1, String.format("PROMOTIONS.ID = '%s'", bookingProcessor.getBookingInfor().getPromotionCode()),"");
+        Response response = main.getProcessorManager().getPromotionManagementProcessor().getData(0,-1, String.format("PROMOTIONS.ID = '%s'", promotionField.getText()),"");
         System.out.println(response.getData());
-
         if(Utils.getDataValuesByColumnName(response.getData(), "PROMOTIONS.ID").size() > 0){
             Float discountNumber = Float.parseFloat(Utils.getDataValuesByColumnName(response.getData(), "PROMOTIONS.DISCOUNT").get(0));
             calculateDiscount(discountNumber);
+            bookingProcessor.getBookingInfor().setPromotionCode(promotionField.getText());
         }else{
             Dialog<String> dialog = new Dialog<String>();
             //Setting the title
@@ -293,6 +292,8 @@ public class BookingController {
             dialog.setContentText("Wrong promotion code");
             dialog.getDialogPane().getButtonTypes().add(type);
             dialog.showAndWait();
+            bookingProcessor.getBookingInfor().setPromotionCode(null);
+            calculateDiscount(0.0f);
         }
      }
      public void ConstructDateButton(){
@@ -471,7 +472,11 @@ public class BookingController {
         }else {
             if(cinemaSection.getChildren().isEmpty()) {
                 announceCinema.setVisible(true);
+                announceTime.setVisible(true);
+                announceTime.setText("Please choose one cinema you would you like to watch in listed above");
                 announceCinema.setText("No cinema shows this movie on this day");
+                InvisibleScrollpane(timeSection, timeSlotScrollLeftBtn, timeSlotScrollRightBtn);
+                InvisibleScrollpane(cinemaSection, cineScrollLeftBtn, cineScrollRightBtn);
             }
             else {
                 announceCinema.setText("Please choose one date the movie is being showed");
@@ -484,6 +489,7 @@ public class BookingController {
                     if(timeSection.getChildren().isEmpty()){
                         announceTime.setVisible(true);
                         announceTime.setText("No rooms shows this movie on this time");
+
                     }else {
                         announceTime.setText("Please choose one cinema you would you like to watch in listed above");
                         VisibleScrollpane(timeSection, timeSlotScrollLeftBtn, timeSlotScrollRightBtn);
@@ -738,15 +744,21 @@ public class BookingController {
         int i;
         for( i = 0; i < listPane.size(); i++) {
             if(listPane.get(i).getChildren().contains(b)){
-                if(i == 0 && (!cinemaSection.isVisible() || (nameCinema.getText() == "" || showTime.getText() == "" || showDate.getText() == ""))){
+                if(i == 0){
                     Dialog<String> dialog = new Dialog<String>();
-                    //Setting the title
                     dialog.setTitle("Failed");
                     ButtonType type = new ButtonType("Ok", ButtonBar.ButtonData.OK_DONE);
-                    dialog.setContentText("Please choose one date to show");
-                    dialog.getDialogPane().getButtonTypes().add(type);
-                    dialog.showAndWait();
-                    return;
+                    if((!cinemaSection.isVisible() || showDate.getText() == "")){
+                        dialog.setContentText("Please choose one date to show");dialog.getDialogPane().getButtonTypes().add(type);
+                        dialog.showAndWait();
+                        return;
+                    }else if(nameCinema.getText() == "" || showTime.getText() == "" ) {
+                        dialog.setContentText("Please choose one cinema to show");
+                        dialog.getDialogPane().getButtonTypes().add(type);
+                        dialog.showAndWait();
+                        return;
+
+                    }
                 }
                 if(i == 0){
                     countdownLabel.setText("15:00");

@@ -60,7 +60,6 @@ public class AddCinemaFormController implements Initializable {
         cinemaInfo.put("ID", main.getIdGenerator().generateId("CINEMAS"));
         cinemaInfo.put("NAME", nameField.getText());
         cinemaInfo.put("ADDRESS", addressField.getText());
-        cinemaInfo.put("CINE_AREA", cineAreaField.getText());
 
         Response response = main.getProcessorManager().getCinemaManagementProcessor().insertData(cinemaInfo, true);
         StatusCode status = response.getStatusCode();

@@ -61,7 +61,7 @@ public class UpdateScheduleFormController implements Initializable {
             movieTitleFieldInit();
             startTimeFieldInit();
         }));
-        timeline.play();
+        //timeline.play();
 
     }
     public void idFieldInit() {
@@ -94,6 +94,7 @@ public class UpdateScheduleFormController implements Initializable {
         });
     }
     public void startTimeFieldInit() {
+
         showTimeStartTimeField.setDisable(false);
         showTimeInfo = main.getProcessorManager().getShowTimeManagementProcessor().select("ST.*", 0, -1, String.format("NOT EXISTS (SELECT S.SHOW_TIME_ID FROM SCHEDULES S WHERE S.SHOW_DATE = '%s' AND S.SCREEN_ROOM_ID = '%s' AND S.SHOW_TIME_ID = ST.ID)", showDateField.getValue(), getScreenRoomObjectIDFromComboBox(screenRoomNameField.getValue())), "START_TIME ASC", "SHOW_TIMES ST").getData();
         startTimes = Utils.getDataValuesByColumnName(showTimeInfo, "START_TIME");

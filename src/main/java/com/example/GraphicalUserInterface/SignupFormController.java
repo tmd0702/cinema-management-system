@@ -1,14 +1,17 @@
 package com.example.GraphicalUserInterface;
 import Utils.Response;
 import Utils.StatusCode;
+import Utils.Utils;
 import com.example.GraphicalUserInterface.Main;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.control.*;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.AnchorPane;
+import javafx.util.Callback;
 
 import java.text.SimpleDateFormat;
+import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.util.*;
 public class SignupFormController {
@@ -23,6 +26,8 @@ public class SignupFormController {
     private DatePicker dateOfBirthField;
     public SignupFormController() throws Exception {
         main = Main.getInstance();
+        dateOfBirthField = new DatePicker();
+        dateOfBirthField.setDayCellFactory(Utils.getDatePicker(true));
     }
     public void onSubmitSignUpBtn() {
         HashMap<String, String> signUpInfo = new HashMap<String, String>();
@@ -30,7 +35,6 @@ public class SignupFormController {
         signUpInfo.put("lastName", lastNameField.getText());
         signUpInfo.put("email", emailField.getText());
         signUpInfo.put("phone", phoneField.getText());
-
         signUpInfo.put("address", addressField.getText());
         signUpInfo.put("username", usernameField.getText());
         signUpInfo.put("password", passwordField.getText());
@@ -68,7 +72,7 @@ public class SignupFormController {
             //Setting the title
             dialog.setTitle("Dialog");
             ButtonType type = new ButtonType("Ok", ButtonBar.ButtonData.OK_DONE);
-            Label errorMessage = new Label(response.getMessage());
+            Label errorMessage = new Label("Phone number length must be 10 and contains only digit numbers");
             errorMessage.setWrapText(true);
             dialog.getDialogPane().setContent(errorMessage);
 //            dialog.setContentText();

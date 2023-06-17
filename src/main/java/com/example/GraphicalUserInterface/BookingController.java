@@ -1,5 +1,6 @@
 package com.example.GraphicalUserInterface;
 import BookingManager.BookingInfor;
+import UserManager.Customer;
 import de.jensd.fx.glyphs.fontawesome.FontAwesomeIconView;
 import javafx.application.Platform;
 import javafx.beans.property.DoubleProperty;
@@ -19,8 +20,11 @@ import javafx.scene.paint.LinearGradient;
 import javafx.scene.text.Font;
 import Database.BookingProcessor;
 import java.io.IOException;
+import java.sql.Date;
 import java.sql.SQLException;
 import java.sql.Savepoint;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import javafx.animation.*;
@@ -82,6 +86,7 @@ public class BookingController {
     private Label nameMovieBooking, nameCinema, showTime, showDate, seatID, screenName, price, combo, total;
     @FXML
     private AnchorPane ticketInfor;
+    private Button nearbyButton = new Button();
     // page3
     @FXML
     private AnchorPane pane3;
@@ -424,6 +429,19 @@ public class BookingController {
             button.setOnAction(event->{
                 if(SeatName.size() < 12) {
                     if (button.getStyle() != "-fx-background-color: #8D090D") {
+                        System.out.println(Integer.parseInt(button.getText().substring(1)));
+                        if(category.equals("SC_00003")) {
+                            int numberSeat = Integer.parseInt(button.getText().substring(1));
+
+                            if (numberSeat % 2 == 0) {
+                                nearbyButton = (Button) SeatGrid.getChildren().get(SeatGrid.getChildren().indexOf(button) - 1);
+                            } else {
+                                nearbyButton = (Button) SeatGrid.getChildren().get(SeatGrid.getChildren().indexOf(button) + 1);
+                            }
+                            nearbyButton.setStyle("-fx-background-color: #8D090D");
+                            SeatName.add(nearbyButton.getText());
+                            SeatId.add(getIdFromIndex(SeatInfor,SeatList.indexOf(nearbyButton.getText())));
+                        }
                         button.setStyle("-fx-background-color: #8D090D");
                         SeatName.add(button.getText());
                         SeatId.add(getIdFromIndex(SeatInfor, SeatList.indexOf(s)));
@@ -433,7 +451,12 @@ public class BookingController {
                             button.setStyle("-fx-background-color: #A4A4A4");
                         else if (category.equals("SC_00002"))
                             button.setStyle("-fx-background-color: #A4A4A4;-fx-border-color: yellow");
-                        else button.setStyle("-fx-background-color:  #FF00D6");
+                        else {
+                            button.setStyle("-fx-background-color:  #FF00D6");
+                            nearbyButton.setStyle("-fx-background-color:  #FF00D6");
+                            SeatName.remove(nearbyButton.getText());
+                            SeatId.remove(getIdFromIndex(SeatInfor, SeatList.indexOf(nearbyButton.getText())));
+                        }
                         SeatName.remove(button.getText());
                         SeatId.remove(getIdFromIndex(SeatInfor, SeatList.indexOf(s)));
                         displaySeatInfor();
@@ -511,22 +534,15 @@ public class BookingController {
         left.setVisible(true);
         right.setVisible(true);
     }
-     public void getColumnRowOfRoom(ArrayList<String> list, int r, int c){
-         char maxChar = 'A';
+     public int getColumnRowOfRoom(ArrayList<String> list){
          int maxNum = 1;
-
          for (String s : list) {
-             char t = s.charAt(0);
              int num = Integer.parseInt(s.substring(1));
-
-             if (t >= maxChar && num > maxNum) {
-                 maxChar = t;
+             if (num > maxNum) {
                  maxNum = num;
              }
          }
-         r = maxChar;
-         c = maxNum;
-
+         return maxNum - 1;
      }
 
      public void changeNumberOfItems(Label label, Button b, int index, ArrayList<String> priceList){
@@ -922,7 +938,7 @@ public class BookingController {
 
     }
     @FXML
-    public void onPurchaseButtonClicked() throws SQLException {
+    public void onPurchaseButtonClicked() throws SQLException, ParseException {
         if(bookingProcessor.getBookingInfor().getPaymentMethodId() == ""){
             Dialog<String> dialog = new Dialog<String>();
             //Setting the title
@@ -950,6 +966,9 @@ public class BookingController {
                 } catch (IOException e) {
                     throw new RuntimeException(e);
                 }
+                Response response = main.getProcessorManager().getAccountManagementProcessor().getData(0, -1, String.format("USERS.ID = '%s'", main.getSignedInUser().getId()), "");
+                ArrayList<ArrayList<String>> userInfo = response.getData();
+                main.setSignedInUser(new Customer(Utils.getRowValueByColumnName(2, "USERS.USERNAME", userInfo), Utils.getRowValueByColumnName(2, "USERS.ID", userInfo), Utils.getRowValueByColumnName(2, "USERS.FIRST_NAME", userInfo), Utils.getRowValueByColumnName(2, "USERS.LAST_NAME", userInfo), new Date(new SimpleDateFormat("yyyy-MM-dd").parse(Utils.getRowValueByColumnName(2, "USERS.DOB", userInfo)).getTime()), Utils.getRowValueByColumnName(2, "USERS.PHONE", userInfo), Utils.getRowValueByColumnName(2, "USERS.EMAIL", userInfo), Utils.getRowValueByColumnName(2, "USERS.GENDER", userInfo), Utils.getRowValueByColumnName(2, "USERS.ADDRESS", userInfo), Integer.parseInt(Utils.getRowValueByColumnName(2, "USERS.SCORE", userInfo)), Utils.getRowValueByColumnName(2, "USERS.USER_CATEGORY_CATEGORY", userInfo)));
             }else{
                 Dialog<String> dialog = new Dialog<String>();
                 //Setting the title

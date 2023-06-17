@@ -70,6 +70,11 @@ public class MovieDetailViewController implements Initializable {
     private Label description;
     @FXML
     private Button bookMovieBtn;
+    @FXML
+    private Button submitCommentBtn;
+    @FXML
+    private Label announReview;
+
     public MovieDetailViewController () {
         main = Main.getInstance();
         movieOnDetail = main.getMovieOnDetail();
@@ -160,6 +165,10 @@ public class MovieDetailViewController implements Initializable {
             });
         } else {
             movieDetailSection.getChildren().remove(bookMovieBtn);
+            ratingField.setDisable(true);
+            commentField.setDisable(true);
+            submitCommentBtn.setDisable(true);
+
         }
 
     }
@@ -221,6 +230,11 @@ public class MovieDetailViewController implements Initializable {
         });
     }
     public void commentViewSectionInit() {
+        if (!main.getProcessorManager().getMovieManagementProcessor().getMovieManager().getCurrentlyPlayingMovieList().contains(movieOnDetail)){
+            announReview.setVisible(true);
+            commentViewSection.getChildren().add(announReview);
+            return;
+        }
         commentViewSection.getChildren().clear();
         ArrayList<ArrayList<String>> reviewFetcher = main.getProcessorManager().getReviewManagementProcessor().getData(0, -1, String.format("M.ID = '%s'", main.getMovieOnDetail().getId()), "R.DATE DESC").getData();
         for (int i=2; i < reviewFetcher.size(); ++i) {
@@ -258,6 +272,7 @@ public class MovieDetailViewController implements Initializable {
             VBox commentViewContainer = new VBox(commentViewHeader, commentView, separator);
             commentViewSection.getChildren().add(commentViewContainer);
         }
+
     }
     @FXML
     public void commentSubmitBtnOnClick() throws Exception {

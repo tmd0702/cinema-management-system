@@ -1,7 +1,9 @@
 package com.example.GraphicalUserInterface;
 
+import UserManager.Customer;
 import Utils.Response;
 import Utils.StatusCode;
+import Utils.Utils;
 import com.example.GraphicalUserInterface.Main;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
@@ -12,8 +14,12 @@ import javafx.scene.layout.HBox;
 
 import java.io.IOException;
 import java.net.URL;
+import java.sql.Date;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Optional;
 import java.util.ResourceBundle;
@@ -61,7 +67,7 @@ public class ProfileViewController implements Initializable {
         containerAnchor.setVisible(true);
     }
     @FXML
-    public void saveProfileBtnOnClick() {
+    public void saveProfileBtnOnClick() throws ParseException {
         HashMap<String, String> userInfo = new HashMap<String, String>();
         userInfo.put("FIRST_NAME", firstNameField.getText());
         userInfo.put("LAST_NAME", lastNameField.getText());
@@ -92,5 +98,9 @@ public class ProfileViewController implements Initializable {
                 System.out.println("cancel");
             }
         }
+         response = main.getProcessorManager().getAccountManagementProcessor().getData(0, -1, String.format("USERS.ID = '%s'", main.getSignedInUser().getId()), "");
+        ArrayList<ArrayList<String>> userInfor = response.getData();
+        main.setSignedInUser(new Customer(Utils.getRowValueByColumnName(2, "USERS.USERNAME", userInfor), Utils.getRowValueByColumnName(2, "USERS.ID", userInfor), Utils.getRowValueByColumnName(2, "USERS.FIRST_NAME", userInfor), Utils.getRowValueByColumnName(2, "USERS.LAST_NAME", userInfor), new Date(new SimpleDateFormat("yyyy-MM-dd").parse(Utils.getRowValueByColumnName(2, "USERS.DOB", userInfor)).getTime()), Utils.getRowValueByColumnName(2, "USERS.PHONE", userInfor), Utils.getRowValueByColumnName(2, "USERS.EMAIL", userInfor), Utils.getRowValueByColumnName(2, "USERS.GENDER", userInfor), Utils.getRowValueByColumnName(2, "USERS.ADDRESS", userInfor), Integer.parseInt(Utils.getRowValueByColumnName(2, "USERS.SCORE", userInfor)), Utils.getRowValueByColumnName(2, "USERS.USER_CATEGORY_CATEGORY", userInfor)));
+
     }
 }

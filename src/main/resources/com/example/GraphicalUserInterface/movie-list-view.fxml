@@ -9,11 +9,11 @@
 <AnchorPane prefHeight="400.0" prefWidth="600.0" style="-fx-pref-height: 1538; -fx-pref-width: 903; -fx-background-color: black;" xmlns="http://javafx.com/javafx/19" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.example.GraphicalUserInterface.MovieListViewController">
    <StackPane fx:id="tabContainer" layoutY="164.0" prefHeight="1406.0" prefWidth="903.0" AnchorPane.bottomAnchor="38.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="164.0" />
 
-   <Button fx:id="nowShowingTabBtn" layoutX="345.0" layoutY="53.0" mnemonicParsing="false" onMouseClicked="#nowShowingBtnOnClick" style="-fx-background-color: #323231; -fx-text-fill: white; -fx-font-weight: bold;" text="Now Showing" textFill="WHITE">
+   <Button fx:id="nowShowingTabBtn" layoutX="345.0" layoutY="53.0" mnemonicParsing="false" onMouseClicked="#nowShowingBtnOnClick" style="-fx-background-color: #323231;" text="Now Showing" textFill="WHITE">
       <font>
          <Font name="Georgia Bold" size="13.0" />
       </font></Button>
-   <Button fx:id="comingSoonTabBtn" layoutX="467.0" layoutY="53.0" mnemonicParsing="false" onMouseClicked="#comingSoonBtnOnClick" style="-fx-background-color: #323231; -fx-text-fill: white; -fx-font-weight: bold;" text="Coming Soon">
+   <Button fx:id="comingSoonTabBtn" layoutX="467.0" layoutY="53.0" mnemonicParsing="false" onMouseClicked="#comingSoonBtnOnClick" style="-fx-background-color: #323231;" text="Coming Soon" textFill="WHITE">
       <font>
          <Font name="Georgia Bold" size="13.0" />
       </font></Button>

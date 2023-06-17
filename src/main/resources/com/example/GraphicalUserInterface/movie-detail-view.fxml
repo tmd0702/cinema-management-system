@@ -156,6 +156,11 @@
                </font></Button>
             <Line endX="735.0" layoutX="132.0" layoutY="611.0" startX="-97.33334350585938" stroke="WHITE" />
             <VBox fx:id="commentViewSection" layoutX="32.0" layoutY="619.0" prefHeight="164.0" prefWidth="835.0" />
+            <Label fx:id="announReview" layoutX="53.0" layoutY="819.0" text="Note: Only moives that are currently playing have been reviewed" textFill="WHITE" visible="false">
+               <font>
+                  <Font name="Georgia Bold Italic" size="14.0" />
+               </font>
+            </Label>
          </children>
       </AnchorPane>
    </children>

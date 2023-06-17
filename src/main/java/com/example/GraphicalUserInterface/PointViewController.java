@@ -34,6 +34,7 @@ public class PointViewController implements Initializable {
         pointStatusInit();
         pointViewLabelsInit();
     }
+    // load lại point sau khi mua vé
     public Double getMaxPointLowerbound(ArrayList<String> pointLowerbounds) {
         Double pointLowerbound = 0.0;
         for (String point : pointLowerbounds) {

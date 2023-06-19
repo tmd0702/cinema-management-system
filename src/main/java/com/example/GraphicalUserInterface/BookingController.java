@@ -125,6 +125,7 @@ public class BookingController {
         //page1
         ConstructDateButton();
         FormartDateButton();
+        //page2
         scrollBtnInit();
         //page3
         //page4

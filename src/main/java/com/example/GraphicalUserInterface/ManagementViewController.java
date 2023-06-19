@@ -1050,6 +1050,15 @@ public class ManagementViewController implements Initializable {
                 } else if (subTabPanel.getId().equals("paymentMethodInfoSubTab")) {
                     activeProcessor = main.getProcessorManager().getPaymentMethodManagementProcessor();
                     reRenderPage(true);
+                }else if(subTabPanel.getId().equals("seatMapSubTab")){
+                    managementContainerStackPane.setVisible(false);
+
+                        try {
+                            managementPage.getChildren().add(FXMLLoader.load(getClass().getResource("seat-map.fxml")));
+                        } catch (IOException e) {
+                            throw new RuntimeException(e);
+                        }
+
                 }
 
             }
@@ -1132,9 +1141,12 @@ public class ManagementViewController implements Initializable {
                     seatCategoryInfoSubTab.setId("seatCategoryInfoSubTab");
                     Button seatPriceInfoSubTab = new Button("Seat Price");
                     seatPriceInfoSubTab.setId("seatPriceInfoSubTab");
+                    Button seatMapSubTab = new Button("Seat Map");
+                    seatMapSubTab.setId("seatMapSubTab");
                     subTabPanelHBox.getChildren().add(seatInfoSubTab);
                     subTabPanelHBox.getChildren().add(seatCategoryInfoSubTab);
                     subTabPanelHBox.getChildren().add(seatPriceInfoSubTab);
+                    subTabPanelHBox.getChildren().add(seatMapSubTab);
                 } else if (tabPanelOnClick == scheduleTabPanel) {
                     Button scheduleInfoSubTab = new Button("Schedule");
                     scheduleInfoSubTab.setId("scheduleInfoSubTab");

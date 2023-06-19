@@ -401,7 +401,7 @@ public class ManagementViewController implements Initializable {
         String recordId = getRecordIdByRowIndex();
         String queryCondition = String.format("ID = '%s'", recordId);
     }
-    public void handleDeleteRecordRequest() {
+    public void  handleDeleteRecordRequest() {
         String recordId = getRecordIdByRowIndex();
         String idColumn = String.format("%s.ID", activeProcessor.getDefaultDatabaseTable());
         if (subTabPanelOnClick.getId().equals("bookingTicketInfoSubTab") || subTabPanelOnClick.getId().equals("bookingItemInfoSubTab")) {

@@ -1,5 +1,7 @@
 package Utils;
 
+import com.example.GraphicalUserInterface.Main;
+
 import java.util.regex.Pattern;
 public class Validator {
     public Validator() {
@@ -13,9 +15,10 @@ public class Validator {
                 .matches();
     }
     public static boolean validatePhoneNumber(String phoneNumber) {
-        if (phoneNumber.length() != 10) {
+        if (phoneNumber.length() != 10 || phoneNumber.charAt(0) != '0') {
             return false;
         }
+
         String regex = "\\d+";
         return patternMatches(phoneNumber, regex);
     }

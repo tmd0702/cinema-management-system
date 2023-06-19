@@ -243,6 +243,8 @@ public class ManagementViewController implements Initializable {
             managementPage.getChildren().add(FXMLLoader.load(getClass().getResource("add-user-category-form.fxml")));
         } else if (subTabPanelOnClick.getId().equals("paymentMethodInfoSubTab")) {
             managementPage.getChildren().add(FXMLLoader.load(getClass().getResource("add-payment-method-form.fxml")));
+        } else if(subTabPanelOnClick.getId().equals("bookingTicketInfoSubTab")){
+            managementPage.getChildren().add(FXMLLoader.load(getClass().getResource("movie-list-view.fxml")));
         } else {
             managementPage.getChildren().add(FXMLLoader.load(getClass().getResource("add-account-form.fxml")));
         }
@@ -282,7 +284,9 @@ public class ManagementViewController implements Initializable {
         String normColumnName;
         if (columnNameElements[0].equals(activeProcessor.getDefaultDatabaseTable())) {
             normColumnName = columnNameElements[1];
-        } else {
+        } else if(columnNameElements.length == 1){
+            normColumnName = columnNameElements[0];
+        }else {
             normColumnName = columnNameElements[0].substring(0, columnNameElements[0].length() - 1) + "_" + columnNameElements[1];
         }
         return normColumnName;
@@ -410,9 +414,10 @@ public class ManagementViewController implements Initializable {
             System.out.println("delete success");
             reRenderPage(false);
         } else {
+
             Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
 //        alert.setTitle("Confirmation");
-            alert.setContentText(response.getMessage());//"Are you sure to delete this record?");
+            alert.setContentText("Can not delete " + idColumn + " = " + recordId);//"Are you sure to delete this record?");
             Optional<ButtonType> result = alert.showAndWait();
         }
     }
@@ -1032,7 +1037,6 @@ public class ManagementViewController implements Initializable {
                     reRenderPage(true);
                 } else if (subTabPanel.getId().equals("bookingTicketInfoSubTab")) {
                     activeProcessor = main.getProcessorManager().getBookingTicketManagementProcessor();
-                    insertBtn.setDisable(true);
                     updateBtn.setDisable(true);
                     reRenderPage(true);
                 } else if (subTabPanel.getId().equals("bookingItemInfoSubTab")) {

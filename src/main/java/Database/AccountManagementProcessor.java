@@ -10,6 +10,7 @@ import java.sql.Date;
 import java.sql.ResultSet;
 import java.sql.Statement;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.HashMap;
 
 public class AccountManagementProcessor extends Processor {
@@ -81,6 +82,11 @@ public class AccountManagementProcessor extends Processor {
     }
     public Response handleSignupAction(HashMap<String, String> signupInfo) {
         try {
+            ArrayList<ArrayList<String>> emailSignUp = getData(0, -1, String.format("USERS.EMAIL = '%s'", signupInfo.get("email")), "").getData();
+            ArrayList<String> email = Utils.getDataValuesByColumnName(emailSignUp, "USERS.EMAIL");
+            if(!email.isEmpty()){
+                throw new InvalidEmailException("Email: " + signupInfo.get("email") + " is existed!");
+            }
             if (!Validator.validateEmail(signupInfo.get("email"))) {
                 throw new InvalidEmailException("Email: " + signupInfo.get("email") + " is invalid!");
             }
@@ -104,17 +110,17 @@ public class AccountManagementProcessor extends Processor {
             st.close();
             return new Response("OK", StatusCode.OK);
         } catch (InvalidEmailException e) {
-            System.out.println(e);
+            System.out.println(e.getMessage());
             return new Response(e.toString(), StatusCode.BAD_REQUEST);
         } catch (InvalidUsernameException e) {
-            System.out.println(e);
-            return new Response(e.toString(), StatusCode.BAD_REQUEST);
+            System.out.println(e.getMessage());
+            return new Response(e.getMessage(), StatusCode.BAD_REQUEST);
         } catch (InvalidPasswordException e) {
-            System.out.println(e);
-            return new Response(e.toString(), StatusCode.BAD_REQUEST);
+            System.out.println(e.getMessage());
+            return new Response(e.getMessage(), StatusCode.BAD_REQUEST);
         } catch (Exception e) {
-            System.out.println(e);
-            return new Response(e.toString(), StatusCode.BAD_REQUEST);
+            System.out.println(e.getMessage());
+            return new Response(e.getMessage(), StatusCode.BAD_REQUEST);
         }
     }
 }

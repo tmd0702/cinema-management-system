@@ -72,7 +72,7 @@ public class SignupFormController {
             //Setting the title
             dialog.setTitle("Dialog");
             ButtonType type = new ButtonType("Ok", ButtonBar.ButtonData.OK_DONE);
-            Label errorMessage = new Label("Phone number length must be 10 and contains only digit numbers");
+            Label errorMessage = new Label(response.getMessage());
             errorMessage.setWrapText(true);
             dialog.getDialogPane().setContent(errorMessage);
 //            dialog.setContentText();

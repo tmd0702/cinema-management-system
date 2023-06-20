@@ -21,12 +21,15 @@
       </AnchorPane>
       <ScrollPane fx:id="paymentHistoryViewScrollPane" hbarPolicy="NEVER" layoutX="85.0" layoutY="99.0" prefHeight="414.0" prefWidth="604.0" style="-fx-background: black; -fx-border-color: black;">
          <content>
-            <GridPane fx:id="paymentHistoryViewGrid" hgap="10.0" prefHeight="30.0" prefWidth="602.0" style="-fx-background-color: black;">
+            <GridPane fx:id="paymentHistoryViewGrid" hgap="10.0" prefHeight="30.0" prefWidth="737.0" style="-fx-background-color: black;">
               <columnConstraints>
                 <ColumnConstraints halignment="CENTER" hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
                 <ColumnConstraints halignment="CENTER" hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
                 <ColumnConstraints halignment="CENTER" hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
                 <ColumnConstraints halignment="CENTER" hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+                  <ColumnConstraints halignment="CENTER" hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+                  <ColumnConstraints halignment="CENTER" hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+                  <ColumnConstraints halignment="CENTER" hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
               </columnConstraints>
               <rowConstraints>
                 <RowConstraints minHeight="10.0" prefHeight="10.0" vgrow="SOMETIMES" />
@@ -48,6 +51,21 @@
                      </font>
                   </Label>
                   <Label text="Cost" textFill="WHITE" GridPane.columnIndex="3" GridPane.halignment="CENTER" GridPane.valignment="CENTER">
+                     <font>
+                        <Font name="Georgia Bold" size="14.0" />
+                     </font>
+                  </Label>
+                  <Label text="Screen Room" GridPane.columnIndex="4">
+                     <font>
+                        <Font name="Georgia Bold" size="14.0" />
+                     </font>
+                  </Label>
+                  <Label text="Show Date" GridPane.columnIndex="5">
+                     <font>
+                        <Font name="Georgia Bold" size="14.0" />
+                     </font>
+                  </Label>
+                  <Label text="Start Time" GridPane.columnIndex="6">
                      <font>
                         <Font name="Georgia Bold" size="14.0" />
                      </font>

@@ -2,8 +2,10 @@ package Database;
 
 import CinemaManager.Cinema;
 import MovieManager.MovieManager;
+import com.example.GraphicalUserInterface.ManagementMain;
 
 public class ProcessorManager {
+    private static ProcessorManager processorManager;
     private BookingProcessor bookingProcessor;
     private UserCategoryManagementProcessor userCategoryManagementProcessor;
     private FiltererProcessor filtererProcessor;
@@ -30,6 +32,7 @@ public class ProcessorManager {
     private SeatPriceManagementProcessor seatPriceManagementProcessor;
     private SeatCategoryManagementProcessor seatCategoryManagementProcessor;
     public ProcessorManager() throws Exception {
+        processorManager = this;
         this.analyticsProcessor = new AnalyticsProcessor();
         this.movieManagementProcessor = new MovieManagementProcessor();
         this.seatCategoryManagementProcessor = new SeatCategoryManagementProcessor();
@@ -55,6 +58,16 @@ public class ProcessorManager {
         this.ticketManagementProcessor = new TicketManagementProcessor();
         this.bookingTicketManagementProcessor = new BookingTicketManagementProcessor();
         this.bookingItemManagementProccessor = new BookingItemManagementProcessor();
+    }
+    public static synchronized ProcessorManager getInstance() {
+        if (processorManager == null) {
+            try {
+                processorManager = new ProcessorManager();
+            } catch (Exception e) {
+                System.out.println(e);
+            }
+        }
+        return processorManager;
     }
     public AnalyticsProcessor getAnalyticsProcessor() {
         return this.analyticsProcessor;

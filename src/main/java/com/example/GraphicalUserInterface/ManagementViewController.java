@@ -28,6 +28,7 @@ import javafx.scene.input.MouseButton;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.*;
 import javafx.scene.text.TextAlignment;
+import javafx.stage.Stage;
 import javafx.util.Duration;
 
 import java.io.IOException;
@@ -244,7 +245,23 @@ public class ManagementViewController implements Initializable {
         } else if (subTabPanelOnClick.getId().equals("paymentMethodInfoSubTab")) {
             managementPage.getChildren().add(FXMLLoader.load(getClass().getResource("add-payment-method-form.fxml")));
         } else if(subTabPanelOnClick.getId().equals("bookingTicketInfoSubTab")){
-            managementPage.getChildren().add(FXMLLoader.load(getClass().getResource("movie-list-view.fxml")));
+            Main otherMain = Main.getInstance();
+            otherMain.setSignedInUser(main.getSignedInUser());
+            otherMain.start(new Stage());
+            Event.fireEvent(subTabPanelOnClick, new MouseEvent(MouseEvent.MOUSE_CLICKED, 0,
+                    0, 0, 0, MouseButton.PRIMARY, 1, true, true, true, true,
+                    true, true, true, true, true, true, null));
+        } else if(subTabPanelOnClick.getId().equals("bookingItemInfoSubTab")){
+            Main otherMain = Main.getInstance();
+            otherMain.setSignedInUser(main.getSignedInUser());
+            otherMain.start(new Stage());
+            Event.fireEvent(subTabPanelOnClick, new MouseEvent(MouseEvent.MOUSE_CLICKED, 0,
+                    0, 0, 0, MouseButton.PRIMARY, 1, true, true, true, true,
+                    true, true, true, true, true, true, null));
+        } else if(subTabPanelOnClick.getId().equals("seatPriceInfoSubTab")){
+            managementPage.getChildren().add(FXMLLoader.load(getClass().getResource("add-seat-category-price-form.fxml")));
+        } else if(subTabPanelOnClick.getId().equals("itemPriceInfoSubTab")){
+            managementPage.getChildren().add(FXMLLoader.load(getClass().getResource("add-item-category-price-form.fxml")));
         } else {
             managementPage.getChildren().add(FXMLLoader.load(getClass().getResource("add-account-form.fxml")));
         }
@@ -275,19 +292,28 @@ public class ManagementViewController implements Initializable {
             managementPage.getChildren().add(FXMLLoader.load(getClass().getResource("update-user-category-form.fxml")));
         } else if (subTabPanelOnClick.getId().equals("paymentMethodInfoSubTab")) {
             managementPage.getChildren().add(FXMLLoader.load(getClass().getResource("update-payment-method-form.fxml")));
+        } else if (subTabPanelOnClick.getId().equals("seatPriceInfoSubTab")) {
+            managementPage.getChildren().add(FXMLLoader.load(getClass().getResource("update-seat-category-price-form.fxml")));
+        } else if (subTabPanelOnClick.getId().equals("itemPriceInfoSubTab")) {
+            managementPage.getChildren().add(FXMLLoader.load(getClass().getResource("update-item-category-price-form.fxml")));
         } else {
             managementPage.getChildren().add(FXMLLoader.load(getClass().getResource("update-account-form.fxml")));
         }
     }
     public String normColumnNameToElementID(String columnName) {
         String[] columnNameElements = columnName.split("\\.");
+        System.out.println(columnNameElements.toString());
         String normColumnName;
         if (columnNameElements[0].equals(activeProcessor.getDefaultDatabaseTable())) {
             normColumnName = columnNameElements[1];
         } else if(columnNameElements.length == 1){
             normColumnName = columnNameElements[0];
-        }else {
-            normColumnName = columnNameElements[0].substring(0, columnNameElements[0].length() - 1) + "_" + columnNameElements[1];
+        } else {
+            if (columnNameElements[0].charAt(columnNameElements.length - 1) == 's') {
+                normColumnName = columnNameElements[0].substring(0, columnNameElements[0].length() - 1) + "_" + columnNameElements[1];
+            } else {
+                normColumnName = columnNameElements[0] + "_" + columnNameElements[1];
+            }
         }
         return normColumnName;
     }
@@ -1001,9 +1027,6 @@ public class ManagementViewController implements Initializable {
                     reRenderPage(true);
                 } else if (subTabPanel.getId().equals("seatPriceInfoSubTab")) {
                     activeProcessor = main.getProcessorManager().getSeatPriceManagementProcessor();
-                    insertBtn.setDisable(true);
-                    updateBtn.setDisable(true);
-                    deleteBtn.setDisable(true);
                     reRenderPage(true);
                 } else if (subTabPanel.getId().equals("seatCategoryInfoSubTab")) {
                     activeProcessor = main.getProcessorManager().getSeatCategoryManagementProcessor();
@@ -1022,9 +1045,6 @@ public class ManagementViewController implements Initializable {
                     reRenderPage(true);
                 } else if (subTabPanel.getId().equals("itemPriceInfoSubTab")) {
                     activeProcessor = main.getProcessorManager().getItemPriceManagementProcessor();
-                    insertBtn.setDisable(true);
-                    updateBtn.setDisable(true);
-                    deleteBtn.setDisable(true);
                     reRenderPage(true);
                 } else if (subTabPanel.getId().equals("seatPriceInfoSubTab")) {
                     activeProcessor = main.getProcessorManager().getSeatPriceManagementProcessor();
@@ -1041,7 +1061,6 @@ public class ManagementViewController implements Initializable {
                     reRenderPage(true);
                 } else if (subTabPanel.getId().equals("bookingItemInfoSubTab")) {
                     activeProcessor = main.getProcessorManager().getBookingItemManagementProcessor();
-                    insertBtn.setDisable(true);
                     updateBtn.setDisable(true);
                     reRenderPage(true);
                 } else if (subTabPanel.getId().equals("paymentInfoSubTab")) {

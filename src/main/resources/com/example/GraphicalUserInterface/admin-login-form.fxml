@@ -10,7 +10,7 @@
 <?import javafx.scene.layout.HBox?>
 <?import javafx.scene.text.Font?>
 
-<AnchorPane prefHeight="600.0" prefWidth="900.0" xmlns="http://javafx.com/javafx/19" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.example.GraphicalUserInterface.AdminLoginFormController">
+<AnchorPane fx:id="adminLoginFormContainer" prefHeight="600.0" prefWidth="900.0" xmlns="http://javafx.com/javafx/19" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.example.GraphicalUserInterface.AdminLoginFormController">
    <children>
       <HBox prefHeight="600.0" prefWidth="900.0" style="-fx-alignment: CENTER;" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
          <children>
@@ -40,6 +40,7 @@
                            <font>
                               <Font name="Georgia Bold" size="13.0" />
                            </font></Button>
+                        <Label fx:id="forgotPasswordBtn" layoutX="506.0" layoutY="322.0" onMouseClicked="#forgotPasswordBtnOnClick" text="Forgot password?" textFill="#9f1212" />
                      </children>
                   </AnchorPane>
                </center>

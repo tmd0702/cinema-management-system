@@ -1,24 +1,28 @@
 package com.example.GraphicalUserInterface;
 
+import UserManager.Customer;
+import UserManager.Manager;
 import Utils.StatusCode;
 import Utils.Utils;
 import Utils.Response;
 import com.example.GraphicalUserInterface.Main;
 import com.example.GraphicalUserInterface.ManagementMain;
 import javafx.fxml.FXML;
+import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
 import javafx.scene.control.*;
+import javafx.scene.layout.AnchorPane;
 
 import java.io.InputStream;
 import java.net.URL;
-import java.util.HashMap;
-import java.util.Optional;
-import java.util.Properties;
-import java.util.ResourceBundle;
+import java.sql.Date;
+import java.text.SimpleDateFormat;
+import java.util.*;
 
 public class AdminLoginFormController implements Initializable {
     private Properties prop;
-
+    @FXML
+    private AnchorPane adminLoginFormContainer;
     private ManagementMain managementMain;
     private String filePath;
     @FXML
@@ -47,6 +51,10 @@ public class AdminLoginFormController implements Initializable {
         }
 
     }
+    @FXML
+    public void forgotPasswordBtnOnClick() throws Exception {
+        adminLoginFormContainer.getChildren().add(FXMLLoader.load(getClass().getResource("admin-forgot-password-form.fxml")));
+    }
     public void onLoginSubmitBtnClick() throws Exception {
         HashMap<String, String> signinInfo = new HashMap<String, String>();
         signinInfo.put("username", this.usernameField.getText());
@@ -55,7 +63,8 @@ public class AdminLoginFormController implements Initializable {
         StatusCode signinStatus = response.getStatusCode();
         if (signinStatus == StatusCode.OK) {
             System.out.println("Sign in success");
-
+            ArrayList<ArrayList<String>> userInfo = response.getData();
+            this.managementMain.setSignedInUser(new Manager(Utils.getRowValueByColumnName(2, "USERS.USERNAME", userInfo), Utils.getRowValueByColumnName(2, "USERS.ID", userInfo), Utils.getRowValueByColumnName(2, "USERS.FIRST_NAME", userInfo), Utils.getRowValueByColumnName(2, "USERS.LAST_NAME", userInfo), new Date(new SimpleDateFormat("yyyy-MM-dd").parse(Utils.getRowValueByColumnName(2, "USERS.DOB", userInfo)).getTime()), Utils.getRowValueByColumnName(2, "USERS.PHONE", userInfo), Utils.getRowValueByColumnName(2, "USERS.EMAIL", userInfo), Utils.getRowValueByColumnName(2, "USERS.GENDER", userInfo), Utils.getRowValueByColumnName(2, "USERS.ADDRESS", userInfo), Integer.parseInt(Utils.getRowValueByColumnName(2, "USERS.SCORE", userInfo)), Utils.getRowValueByColumnName(2, "USERS.USER_CATEGORY_CATEGORY", userInfo)));
             // write username & password vo trong file account-cache.properties
             if (rememberAccountCheckBox.isSelected()) {
                 Utils.writeProperties(this.prop, this.usernameField.getText(), this.passwordField.getText(), filePath);

@@ -4,7 +4,6 @@ import Utils.Response;
 import Utils.StatusCode;
 import Utils.Utils;
 import Utils.Validator;
-import com.example.GraphicalUserInterface.Main;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.Alert;
@@ -21,7 +20,7 @@ import java.util.HashMap;
 import java.util.Optional;
 import java.util.ResourceBundle;
 
-public class ForgotPasswordFormController implements Initializable {
+public class AdminForgotPasswordFormController implements Initializable {
     @FXML
     private TextField emailField;
     @FXML
@@ -30,9 +29,9 @@ public class ForgotPasswordFormController implements Initializable {
     private AnchorPane enterEmailContainer, changePasswordContainer;
     @FXML
     private StackPane forgotPasswordFormRoot;
-    private Main main;
-    public ForgotPasswordFormController() {
-        main = Main.getInstance();
+    private ManagementMain main;
+    public AdminForgotPasswordFormController() {
+        main = ManagementMain.getInstance();
     }
     private ArrayList<ArrayList<String>> accountInfoFetcher;
 
@@ -73,7 +72,7 @@ public class ForgotPasswordFormController implements Initializable {
         }
     }
     public void disableForm() {
-        main.getNodeById("#mainOutlineContentView").setDisable(false);
+        main.getNodeById("#adminLoginFormContainer").setDisable(false);
         ((AnchorPane)forgotPasswordFormRoot.getParent()).getChildren().remove(forgotPasswordFormRoot);
     }
     @FXML
@@ -127,7 +126,7 @@ public class ForgotPasswordFormController implements Initializable {
     }
     @FXML
     public void onXmarkBtnClick(MouseEvent event){
-        main.getNodeById("#mainOutlineContentView").setDisable(false);
+        main.getNodeById("#adminLoginFormContainer").setDisable(false);
         ((AnchorPane)forgotPasswordFormRoot.getParent()).getChildren().remove(forgotPasswordFormRoot);
     }
 }

@@ -34,7 +34,7 @@ public class Main extends Application {
     public Main() throws Exception {
         super();
         main = this;
-        this.processorManager = new ProcessorManager();
+        this.processorManager = ProcessorManager.getInstance();
         this.config = new Config();
         this.connector = new Connector(this.config);
         this.queryOnSearching = "";
@@ -108,7 +108,9 @@ public class Main extends Application {
     }
     @Override
     public void start(Stage primaryStage) throws IOException {
-        processorManager.getMovieManagementProcessor().getMovies();
+        if (processorManager.getMovieManagementProcessor().getMovieManager().getMovieList().size() == 0) {
+            processorManager.getMovieManagementProcessor().getMovies();
+        }
         stage = primaryStage;
         setMovieOnBooking(new Movie());
         FXMLLoader fxmlLoader = new FXMLLoader(Main.class.getResource("main-outline.fxml"));

@@ -3,6 +3,7 @@ package com.example.GraphicalUserInterface;
 import Configuration.Config;
 import Database.*;
 import ImageManager.ImageManager;
+import UserManager.User;
 import Utils.IdGenerator;
 import javafx.application.Application;
 import javafx.fxml.FXMLLoader;
@@ -14,6 +15,7 @@ import java.io.IOException;
 
 public class ManagementMain extends Application {
     private static Stage stage;
+    private User signedInUser;
     private Scene scene;
     private Config config;
     private IdGenerator idGenerator;
@@ -24,7 +26,7 @@ public class ManagementMain extends Application {
         managementMain = this;
         config = new Config();
         idGenerator = new IdGenerator();
-        processorManager = new ProcessorManager();
+        processorManager = ProcessorManager.getInstance();
         imageManager = new ImageManager();
     }
     public Config getConfig() {
@@ -54,6 +56,7 @@ public class ManagementMain extends Application {
     }
     @Override
     public void start(Stage primaryStage) throws IOException {
+        processorManager.getMovieManagementProcessor().getMovies();
         stage = primaryStage;
         FXMLLoader fxmlLoader = new FXMLLoader(Main.class.getResource("admin-login-form.fxml"));
         scene = new Scene(fxmlLoader.load(), 920, 660);
@@ -62,6 +65,12 @@ public class ManagementMain extends Application {
         stage.setResizable(false);
         stage.show();
     }
+    public void setSignedInUser(User user) {
+        this.signedInUser = user;
+    }
+    public User getSignedInUser() {
+        return this.signedInUser;
+    }
     public ProcessorManager getProcessorManager() {
         return this.processorManager;
     }
@@ -69,9 +78,6 @@ public class ManagementMain extends Application {
     public void changeScene(String fxml) throws IOException {
         FXMLLoader fxmlLoader = new FXMLLoader(Main.class.getResource(fxml));
         stage.getScene().setRoot(fxmlLoader.load());
-    }
-    public static void ShowErrors(){
-
     }
     public static void main(String[] args) {
         launch();

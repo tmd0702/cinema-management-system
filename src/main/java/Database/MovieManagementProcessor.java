@@ -24,6 +24,7 @@ public class MovieManagementProcessor extends Processor {
         this.idGenerator = new IdGenerator();
         this.movieManager = new MovieManager();
         this.scheduleManagementProcessor = new ScheduleManagementProcessor();
+//        getMovies();
     }
     public MovieManager getMovieManager() {
         return this.movieManager;
@@ -55,7 +56,7 @@ public class MovieManagementProcessor extends Processor {
         return response;
     }
     public void getMovies() {
-        String query = "SELECT * FROM MOVIES WHERE STATUS = 'Released' LIMIT 100";// LIMIT 30";
+        String query = "SELECT * FROM MOVIES WHERE STATUS = 'Released' LIMIT 30";// LIMIT 30";
         ArrayList<Movie> tmpList = new ArrayList<Movie>();
         try {
             Statement st = getConnector().createStatement();

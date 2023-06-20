@@ -208,10 +208,13 @@ public class Utils {
                     @Override
                     public void updateItem(LocalDate date, boolean empty) {
                         super.updateItem(date, empty);
-                        if(isBefore == true)
+                        if(isBefore == true) {
+                            System.out.println(date + " " + date.isBefore(LocalDate.now()));
                             setDisable(date.isBefore(LocalDate.now()));
-                        else
+                        }
+                        else {
                             setDisable(date.isAfter(LocalDate.now()));
+                        }
                     }
                 };
             }

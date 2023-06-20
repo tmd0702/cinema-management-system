@@ -6,6 +6,7 @@ import java.lang.Math;
 import Utils.ColumnType;
 import Utils.Response;
 import Utils.StatusCode;
+import Utils.Utils;
 import com.example.GraphicalUserInterface.ManagementMain;
 import javafx.animation.KeyFrame;
 import javafx.animation.Timeline;
@@ -36,6 +37,7 @@ import java.net.URL;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.Optional;
 import java.util.ResourceBundle;
 
@@ -119,9 +121,11 @@ public class ManagementViewController implements Initializable {
     private ImageView logoImageView;
     @FXML
     private VBox tabPane;
+    private HashMap<String, String> columnNameMapper;
     @FXML
     private ScrollPane dataViewScrollPane;
     public ManagementViewController() {
+        columnNameMapper = new HashMap<String, String>();
         sortQuery = "";
         queryCondition = "";
         queryConditionValues = new ArrayList<String>();
@@ -339,8 +343,8 @@ public class ManagementViewController implements Initializable {
                         int rowIndex = GridPane.getRowIndex(cellOnClick);
                         for (int i=0;i < data.get(0).size(); ++i) {
                             String columnName = data.get(0).get(i);
-                            System.out.println("#" + Utils.Utils.toCamelCase(normColumnNameToElementID(columnName)) + "Field");
-                            Node node = main.getNodeById("#" + Utils.Utils.toCamelCase(normColumnNameToElementID(columnName)) + "Field");
+                            System.out.println("#" + Utils.toCamelCase(normColumnNameToElementID(columnName)) + "Field");
+                            Node node = main.getNodeById("#" + Utils.toCamelCase(normColumnNameToElementID(columnName)) + "Field");
                             if (node instanceof TextField) {
                                 ((TextField) node).setText(data.get(rowIndex).get(i));
                             } else if (node instanceof DatePicker) {
@@ -739,10 +743,33 @@ public class ManagementViewController implements Initializable {
             }
         });
     }
+    public ArrayList<String> generateColumnNameView(ArrayList<String> columnNames) {
+        ArrayList<String> columnNamesView = new ArrayList<>();
+        for (String columnName : columnNames) {
+            String columnNameView = "";
+            String []columnNameSplitted = columnName.split("\\.");
+            if (columnNameSplitted.length == 1) {
+                columnNameView = Utils.toTitleCase(columnNameSplitted[0]);
+            } else {
+                for (int j=0;j<columnNameSplitted.length;++j) {
+                    String element = columnNameSplitted[j];
+                    if (element.toLowerCase().charAt(element.length() - 1) == 's') {
+                        element = element.substring(0, element.length() - 1);
+                    }
+                    columnNameView += Utils.toTitleCase(element);
+                    if (j < columnNameSplitted.length - 1) {
+                        columnNameView += " ";
+                    }
+                }
+            }
+            columnNamesView.add(columnNameView);
+        }
+        return columnNamesView;
+    }
     public void renderTableOutline(ArrayList<ArrayList<String>> data) {
         ArrayList<String> columnNames = data.get(0);
-        System.out.println(columnNames);
         ArrayList<String> columnTypes = data.get(1);
+        ArrayList<String> columnNamesView = generateColumnNameView(columnNames);
         for (int i = 0; i <= 1; ++i) {
             for (int j = 0; j <= columnNames.size(); ++j) {
                 if (i == 0) {
@@ -751,7 +778,7 @@ public class ManagementViewController implements Initializable {
                     headerGroup.setMaxHeight(Double.MAX_VALUE);
                     Label label = new Label();
                     if (j > 0) {
-                        label.setText(columnNames.get(j - 1));
+                        label.setText(columnNamesView.get(j - 1));
                         dataViewHeaderNodeMouseEventListener(headerGroup);
                     } else {
                         label.setPrefWidth(40);

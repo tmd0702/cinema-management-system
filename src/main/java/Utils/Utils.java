@@ -126,7 +126,22 @@ public class Utils {
         }
         return map;
     }
-
+    public static String toTitleCase(String text) {
+        if (text.toLowerCase().equals("id")) {
+            return "ID";
+        }
+        String[] words = text.split("[\\W_]+");
+        String result = "";
+        for (int i = 0; i < words.length; i++) {
+            String word = words[i];
+            word = word.isEmpty() ? word : Character.toUpperCase(word.charAt(0)) + word.substring(1).toLowerCase();
+            result += word;
+            if (i < words.length - 1) {
+                result += " ";
+            }
+        }
+        return result;
+    }
     public static String toCamelCase(String text) {
         String[] words = text.split("[\\W_]+");
         String result = "";

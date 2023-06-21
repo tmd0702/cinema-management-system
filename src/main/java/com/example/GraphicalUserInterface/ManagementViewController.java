@@ -434,24 +434,47 @@ public class ManagementViewController implements Initializable {
         String queryCondition = String.format("ID = '%s'", recordId);
     }
     public void  handleDeleteRecordRequest() {
-        String recordId = getRecordIdByRowIndex();
-        String idColumn = String.format("%s.ID", activeProcessor.getDefaultDatabaseTable());
-        if (subTabPanelOnClick.getId().equals("bookingTicketInfoSubTab") || subTabPanelOnClick.getId().equals("bookingItemInfoSubTab")) {
-            idColumn = "PAYMENT_ID";
-        }
-        String queryCondition = String.format("%s = '%s'", idColumn, recordId);
-        Response response = activeProcessor.deleteData(queryCondition, true);
-        StatusCode status = response.getStatusCode();
-        if (status == StatusCode.OK) {
-            System.out.println("delete success");
-            reRenderPage(false);
-        } else {
 
-            Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
+        if (subTabPanelOnClick.getId().equals("bookingTicketInfoSubTab")) {
+            int onClickedCellRowIndex = GridPane.getRowIndex(cellOnClick);
+            String paymentId = data.get(onClickedCellRowIndex).get(0);
+            String ticketId = data.get(onClickedCellRowIndex).get(1);
+            String queryCondition = String.format("PAYMENT_ID = '%s' AND TICKET_ID = '%s'", paymentId, ticketId);
+            Response response = activeProcessor.deleteData(queryCondition, true);
+            StatusCode status = response.getStatusCode();
+            if (status == StatusCode.OK) {
+                System.out.println("delete success");
+                reRenderPage(false);
+            }
+        } else if (subTabPanelOnClick.getId().equals("bookingItemInfoSubTab")) {
+            int onClickedCellRowIndex = GridPane.getRowIndex(cellOnClick);
+            String paymentId = data.get(onClickedCellRowIndex).get(0);
+            String itemId = data.get(onClickedCellRowIndex).get(1);
+            String queryCondition = String.format("PAYMENT_ID = '%s' AND ITEM_ID = '%s'", paymentId, itemId);
+            Response response = activeProcessor.deleteData(queryCondition, true);
+            StatusCode status = response.getStatusCode();
+            if (status == StatusCode.OK) {
+                System.out.println("delete success");
+                reRenderPage(false);
+            }
+        } else {
+            String recordId = getRecordIdByRowIndex();
+            String idColumn = String.format("%s.ID", activeProcessor.getDefaultDatabaseTable());
+            String queryCondition = String.format("%s = '%s'", idColumn, recordId);
+            Response response = activeProcessor.deleteData(queryCondition, true);
+            StatusCode status = response.getStatusCode();
+            if (status == StatusCode.OK) {
+                System.out.println("delete success");
+                reRenderPage(false);
+            } else {
+
+                Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
 //        alert.setTitle("Confirmation");
-            alert.setContentText("Can not delete " + idColumn + " = " + recordId);//"Are you sure to delete this record?");
-            Optional<ButtonType> result = alert.showAndWait();
+                alert.setContentText("Can not delete " + idColumn + " = " + recordId);//"Are you sure to delete this record?");
+                Optional<ButtonType> result = alert.showAndWait();
+            }
         }
+
     }
     public void deleteConfirmationAlert(String contentText) {
         Alert alert = new Alert(Alert.AlertType.CONFIRMATION);

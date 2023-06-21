@@ -4,6 +4,7 @@ import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.concurrent.atomic.AtomicReferenceArray;
 
 import Utils.Response;
 import Utils.*;
@@ -88,6 +89,12 @@ public class BookingProcessor extends Processor {
     public ArrayList<ArrayList<String>> getItems(){
         return main.getProcessorManager().getItemManagementProcessor().getData(0, -1, "", "").getData();
     }
+    public String getSeatPriceId(String seatId){
+        String id = "";
+        ArrayList<ArrayList<String>> seatFetcher = select("*",0, -1, String.format("S.ID = '%s' AND S.SEAT_CATEGORY_ID = SP.SEAT_CATEGORY_ID", seatId),"", "SEATS S, SEAT_PRICES SP").getData();
+        id = Utils.getDataValuesByColumnName(seatFetcher,"ID").get(0);
+        return id;
+    }
     public String createPaymentRow() throws Exception {
         LocalDateTime now = LocalDateTime.now();
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
@@ -129,6 +136,7 @@ public class BookingProcessor extends Processor {
         return ticketId;
     }
     public boolean createBookingTicketRow(){
+        ArrayList<String> seatID = bookingInfor.getSeats();
         HashMap<String, String> seatBooking = new HashMap<String, String>();
         try {
             String paymentId = createPaymentRow();
@@ -136,6 +144,7 @@ public class BookingProcessor extends Processor {
             for (String ticket : ticketSeats) {
                 seatBooking.put("PAYMENT_ID", paymentId);
                 seatBooking.put("TICKET_ID", ticket);
+                seatBooking.put("SEAT_PRICE_ID", getSeatPriceId(seatID.get(ticketSeats.indexOf(ticket))));
                 Response response = main.getProcessorManager().getBookingTicketManagementProcessor().insertData(seatBooking, false);
                 if (response.getStatusCode() == StatusCode.OK) {
                     System.out.println("insert 1 row success");

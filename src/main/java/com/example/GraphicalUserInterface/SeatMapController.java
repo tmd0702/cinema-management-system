@@ -54,20 +54,20 @@ public class SeatMapController {
     private ArrayList<Button> seatBtnSelected = new ArrayList<Button>();
     private int numberSubBtn;
 
-    @FXML
-    private TextField idInsertField, nameInsertField, categoryInsertFiled;
+
     @FXML
     private ComboBox statusInsertField, statusUpdateField;
     @FXML
     private TextField idUpdateField, nameUpdateField, categoryUpdateFiled;
 
-
+    private ManagementMain managementMain;
 
 
 
 
     @FXML
     public void initialize() throws Exception {
+        this.managementMain = new ManagementMain();
         this.main = Main.getInstance();
         this.bookingProcessor = new BookingProcessor();
         scrollBtnInit();
@@ -83,12 +83,18 @@ public class SeatMapController {
         }
         return null;
     }
+
+    public GridPane getSeatGrid() {
+        return seatGrid;
+    }
+
     public void scrollBtnInit() {
         scrollBtnChangeStyleOnHover(cineScrollLeftBtn);
         scrollBtnChangeStyleOnHover(cineScrollRightBtn);
         scrollBtnChangeStyleOnHover(roomScrollLeftBtn);
         scrollBtnChangeStyleOnHover(roomScrollRightBtn);
     }
+
     @FXML
     public void scrollLeftBtnOnClick(MouseEvent event) {
         Button button = (Button)(cinemaSection.getChildren().get(0));
@@ -171,6 +177,15 @@ public class SeatMapController {
         ConstructActiveList(CinemaButton, isCinemaActive);
 
     }
+
+    public String getCinemaId() {
+        return cinemaId;
+    }
+
+    public String getRoomId() {
+        return roomId;
+    }
+
     public void setDefautlColor(int i, ArrayList<Button> ListButton){
         for(int j = 0; j < ListButton.size(); j++){
             if(j == i)
@@ -315,12 +330,12 @@ public class SeatMapController {
                                 this.button = (Button) seatGrid.getChildren().get(seatGrid.getChildren().indexOf(button) + 1);
                             }
                             this.button.setStyle("-fx-background-color: #8D090D");
-                            seatIdSelected.add(getIdFromIndex(SeatInfor, SeatList.indexOf(this.button.getText())));
-                            seatBtnSelected.add(this.button);
+                            this.managementMain.getSeatIdSelected().add(getIdFromIndex(SeatInfor, SeatList.indexOf(this.button.getText())));
+                            this.managementMain.getSeatBtnSelected().add(this.button);
                         }
                         button.setStyle("-fx-background-color: #8D090D");
-                        seatIdSelected.add(getIdFromIndex(SeatInfor, SeatList.indexOf(s)));
-                        seatBtnSelected.add(button);
+                        this.managementMain.getSeatIdSelected().add(getIdFromIndex(SeatInfor, SeatList.indexOf(s)));
+                        this.managementMain.getSeatBtnSelected().add(button);
                     } else {
                         if (category.equals("SC_00001"))
                             button.setStyle("-fx-background-color: #A4A4A4");
@@ -329,14 +344,14 @@ public class SeatMapController {
                         else {
                             button.setStyle("-fx-background-color:  #FF00D6");
                             this.button.setStyle("-fx-background-color:  #FF00D6");
-                            seatIdSelected.remove(getIdFromIndex(SeatInfor, SeatList.indexOf(this.button.getText())));
-                            seatBtnSelected.remove(this.button);
+                            this.managementMain.getSeatIdSelected().remove(getIdFromIndex(SeatInfor, SeatList.indexOf(this.button.getText())));
+                            this.managementMain.getSeatBtnSelected().remove(this.button);
                         }
-                        seatIdSelected.remove(getIdFromIndex(SeatInfor, SeatList.indexOf(s)));
-                        seatBtnSelected.remove(button);
+                        this.managementMain.getSeatIdSelected().remove(getIdFromIndex(SeatInfor, SeatList.indexOf(s)));
+                        this.managementMain.getSeatBtnSelected().remove(button);
                     }
-                System.out.println(seatIdSelected);
-                System.out.println(seatBtnSelected);
+                System.out.println(this.managementMain.getSeatIdSelected());
+                System.out.println(this.managementMain.getSeatBtnSelected());
                     seatGrid.requestFocus();
             });
             r++;
@@ -353,16 +368,16 @@ public class SeatMapController {
                 subButton.setOnAction(e->{
                     if(subButton.getStyle().equals("-fx-border-color: green; -fx-background-color: transparent;")){
                         subButton.setStyle("-fx-border-color: red; -fx-background-color: transparent;");
-                        seatIdSelected.add(subButton.getId());
-                        seatBtnSelected.add(subButton);
+                        this.managementMain.getSeatIdSelected().add(subButton.getId());
+                        this.managementMain.getSeatBtnSelected().add(subButton);
                     }
                     else {
                         subButton.setStyle("-fx-border-color: green; -fx-background-color: transparent;");
-                        seatIdSelected.remove(subButton.getId());
-                        seatBtnSelected.remove(subButton);
+                        this.managementMain.getSeatIdSelected().remove(subButton.getId());
+                        this.managementMain.getSeatBtnSelected().remove(subButton);
                     }
-                    System.out.println(seatIdSelected);
-                    System.out.println(seatBtnSelected);
+                    System.out.println(this.managementMain.getSeatBtnSelected());
+                    System.out.println(this.managementMain.getSeatIdSelected());
                     seatGrid.requestFocus();
                 });
             }
@@ -395,28 +410,7 @@ public class SeatMapController {
     }
     @FXML
     public void handleInsertSeat(){
-        for(Button button: seatBtnSelected){
-            if(button.getStyle() != "-fx-border-color: red; -fx-background-color: transparent;"){
-                Dialog<String> dialog = new Dialog<String>();
-                //Setting the title
-                dialog.setTitle("Success");
-                ButtonType type = new ButtonType("Ok", ButtonBar.ButtonData.OK_DONE);
-                dialog.setContentText("Only choose seats have not existed");
-                dialog.getDialogPane().getButtonTypes().add(type);
-                dialog.showAndWait();
-                return;
-            }
-            if(seatBtnSelected.size() > 1){
-                Dialog<String> dialog = new Dialog<String>();
-                //Setting the title
-                dialog.setTitle("Success");
-                ButtonType type = new ButtonType("Ok", ButtonBar.ButtonData.OK_DONE);
-                dialog.setContentText("once insert, only insert 1 seat");
-                dialog.getDialogPane().getButtonTypes().add(type);
-                dialog.showAndWait();
-                return;
-            }
-        }
+
         for( Button button : seatBtnSelected) {
 
         }

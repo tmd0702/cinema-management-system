@@ -98,7 +98,7 @@ public class ManagementViewController implements Initializable {
     @FXML
     private Button promotionTabPanel = new Button("Promotion");
     @FXML
-    private Button bookingTabPanel = new Button("Booking");
+    private Button bookingTabPanel = new Button("Ticket");
     @FXML
     private Button scheduleTabPanel = new Button("Schedule");
     @FXML
@@ -124,6 +124,7 @@ public class ManagementViewController implements Initializable {
     private HashMap<String, String> columnNameMapper;
     @FXML
     private ScrollPane dataViewScrollPane;
+
     public ManagementViewController() {
         columnNameMapper = new HashMap<String, String>();
         sortQuery = "";
@@ -223,6 +224,46 @@ public class ManagementViewController implements Initializable {
         menuBoxButtonsStylingOnMouseEvent(backToHeadBtn);
     }
     public void changeSceneToInsertView() throws IOException {
+        if (subTabPanelOnClick.getId().equals("seatMapSubTab")){
+            System.out.println(ManagementMain.getInstance().getSeatBtnSelected());
+            if(ManagementMain.getInstance().getSeatBtnSelected().size() <= 0)
+            {
+                Dialog<String> dialog = new Dialog<String>();
+                //Setting the title
+                dialog.setTitle("Error");
+                ButtonType type = new ButtonType("Ok", ButtonBar.ButtonData.OK_DONE);
+                dialog.setContentText("Choose seat for insert");
+                dialog.getDialogPane().getButtonTypes().add(type);
+                dialog.showAndWait();
+                managementContainerStackPane.setVisible(true);
+                return;
+            }
+            ArrayList<Button> seatBtnSelected = ManagementMain.getInstance().getSeatBtnSelected();
+            for(Button button: seatBtnSelected){
+                if(button.getStyle() != "-fx-border-color: red; -fx-background-color: transparent;"){
+                    Dialog<String> dialog = new Dialog<String>();
+                    //Setting the title
+                    dialog.setTitle("Error");
+                    ButtonType type = new ButtonType("Ok", ButtonBar.ButtonData.OK_DONE);
+                    dialog.setContentText("Only choose seats have not existed");
+                    dialog.getDialogPane().getButtonTypes().add(type);
+                    dialog.showAndWait();
+                    return;
+                }
+                if(seatBtnSelected.size() > 1){
+                    Dialog<String> dialog = new Dialog<String>();
+                    //Setting the title
+                    dialog.setTitle("Error");
+                    ButtonType type = new ButtonType("Ok", ButtonBar.ButtonData.OK_DONE);
+                    dialog.setContentText("once insert, only insert 1 seat");
+                    dialog.getDialogPane().getButtonTypes().add(type);
+                    dialog.showAndWait();
+                    return;
+                }
+            }
+            managementPage.getChildren().add(FXMLLoader.load(getClass().getResource("add-seat-form.fxml")));
+            return;
+        }
         managementContainerStackPane.setVisible(false);
         if (subTabPanelOnClick.getId().equals("userInfoSubTab")) {
             managementPage.getChildren().add(FXMLLoader.load(getClass().getResource("add-account-form.fxml")));
@@ -248,8 +289,6 @@ public class ManagementViewController implements Initializable {
             managementPage.getChildren().add(FXMLLoader.load(getClass().getResource("add-user-category-form.fxml")));
         } else if (subTabPanelOnClick.getId().equals("paymentMethodInfoSubTab")) {
             managementPage.getChildren().add(FXMLLoader.load(getClass().getResource("add-payment-method-form.fxml")));
-        } else if (subTabPanelOnClick.getId().equals("seatMapSubTab")){
-            managementPage.getChildren().add(FXMLLoader.load(getClass().getResource("add-seat-form.fxml")));
         } else if(subTabPanelOnClick.getId().equals("bookingTicketInfoSubTab")){
             Main otherMain = Main.getInstance();
             otherMain.setSignedInUser(main.getSignedInUser());
@@ -457,7 +496,42 @@ public class ManagementViewController implements Initializable {
                 System.out.println("delete success");
                 reRenderPage(false);
             }
-        } else {
+        } else if(subTabPanelOnClick.getId().equals("seatMapSubTab")){
+            for(Button button : ManagementMain.getInstance().getSeatBtnSelected() ) {
+                button.setStyle("-fx-border-color: green; -fx-background-color: transparent;");
+                button.setOnAction(e -> {
+                    if (button.getStyle().equals("-fx-border-color: green; -fx-background-color: transparent;")) {
+                        button.setStyle("-fx-border-color: red; -fx-background-color: transparent;");
+                        ManagementMain.getInstance().getSeatIdSelected().add(button.getId());
+                        ManagementMain.getInstance().getSeatBtnSelected().add(button);
+                    } else {
+                        button.setStyle("-fx-border-color: green; -fx-background-color: transparent;");
+                        ManagementMain.getInstance().getSeatIdSelected().remove(button.getId());
+                        ManagementMain.getInstance().getSeatBtnSelected().remove(button);
+                    }
+                    System.out.println(ManagementMain.getInstance().getSeatIdSelected());
+                    System.out.println(ManagementMain.getInstance().getSeatBtnSelected());
+                    ManagementMain.getInstance().getSeatMapController().getSeatGrid().requestFocus();
+                });
+            }
+            for(String id : ManagementMain.getInstance().getSeatIdSelected() ){
+                String idColumn = String.format("%s.ID", activeProcessor.getDefaultDatabaseTable());
+                String queryCondition = String.format("%s = '%s'", idColumn, id);
+                Response response = activeProcessor.deleteData(queryCondition, true);
+                StatusCode status = response.getStatusCode();
+                if (status == StatusCode.OK) {
+                    System.out.println("delete success");
+                    reRenderPage(false);
+                } else {
+
+                    Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
+//        alert.setTitle("Confirmation");
+                    alert.setContentText("Can not delete " + idColumn + " = " + id);//"Are you sure to delete this record?");
+                    Optional<ButtonType> result = alert.showAndWait();
+                }
+            }
+            }
+        }else {
             String recordId = getRecordIdByRowIndex();
             String idColumn = String.format("%s.ID", activeProcessor.getDefaultDatabaseTable());
             String queryCondition = String.format("%s = '%s'", idColumn, recordId);

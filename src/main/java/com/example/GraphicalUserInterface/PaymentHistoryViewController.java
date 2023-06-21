@@ -8,6 +8,7 @@ import javafx.scene.control.Label;
 import javafx.scene.layout.ColumnConstraints;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.Priority;
+import javafx.scene.layout.Region;
 
 import java.net.URL;
 import java.util.ArrayList;
@@ -31,9 +32,15 @@ public class PaymentHistoryViewController implements Initializable {
         paymentHistoryViewGrid.setVgap(10);
         paymentHistoryFetcher = main.getProcessorManager().getPaymentManagementProcessor().getData(0, -1, String.format("USERS.ID = '%s'", main.getSignedInUser().getId()), "PAYMENTS.PAYMENT_DATE DESC").getData();
         for (ColumnConstraints column : paymentHistoryViewGrid.getColumnConstraints()) {
-            column.setFillWidth(true);
+//            column.setFillWidth(true);
+
         }
+
         for (int i=2; i<paymentHistoryFetcher.size();++i) {
+            String paymentId = Utils.getRowValueByColumnName(i, "PAYMENTS.ID", paymentHistoryFetcher);
+            ArrayList<ArrayList<String>> seatInfoFetcher = main.getProcessorManager().getBookingTicketManagementProcessor().getData(0, -1, String.format("BOOKING_TICKETS.PAYMENT_ID = '%s'", paymentId), "").getData();
+            ArrayList<String> seatNames = Utils.getDataValuesByColumnName(seatInfoFetcher, "SEATS.NAME");
+            String seatPositionsString = seatNames.toString().replace("[", "").replace("]", "");
             Label paymentDateLabel = new Label(Utils.getRowValueByColumnName(i, "PAYMENTS.PAYMENT_DATE", paymentHistoryFetcher));
             Label totalAmountLabel = new Label(Utils.getRowValueByColumnName(i, "PAYMENTS.TOTAL_AMOUNT", paymentHistoryFetcher));
             Label movieTitleLabel = new Label(Utils.getRowValueByColumnName(i, "MOVIES.TITLE", paymentHistoryFetcher));
@@ -41,6 +48,7 @@ public class PaymentHistoryViewController implements Initializable {
             Label screenRoomNameLabel = new Label(Utils.getRowValueByColumnName(i, "SCREEN_ROOMS.NAME", paymentHistoryFetcher));
             Label showDateLabel = new Label(Utils.getRowValueByColumnName(i, "SCHEDULES.SHOW_DATE", paymentHistoryFetcher));
             Label startTimeLabel = new Label(Utils.getRowValueByColumnName(i, "SHOW_TIMES.START_TIME", paymentHistoryFetcher));
+            Label seatPositionsLabel = new Label(seatPositionsString);
             setStyleForGridViewLabel(paymentDateLabel);
             setStyleForGridViewLabel(totalAmountLabel);
             setStyleForGridViewLabel(movieTitleLabel);
@@ -48,11 +56,12 @@ public class PaymentHistoryViewController implements Initializable {
             setStyleForGridViewLabel(screenRoomNameLabel);
             setStyleForGridViewLabel(showDateLabel);
             setStyleForGridViewLabel(startTimeLabel);
-            paymentHistoryViewGrid.addRow(i - 1, movieTitleLabel, cinemaNameLabel, paymentDateLabel, totalAmountLabel, screenRoomNameLabel, showDateLabel, startTimeLabel);
+            paymentHistoryViewGrid.addRow(i - 1, movieTitleLabel, cinemaNameLabel, paymentDateLabel, totalAmountLabel, screenRoomNameLabel, showDateLabel, startTimeLabel, seatPositionsLabel);
         }
     }
     public void setStyleForGridViewLabel(Label label) {
 //        label.setStyle("");
         label.setWrapText(true);
+        label.setMinWidth(Region.USE_PREF_SIZE);
     }
 }

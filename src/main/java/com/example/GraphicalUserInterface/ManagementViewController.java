@@ -57,7 +57,7 @@ public class ManagementViewController implements Initializable {
     private boolean isSearchFieldActive;
     private ArrayList<ArrayList<String>> data;
     @FXML
-    private HBox menuBox;
+    private HBox menuBox, pageToolBar;
     @FXML
     private VBox managementContainerView;
     @FXML
@@ -1100,14 +1100,21 @@ public class ManagementViewController implements Initializable {
                 } else if (subTabPanel.getId().equals("paymentMethodInfoSubTab")) {
                     activeProcessor = main.getProcessorManager().getPaymentMethodManagementProcessor();
                     reRenderPage(true);
-                }else if(subTabPanel.getId().equals("seatMapSubTab")){
-                    managementContainerStackPane.setVisible(false);
-
-                        try {
-                            managementPage.getChildren().add(FXMLLoader.load(getClass().getResource("seat-map.fxml")));
-                        } catch (IOException e) {
-                            throw new RuntimeException(e);
-                        }
+                } else if(subTabPanel.getId().equals("seatMapSubTab")){
+                    activeProcessor = main.getProcessorManager().getSeatManagementProcessor();
+                    try {
+                        pageToolBar.setVisible(false);
+                        dataViewScrollPane.setContent(FXMLLoader.load(getClass().getResource("seat-map.fxml")));
+                    } catch (Exception e) {
+                        System.out.println(e);
+                    }
+//                    managementContainerStackPane.setVisible(false);
+//
+//                        try {
+//                            managementPage.getChildren().add(FXMLLoader.load(getClass().getResource("seat-map.fxml")));
+//                        } catch (IOException e) {
+//                            throw new RuntimeException(e);
+//                        }
 
                 }
 

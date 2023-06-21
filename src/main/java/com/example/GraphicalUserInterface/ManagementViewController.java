@@ -1033,6 +1033,10 @@ public class ManagementViewController implements Initializable {
                 subTabPanel.setStyle("-fx-background-color: white; -fx-font-weight: bold;-fx-pref-height: 40px;");
                 subTabPanelOnClick = (Button)subTabPanel;
                 activateBtn();
+                pageToolBar.setPrefHeight(29);
+                pageToolBar.setVisible(true);
+                dataViewScrollPane.setContent(dataView);
+                dataViewScrollPane.setPrefHeight(527);
                 if (subTabPanel.getId().equals("userInfoSubTab")) {
                     activeProcessor = main.getProcessorManager().getAccountManagementProcessor();
 //                    insertBtn.setDisable(true);
@@ -1105,6 +1109,8 @@ public class ManagementViewController implements Initializable {
                     try {
                         pageToolBar.setVisible(false);
                         dataViewScrollPane.setContent(FXMLLoader.load(getClass().getResource("seat-map.fxml")));
+                        dataViewScrollPane.setPrefHeight(556);
+                        pageToolBar.setPrefHeight(0);
                     } catch (Exception e) {
                         System.out.println(e);
                     }

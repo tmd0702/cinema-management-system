@@ -88,7 +88,7 @@ public class BookingProcessor extends Processor {
     public ArrayList<ArrayList<String>> getItems(){
         return main.getProcessorManager().getItemManagementProcessor().getData(0, -1, "", "").getData();
     }
-    public String createPaymentRow(){
+    public String createPaymentRow() throws Exception {
         LocalDateTime now = LocalDateTime.now();
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
         String formatDateTime = now.format(formatter);
@@ -106,10 +106,11 @@ public class BookingProcessor extends Processor {
             System.out.println("insert 1 row success" + payment.get("ID"));
         } else {
             System.out.println(" failed");
+            throw new Exception(response.getMessage());
         }
         return payment.get("ID");
     }
-    public ArrayList<String> createTicketRow(){
+    public ArrayList<String> createTicketRow() throws Exception {
         HashMap<String, String> seatTicket = new HashMap<String, String>();
         ArrayList<String> ticketId = new ArrayList<String>();
         for(String seatid : bookingInfor.getSeats()) {
@@ -122,27 +123,34 @@ public class BookingProcessor extends Processor {
                 ticketId.add(seatTicket.get("ID"));
             } else {
                 System.out.println(" failed");
+                throw new Exception(response.getMessage());
             }
         }
         return ticketId;
     }
-    public void createBookingTicketRow(){
+    public boolean createBookingTicketRow(){
         HashMap<String, String> seatBooking = new HashMap<String, String>();
-        String paymentId  = createPaymentRow();
-        ArrayList<String> ticketSeats = createTicketRow();
-        for(String ticket : ticketSeats) {
-            seatBooking.put("PAYMENT_ID", paymentId);
-            seatBooking.put("TICKET_ID", ticket);
-            Response response = main.getProcessorManager().getBookingTicketManagementProcessor().insertData(seatBooking, false);
-            if (response.getStatusCode() == StatusCode.OK) {
-                System.out.println("insert 1 row success");
-            } else {
-                System.out.println(" failed");
+        try {
+            String paymentId = createPaymentRow();
+            ArrayList<String> ticketSeats = createTicketRow();
+            for (String ticket : ticketSeats) {
+                seatBooking.put("PAYMENT_ID", paymentId);
+                seatBooking.put("TICKET_ID", ticket);
+                Response response = main.getProcessorManager().getBookingTicketManagementProcessor().insertData(seatBooking, false);
+                if (response.getStatusCode() == StatusCode.OK) {
+                    System.out.println("insert 1 row success");
+                } else {
+                    System.out.println(" failed");
+                    throw new Exception(response.getMessage());
+                }
             }
+            if (bookingInfor.getItems().size() != 0) {
+                createBookingItemRow(paymentId);
+            }
+        } catch (Exception e) {
+            return false;
         }
-        if(bookingInfor.getItems().size() != 0){
-            createBookingItemRow(paymentId);
-        }
+        return true;
     }
 //    public  String getItemPriceId(String id){
 //
@@ -179,13 +187,21 @@ public class BookingProcessor extends Processor {
 
             }
         }
-        createBookingTicketRow();
-        try {
-            commit();
-        } catch (SQLException e) {
-            System.out.println("commit payment");
+        boolean isPaymentOk = createBookingTicketRow();
+        if (isPaymentOk) {
+            try {
+                commit();
+            } catch (SQLException e) {
+                System.out.println("commit payment");
+            }
+        } else {
+            try {
+                rollback();
+            } catch (SQLException e) {
+                System.out.println(e);
+            }
         }
-        return true;
+        return isPaymentOk;
     }
     public boolean checkStatusSeat(String seatId, String scheduleId){
             Response response = select("*", 0, -1, String.format("SEAT_ID = '%s' AND SCHEDULE_ID = '%s'", seatId, scheduleId), "", "TICKETS");

@@ -38,7 +38,6 @@ public class SignupFormController {
         signUpInfo.put("address", addressField.getText());
         signUpInfo.put("username", usernameField.getText());
         signUpInfo.put("password", passwordField.getText());
-
         Set key = signUpInfo.keySet();
         for(Object s : key){
             if(signUpInfo.get(s) == null ||dateOfBirthField.getValue() == null || gender.getSelectedToggle() == null) {

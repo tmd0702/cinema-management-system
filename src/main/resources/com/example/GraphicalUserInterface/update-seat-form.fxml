@@ -1,0 +1,57 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.ComboBox?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.TextField?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.text.Font?>
+
+<AnchorPane prefHeight="251.0" prefWidth="506.0" style="-fx-background-color: black; -fx-border-color: white;" xmlns="http://javafx.com/javafx/19" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.example.GraphicalUserInterface.SeatMapController">
+   <children>
+      <AnchorPane layoutX="153.0" layoutY="25.0" prefHeight="44.0" prefWidth="200.0" style="-fx-background-color: #AAAAAA;">
+         <children>
+            <Label layoutX="51.0" layoutY="15.0" text="UPDATE SEAT">
+               <font>
+                  <Font name="Georgia Bold" size="13.0" />
+               </font>
+            </Label>
+         </children>
+      </AnchorPane>
+      <ComboBox fx:id="statusUpdateField" layoutX="325.0" layoutY="107.0" prefWidth="150.0" />
+      <TextField fx:id="nameUpdateField" disable="true" layoutX="86.0" layoutY="142.0" prefHeight="26.0" prefWidth="134.0">
+         <font>
+            <Font name="Georgia" size="13.0" />
+         </font>
+      </TextField>
+      <TextField fx:id="idUpdateField" disable="true" layoutX="86.0" layoutY="99.0" prefHeight="26.0" prefWidth="134.0">
+         <font>
+            <Font name="Georgia" size="13.0" />
+         </font>
+      </TextField>
+      <TextField fx:id="categoryUpdateField" disable="true" layoutX="325.0" layoutY="143.0" prefHeight="26.0" prefWidth="150.0">
+         <font>
+            <Font name="Georgia" size="13.0" />
+         </font>
+      </TextField>
+      <Label layoutX="54.0" layoutY="107.0" text="ID" textFill="WHITE">
+         <font>
+            <Font name="Georgia Bold" size="12.0" />
+         </font>
+      </Label>
+      <Label layoutX="262.0" layoutY="115.0" text="Status" textFill="WHITE">
+         <font>
+            <Font name="Georgia Bold" size="12.0" />
+         </font>
+      </Label>
+      <Label layoutX="43.0" layoutY="151.0" text="Name" textFill="WHITE">
+         <font>
+            <Font name="Georgia Bold" size="12.0" />
+         </font>
+      </Label>
+      <Label layoutX="254.0" layoutY="151.0" text="Category" textFill="WHITE">
+         <font>
+            <Font name="Georgia Bold" size="12.0" />
+         </font>
+      </Label>
+   </children>
+</AnchorPane>

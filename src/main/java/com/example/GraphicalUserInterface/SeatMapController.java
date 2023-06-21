@@ -1,38 +1,21 @@
 package com.example.GraphicalUserInterface;
 
-import UserManager.Customer;
 import de.jensd.fx.glyphs.fontawesome.FontAwesomeIconView;
-import javafx.application.Platform;
 import javafx.beans.property.DoubleProperty;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.fxml.FXML;
-import javafx.geometry.Insets;
-import javafx.geometry.Pos;
-import javafx.scene.Node;
 import javafx.scene.control.*;
-import javafx.scene.control.skin.ScrollBarSkin;
-import javafx.scene.image.ImageView;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.*;
 import javafx.scene.paint.Color;
-import javafx.scene.paint.LinearGradient;
 import javafx.scene.text.Font;
 import Database.BookingProcessor;
-import java.io.IOException;
-import java.sql.Date;
-import java.sql.SQLException;
-import java.sql.Savepoint;
-import java.text.ParseException;
-import java.text.SimpleDateFormat;
-import java.time.LocalDateTime;
-import java.time.format.DateTimeFormatter;
 import javafx.animation.*;
 
 import javafx.scene.text.TextAlignment;
 import javafx.util.Duration;
-import org.controlsfx.glyphfont.FontAwesome;
-import UserManager.User;
+
 import java.util.*;
 import Utils.*;
 
@@ -66,10 +49,22 @@ public class SeatMapController {
     private  BookingProcessor bookingProcessor;
     private String cinemaId = new String();
     private String roomId = new String();
-    private Button nearbyButton = new Button();
+    private Button button = new Button();
     private ArrayList<String> seatIdSelected = new ArrayList<String>();
     private ArrayList<Button> seatBtnSelected = new ArrayList<Button>();
     private int numberSubBtn;
+
+    @FXML
+    private TextField idInsertField, nameInsertField, categoryInsertFiled;
+    @FXML
+    private ComboBox statusInsertField, statusUpdateField;
+    @FXML
+    private TextField idUpdateField, nameUpdateField, categoryUpdateFiled;
+
+
+
+
+
 
     @FXML
     public void initialize() throws Exception {
@@ -279,8 +274,8 @@ public class SeatMapController {
 
     public void ConstructSeatGrid(){
         seatGrid.setPrefSize(507, 298);
-        seatGrid.setLayoutX(296);
-        seatGrid.setLayoutY(316);
+        seatGrid.setLayoutX(263);
+        seatGrid.setLayoutY(215);
         seatGrid.setHgap(10);
         seatGrid.setVgap(10);
         if(!seatMapContainer.getChildren().contains(seatGrid))
@@ -315,13 +310,13 @@ public class SeatMapController {
                             int numberSeat = Integer.parseInt(button.getText().substring(1));
 
                             if (numberSeat % 2 == 0) {
-                                nearbyButton = (Button) seatGrid.getChildren().get(seatGrid.getChildren().indexOf(button) - 1);
+                                this.button = (Button) seatGrid.getChildren().get(seatGrid.getChildren().indexOf(button) - 1);
                             } else {
-                                nearbyButton = (Button) seatGrid.getChildren().get(seatGrid.getChildren().indexOf(button) + 1);
+                                this.button = (Button) seatGrid.getChildren().get(seatGrid.getChildren().indexOf(button) + 1);
                             }
-                            nearbyButton.setStyle("-fx-background-color: #8D090D");
-                            seatIdSelected.add(getIdFromIndex(SeatInfor, SeatList.indexOf(nearbyButton.getText())));
-                            seatBtnSelected.add(nearbyButton);
+                            this.button.setStyle("-fx-background-color: #8D090D");
+                            seatIdSelected.add(getIdFromIndex(SeatInfor, SeatList.indexOf(this.button.getText())));
+                            seatBtnSelected.add(this.button);
                         }
                         button.setStyle("-fx-background-color: #8D090D");
                         seatIdSelected.add(getIdFromIndex(SeatInfor, SeatList.indexOf(s)));
@@ -333,9 +328,9 @@ public class SeatMapController {
                             button.setStyle("-fx-background-color: #A4A4A4;-fx-border-color: yellow");
                         else {
                             button.setStyle("-fx-background-color:  #FF00D6");
-                            nearbyButton.setStyle("-fx-background-color:  #FF00D6");
-                            seatIdSelected.remove(getIdFromIndex(SeatInfor, SeatList.indexOf(nearbyButton.getText())));
-                            seatBtnSelected.remove(nearbyButton);
+                            this.button.setStyle("-fx-background-color:  #FF00D6");
+                            seatIdSelected.remove(getIdFromIndex(SeatInfor, SeatList.indexOf(this.button.getText())));
+                            seatBtnSelected.remove(this.button);
                         }
                         seatIdSelected.remove(getIdFromIndex(SeatInfor, SeatList.indexOf(s)));
                         seatBtnSelected.remove(button);
@@ -351,6 +346,8 @@ public class SeatMapController {
                 subButton.setId("subButton" + numberSubBtn);
                 numberSubBtn++;
                 subButton.setStyle("-fx-border-color: green; -fx-background-color: transparent;");
+                subButton.setPrefSize(25,34);
+                subButton.setFont(Font.font(7.5));
                 seatGrid.add(subButton, r, rowIndex);
                 r = 0;
                 subButton.setOnAction(e->{
@@ -373,23 +370,90 @@ public class SeatMapController {
     }
     @FXML
     public void handleDeleteSeatList(){
-        for(Button button : seatBtnSelected )
-            seatGrid.getChildren().remove(button);
+
+        for(Button button : seatBtnSelected ) {
+            button.setId("subButton" + numberSubBtn);
+            numberSubBtn++;
+            button.setStyle("-fx-border-color: green; -fx-background-color: transparent;");
+            button.setOnAction(e -> {
+                if (button.getStyle().equals("-fx-border-color: green; -fx-background-color: transparent;")) {
+                    button.setStyle("-fx-border-color: red; -fx-background-color: transparent;");
+                    seatIdSelected.add(button.getId());
+                    seatBtnSelected.add(button);
+                } else {
+                    button.setStyle("-fx-border-color: green; -fx-background-color: transparent;");
+                    seatIdSelected.remove(button.getId());
+                    seatBtnSelected.remove(button);
+                }
+                System.out.println(seatIdSelected);
+                System.out.println(seatBtnSelected);
+                seatGrid.requestFocus();
+            });
+        }
+        seatIdSelected = new ArrayList<String>();
+        seatBtnSelected = new ArrayList<Button>();
     }
     @FXML
     public void handleInsertSeat(){
+        for(Button button: seatBtnSelected){
+            if(button.getStyle() != "-fx-border-color: red; -fx-background-color: transparent;"){
+                Dialog<String> dialog = new Dialog<String>();
+                //Setting the title
+                dialog.setTitle("Success");
+                ButtonType type = new ButtonType("Ok", ButtonBar.ButtonData.OK_DONE);
+                dialog.setContentText("Only choose seats have not existed");
+                dialog.getDialogPane().getButtonTypes().add(type);
+                dialog.showAndWait();
+                return;
+            }
+            if(seatBtnSelected.size() > 1){
+                Dialog<String> dialog = new Dialog<String>();
+                //Setting the title
+                dialog.setTitle("Success");
+                ButtonType type = new ButtonType("Ok", ButtonBar.ButtonData.OK_DONE);
+                dialog.setContentText("once insert, only insert 1 seat");
+                dialog.getDialogPane().getButtonTypes().add(type);
+                dialog.showAndWait();
+                return;
+            }
+        }
+        for( Button button : seatBtnSelected) {
 
+        }
+        seatIdSelected = new ArrayList<String>();
+        seatBtnSelected = new ArrayList<Button>();
     }
     @FXML
     public void handleUpdateSeat(){
 
+        seatIdSelected = new ArrayList<String>();
+        seatBtnSelected = new ArrayList<Button>();
     }
     @FXML
     public void handleBlockSeatList(){
+        for(Button button: seatBtnSelected) {
+            ArrayList<ArrayList<String>> seat = main.getProcessorManager().getSeatManagementProcessor().getData(0, -1, String.format("SEATS.ID = '%s'", seatIdSelected.get(seatBtnSelected.indexOf(button))),"").getData();
+            if (button.getStyle() == "-fx-border-color: red; -fx-background-color: transparent;" || !Utils.getDataValuesByColumnName(seat, "STATUS").get(0).equals("AVAILABLE")) {
+                Dialog<String> dialog = new Dialog<String>();
+                //Setting the title
+                dialog.setTitle("Success");
+                ButtonType type = new ButtonType("Ok", ButtonBar.ButtonData.OK_DONE);
+                dialog.setContentText("Only choose seats have existed and available");
+                dialog.getDialogPane().getButtonTypes().add(type);
+                dialog.showAndWait();
+                return;
+            }
+        }
         for (Button button : seatBtnSelected){
             button.setStyle("-fx-background-color: #ffffff;");
             button.setText("X");
+            HashMap<String, String> updateStatus = new HashMap<String, String>();
+            updateStatus.put("STATUS", "SUSPEND");
+            main.getProcessorManager().getSeatManagementProcessor().updateData(updateStatus, String.format("SEATS.ID = '%s'", seatIdSelected.get(seatBtnSelected.indexOf(button))), true);
+            System.out.println(main.getProcessorManager().getSeatManagementProcessor().getData(0, -1, String.format("SEATS.ID = '%s'", seatIdSelected.get(seatBtnSelected.indexOf(button))),"").getData());
         }
+        seatIdSelected = new ArrayList<String>();
+        seatBtnSelected = new ArrayList<Button>();
     }
 
 }

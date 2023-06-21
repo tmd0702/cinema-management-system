@@ -152,9 +152,6 @@ public class BookingProcessor extends Processor {
         }
         return true;
     }
-//    public  String getItemPriceId(String id){
-//
-//    }
     public void createBookingItemRow(String paymentID){
         HashMap<String, String> itemBooking = new HashMap<String, String>();
         ArrayList<ArrayList<String>> items= bookingInfor.getItems();

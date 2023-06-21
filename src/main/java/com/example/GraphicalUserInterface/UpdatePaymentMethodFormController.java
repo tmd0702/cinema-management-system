@@ -42,6 +42,7 @@ public class UpdatePaymentMethodFormController implements Initializable {
     }
     public void idFieldInit() {
         idField.setDisable(true);
+        statusFieldInit();
     }
     public void disableUpdateForm() {
         ((AnchorPane)updatePaymentMethodForm.getParent()).getChildren().get(0).setVisible(true);

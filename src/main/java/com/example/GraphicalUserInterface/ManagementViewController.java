@@ -248,6 +248,8 @@ public class ManagementViewController implements Initializable {
             managementPage.getChildren().add(FXMLLoader.load(getClass().getResource("add-user-category-form.fxml")));
         } else if (subTabPanelOnClick.getId().equals("paymentMethodInfoSubTab")) {
             managementPage.getChildren().add(FXMLLoader.load(getClass().getResource("add-payment-method-form.fxml")));
+        } else if (subTabPanelOnClick.getId().equals("seatMapSubTab")){
+            managementPage.getChildren().add(FXMLLoader.load(getClass().getResource("add-seat-form.fxml")));
         } else if(subTabPanelOnClick.getId().equals("bookingTicketInfoSubTab")){
             Main otherMain = Main.getInstance();
             otherMain.setSignedInUser(main.getSignedInUser());

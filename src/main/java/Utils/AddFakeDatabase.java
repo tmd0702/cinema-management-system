@@ -419,12 +419,12 @@ public class AddFakeDatabase {
         addFakeDatabase.addFakeSchedule();
         addFakeDatabase.addFakeItemCategory();
         addFakeDatabase.addFakeItems();
-        addFakeDatabase.addFakeTicket();
+//        addFakeDatabase.addFakeTicket();
         addFakeDatabase.addFakePaymentMethod();
         addFakeDatabase.addFakePrice();
-        addFakeDatabase.addFakePayments();
-        addFakeDatabase.addFakeBookingItems();
-        addFakeDatabase.addFakeBookingSeats();
+//        addFakeDatabase.addFakePayments();
+//        addFakeDatabase.addFakeBookingItems();
+//        addFakeDatabase.addFakeBookingSeats();
     }
 }
 

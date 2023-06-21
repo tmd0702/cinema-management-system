@@ -41,7 +41,7 @@ public class SeatMapController {
     private ArrayList<String> cinemaName;
     private ArrayList<String> roomName;
     private ArrayList<Button> RoomButton = new ArrayList<Button>();
-    private Main main;
+    private ManagementMain main;
     @FXML
     private Label announceRoom;
     @FXML
@@ -67,8 +67,7 @@ public class SeatMapController {
 
     @FXML
     public void initialize() throws Exception {
-        this.managementMain = new ManagementMain();
-        this.main = Main.getInstance();
+        this.main = ManagementMain.getInstance();
         this.bookingProcessor = new BookingProcessor();
         scrollBtnInit();
         ConstructCinemaButton();
@@ -228,6 +227,7 @@ public class SeatMapController {
         if(RoomButton.contains(button)){
             System.out.println(getIdFromIndex(roomInfor, RoomButton.indexOf(button)));
             roomId = getIdFromIndex(roomInfor, RoomButton.indexOf(button));
+            main.setChosenRoomId(roomId);
             if(button.getStyle() != "-fx-background-color: #8D090D") {
                 seatMapContainer.getChildren().remove(seatGrid);
                 seatGrid = new GridPane();
@@ -287,97 +287,108 @@ public class SeatMapController {
         }
     }
 
-    public void ConstructSeatGrid(){
+    public void ConstructSeatGrid() {
         seatGrid.setPrefSize(507, 298);
         seatGrid.setLayoutX(263);
         seatGrid.setLayoutY(215);
         seatGrid.setHgap(10);
         seatGrid.setVgap(10);
-        if(!seatMapContainer.getChildren().contains(seatGrid))
+        if (!seatMapContainer.getChildren().contains(seatGrid))
             seatMapContainer.getChildren().add(seatGrid);
         ArrayList<ArrayList<String>> SeatInfor = main.getProcessorManager().getSeatManagementProcessor().getData(0, -1, String.format("SCREEN_ROOM_ID = '%s'", roomId), "").getData();
         ArrayList<String> SeatList = Utils.getDataValuesByColumnName(SeatInfor, "NAME");
         System.out.println(SeatList);
         int r = 0;
-        for(int i = 0; i < SeatList.size(); i++){
+
+        // construct empty seats
+        for (int i = 0; i < SeatList.size(); i++) {
             String s = SeatList.get(i);
             int rowIndex = s.charAt(0) - 'A';
-            int columnIndex = Integer.parseInt(s.substring(1))-1;
+            int columnIndex = Integer.parseInt(s.substring(1)) - 1;
+            if (rowIndex < 0 || columnIndex < 0) continue;
             Button button = new Button(s);
             button.setTextFill(Color.BLACK);
-            button.setPrefSize(25,34);
+            button.setPrefSize(25, 34);
             button.setFont(Font.font(7.5));
             button.setWrapText(true);
             String category = Utils.getDataValuesByColumnName(SeatInfor, "SEAT_CATEGORY_ID").get(i);
-            if(category.equals("SC_00001"))
+            if (category.equals("SC_00001"))
                 button.setStyle("-fx-background-color: #A4A4A4");
             else if (category.equals("SC_00002"))
                 button.setStyle("-fx-background-color: #A4A4A4;-fx-border-color: yellow");
             else button.setStyle("-fx-background-color:  #FF00D6");
-            if(!bookingProcessor.checkActive(Utils.getDataValuesByColumnName(SeatInfor, "STATUS").get(i))){
+            if (!bookingProcessor.checkActive(Utils.getDataValuesByColumnName(SeatInfor, "STATUS").get(i))) {
                 button.setStyle("-fx-background-color: #ffffff;");
                 button.setText("X");
             }
-            seatGrid.add(button, columnIndex, rowIndex);
-            button.setOnAction(event->{
-                    if (button.getStyle() != "-fx-background-color: #8D090D") {
-                        if(category.equals("SC_00003")) {
-                            int numberSeat = Integer.parseInt(button.getText().substring(1));
 
-                            if (numberSeat % 2 == 0) {
-                                this.button = (Button) seatGrid.getChildren().get(seatGrid.getChildren().indexOf(button) - 1);
-                            } else {
-                                this.button = (Button) seatGrid.getChildren().get(seatGrid.getChildren().indexOf(button) + 1);
-                            }
-                            this.button.setStyle("-fx-background-color: #8D090D");
-                            this.managementMain.getSeatIdSelected().add(getIdFromIndex(SeatInfor, SeatList.indexOf(this.button.getText())));
-                            this.managementMain.getSeatBtnSelected().add(this.button);
+            System.out.println(rowIndex + " " + columnIndex);
+//            seatGrid.getChildren().set(rowIndex * 15 + columnIndex, fakeButton);
+            seatGrid.add(button, columnIndex, rowIndex);
+            button.setOnAction(event -> {
+                if (button.getStyle() != "-fx-background-color: #8D090D") {
+                    if (category.equals("SC_00003")) {
+                        int numberSeat = Integer.parseInt(button.getText().substring(1));
+
+                        if (numberSeat % 2 == 0) {
+                            this.button = (Button) seatGrid.getChildren().get(seatGrid.getChildren().indexOf(button) - 1);
+                        } else {
+                            this.button = (Button) seatGrid.getChildren().get(seatGrid.getChildren().indexOf(button) + 1);
                         }
-                        button.setStyle("-fx-background-color: #8D090D");
-                        this.managementMain.getSeatIdSelected().add(getIdFromIndex(SeatInfor, SeatList.indexOf(s)));
-                        this.managementMain.getSeatBtnSelected().add(button);
-                    } else {
-                        if (category.equals("SC_00001"))
-                            button.setStyle("-fx-background-color: #A4A4A4");
-                        else if (category.equals("SC_00002"))
-                            button.setStyle("-fx-background-color: #A4A4A4;-fx-border-color: yellow");
-                        else {
-                            button.setStyle("-fx-background-color:  #FF00D6");
-                            this.button.setStyle("-fx-background-color:  #FF00D6");
-                            this.managementMain.getSeatIdSelected().remove(getIdFromIndex(SeatInfor, SeatList.indexOf(this.button.getText())));
-                            this.managementMain.getSeatBtnSelected().remove(this.button);
-                        }
-                        this.managementMain.getSeatIdSelected().remove(getIdFromIndex(SeatInfor, SeatList.indexOf(s)));
-                        this.managementMain.getSeatBtnSelected().remove(button);
+                        this.button.setStyle("-fx-background-color: #8D090D");
+                        this.main.getSeatIdSelected().add(getIdFromIndex(SeatInfor, SeatList.indexOf(this.button.getText())));
+                        this.main.getSeatBtnSelected().add(this.button);
                     }
-                System.out.println(this.managementMain.getSeatIdSelected());
-                System.out.println(this.managementMain.getSeatBtnSelected());
-                    seatGrid.requestFocus();
+                    button.setStyle("-fx-background-color: #8D090D");
+                    this.main.getSeatIdSelected().add(getIdFromIndex(SeatInfor, SeatList.indexOf(s)));
+                    this.main.getSeatBtnSelected().add(button);
+                } else {
+                    if (category.equals("SC_00001"))
+                        button.setStyle("-fx-background-color: #A4A4A4");
+                    else if (category.equals("SC_00002"))
+                        button.setStyle("-fx-background-color: #A4A4A4;-fx-border-color: yellow");
+                    else {
+                        button.setStyle("-fx-background-color:  #FF00D6");
+                        this.button.setStyle("-fx-background-color:  #FF00D6");
+                        this.main.getSeatIdSelected().remove(getIdFromIndex(SeatInfor, SeatList.indexOf(this.button.getText())));
+                        this.main.getSeatBtnSelected().remove(this.button);
+                    }
+                    this.main.getSeatIdSelected().remove(getIdFromIndex(SeatInfor, SeatList.indexOf(s)));
+                    this.main.getSeatBtnSelected().remove(button);
+                }
+//                System.out.println(this.main.getSeatIdSelected());
+//                System.out.println(this.main.getSeatBtnSelected());
+                seatGrid.requestFocus();
             });
-            r++;
-            if(r == 12)
-            {
+        }
+        for (int i = 0; i < 10; ++i) {
+            int rowIndex = i;
+            for (int j = 0; j < 15; ++j) {
+                int columnIndex = j;
+                System.out.println((rowIndex * 15 + columnIndex) + " " + seatGrid.getChildren().size());
+                if (rowIndex * 15 + columnIndex < seatGrid.getChildren().size() && seatGrid.getChildren().get(rowIndex * 15 + columnIndex) != null) {
+                    continue;
+                }
                 Button subButton = new Button();
-                subButton.setId("subButton" + numberSubBtn);
+                subButton.setId(String.valueOf((char) i) + String.valueOf(j));
                 numberSubBtn++;
                 subButton.setStyle("-fx-border-color: green; -fx-background-color: transparent;");
-                subButton.setPrefSize(25,34);
+                subButton.setPrefSize(25, 34);
                 subButton.setFont(Font.font(7.5));
-                seatGrid.add(subButton, r, rowIndex);
-                r = 0;
-                subButton.setOnAction(e->{
-                    if(subButton.getStyle().equals("-fx-border-color: green; -fx-background-color: transparent;")){
+                seatGrid.add(subButton, columnIndex, rowIndex);
+//                seatGrid.getChildren().set(rowIndex * 16 + columnIndex, subButton);
+                subButton.setOnAction(e -> {
+                    if (subButton.getStyle().equals("-fx-border-color: green; -fx-background-color: transparent;")) {
                         subButton.setStyle("-fx-border-color: red; -fx-background-color: transparent;");
-                        this.managementMain.getSeatIdSelected().add(subButton.getId());
-                        this.managementMain.getSeatBtnSelected().add(subButton);
-                    }
-                    else {
+                        this.main.getSeatIdSelected().add(subButton.getId());
+                        this.main.getSeatBtnSelected().add(subButton);
+                    } else {
                         subButton.setStyle("-fx-border-color: green; -fx-background-color: transparent;");
-                        this.managementMain.getSeatIdSelected().remove(subButton.getId());
-                        this.managementMain.getSeatBtnSelected().remove(subButton);
+                        this.main.getSeatIdSelected().remove(subButton.getId());
+                        this.main.getSeatBtnSelected().remove(subButton);
                     }
-                    System.out.println(this.managementMain.getSeatBtnSelected());
-                    System.out.println(this.managementMain.getSeatIdSelected());
+                    System.out.println(this.main.getSeatBtnSelected());
+                    System.out.println(this.main.getSeatIdSelected());
                     seatGrid.requestFocus();
                 });
             }

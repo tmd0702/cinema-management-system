@@ -341,6 +341,8 @@ public class ManagementViewController implements Initializable {
             managementPage.getChildren().add(FXMLLoader.load(getClass().getResource("update-seat-category-price-form.fxml")));
         } else if (subTabPanelOnClick.getId().equals("itemPriceInfoSubTab")) {
             managementPage.getChildren().add(FXMLLoader.load(getClass().getResource("update-item-category-price-form.fxml")));
+        } else if (subTabPanelOnClick.getId().equals("seatMapSubTab")) {
+            managementPage.getChildren().add(FXMLLoader.load(getClass().getResource("update-seat-form.fxml")));
         } else {
             managementPage.getChildren().add(FXMLLoader.load(getClass().getResource("update-account-form.fxml")));
         }
@@ -409,6 +411,8 @@ public class ManagementViewController implements Initializable {
             public void handle(MouseEvent mouseEvent) {
                 if (cellOnClick != null) {
                     deleteConfirmationAlert("Are you sure to delete this record?");
+                } else if (subTabPanelOnClick.getId().equals("seatMapSubTab") && main.getSeatBtnSelected().size() > 0) {
+                    deleteConfirmationAlert("Are you sure to delete this seat?");
                 }
             }
         });
@@ -514,24 +518,29 @@ public class ManagementViewController implements Initializable {
                     ManagementMain.getInstance().getSeatMapController().getSeatGrid().requestFocus();
                 });
             }
+            ArrayList<String> deleteFailedSeatId = new ArrayList<String>();
             for(String id : ManagementMain.getInstance().getSeatIdSelected() ){
-                String idColumn = String.format("%s.ID", activeProcessor.getDefaultDatabaseTable());
-                String queryCondition = String.format("%s = '%s'", idColumn, id);
+                String queryCondition = String.format("ID = '%s'", id);
                 Response response = activeProcessor.deleteData(queryCondition, true);
                 StatusCode status = response.getStatusCode();
                 if (status == StatusCode.OK) {
                     System.out.println("delete success");
                     reRenderPage(false);
                 } else {
-
-                    Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
-//        alert.setTitle("Confirmation");
-                    alert.setContentText("Can not delete " + idColumn + " = " + id);//"Are you sure to delete this record?");
-                    Optional<ButtonType> result = alert.showAndWait();
+                    deleteFailedSeatId.add(id);
+//                    Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
+////        alert.setTitle("Confirmation");
+//                    alert.setContentText("Can not delete seat id: " + id);//"Are you sure to delete this record?");
+//                    Optional<ButtonType> result = alert.showAndWait();
                 }
             }
+            if (deleteFailedSeatId.size() > 0) {
+                Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
+                alert.setTitle("Confirmation");
+                alert.setContentText("Can not delete seat id: " + deleteFailedSeatId.toString());//"Are you sure to delete this record?");
+                Optional<ButtonType> result = alert.showAndWait();
             }
-        }else {
+        } else {
             String recordId = getRecordIdByRowIndex();
             String idColumn = String.format("%s.ID", activeProcessor.getDefaultDatabaseTable());
             String queryCondition = String.format("%s = '%s'", idColumn, recordId);

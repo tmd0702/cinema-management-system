@@ -10,32 +10,41 @@ import javafx.scene.layout.AnchorPane;
 
 import java.io.IOException;
 import java.net.URL;
-import java.time.LocalDateTime;
-import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Optional;
 import java.util.ResourceBundle;
-import com.example.GraphicalUserInterface.SeatMapController;
 
 public class AddSeatFromController implements Initializable {
     @FXML
-    private TextField nameInsertField, categoryInsertFiled;
+    private TextField nameInsertField, categoryInsertField;
     @FXML
     private ComboBox statusInsertField;
     private ManagementMain main;
     @FXML
     private AnchorPane addSeatForm;
+    private String chosenSeatName;
+    public void chosenSeatIdInit() {
+        chosenSeatName = main.getInstance().getSeatBtnSelected().get(0).getId();
+    }
     @Override
-    public void initialize(URL url, ResourceBundle resourceBundle) {createStatus();}
+    public void initialize(URL url, ResourceBundle resourceBundle) {
+        chosenSeatIdInit();
+        createStatus();
+        nameInsertFieldInit();
+        
+    }
+    public void nameInsertFieldInit() {
+        nameInsertField.setText(chosenSeatName);
+    }
     public void createStatus(){
         ArrayList<String> statusList = new ArrayList<String>();
         statusList.add("AVAILABLE");
         statusList.add("SUSPEND");
         statusList.add("CLOSED");
         statusInsertField.setItems(FXCollections.observableArrayList(statusList));
-        categoryInsertFiled.setText("NORMAl");
-        main.getSeatMapController().getSeatGrid().getChildren().indexOf(main.getSeatBtnSelected().get(0));
+        categoryInsertField.setText("NORMAl");
+//        main.getSeatMapController().getSeatGrid().getChildren().indexOf(main.getSeatBtnSelected().get(0));
     }
     public AddSeatFromController() throws Exception {
         main = ManagementMain.getInstance();
@@ -67,13 +76,17 @@ public class AddSeatFromController implements Initializable {
         handleInsertRecordRequest();
         disableInsertForm();
     }
-    public void handleInsertRecordRequest() {
 
+
+    public void handleInsertRecordRequest() {
         String seatId = main.getIdGenerator().generateId(main.getProcessorManager().getSeatManagementProcessor().getDefaultDatabaseTable());
         HashMap<String, String> seatInfo = new HashMap<String, String>();
         seatInfo.put("SEAT_CATEGORY_ID", "SC_00001");
+        seatInfo.put("NAME", nameInsertField.getText());
         seatInfo.put("ID", seatId);
-        seatInfo.put("SCREEN_ROOM_ID", main.getSeatMapController().getRoomId());
+        seatInfo.put("STATUS", statusInsertField.getValue().toString());
+        seatInfo.put("SCREEN_ROOM_ID", main.getChosenRoomId());
+        System.out.println(main.getChosenRoomId() + " room idid");
         Response response = main.getProcessorManager().getSeatManagementProcessor().insertData(seatInfo, true);
         StatusCode status = response.getStatusCode();
         if (status == StatusCode.OK) {

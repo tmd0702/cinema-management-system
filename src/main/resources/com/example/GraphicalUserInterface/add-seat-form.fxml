@@ -20,7 +20,7 @@
             </Label>
          </children>
       </AnchorPane>
-      <Label layoutX="343.0" layoutY="187.0" text="Status" textFill="WHITE">
+      <Label layoutX="356.0" layoutY="188.0" text="Status" textFill="WHITE">
          <font>
             <Font name="Georgia Bold" size="12.0" />
          </font>
@@ -53,5 +53,15 @@
             <Insets left="10.0" right="10.0" />
          </padding>
       </HBox>
+      <Label layoutX="119.0" layoutY="232.0" text="Name" textFill="WHITE">
+         <font>
+            <Font name="Georgia Bold" size="12.0" />
+         </font>
+      </Label>
+      <TextField fx:id="nameInsertField" disable="true" layoutX="185.0" layoutY="226.0" prefHeight="26.0" prefWidth="150.0">
+         <font>
+            <Font name="Georgia" size="13.0" />
+         </font>
+      </TextField>
    </children>
 </AnchorPane>

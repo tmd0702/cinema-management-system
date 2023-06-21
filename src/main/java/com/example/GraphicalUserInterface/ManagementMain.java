@@ -23,6 +23,13 @@ public class ManagementMain extends Application {
     private Config config;
     private IdGenerator idGenerator;
     private ImageManager imageManager;
+    private String chosenRoomId;
+    public void setChosenRoomId(String chosenRoomId) {
+        this.chosenRoomId = chosenRoomId;
+    }
+    public String getChosenRoomId() {
+        return this.chosenRoomId;
+    }
     private ProcessorManager processorManager;
     private static ManagementMain managementMain;
     private ArrayList<String> seatIdSelected = new ArrayList<String>();

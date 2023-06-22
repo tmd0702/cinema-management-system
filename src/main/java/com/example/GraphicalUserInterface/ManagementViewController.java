@@ -312,6 +312,10 @@ public class ManagementViewController implements Initializable {
         }
     }
     public void changeSceneToUpdateView() throws IOException {
+        if (subTabPanelOnClick.getId().equals("seatMapSubTab")) {
+
+            managementPage.getChildren().add(FXMLLoader.load(getClass().getResource("update-seat-form.fxml")));
+        }
         managementContainerStackPane.setVisible(false);
         if (subTabPanelOnClick.getId().equals("userInfoSubTab")) {
             managementPage.getChildren().add(FXMLLoader.load(getClass().getResource("update-account-form.fxml")));
@@ -341,11 +345,14 @@ public class ManagementViewController implements Initializable {
             managementPage.getChildren().add(FXMLLoader.load(getClass().getResource("update-seat-category-price-form.fxml")));
         } else if (subTabPanelOnClick.getId().equals("itemPriceInfoSubTab")) {
             managementPage.getChildren().add(FXMLLoader.load(getClass().getResource("update-item-category-price-form.fxml")));
-        } else if (subTabPanelOnClick.getId().equals("seatMapSubTab")) {
-            managementPage.getChildren().add(FXMLLoader.load(getClass().getResource("update-seat-form.fxml")));
-        } else {
-            managementPage.getChildren().add(FXMLLoader.load(getClass().getResource("update-account-form.fxml")));
         }
+        else {
+        try {
+            managementPage.getChildren().add(FXMLLoader.load(getClass().getResource("update-account-form.fxml")));
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
+    }
     }
     public String normColumnNameToElementID(String columnName) {
         String[] columnNameElements = columnName.split("\\.");
@@ -398,6 +405,28 @@ public class ManagementViewController implements Initializable {
                         }
                     } catch (IOException e) {
                         System.out.println(e);
+                    }
+                }else if (subTabPanelOnClick.getId().equals("seatMapSubTab") && main.getSeatBtnSelected().size() > 0) {
+                    try {
+                        if(ManagementMain.getInstance().getSeatBtnSelected().size() != 1 || !ManagementMain.getInstance().getSeatBtnSelected().get(0).getStyle().equals("-fx-border-color: red; -fx-background-color: transparent;")){
+                            Dialog<String> dialog = new Dialog<String>();
+                            //Setting the title
+                            dialog.setTitle("Error");
+                            ButtonType type = new ButtonType("Ok", ButtonBar.ButtonData.OK_DONE);
+                            dialog.setContentText("Only choose seats have not existed");
+                            dialog.getDialogPane().getButtonTypes().add(type);
+                            dialog.showAndWait();
+                            managementContainerStackPane.setVisible(true);
+                        }   else {
+                            changeSceneToUpdateView();
+                            ((TextField) main.getNodeById("#idField")).setText(main.getSeatIdSelected().get(0));
+                            ArrayList<ArrayList<String>> seatInfo = main.getProcessorManager().getSeatManagementProcessor().getData(0, 1, String.format("SEATS.ID = '%s'", main.getSeatIdSelected().get(0)), "").getData();
+                            ((TextField) main.getNodeById("#nameField")).setText(Utils.getRowValueByColumnName(2, "SEATS.NAME", seatInfo));
+                            ((ComboBox) main.getNodeById("#seatCategoryCategoryField")).setValue(Utils.getRowValueByColumnName(2, "SEAT_CATEGORY.CATEGORY", seatInfo));
+                            ((ComboBox) main.getNodeById("#statusField")).setValue(Utils.getRowValueByColumnName(2, "SEATS.STATUS", seatInfo));
+                        }
+                        } catch (IOException e) {
+                        throw new RuntimeException(e);
                     }
                 }
             }
@@ -1163,6 +1192,8 @@ public class ManagementViewController implements Initializable {
                     reRenderPage(true);
                 } else if (subTabPanel.getId().equals("seatInfoSubTab")) {
                     activeProcessor = main.getProcessorManager().getSeatManagementProcessor();
+                    updateBtn.setDisable(true);
+                    insertBtn.setDisable(true);
                     reRenderPage(true);
                 } else if (subTabPanel.getId().equals("seatPriceInfoSubTab")) {
                     activeProcessor = main.getProcessorManager().getSeatPriceManagementProcessor();

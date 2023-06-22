@@ -49,7 +49,7 @@ public class SeatMapController {
     private  BookingProcessor bookingProcessor;
     private String cinemaId = new String();
     private String roomId = new String();
-    private Button button = new Button();
+    private Button nearbyButton = new Button();
     private ArrayList<String> seatIdSelected = new ArrayList<String>();
     private ArrayList<Button> seatBtnSelected = new ArrayList<Button>();
     private int numberSubBtn;
@@ -295,82 +295,21 @@ public class SeatMapController {
         seatGrid.setVgap(10);
         if (!seatMapContainer.getChildren().contains(seatGrid))
             seatMapContainer.getChildren().add(seatGrid);
-        ArrayList<ArrayList<String>> SeatInfor = main.getProcessorManager().getSeatManagementProcessor().getData(0, -1, String.format("SCREEN_ROOM_ID = '%s'", roomId), "").getData();
-        ArrayList<String> SeatList = Utils.getDataValuesByColumnName(SeatInfor, "NAME");
+        ArrayList<ArrayList<String>> SeatInfor = main.getProcessorManager().getSeatManagementProcessor().getData(0, -1, String.format("SEATS.SCREEN_ROOM_ID = '%s'", roomId), "").getData();
+        ArrayList<String> SeatList = Utils.getDataValuesByColumnName(SeatInfor, "SEATS.NAME");
         System.out.println(SeatList);
         int r = 0;
-
-        // construct empty seats
-        for (int i = 0; i < SeatList.size(); i++) {
-            String s = SeatList.get(i);
-            int rowIndex = s.charAt(0) - 'A';
-            int columnIndex = Integer.parseInt(s.substring(1)) - 1;
-            if (rowIndex < 0 || columnIndex < 0) continue;
-            Button button = new Button(s);
-            button.setTextFill(Color.BLACK);
-            button.setPrefSize(25, 34);
-            button.setFont(Font.font(7.5));
-            button.setWrapText(true);
-            String category = Utils.getDataValuesByColumnName(SeatInfor, "SEAT_CATEGORY_ID").get(i);
-            if (category.equals("SC_00001"))
-                button.setStyle("-fx-background-color: #A4A4A4");
-            else if (category.equals("SC_00002"))
-                button.setStyle("-fx-background-color: #A4A4A4;-fx-border-color: yellow");
-            else button.setStyle("-fx-background-color:  #FF00D6");
-            if (!bookingProcessor.checkActive(Utils.getDataValuesByColumnName(SeatInfor, "STATUS").get(i))) {
-                button.setStyle("-fx-background-color: #ffffff;");
-                button.setText("X");
-            }
-
-            System.out.println(rowIndex + " " + columnIndex);
-//            seatGrid.getChildren().set(rowIndex * 15 + columnIndex, fakeButton);
-            seatGrid.add(button, columnIndex, rowIndex);
-            button.setOnAction(event -> {
-                if (button.getStyle() != "-fx-background-color: #8D090D") {
-                    if (category.equals("SC_00003")) {
-                        int numberSeat = Integer.parseInt(button.getText().substring(1));
-
-                        if (numberSeat % 2 == 0) {
-                            this.button = (Button) seatGrid.getChildren().get(seatGrid.getChildren().indexOf(button) - 1);
-                        } else {
-                            this.button = (Button) seatGrid.getChildren().get(seatGrid.getChildren().indexOf(button) + 1);
-                        }
-                        this.button.setStyle("-fx-background-color: #8D090D");
-                        this.main.getSeatIdSelected().add(getIdFromIndex(SeatInfor, SeatList.indexOf(this.button.getText())));
-                        this.main.getSeatBtnSelected().add(this.button);
-                    }
-                    button.setStyle("-fx-background-color: #8D090D");
-                    this.main.getSeatIdSelected().add(getIdFromIndex(SeatInfor, SeatList.indexOf(s)));
-                    this.main.getSeatBtnSelected().add(button);
-                } else {
-                    if (category.equals("SC_00001"))
-                        button.setStyle("-fx-background-color: #A4A4A4");
-                    else if (category.equals("SC_00002"))
-                        button.setStyle("-fx-background-color: #A4A4A4;-fx-border-color: yellow");
-                    else {
-                        button.setStyle("-fx-background-color:  #FF00D6");
-                        this.button.setStyle("-fx-background-color:  #FF00D6");
-                        this.main.getSeatIdSelected().remove(getIdFromIndex(SeatInfor, SeatList.indexOf(this.button.getText())));
-                        this.main.getSeatBtnSelected().remove(this.button);
-                    }
-                    this.main.getSeatIdSelected().remove(getIdFromIndex(SeatInfor, SeatList.indexOf(s)));
-                    this.main.getSeatBtnSelected().remove(button);
-                }
-//                System.out.println(this.main.getSeatIdSelected());
-//                System.out.println(this.main.getSeatBtnSelected());
-                seatGrid.requestFocus();
-            });
-        }
         for (int i = 0; i < 10; ++i) {
             int rowIndex = i;
             for (int j = 0; j < 15; ++j) {
                 int columnIndex = j;
-                System.out.println((rowIndex * 15 + columnIndex) + " " + seatGrid.getChildren().size());
-                if (rowIndex * 15 + columnIndex < seatGrid.getChildren().size() && seatGrid.getChildren().get(rowIndex * 15 + columnIndex) != null) {
-                    continue;
-                }
+//                System.out.println((rowIndex * 15 + columnIndex) + " " + seatGrid.getChildren().size());
+//                if (rowIndex * 15 + columnIndex < seatGrid.getChildren().size() && seatGrid.getChildren().get(rowIndex * 15 + columnIndex) != null) {
+//                    continue;
+//                }
                 Button subButton = new Button();
-                subButton.setId(String.valueOf((char) i) + String.valueOf(j));
+                System.out.println("ccccccccc" + String.valueOf((char) i) + String.valueOf(j));
+                subButton.setId(String.valueOf((char) (i + 'A')) + String.valueOf(j + 1));
                 numberSubBtn++;
                 subButton.setStyle("-fx-border-color: green; -fx-background-color: transparent;");
                 subButton.setPrefSize(25, 34);
@@ -393,6 +332,68 @@ public class SeatMapController {
                 });
             }
         }
+        // construct empty seats
+        for (int i = 0; i < SeatList.size(); i++) {
+            String s = SeatList.get(i);
+            int rowIndex = s.charAt(0) - 'A';
+            int columnIndex = Integer.parseInt(s.substring(1)) - 1;
+            if (rowIndex < 0 || columnIndex < 0) continue;
+            Button button = new Button(s);
+            button.setTextFill(Color.BLACK);
+            button.setPrefSize(25, 34);
+            button.setFont(Font.font(7.5));
+            button.setWrapText(true);
+            String category = Utils.getDataValuesByColumnName(SeatInfor, "SEATS.SEAT_CATEGORY_ID").get(i);
+            if (category.equals("SC_00001"))
+                button.setStyle("-fx-background-color: #A4A4A4");
+            else if (category.equals("SC_00002"))
+                button.setStyle("-fx-background-color: #A4A4A4;-fx-border-color: yellow");
+            else button.setStyle("-fx-background-color:  #FF00D6");
+            if (!bookingProcessor.checkActive(Utils.getDataValuesByColumnName(SeatInfor, "SEATS.STATUS").get(i))) {
+                button.setStyle("-fx-background-color: #ffffff;");
+                button.setText("X");
+            }
+
+            System.out.println(rowIndex + " " + columnIndex);
+//            seatGrid.getChildren().set(rowIndex * 15 + columnIndex, fakeButton);
+            seatGrid.add(button, columnIndex, rowIndex);
+            button.setOnAction(event -> {
+                if (button.getStyle() != "-fx-background-color: #8D090D") {
+//                    if (category.equals("SC_00003")) {
+//                        int numberSeat = Integer.parseInt(button.getText().substring(1));
+//                        if (numberSeat % 2 == 1) {
+//                            this.nearbyButton = (Button) seatGrid.getChildren().get(seatGrid.getChildren().indexOf(button) - 1);
+//                        } else {
+//                            System.out.println(seatGrid.getChildren().size());
+//                            this.nearbyButton = (Button) seatGrid.getChildren().get(seatGrid.getChildren().indexOf(button) + 1);
+//                        }
+//                        this.nearbyButton.setStyle("-fx-background-color: #8D090D");
+//                        this.main.getSeatIdSelected().add(getIdFromIndex(SeatInfor, SeatList.indexOf(this.nearbyButton.getText())));
+//                        this.main.getSeatBtnSelected().add(this.nearbyButton);
+//                    }
+                    button.setStyle("-fx-background-color: #8D090D");
+                    this.main.getSeatIdSelected().add(getIdFromIndex(SeatInfor, SeatList.indexOf(s)));
+                    this.main.getSeatBtnSelected().add(button);
+                } else {
+                    if (category.equals("SC_00001"))
+                        button.setStyle("-fx-background-color: #A4A4A4");
+                    else if (category.equals("SC_00002"))
+                        button.setStyle("-fx-background-color: #A4A4A4;-fx-border-color: yellow");
+                    else {
+                        button.setStyle("-fx-background-color:  #FF00D6");
+                        this.nearbyButton.setStyle("-fx-background-color:  #FF00D6");
+                        this.main.getSeatIdSelected().remove(getIdFromIndex(SeatInfor, SeatList.indexOf(this.nearbyButton.getText())));
+                        this.main.getSeatBtnSelected().remove(this.nearbyButton);
+                    }
+                    this.main.getSeatIdSelected().remove(getIdFromIndex(SeatInfor, SeatList.indexOf(s)));
+                    this.main.getSeatBtnSelected().remove(button);
+                }
+//                System.out.println(this.main.getSeatIdSelected());
+//                System.out.println(this.main.getSeatBtnSelected());
+                seatGrid.requestFocus();
+            });
+        }
+
     }
     @FXML
     public void handleDeleteSeatList(){
@@ -438,7 +439,7 @@ public class SeatMapController {
     public void handleBlockSeatList(){
         for(Button button: seatBtnSelected) {
             ArrayList<ArrayList<String>> seat = main.getProcessorManager().getSeatManagementProcessor().getData(0, -1, String.format("SEATS.ID = '%s'", seatIdSelected.get(seatBtnSelected.indexOf(button))),"").getData();
-            if (button.getStyle() == "-fx-border-color: red; -fx-background-color: transparent;" || !Utils.getDataValuesByColumnName(seat, "STATUS").get(0).equals("AVAILABLE")) {
+            if (button.getStyle() == "-fx-border-color: red; -fx-background-color: transparent;" || !Utils.getDataValuesByColumnName(seat, "SEATS.STATUS").get(0).equals("AVAILABLE")) {
                 Dialog<String> dialog = new Dialog<String>();
                 //Setting the title
                 dialog.setTitle("Success");

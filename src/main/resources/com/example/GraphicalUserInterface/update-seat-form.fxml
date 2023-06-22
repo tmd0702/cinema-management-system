@@ -9,7 +9,7 @@
 <?import javafx.scene.layout.HBox?>
 <?import javafx.scene.text.Font?>
 
-<AnchorPane fx:id="updateSeatForm" layoutX="110.0" layoutY="30.0" prefHeight="600.0" prefWidth="790.0" style="-fx-background-color: #000000; -fx-border-color: white;" xmlns="http://javafx.com/javafx/19" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.example.GraphicalUserInterface.AddSeatFromController">
+<AnchorPane fx:id="updateSeatForm" layoutX="110.0" layoutY="30.0" prefHeight="600.0" prefWidth="790.0" style="-fx-background-color: #000000; -fx-border-color: white;" xmlns="http://javafx.com/javafx/19" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.example.GraphicalUserInterface.UpdateSeatFormController">
    <children>
       <AnchorPane layoutX="210.0" layoutY="98.0" prefHeight="41.0" prefWidth="280.0" style="-fx-background-color: #AAAAAA;">
          <children>

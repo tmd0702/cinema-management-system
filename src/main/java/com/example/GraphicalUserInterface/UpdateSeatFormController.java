@@ -47,7 +47,7 @@ public class UpdateSeatFormController implements Initializable {
     }
     public void seatCategoryCategoryFieldInit() {
         seatCategoryInfo = main.getProcessorManager().getSeatCategoryManagementProcessor().getData(0, -1, "", "").getData();
-        seatCategoryNames = Utils.getDataValuesByColumnName(seatCategoryInfo, "SEATS.NAME");
+        seatCategoryNames = Utils.getDataValuesByColumnName(seatCategoryInfo, "SEAT_CATEGORY.CATEGORY");
         seatCategoryCategoryField.setItems(FXCollections.observableArrayList(seatCategoryNames));
     }
     public void disableUpdateForm() {

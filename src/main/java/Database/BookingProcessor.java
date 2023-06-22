@@ -60,7 +60,7 @@ public class BookingProcessor extends Processor {
     }
 
     public ArrayList<ArrayList<String>> getSeat() {
-        return main.getProcessorManager().getSeatManagementProcessor().getData(0, -1,String.format("SCREEN_ROOM_ID = \"%s\";", bookingInfor.getScreen()),"").getData();
+        return main.getProcessorManager().getSeatManagementProcessor().getData(0, -1,String.format("SEATS.SCREEN_ROOM_ID = \"%s\"", bookingInfor.getScreen()),"SEATS.ID ASC").getData();
     }
     public boolean checkActive(String status){
         if(status.equals("AVAILABLE"))
@@ -82,7 +82,7 @@ public class BookingProcessor extends Processor {
     }
     public int getSeatPrice(String id){
         int price = 0;
-        ArrayList<ArrayList<String>> seatFetcher = select("*",0, -1, String.format("S.ID = '%s' AND S.SEAT_CATEGORY_ID = SP.SEAT_CATEGORY_ID", id),"", "SEATS S, SEAT_PRICES SP").getData();
+        ArrayList<ArrayList<String>> seatFetcher = select("*",0, 1, String.format("S.ID = '%s' AND S.SEAT_CATEGORY_ID = SP.SEAT_CATEGORY_ID", id),"SP.DATE DESC", "SEATS S, SEAT_PRICES SP").getData();
         price = Integer.parseInt(Utils.getDataValuesByColumnName(seatFetcher,"PRICE").get(0));
         return price;
     }
@@ -144,7 +144,12 @@ public class BookingProcessor extends Processor {
             for (String ticket : ticketSeats) {
                 seatBooking.put("PAYMENT_ID", paymentId);
                 seatBooking.put("TICKET_ID", ticket);
-                seatBooking.put("SEAT_PRICE_ID", getSeatPriceId(seatID.get(ticketSeats.indexOf(ticket))));
+                ArrayList<ArrayList<String>> ticketInfo = main.getProcessorManager().getTicketManagementProcessor().getData(0, 1, String.format("T.ID = '%s'", ticket), "").getData();
+                String seatId = Utils.getRowValueByColumnName(2, "S.ID", ticketInfo);
+                ArrayList<ArrayList<String>> seatInfo = main.getProcessorManager().getSeatManagementProcessor().getData(0, 1, String.format("SEATS.ID = '%s'", seatId), "").getData();
+                String seatCategoryId = Utils.getRowValueByColumnName(2, "SEATS.SEAT_CATEGORY_ID", seatInfo);
+                ArrayList<ArrayList<String>> seatCategoryInfo = main.getProcessorManager().getSeatCategoryManagementProcessor().getData(0, 1, String.format("SEAT_CATEGORY.ID = '%s'", seatCategoryId), "").getData();
+                seatBooking.put("SEAT_PRICE_ID",Utils.getRowValueByColumnName(2, "SEAT_PRICES.ID", seatCategoryInfo) );
                 Response response = main.getProcessorManager().getBookingTicketManagementProcessor().insertData(seatBooking, false);
                 if (response.getStatusCode() == StatusCode.OK) {
                     System.out.println("insert 1 row success");

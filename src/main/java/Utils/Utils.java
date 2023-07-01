@@ -215,26 +215,20 @@ public class Utils {
         return ret;
     }
 
-    public static Callback<DatePicker, DateCell> getDatePicker(boolean isBefore) {
-        final Callback<DatePicker, DateCell> dayCellFactory = new Callback<>() {
+    public static void setDatePickerConstraint(DatePicker date, boolean isBefore) {
+        date.setDayCellFactory(picker -> new DateCell() {
             @Override
-            public DateCell call(final DatePicker datePicker) {
-                return new DateCell() {
-                    @Override
-                    public void updateItem(LocalDate date, boolean empty) {
-                        super.updateItem(date, empty);
-                        if(isBefore == true) {
-                            System.out.println(date + " " + date.isBefore(LocalDate.now()));
-                            setDisable(date.isBefore(LocalDate.now()));
-                        }
-                        else {
-                            setDisable(date.isAfter(LocalDate.now()));
-                        }
-                    }
-                };
+            public void updateItem(LocalDate date, boolean empty) {
+                super.updateItem(date, empty);
+
+                // Disable dates after a specific date (e.g., September 1, 2022)
+                LocalDate constraintDate = LocalDate.now();
+                if(isBefore)
+                    setDisable(empty || date.isAfter(constraintDate));
+                else
+                    setDisable(empty || date.isBefore(constraintDate));
             }
-        };
-        return dayCellFactory;
+        });
     }
 
 }

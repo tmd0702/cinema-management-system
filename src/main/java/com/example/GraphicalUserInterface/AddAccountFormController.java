@@ -2,6 +2,7 @@ package com.example.GraphicalUserInterface;
 
 import Utils.Response;
 import Utils.StatusCode;
+import Utils.Utils;
 import com.example.GraphicalUserInterface.ManagementMain;
 import javafx.collections.FXCollections;
 import javafx.fxml.FXML;
@@ -38,6 +39,7 @@ public class AddAccountFormController implements Initializable {
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
         genderInputFieldInit();
+        Utils.setDatePickerConstraint(dobField, true);
     }
     public void genderInputFieldInit() {
         String genders[] = {"M - Male", "F - Female"};

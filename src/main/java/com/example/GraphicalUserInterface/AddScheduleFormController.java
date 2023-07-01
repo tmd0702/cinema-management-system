@@ -3,7 +3,6 @@ package com.example.GraphicalUserInterface;
 import Utils.Response;
 import Utils.StatusCode;
 import Utils.Utils;
-import com.example.GraphicalUserInterface.ManagementMain;
 import javafx.collections.FXCollections;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
@@ -43,6 +42,7 @@ public class AddScheduleFormController implements Initializable {
         showTimeStartTimeField.setDisable(true);
         showDateFieldInit();
         cinemaNameFieldInit();
+        Utils.setDatePickerConstraint(showDateField, false);
     }
     public void showDateFieldInit() {
         showDateField.valueProperty().addListener((obs, oldItem, newItem) -> {

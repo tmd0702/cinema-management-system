@@ -47,6 +47,7 @@ public class ProfileViewController implements Initializable {
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
         profileViewInit();
+        Utils.setDatePickerConstraint(dateOfBirthField, true);
     }
     public void profileViewInit() {
         firstNameField.setText(main.getSignedInUser().getFirstName());

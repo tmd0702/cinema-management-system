@@ -3,7 +3,7 @@ package com.example.GraphicalUserInterface;
 import MovieManager.Movie;
 import Utils.Response;
 import Utils.StatusCode;
-import com.example.GraphicalUserInterface.ManagementMain;
+import Utils.Utils;
 import javafx.collections.FXCollections;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
@@ -12,22 +12,24 @@ import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.VBox;
 
 import java.net.URL;
+import java.text.SimpleDateFormat;
 import java.time.format.DateTimeFormatter;
-import java.util.Date;
-import java.util.HashMap;
-import java.util.Optional;
-import java.util.ResourceBundle;
+import java.util.*;
 
 public class AddMovieFormController implements Initializable {
     private ManagementMain main;
     @FXML
     private ComboBox movieStatusField;
     @FXML
-    private TextField titleField, overviewField, languageField, durationField, posterPathField, viewCountField, revenueField, taglineField, voteCountField, voteAverageField, backdropPathField;
+    private TextField titleField, overviewField, languageField, durationField, posterPathField, taglineField, backdropPathField;
     @FXML
     private DatePicker releaseDateField;
     @FXML
     private VBox addMovieForm;
+    @FXML
+    private ComboBox genreField;
+    private ArrayList<ArrayList<String>> genreInfo = new ArrayList<ArrayList<String>>();
+    private ArrayList<String> genreNames = new ArrayList<String>();
 
     public AddMovieFormController() throws Exception {
         main = ManagementMain.getInstance();
@@ -36,10 +38,29 @@ public class AddMovieFormController implements Initializable {
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
         movieStatusFieldInit();
+        Utils.setDatePickerConstraint(releaseDateField, false);
+        genreFieldInit();
     }
     public void movieStatusFieldInit() {
-        String movieStatus[] = {"Planned", "Released"};
-        movieStatusField.setItems(FXCollections.observableArrayList(movieStatus));
+//        String movieStatus[] = {"Planned", "Released"};
+//        movieStatusField.setItems(FXCollections.observableArrayList(movieStatus));
+        movieStatusField.setValue("Planned");
+
+    }
+    public String getMovieGenreObjectIDFromComboBox(Object value) {
+        String id = null;
+        for (int i=0; i<genreNames.size();++i) {
+            if (genreNames.get(i).equals(value)) {
+                id = Utils.getRowValueByColumnName(i + 2, "GENRES.ID", genreInfo);
+                break;
+            }
+        }
+        return id;
+    }
+    public void genreFieldInit(){
+        genreInfo = main.getProcessorManager().getMovieGenreManagementProcessor().getData(0, -1, "","").getData();
+        genreNames = Utils.getDataValuesByColumnName(genreInfo, "GENRES.NAME");
+        genreField.setItems(FXCollections.observableArrayList(genreNames));
     }
     @FXML
     public void cancelInsertBtnOnClick() {
@@ -80,21 +101,29 @@ public class AddMovieFormController implements Initializable {
         movieInfo.put("RELEASE_DATE", DateTimeFormatter.ofPattern("yyyy-MM-dd").format(releaseDateField.getValue()));
         movieInfo.put("POSTER_PATH", posterPathField.getText());
         movieInfo.put("BACKDROP_PATH", backdropPathField.getText());
-        movieInfo.put("VIEW_COUNT", viewCountField.getText());
-        movieInfo.put("REVENUE", revenueField.getText());
+        movieInfo.put("REVENUE", "0");
+
         movieInfo.put("TAGLINE", taglineField.getText());
-        movieInfo.put("VOTE_COUNT", voteCountField.getText());
-        movieInfo.put("VOTE_AVERAGE", voteAverageField.getText());
         movieInfo.put("STATUS", movieStatusField.getValue().toString());
         Response response = main.getProcessorManager().getMovieManagementProcessor().insertData(movieInfo, true);
         StatusCode status = response.getStatusCode();
         if (status == StatusCode.OK) {
-            main.getProcessorManager().getMovieManagementProcessor().scheduleMovie(new Movie(id, titleField.getText(), overviewField.getText(), movieStatusField.getValue().toString(), Integer.parseInt(durationField.getText()), Integer.parseInt(viewCountField.getText()), new Date(DateTimeFormatter.ofPattern("yyyy-MM-dd").format(releaseDateField.getValue())), posterPathField.getText(), backdropPathField.getText(), languageField.getText(), Float.parseFloat(voteAverageField.getText())));
+            HashMap<String, String> genreMovie = new HashMap<String, String>();
+            genreMovie.put("MOVIE_ID", id);
+            genreMovie.put("GENRE_ID", getMovieGenreObjectIDFromComboBox(genreField.getValue()));
+            main.getProcessorManager().getMovieGenreManagementProcessor().insert(genreMovie, "MOVIE_GENRES", true);
+            main.getProcessorManager().getMovieManagementProcessor().scheduleMovie(new Movie(id, titleField.getText(), overviewField.getText(), movieStatusField.getValue().toString(), Integer.parseInt(durationField.getText()), 0, new SimpleDateFormat("yyyy-MM-dd").parse(DateTimeFormatter.ofPattern("yyyy-MM-dd").format(releaseDateField.getValue())), posterPathField.getText(), backdropPathField.getText(), languageField.getText(), 0.0f));
+            int countSchedule = main.getProcessorManager().getScheduleManagementProcessor().countData(String.format("MOVIES.ID = '%s'",id));
             Dialog<String> dialog = new Dialog<String>();
             //Setting the title
             dialog.setTitle("Success");
             ButtonType type = new ButtonType("Ok", ButtonBar.ButtonData.OK_DONE);
-            dialog.setContentText("The record has been added successfully");
+            System.out.println("Count schedule ..........." + countSchedule);
+            if(countSchedule == 0){
+                dialog.setContentText("The record has been added successfully but have not scheduled for this movie");
+            }else {
+                dialog.setContentText("The record has been added successfully");
+            }
             dialog.getDialogPane().getButtonTypes().add(type);
             dialog.showAndWait();
         } else {

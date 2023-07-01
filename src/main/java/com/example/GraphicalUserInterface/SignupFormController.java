@@ -5,16 +5,18 @@ import Utils.Utils;
 import com.example.GraphicalUserInterface.Main;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
+import javafx.fxml.Initializable;
 import javafx.scene.control.*;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.AnchorPane;
 import javafx.util.Callback;
 
+import java.net.URL;
 import java.text.SimpleDateFormat;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.util.*;
-public class SignupFormController {
+public class SignupFormController implements Initializable {
     private Main main;
     @FXML
     ToggleGroup gender;
@@ -26,9 +28,12 @@ public class SignupFormController {
     private DatePicker dateOfBirthField;
     public SignupFormController() throws Exception {
         main = Main.getInstance();
-        dateOfBirthField = new DatePicker();
-        dateOfBirthField.setDayCellFactory(Utils.getDatePicker(true));
+//        dateOfBirthField = new DatePicker();
+//        dateOfBirthField.setDayCellFactory(Utils.getDatePicker(true));
+        Utils.setDatePickerConstraint(dateOfBirthField, true);
     }
+
+
     public void onSubmitSignUpBtn() {
         HashMap<String, String> signUpInfo = new HashMap<String, String>();
         signUpInfo.put("firstName", firstNameField.getText());
@@ -92,5 +97,10 @@ public class SignupFormController {
         main.getNodeById("#mainOutlineContentView").setDisable(false);
         ((AnchorPane)signupFormRoot.getParent()).getChildren().remove(signupFormRoot);
 
+    }
+
+    @Override
+    public void initialize(URL url, ResourceBundle resourceBundle) {
+        Utils.setDatePickerConstraint(dateOfBirthField, true);
     }
 }

@@ -2,6 +2,7 @@ package com.example.GraphicalUserInterface;
 
 import Utils.Response;
 import Utils.StatusCode;
+import Utils.Utils;
 import com.example.GraphicalUserInterface.ManagementMain;
 import javafx.collections.FXCollections;
 import javafx.fxml.FXML;
@@ -13,6 +14,7 @@ import javafx.scene.layout.VBox;
 import java.io.IOException;
 import java.net.URL;
 import java.time.format.DateTimeFormatter;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.ResourceBundle;
 
@@ -21,15 +23,22 @@ public class UpdateMovieFormController implements Initializable {
     @FXML
     private ComboBox movieStatusField;
     @FXML
-    private TextField idField, titleField, overviewField, languageField, durationField, posterPathField, viewCountField, revenueField, taglineField, voteCountField, voteAverageField, backdropPathField;
+    private TextField idField, titleField, overviewField, languageField, durationField, posterPathField, taglineField, backdropPathField;
     @FXML
     private DatePicker releaseDateField;
+    @FXML
+    private ComboBox genreField;
+    private ArrayList<ArrayList<String>> genreInfo = new ArrayList<ArrayList<String>>();
+    private ArrayList<String> genreNames = new ArrayList<String>();
+
     @FXML
     private VBox updateMovieForm;
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
         idFieldInit();
         movieStatusFieldInit();
+        Utils.setDatePickerConstraint(releaseDateField, false);
+        genreFieldInit();
     }
     public void movieStatusFieldInit() {
         String movieStatus[] = {"Planned", "Released"};
@@ -67,15 +76,19 @@ public class UpdateMovieFormController implements Initializable {
         movieInfo.put("RELEASE_DATE", DateTimeFormatter.ofPattern("yyyy-MM-dd").format(releaseDateField.getValue()));
         movieInfo.put("POSTER_PATH", posterPathField.getText());
         movieInfo.put("BACKDROP_PATH", backdropPathField.getText());
-        movieInfo.put("VIEW_COUNT", viewCountField.getText());
-        movieInfo.put("REVENUE", revenueField.getText());
+        movieInfo.put("VIEW_COUNT", "0");
+        movieInfo.put("REVENUE", "0");
         movieInfo.put("TAGLINE", taglineField.getText());
-        movieInfo.put("VOTE_COUNT", voteCountField.getText());
-        movieInfo.put("VOTE_AVERAGE", voteAverageField.getText());
+        movieInfo.put("VOTE_COUNT", "0");
+        movieInfo.put("VOTE_AVERAGE", "0");
         movieInfo.put("STATUS", movieStatusField.getValue().toString());
         Response response = main.getProcessorManager().getMovieManagementProcessor().updateData(movieInfo, String.format("ID = '%s'", idField.getText()), true);
         StatusCode status = response.getStatusCode();
         if (status == StatusCode.OK) {
+            HashMap<String, String> genreMovie = new HashMap<String, String>();
+            genreMovie.put("MOVIE_ID", idField.getText());
+            genreMovie.put("GENRE_ID", getMovieGenreObjectIDFromComboBox(genreField.getValue()));
+            main.getProcessorManager().getMovieGenreManagementProcessor().insert(genreMovie, "MOVIE_GENRES", true);
             Dialog<String> dialog = new Dialog<String>();
             //Setting the title
             dialog.setTitle("Success");
@@ -92,5 +105,20 @@ public class UpdateMovieFormController implements Initializable {
             dialog.getDialogPane().getButtonTypes().add(type);
             dialog.showAndWait();
         }
+    }
+    public void genreFieldInit(){
+        genreInfo = main.getProcessorManager().getMovieGenreManagementProcessor().getData(0, -1, "","").getData();
+        genreNames = Utils.getDataValuesByColumnName(genreInfo, "GENRES.NAME");
+        genreField.setItems(FXCollections.observableArrayList(genreNames));
+    }
+    public String getMovieGenreObjectIDFromComboBox(Object value) {
+        String id = null;
+        for (int i=0; i<genreNames.size();++i) {
+            if (genreNames.get(i).equals(value)) {
+                id = Utils.getRowValueByColumnName(i + 2, "GENRES.ID", genreInfo);
+                break;
+            }
+        }
+        return id;
     }
 }

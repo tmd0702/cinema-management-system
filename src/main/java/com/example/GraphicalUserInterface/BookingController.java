@@ -125,7 +125,6 @@ public class BookingController {
         //page1
         ConstructDateButton();
         FormartDateButton();
-        //page2
         scrollBtnInit();
         //page3
         //page4
@@ -396,25 +395,25 @@ public class BookingController {
         if(!pane2.getChildren().contains(SeatGrid))
             pane2.getChildren().add(SeatGrid);
         ArrayList<ArrayList<String>> SeatInfor = bookingProcessor.getSeat();
-        ArrayList<String> SeatList = Utils.getDataValuesByColumnName(SeatInfor, "SEATS.NAME");
+        ArrayList<String> SeatList = Utils.getDataValuesByColumnName(SeatInfor, "NAME");
         System.out.println(SeatInfor);
         for(int i = 0; i < SeatList.size(); i++){
             String s = SeatList.get(i);
             int rowIndex = s.charAt(0) - 'A';
-            int columnIndex = Integer.parseInt(s.substring(1)) - 1;
+            int columnIndex = Integer.parseInt(s.substring(1));
             Button button = new Button(s);
             button.setTextFill(Color.BLACK);
             button.setPrefSize(25,34);
             button.setFont(Font.font(7.5));
             button.setWrapText(true);
-            if(!bookingProcessor.checkActive(Utils.getDataValuesByColumnName(SeatInfor, "SEATS.STATUS").get(i))){
+            if(!bookingProcessor.checkActive(Utils.getDataValuesByColumnName(SeatInfor, "STATUS").get(i))){
                 button.setStyle("-fx-background-color: #ffffff;");
                 button.setText("X");
                 SeatGrid.add(button, columnIndex, rowIndex);
                 continue;
             }
             boolean occupied = bookingProcessor.checkStatusSeat(getIdFromIndex(bookingProcessor.getSeat(), i), bookingProcessor.getBookingInfor().getScheduleId());
-            String category = Utils.getDataValuesByColumnName(SeatInfor, "SEATS.SEAT_CATEGORY_ID").get(i);
+            String category = Utils.getDataValuesByColumnName(SeatInfor, "SEAT_CATEGORY_ID").get(i);
             if(!occupied){
                 button.setStyle("-fx-background-color: #393939;");
                 SeatGrid.add(button, columnIndex, rowIndex);
@@ -428,18 +427,15 @@ public class BookingController {
             }
             SeatGrid.add(button, columnIndex, rowIndex);
             button.setOnAction(event->{
-                System.out.println(SeatGrid.getChildren().indexOf(button));
                 if(SeatName.size() < 12) {
                     if (button.getStyle() != "-fx-background-color: #8D090D") {
                         System.out.println(Integer.parseInt(button.getText().substring(1)));
                         if(category.equals("SC_00003")) {
                             int numberSeat = Integer.parseInt(button.getText().substring(1));
-                            System.out.println(numberSeat);
-                            System.out.println(SeatGrid.getChildren().indexOf(button));
+
                             if (numberSeat % 2 == 0) {
                                 nearbyButton = (Button) SeatGrid.getChildren().get(SeatGrid.getChildren().indexOf(button) - 1);
                             } else {
-
                                 nearbyButton = (Button) SeatGrid.getChildren().get(SeatGrid.getChildren().indexOf(button) + 1);
                             }
                             nearbyButton.setStyle("-fx-background-color: #8D090D");
@@ -457,13 +453,6 @@ public class BookingController {
                             button.setStyle("-fx-background-color: #A4A4A4;-fx-border-color: yellow");
                         else {
                             button.setStyle("-fx-background-color:  #FF00D6");
-                            int numberSeat = Integer.parseInt(button.getText().substring(1));
-                            if (numberSeat % 2 == 0) {
-                                nearbyButton = (Button) SeatGrid.getChildren().get(SeatGrid.getChildren().indexOf(button) - 1);
-                            } else {
-
-                                nearbyButton = (Button) SeatGrid.getChildren().get(SeatGrid.getChildren().indexOf(button) + 1);
-                            }
                             nearbyButton.setStyle("-fx-background-color:  #FF00D6");
                             SeatName.remove(nearbyButton.getText());
                             SeatId.remove(getIdFromIndex(SeatInfor, SeatList.indexOf(nearbyButton.getText())));

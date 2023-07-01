@@ -52,7 +52,12 @@ public class MovieManagementProcessor extends Processor {
         return count(queryCondition, getDefaultDatabaseTable());
     }
     public Response getData(int from, int quantity, String queryCondition, String sortQuery) {
-        Response response = select("*", from, quantity, queryCondition, sortQuery, getDefaultDatabaseTable());
+        if(queryCondition.length() == 0){
+            queryCondition = "GENRES.ID = MOVIE_GENRES.GENRE_ID AND MOVIES.ID = MOVIE_GENRES.MOVIE_ID";
+        }else{
+            queryCondition += " AND GENRES.ID = MOVIE_GENRES.GENRE_ID AND MOVIES.ID = MOVIE_GENRES.MOVIE_ID";
+        }
+        Response response = select("MOVIES.*, GENRES.NAME AS 'GENENS.NAME'", from, quantity, queryCondition, sortQuery, "MOVIES, MOVIE_GENRES, GENRES");
         return response;
     }
     public void getMovies() {

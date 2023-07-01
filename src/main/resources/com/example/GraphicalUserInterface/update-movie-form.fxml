@@ -49,11 +49,11 @@
                <font>
                   <Font name="Georgia Bold" size="13.0" />
                </font></Label>
-            <Label layoutX="5.0" layoutY="299.0" text="Movie status" textFill="WHITE">
+            <Label layoutX="14.0" layoutY="230.0" text="Movie status" textFill="WHITE">
                <font>
                   <Font name="Georgia Bold" size="13.0" />
                </font></Label>
-            <Label layoutX="19.0" layoutY="224.0" text="Duration" textFill="WHITE">
+            <Label layoutX="336.0" layoutY="171.0" text="Duration" textFill="WHITE">
                <font>
                   <Font name="Georgia Bold" size="13.0" />
                </font></Label>
@@ -74,64 +74,32 @@
                <font>
                   <Font name="Georgia" size="13.0" />
                </font></TextField>
-            <TextField fx:id="revenueField" layoutX="407.0" layoutY="158.0">
+            <TextField fx:id="durationField" layoutX="407.0" layoutY="167.0">
                <font>
                   <Font name="Georgia" size="13.0" />
                </font></TextField>
-            <TextField fx:id="viewCountField" layoutX="407.0" layoutY="124.0">
+            <ComboBox fx:id="movieStatusField" layoutX="107.0" layoutY="226.0" prefHeight="26.0" prefWidth="160.0" />
+            <TextField fx:id="taglineField" layoutX="407.0" layoutY="132.0">
                <font>
                   <Font name="Georgia" size="13.0" />
                </font></TextField>
-            <TextField fx:id="durationField" layoutX="90.0" layoutY="220.0">
+            <Label layoutX="348.0" layoutY="136.0" text="Tagline" textFill="WHITE">
+               <font>
+                  <Font name="Georgia Bold" size="13.0" />
+               </font></Label>
+            <Label layoutX="298.0" layoutY="244.0" text="Backdrop path" textFill="WHITE">
+               <font>
+                  <Font name="Georgia Bold" size="13.0" />
+               </font></Label>
+            <Label layoutX="326.0" layoutY="208.0" text="Poster path" textFill="WHITE">
+               <font>
+                  <Font name="Georgia Bold" size="13.0" />
+               </font></Label>
+            <TextField fx:id="posterPathField" layoutX="407.0" layoutY="204.0">
                <font>
                   <Font name="Georgia" size="13.0" />
                </font></TextField>
-            <ComboBox fx:id="movieStatusField" layoutX="98.0" layoutY="295.0" prefHeight="26.0" prefWidth="160.0" />
-            <Label layoutX="324.0" layoutY="128.0" text="View count" textFill="WHITE">
-               <font>
-                  <Font name="Georgia Bold" size="13.0" />
-               </font></Label>
-            <Label layoutX="338.0" layoutY="162.0" text="Revenue" textFill="WHITE">
-               <font>
-                  <Font name="Georgia Bold" size="13.0" />
-               </font></Label>
-            <TextField fx:id="taglineField" layoutX="407.0" layoutY="192.0">
-               <font>
-                  <Font name="Georgia" size="13.0" />
-               </font></TextField>
-            <Label layoutX="348.0" layoutY="196.0" text="Tagline" textFill="WHITE">
-               <font>
-                  <Font name="Georgia Bold" size="13.0" />
-               </font></Label>
-            <TextField fx:id="voteCountField" layoutX="407.0" layoutY="228.0">
-               <font>
-                  <Font name="Georgia" size="13.0" />
-               </font></TextField>
-            <Label layoutX="326.0" layoutY="232.0" text="Vote count" textFill="WHITE">
-               <font>
-                  <Font name="Georgia Bold" size="13.0" />
-               </font></Label>
-            <TextField fx:id="voteAverageField" layoutX="407.0" layoutY="262.0">
-               <font>
-                  <Font name="Georgia" size="13.0" />
-               </font></TextField>
-            <Label layoutX="311.0" layoutY="266.0" text="Vote average" textFill="WHITE">
-               <font>
-                  <Font name="Georgia Bold" size="13.0" />
-               </font></Label>
-            <Label layoutX="298.0" layoutY="304.0" text="Backdrop path" textFill="WHITE">
-               <font>
-                  <Font name="Georgia Bold" size="13.0" />
-               </font></Label>
-            <Label layoutX="9.0" layoutY="261.0" text="Poster path" textFill="WHITE">
-               <font>
-                  <Font name="Georgia Bold" size="13.0" />
-               </font></Label>
-            <TextField fx:id="posterPathField" layoutX="90.0" layoutY="257.0">
-               <font>
-                  <Font name="Georgia" size="13.0" />
-               </font></TextField>
-            <TextField fx:id="backdropPathField" layoutX="407.0" layoutY="299.0">
+            <TextField fx:id="backdropPathField" layoutX="407.0" layoutY="239.0">
                <font>
                   <Font name="Georgia" size="13.0" />
                </font></TextField>
@@ -143,6 +111,12 @@
                <font>
                   <Font name="Georgia Bold" size="13.0" />
                </font></Label>
+            <ComboBox fx:id="genreField" layoutX="407.0" layoutY="279.0" prefHeight="26.0" prefWidth="168.0" />
+            <Label layoutX="327.0" layoutY="285.0" text="Genre" textFill="WHITE">
+               <font>
+                  <Font name="Georgia Bold" size="13.0" />
+               </font>
+            </Label>
          </children>
       </AnchorPane>
    </children>

@@ -12,11 +12,9 @@ import javafx.scene.layout.VBox;
 
 import java.io.IOException;
 import java.net.URL;
+import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.Optional;
-import java.util.ResourceBundle;
+import java.util.*;
 
 public class AddPromotionFormController implements Initializable {
     private ManagementMain main;
@@ -38,6 +36,22 @@ public class AddPromotionFormController implements Initializable {
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
         userCategoryNameFieldInit();
+        Utils.setDatePickerConstraint(startDateField, false);
+        Utils.setDatePickerConstraint(endDateField, false);
+        startDateField.valueProperty().addListener((observable, oldDate, newDate) -> {
+            endDateField.setValue(newDate);
+            endDateField.setDayCellFactory(picker -> new DateCell() {
+                @Override
+                public void updateItem(LocalDate date, boolean empty) {
+                    super.updateItem(date, empty);
+
+                    // Disable dates after a specific date (e.g., September 1, 2022)
+                    LocalDate constraintDate = newDate;
+                    setDisable(empty || date.isBefore(constraintDate));
+                }
+            });
+        });
+
     }
     public String getUserCategoryObjectIDFromComboBox(Object value) {
         String id = null;

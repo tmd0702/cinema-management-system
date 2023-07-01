@@ -4,7 +4,6 @@ import Utils.Response;
 import Utils.StatusCode;
 import Utils.Utils;
 import Utils.Validator;
-import com.example.GraphicalUserInterface.Main;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.Alert;

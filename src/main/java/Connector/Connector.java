@@ -102,8 +102,26 @@ public class Connector {
         } catch (Exception e){
             return new Response(e.toString(), StatusCode.BAD_REQUEST);
         }
-
     }
+
+    public Response HTTPRecommendMoviesRequest(JSONObject jsonData) {
+        try {
+            JSONObject requestResponse = HTTPPostRequest(this.config.get("API_RECOMMEND_MOVIES_ROUTE"), jsonData);
+            return new Response(requestResponse.get("error_message").toString(), StatusCode.getByValue(Integer.parseInt(requestResponse.get("status_code").toString())));
+        } catch (Exception e){
+            return new Response(e.toString(), StatusCode.BAD_REQUEST);
+        }
+    }
+
+    public Response HTTPPartialFitRequest(JSONObject jsonData) {
+        try {
+            JSONObject requestResponse = HTTPPostRequest(this.config.get("API_PARTIAL_FIT_ROUTE"), jsonData);
+            return new Response(requestResponse.get("error_message").toString(), StatusCode.getByValue(Integer.parseInt(requestResponse.get("status_code").toString())));
+        } catch (Exception e){
+            return new Response(e.toString(), StatusCode.BAD_REQUEST);
+        }
+    }
+
     public Response HTTPSignUpRequest(JSONObject jsonData) {
         try {
             JSONObject requestResponse = HTTPPostRequest(this.config.get("API_SIGN_UP_ROUTE"), jsonData);

@@ -216,19 +216,21 @@ public class Utils {
     }
 
     public static void setDatePickerConstraint(DatePicker date, boolean isBefore) {
-        date.setDayCellFactory(picker -> new DateCell() {
-            @Override
-            public void updateItem(LocalDate date, boolean empty) {
-                super.updateItem(date, empty);
+        if (date != null) {
+            date.setDayCellFactory(picker -> new DateCell() {
+                @Override
+                public void updateItem(LocalDate date, boolean empty) {
+                    super.updateItem(date, empty);
 
-                // Disable dates after a specific date (e.g., September 1, 2022)
-                LocalDate constraintDate = LocalDate.now();
-                if(isBefore)
-                    setDisable(empty || date.isAfter(constraintDate));
-                else
-                    setDisable(empty || date.isBefore(constraintDate));
-            }
-        });
+                    // Disable dates after a specific date (e.g., September 1, 2022)
+                    LocalDate constraintDate = LocalDate.now();
+                    if (isBefore)
+                        setDisable(empty || date.isAfter(constraintDate));
+                    else
+                        setDisable(empty || date.isBefore(constraintDate));
+                }
+            });
+        }
     }
 
 }

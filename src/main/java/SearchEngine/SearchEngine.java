@@ -19,7 +19,7 @@ public class SearchEngine {
         input = input.replace(" ", "%20");
         String inputLine = "", scores = "";
         JSONObject jo = new JSONObject();
-        String url = String.format("http://103.42.57.126:8085/%s?input=%s", type, input);
+        String url = String.format("http://103.42.57.83:8086/%s?input=%s", type, input);
         System.out.println(url);
         try {
             URL keywordsSearchingURL = new URL(url);

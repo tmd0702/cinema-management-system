@@ -121,6 +121,6 @@ def search_engine():
     return json.dumps(sorted_scores)
 
 
-app.run(debug=False, port=8085, host="0.0.0.0")
+app.run(debug=False, port=8086, host="0.0.0.0")
 
 

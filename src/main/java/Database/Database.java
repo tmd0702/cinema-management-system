@@ -14,9 +14,9 @@ public class Database {
 
     public Database() {
         database = this;
-        this.databaseUsername = "4hb_admin";
+        this.databaseUsername = "movie_admin";
         this.databasePassword = "sa123456";
-        this.databaseDns = "jdbc:mysql://127.0.0.1:3306/";
+        this.databaseDns = "jdbc:mysql://103.42.57.83:3306/";
         this.connect();
     }
     public static synchronized Database getInstance() {
@@ -60,7 +60,7 @@ public class Database {
             this.con = DriverManager.getConnection(this.databaseDns, this.databaseUsername, this.databasePassword); // not the actual password
             System.out.println("Successful Connection");
             Statement st = this.con.createStatement();
-            st.execute("USE movie;");
+            st.execute("USE MOVIE;");
             this.con.setAutoCommit(false);
         } catch (ClassNotFoundException cnfe) {
             System.err.println(cnfe);

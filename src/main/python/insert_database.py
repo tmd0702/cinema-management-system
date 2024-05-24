@@ -11,15 +11,15 @@ class Database:
     def __init__(self):
         try:
             self.mydb = mysql.connector.connect(
-                            host="127.0.0.1",
-                            user="4hb_admin",
+                            host="103.42.57.83",
+                            user="movie_admin",
                             password="sa123456"
                           )
             self.cursor = self.mydb.cursor()
             self.cursor.execute("USE MOVIE;")
             print("Connected")
-        except:
-            print('Error occurred')
+        except Exception as e:
+            print('Error occurred', e)
     def insert_movies(self, vals):
 
         sql = "INSERT INTO MOVIES (ID, TITLE, OVERVIEW, RELEASE_DATE, LANGUAGE, DURATION, STATUS, VIEW_COUNT, POSTER_PATH, BACKDROP_PATH, REVENUE, TAGLINE, VOTE_COUNT, VOTE_AVERAGE) VALUES (%s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s);"

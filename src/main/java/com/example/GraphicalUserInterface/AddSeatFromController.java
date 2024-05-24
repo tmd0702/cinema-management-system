@@ -25,7 +25,7 @@ public class AddSeatFromController implements Initializable {
     private AnchorPane addSeatForm;
     private String chosenSeatName;
     public void chosenSeatIdInit() {
-        chosenSeatName = main.getInstance().getSeatBtnSelected().get(0).getId();
+        chosenSeatName = main.getSeatBtnSelected().get(0).getId();
     }
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {

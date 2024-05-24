@@ -1,8 +1,7 @@
 package com.example.GraphicalUserInterface;
 import Configuration.Config;
-import Connector.Connector;
 import Database.*;
-
+import Connector.Connector;
 import MovieManager.Movie;
 import SearchEngine.SearchEngine;
 import UserManager.User;

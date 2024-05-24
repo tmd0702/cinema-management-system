@@ -1,11 +1,10 @@
 package Database;
-import UserManager.Manager;
-import UserManager.Customer;
-import UserManager.User;
 import Utils.*;
-import Exception.*;
 import com.example.GraphicalUserInterface.ManagementMain;
-
+import Exception.InvalidUsernameException;
+import Exception.InvalidPhoneNumberException;
+import Exception.InvalidPasswordException;
+import Exception.InvalidEmailException;
 import java.sql.Date;
 import java.sql.ResultSet;
 import java.sql.Statement;

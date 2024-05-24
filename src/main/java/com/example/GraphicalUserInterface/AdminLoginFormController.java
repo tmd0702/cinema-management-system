@@ -1,7 +1,5 @@
 package com.example.GraphicalUserInterface;
-
-import UserManager.Customer;
-import UserManager.Manager;
+import UserManager.*;
 import Utils.StatusCode;
 import Utils.Utils;
 import Utils.Response;

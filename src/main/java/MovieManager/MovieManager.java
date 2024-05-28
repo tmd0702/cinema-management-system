@@ -46,6 +46,23 @@ public class MovieManager {
         }
         return comingSoonMovieList;
     }
+
+    public ArrayList<Movie> getRecommendMovieList() {
+//        ArrayList<Movie> recommendMovieList = new ArrayList<Movie>();
+//        for (Movie movie: this.movieList) {
+//            long diff = Utils.getDiffBetweenDates(movie.getReleaseDate(), new Date());
+//            if (diff < 0) {
+//                recommendMovieList.add(movie);
+//            }
+//        }
+//        return comingSoonMovieList;
+        ArrayList<Movie> recommendMovieList = new ArrayList<Movie>();
+        for (int i=Math.round(movieList.size() / 2); i < movieList.size(); ++i) {
+            recommendMovieList.add(movieList.get(i));
+        }
+        return recommendMovieList;
+    }
+
     public MovieManager(ArrayList<Movie> movieList) {
         this.movieList = movieList;
     }

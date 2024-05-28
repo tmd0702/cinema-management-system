@@ -24,6 +24,10 @@ public class   MovieListViewController implements Initializable {
     @FXML
     private Button comingSoonTabBtn;
     @FXML
+    private Button recommendTabBtn;
+    @FXML
+    private VBox recommendMoviesTab;
+    @FXML
     private VBox comingSoonMoviesTab;
     @FXML
     private VBox nowShowingMoviesTab;
@@ -33,6 +37,7 @@ public class   MovieListViewController implements Initializable {
     public void initialize(URL url, ResourceBundle resourceBundle) {
         nowShowingMoviesTabInit();
         comingSoonMoviesTabInit();
+        recommendMoviesTabInit();
         reRenderPage();
     }
     public MovieListViewController() {
@@ -40,10 +45,12 @@ public class   MovieListViewController implements Initializable {
         tabs = new ArrayList<String>();
         tabs.add("nowShowingTab");
         tabs.add("comingSoonTab");
+        tabs.add("recommendTab");
     }
     public void reRenderPage() {
         nowShowingMoviesTab.setVisible(this.main.getNowShowingMoviesTabActive());
         comingSoonMoviesTab.setVisible(this.main.getComingSoonMoviesTabActive());
+        recommendMoviesTab.setVisible(this.main.getRecommendMoviesTabActive());
         if (this.main.getComingSoonMoviesTabActive()) {
             activateTabBtn(comingSoonTabBtn);
         } else {
@@ -53,6 +60,11 @@ public class   MovieListViewController implements Initializable {
             activateTabBtn(nowShowingTabBtn);
         } else {
             deactivateTabBtn(nowShowingTabBtn);
+        }
+        if (this.main.getRecommendMoviesTabActive()) {
+            activateTabBtn(recommendTabBtn);
+        } else {
+            deactivateTabBtn(recommendTabBtn);
         }
     }
     public void activateTabBtn(Button btn) {
@@ -112,16 +124,52 @@ public class   MovieListViewController implements Initializable {
             listView.getChildren().add(IndexViewController.getMovieView(listView, listSpacing, movie));
         }
     }
+
+    public void recommendMoviesTabInit() {
+        double listSpacing = 10;
+        VBox moviesContainer = new VBox();
+        moviesContainer.setVisible(false);
+        moviesContainer.setSpacing(20);
+        moviesContainer.setId("recommendMoviesTab");
+        recommendMoviesTab = moviesContainer;
+        moviesContainer.setPrefWidth(903);
+        moviesContainer.setPadding(new Insets(0, 63, 0, 63));
+        tabContainer.getChildren().add(moviesContainer);
+        ArrayList<Movie> movieList = main.getProcessorManager().getMovieManagementProcessor().getMovieManager().getRecommendMovieList();
+        HBox listView = new HBox();
+        for (int i=0;i<movieList.size();++i) {
+            Movie movie = movieList.get(i);
+
+            if (i % 4 == 0) {
+                listView = new HBox();
+                listView.setPrefHeight(259);
+                listView.setPrefWidth(777);
+                listView.setSpacing(listSpacing);
+                moviesContainer.getChildren().add(listView);
+            }
+            listView.getChildren().add(IndexViewController.getMovieView(listView, listSpacing, movie));
+        }
+    }
+
     @FXML
     public void comingSoonBtnOnClick() {
         main.setComingSoonMoviesTabActive(true);
         main.setNowShowingMoviesTabActive(false);
+        main.setRecommendMoviesTabActive(false);
         reRenderPage();
     }
     @FXML
     public void nowShowingBtnOnClick() {
         main.setNowShowingMoviesTabActive(true);
         main.setComingSoonMoviesTabActive(false);
+        main.setRecommendMoviesTabActive(false);
+        reRenderPage();
+    }
+    @FXML
+    public void recommendBtnOnClick() {
+        main.setRecommendMoviesTabActive(true);
+        main.setComingSoonMoviesTabActive(false);
+        main.setNowShowingMoviesTabActive(false);
         reRenderPage();
     }
 

@@ -251,6 +251,11 @@ public class IndexViewController implements Initializable {
         main.setComingSoonMoviesTabActive(true);
         main.changeView("movie-list-view.fxml");
     }
+    @FXML
+    public void onSeeMoreRBtnClick() throws IOException {
+        main.setRecommendMoviesTabActive(true);
+        main.changeView("movie-list-view.fxml");
+    }
     public void opacityAnimation(DoubleProperty property, double seconds, double targetOpacity) {
         Animation animation = new Timeline(
                 new KeyFrame(Duration.seconds(seconds),

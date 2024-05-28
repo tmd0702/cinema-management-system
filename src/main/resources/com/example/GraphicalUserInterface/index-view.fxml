@@ -39,8 +39,21 @@
               </font>
            </Label>
            <HBox fx:id="comingSoonList" layoutX="66.0" layoutY="1003.0" prefHeight="259.0" prefWidth="777.0" />
+
+           <Label layoutX="57.0" layoutY="1285.0" text="Recommend" textFill="WHITE">
+              <font>
+                 <Font name="Georgia Bold" size="14.0" />
+              </font>
+           </Label>
+           <Label fx:id="seeMoreRBtn" layoutX="781.0" layoutY="1286.0" onMouseClicked="#onSeeMoreRBtnClick" text="See more" textFill="WHITE">
+              <font>
+                 <Font name="Georgia Bold" size="12.0" />
+              </font>
+           </Label>
+           <HBox fx:id="recommendList" layoutX="57.0" layoutY="667.0" prefHeight="259.0" prefWidth="777.0" />
+
            <Button fx:id="scrollLeftBtn" layoutX="1.0" layoutY="208.0" mnemonicParsing="false" onMouseClicked="#scrollLeftBtnOnClick" prefHeight="291.0" prefWidth="39.0" text="&lt;" />
            <Button fx:id="scrollRightBtn" layoutX="853.0" layoutY="208.0" mnemonicParsing="false" onMouseClicked="#scrollRightBtnOnClick" prefHeight="291.0" prefWidth="39.0" text="&gt;" />
-      <Line endX="704.6806030273438" layoutX="183.0" layoutY="560.0" startX="-172.22132873535156" stroke="WHITE" />
+           <Line endX="704.6806030273438" layoutX="183.0" layoutY="560.0" startX="-172.22132873535156" stroke="WHITE" />
         </children>
      </AnchorPane>

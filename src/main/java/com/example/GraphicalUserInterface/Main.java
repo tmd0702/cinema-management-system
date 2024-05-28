@@ -23,7 +23,7 @@ public class Main extends Application {
     private User signedInUser;
     private SearchEngine searchEngine;
     private Connector connector;
-    private boolean nowShowingMoviesTabActive, comingSoonMoviesTabActive;
+    private boolean nowShowingMoviesTabActive, comingSoonMoviesTabActive, recommendMoviesTabActive;
     private Movie movieOnDetail;
     private Movie movieOnBooking;
     private ProcessorManager processorManager;
@@ -76,11 +76,17 @@ public class Main extends Application {
     public void setComingSoonMoviesTabActive(boolean isActive) {
         this.comingSoonMoviesTabActive = isActive;
     }
+    public void setRecommendMoviesTabActive(boolean isActive) {
+        this.recommendMoviesTabActive = isActive;
+    }
     public boolean getNowShowingMoviesTabActive() {
         return this.nowShowingMoviesTabActive;
     }
     public boolean getComingSoonMoviesTabActive() {
         return this.comingSoonMoviesTabActive;
+    }
+    public boolean getRecommendMoviesTabActive() {
+        return this.recommendMoviesTabActive;
     }
     public void setMovieOnDetail(Movie movie) {
         movieOnDetail = movie;

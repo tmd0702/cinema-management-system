@@ -4,9 +4,19 @@ import java.io.BufferedReader;
 import java.io.InputStreamReader;
 import java.net.MalformedURLException;
 import java.net.URL;
+
+import Connector.Connector;
+import Configuration.Config;
+import Database.MovieManagementProcessor;
+import Database.MovieProcessor;
+import Database.RatingProcessor;
+import Utils.Response;
 import Utils.Utils.*;
 import java.net.URLConnection;
+import java.util.ArrayList;
 import java.util.HashMap;
+
+import javafx.scene.control.TextField;
 import org.json.JSONObject;
 public class HTTPGetRequestTest{
     public static String getKeywordsSearchingResults() {
@@ -45,7 +55,7 @@ public class HTTPGetRequestTest{
         System.out.println(inputLine);
         return inputLine;
     }
-    public static String signIn() {
+    public static void recommend() {
         String inputLine = "";
         String url = String.format("http://localhost:3300/auth/sign_in?username=admin1&password=sa123456");
         try {
@@ -62,10 +72,20 @@ public class HTTPGetRequestTest{
             System.out.println(e);
         }
         System.out.println(inputLine);
-        return inputLine;
+//        return inputLine;
     }
-    public static void main(String[] args) {
-        signIn();
+    public static void main(String[] args) throws Exception {
+        JSONObject jsonData = new JSONObject();
+        Config config = new Config();
+        MovieProcessor movieProcessor = new MovieProcessor();
+        RatingProcessor ratingProcessor = new RatingProcessor();
+        jsonData.put("user_id", "USE_20015");
+//        jsonData.put("movies", movieProcessor.getData(0, -1, "", "").getData());
+//        jsonData.put("communities", ratingProcessor.getCommunities().getData());
+//        jsonData.put("ratings", ratingProcessor.getData(0, -1, "", "").getData());
+        Connector connector = new Connector(config);
+        ArrayList<String> response = connector.HTTPRecommendMoviesRequest(jsonData);
+        System.out.println(response.toString());
     }
 
 }

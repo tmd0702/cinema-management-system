@@ -14,7 +14,7 @@ public abstract class Processor {
     public Main main;
 
     public Processor() {
-        this.main = Main.getInstance();
+//        this.main = Main.getInstance();
         this.database = Database.getInstance();
         this.defaultDatabaseTable = "";
     }

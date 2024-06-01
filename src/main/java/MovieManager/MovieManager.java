@@ -1,10 +1,13 @@
 package MovieManager;
 import java.util.*;
 import Utils.Utils;
+import com.example.GraphicalUserInterface.Main;
 import javafx.scene.image.Image;
+import org.json.JSONObject;
 
 public class MovieManager {
     private ArrayList<Movie> movieList;
+    private Main main = Main.getInstance();
     private Image imageNotFound;
     public MovieManager() {
         this.movieList = new ArrayList<Movie>();
@@ -48,17 +51,21 @@ public class MovieManager {
     }
 
     public ArrayList<Movie> getRecommendMovieList() {
-//        ArrayList<Movie> recommendMovieList = new ArrayList<Movie>();
-//        for (Movie movie: this.movieList) {
-//            long diff = Utils.getDiffBetweenDates(movie.getReleaseDate(), new Date());
-//            if (diff < 0) {
-//                recommendMovieList.add(movie);
-//            }
-//        }
-//        return comingSoonMovieList;
+        JSONObject jsonData = new JSONObject();
         ArrayList<Movie> recommendMovieList = new ArrayList<Movie>();
-        for (int i=Math.round(movieList.size() / 2); i < movieList.size(); ++i) {
-            recommendMovieList.add(movieList.get(i));
+        if (main.getSignedInUser() != null ) {
+            jsonData.put("user_id", main.getSignedInUser().getId());
+            ArrayList<String> recommendMovieIDs = main.getConnector().HTTPRecommendMoviesRequest(jsonData);
+            for (int i = 0; i < recommendMovieIDs.size(); ++i) {
+                for (int j = 0; j < movieList.size(); ++j) {
+                    if (recommendMovieIDs.get(i).toString().equals(movieList.get(j).getId().toString())) {
+                        recommendMovieList.add(movieList.get(i));
+                    }
+                }
+
+            }
+        } else {
+
         }
         return recommendMovieList;
     }

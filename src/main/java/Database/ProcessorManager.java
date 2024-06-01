@@ -6,6 +6,8 @@ import com.example.GraphicalUserInterface.ManagementMain;
 
 public class ProcessorManager {
     private static ProcessorManager processorManager;
+    private MovieProcessor movieProcessor;
+    private RatingProcessor ratingProcessor;
     private BookingProcessor bookingProcessor;
     private UserCategoryManagementProcessor userCategoryManagementProcessor;
     private FiltererProcessor filtererProcessor;
@@ -43,6 +45,7 @@ public class ProcessorManager {
         this.promotionManagementProcessor = new PromotionManagementProcessor();
         this.authenticationManagementProcessor = new AuthenticationManagementProcessor();
         this.userCategoryManagementProcessor = new UserCategoryManagementProcessor();
+        this.movieProcessor = new MovieProcessor();
         this.paymentManagementProcessor = new PaymentManagementProcessor();
         this.accountManagementProcessor = new AccountManagementProcessor();
         this.reviewManagementProcessor = new ReviewManagementProcessor();
@@ -58,6 +61,7 @@ public class ProcessorManager {
         this.ticketManagementProcessor = new TicketManagementProcessor();
         this.bookingTicketManagementProcessor = new BookingTicketManagementProcessor();
         this.bookingItemManagementProccessor = new BookingItemManagementProcessor();
+        this.ratingProcessor = new RatingProcessor();
     }
     public static synchronized ProcessorManager getInstance() {
         if (processorManager == null) {
@@ -69,6 +73,10 @@ public class ProcessorManager {
         }
         return processorManager;
     }
+    public MovieProcessor getMovieProcessor() {
+        return this.movieProcessor;
+    }
+    public RatingProcessor getRatingProcessor() {return this.ratingProcessor;}
     public AnalyticsProcessor getAnalyticsProcessor() {
         return this.analyticsProcessor;
     }

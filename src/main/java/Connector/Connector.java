@@ -95,21 +95,23 @@ public class Connector {
         }
     }
 
-    public Response HTTPSignInRequest(JSONObject jsonData) {
+    public JSONObject HTTPSignInRequest(JSONObject jsonData) {
         try {
             JSONObject requestResponse = HTTPPostRequest(this.config.get("API_SIGN_IN_ROUTE"), jsonData);
-            return new Response(requestResponse.get("error_message").toString(), StatusCode.getByValue(Integer.parseInt(requestResponse.get("status_code").toString())));
+            return requestResponse;
         } catch (Exception e){
-            return new Response(e.toString(), StatusCode.BAD_REQUEST);
+            System.out.println(e.getMessage());
+            return null;
         }
     }
 
-    public Response HTTPRecommendMoviesRequest(JSONObject jsonData) {
+    public ArrayList<String> HTTPRecommendMoviesRequest(JSONObject jsonData) {
         try {
-            JSONObject requestResponse = HTTPPostRequest(this.config.get("API_RECOMMEND_MOVIES_ROUTE"), jsonData);
-            return new Response(requestResponse.get("error_message").toString(), StatusCode.getByValue(Integer.parseInt(requestResponse.get("status_code").toString())));
+            JSONObject requestResponse = HTTPGetRequest(this.config.get("API_RECOMMEND_MOVIES_ROUTE"), jsonData);
+            return Utils.convertJSONArrayToArrayList(new JSONArray(requestResponse.get("recommend_movies").toString()));
         } catch (Exception e){
-            return new Response(e.toString(), StatusCode.BAD_REQUEST);
+            System.out.println(e.getMessage());
+            return null;
         }
     }
 

@@ -7,10 +7,12 @@ import org.json.JSONObject;
 
 public class MovieManager {
     private ArrayList<Movie> movieList;
+    private ArrayList<Movie> recommendedList;
     private Main main = Main.getInstance();
     private Image imageNotFound;
     public MovieManager() {
         this.movieList = new ArrayList<Movie>();
+        this.recommendedList = new ArrayList<Movie>();
         this.imageNotFound = new Image("https://westsiderc.org/wp-content/uploads/2019/08/Image-Not-Available.png");
     }
     public Image getImageNotFound() {
@@ -59,7 +61,9 @@ public class MovieManager {
             for (int i = 0; i < recommendMovieIDs.size(); ++i) {
                 for (int j = 0; j < movieList.size(); ++j) {
                     if (recommendMovieIDs.get(i).toString().equals(movieList.get(j).getId().toString())) {
-                        recommendMovieList.add(movieList.get(i));
+//                        System.out.println(recommendMovieIDs.get(i).toString() + " " + movieList.get(j).getId().toString() + " " + movieList.get(j).getTitle().toString());
+                        recommendMovieList.add(movieList.get(j));
+                        break;
                     }
                 }
 
@@ -67,9 +71,12 @@ public class MovieManager {
         } else {
 
         }
+        this.recommendedList = recommendMovieList;
         return recommendMovieList;
     }
-
+    public ArrayList<Movie> getRecommendedList() {
+        return this.recommendedList;
+    }
     public MovieManager(ArrayList<Movie> movieList) {
         this.movieList = movieList;
     }

@@ -45,6 +45,7 @@
                  <Font name="Georgia Bold" size="14.0" />
               </font>
            </Label>
+           <HBox fx:id="recommendedList" layoutX="66.0" layoutY="1003.0" prefHeight="259.0" prefWidth="777.0" />
            <Label fx:id="seeMoreRBtn" layoutX="781.0" layoutY="1286.0" onMouseClicked="#onSeeMoreRBtnClick" text="See more" textFill="WHITE">
               <font>
                  <Font name="Georgia Bold" size="12.0" />

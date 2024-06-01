@@ -136,6 +136,9 @@ public class   MovieListViewController implements Initializable {
         moviesContainer.setPadding(new Insets(0, 63, 0, 63));
         tabContainer.getChildren().add(moviesContainer);
         ArrayList<Movie> movieList = main.getProcessorManager().getMovieManagementProcessor().getMovieManager().getRecommendMovieList();
+        for (Movie movie : movieList) {
+            System.out.println("recommended" + movie.getTitle().toString());
+        }
         HBox listView = new HBox();
         for (int i=0;i<movieList.size();++i) {
             Movie movie = movieList.get(i);

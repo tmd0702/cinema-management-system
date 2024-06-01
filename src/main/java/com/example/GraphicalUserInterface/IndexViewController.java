@@ -50,6 +50,8 @@ public class IndexViewController implements Initializable {
     @FXML
     private HBox currentlyPlayingList;
     @FXML
+    private HBox recommendedList;
+    @FXML
     private HBox comingSoonList;
     @FXML
     private HBox moviePreviewSection;
@@ -57,6 +59,7 @@ public class IndexViewController implements Initializable {
     public void initialize(URL url, ResourceBundle rb) {
         moviePreviewSectionInit();
         currentlyPlayingListInit();
+        recommendedListInit();
         comingSoonListInit();
         backDropImageSectionInit();
         scrollBtnInit();
@@ -162,6 +165,9 @@ public class IndexViewController implements Initializable {
     }
     public void currentlyPlayingListInit() {
         movieListViewSectionInit(currentlyPlayingList, movieManager.getCurrentlyPlayingMovieList());
+    }
+    public void recommendedListInit() {
+        movieListViewSectionInit(recommendedList, movieManager.getRecommendMovieList());
     }
     public void comingSoonListInit() {
         movieListViewSectionInit(comingSoonList, movieManager.getComingSoonMovieList());

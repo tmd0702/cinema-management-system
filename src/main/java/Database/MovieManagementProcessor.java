@@ -66,7 +66,6 @@ public class MovieManagementProcessor extends Processor {
         try {
             Statement st = getConnector().createStatement();
             ResultSet rs = st.executeQuery(query);
-
             while (rs.next()) {
                 Movie movie = new Movie(rs.getString("ID"), rs.getString("TITLE"), rs.getString("OVERVIEW"), rs.getString("STATUS"), rs.getInt("DURATION"), rs.getInt("VIEW_COUNT"), rs.getDate("RELEASE_DATE"), rs.getString("POSTER_PATH"), rs.getString("BACKDROP_PATH"), rs.getString("LANGUAGE"), Float.parseFloat(rs.getString("VOTE_AVERAGE")));
                 tmpList.add(movie);

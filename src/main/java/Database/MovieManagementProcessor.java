@@ -61,7 +61,7 @@ public class MovieManagementProcessor extends Processor {
         return response;
     }
     public void getMovies() {
-        String query = "SELECT * FROM MOVIES WHERE STATUS = 'Released' LIMIT 100";// LIMIT 30";
+        String query = "SELECT * FROM MOVIES WHERE STATUS = 'Released'";// LIMIT 30";
         ArrayList<Movie> tmpList = new ArrayList<Movie>();
         try {
             Statement st = getConnector().createStatement();
@@ -73,6 +73,7 @@ public class MovieManagementProcessor extends Processor {
             ExecutorService service = Executors.newCachedThreadPool();
             for (Movie movie : tmpList) {
                 service.execute(() -> {
+                    System.out.println(movie.getTitle() + " setting image");
                     movie.setBackdropImage(new Image(movie.getBackdropPath()));
                     movie.setPosterImage(new Image(movie.getPosterPath()));
                 });
@@ -80,6 +81,7 @@ public class MovieManagementProcessor extends Processor {
             }
             service.shutdown();
             try {
+
                 service.awaitTermination(Long.MAX_VALUE, TimeUnit.NANOSECONDS);
             } catch (InterruptedException e) {
                 System.out.println("Interrupted: " + e);

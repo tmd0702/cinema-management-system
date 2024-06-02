@@ -58,15 +58,17 @@ public class MovieManager {
         if (main.getSignedInUser() != null ) {
             jsonData.put("user_id", main.getSignedInUser().getId());
             ArrayList<String> recommendMovieIDs = main.getConnector().HTTPRecommendMoviesRequest(jsonData);
-            for (int i = 0; i < recommendMovieIDs.size(); ++i) {
-                for (int j = 0; j < movieList.size(); ++j) {
-                    if (recommendMovieIDs.get(i).toString().equals(movieList.get(j).getId().toString())) {
+            if (recommendMovieIDs.size() > 0) {
+                for (int i = 0; i < recommendMovieIDs.size(); ++i) {
+                    for (int j = 0; j < movieList.size(); ++j) {
+                        if (recommendMovieIDs.get(i).toString().equals(movieList.get(j).getId().toString())) {
 //                        System.out.println(recommendMovieIDs.get(i).toString() + " " + movieList.get(j).getId().toString() + " " + movieList.get(j).getTitle().toString());
-                        recommendMovieList.add(movieList.get(j));
-                        break;
+                            recommendMovieList.add(movieList.get(j));
+                            break;
+                        }
                     }
-                }
 
+                }
             }
         } else {
 

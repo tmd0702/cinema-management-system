@@ -97,12 +97,12 @@ public class MovieManagementProcessor extends Processor {
                 genres.close();
             }
             // remake the release date
-            String setReleasedate = "UPDATE MOVIES SET RELEASE_DATE = DATE_FORMAT(RELEASE_DATE ,'2023-%m-%d');";
-            st.executeUpdate(setReleasedate);
-            System.out.println("update successfully");
-            System.out.println("Start creating schedule");
-            Collections.sort(tmpList, Comparator.comparingInt(Movie::getDuration));
-            System.out.println(tmpList.size());
+//            String setReleasedate = "UPDATE MOVIES SET RELEASE_DATE = DATE_FORMAT(RELEASE_DATE ,'2023-%m-%d');";
+//            st.executeUpdate(setReleasedate);
+//            System.out.println("update successfully");
+//            System.out.println("Start creating schedule");
+//            Collections.sort(tmpList, Comparator.comparingInt(Movie::getDuration));
+//            System.out.println(tmpList.size());
             this.movieManager.setMovieList(tmpList);
             rs.close();
             st.close();

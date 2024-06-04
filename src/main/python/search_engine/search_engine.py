@@ -237,24 +237,6 @@ def search_engine():
     input = request.args.get("input")
     norm_input = utils.preprocessing(input)
     input_embedding = model.encode(input)
-
-    # def get_score_map(id):
-    #     overview_embedding = embedding_dict.get(int(id))
-    #     semantic_score = (np.float64(utils.cosine_similarity(input_embedding, overview_embedding)) - 0.4) / 0.6
-    #
-    #     keywords = keywords_dict.get(int(id))
-    #     n = len(keywords)
-    #     if n == 0:
-    #         keyword_score = 0
-    #     else:
-    #         count = 0
-    #         for keyword in keywords:
-    #             count += int(keyword in norm_input)
-    #         keyword_score = count / n
-    #     score = max(semantic_score, keyword_score)
-    #     if score > 0:
-    #         scores[int(id)] = score
-    # await asyncio.gather(*map(get_score_map, movies_data.id.values))
     for id in movies_data.id.values:
         overview_embedding = embedding_dict.get(int(id))
         semantic_score = (np.float64(utils.cosine_similarity(input_embedding, overview_embedding)) - 0.4) / 0.6
